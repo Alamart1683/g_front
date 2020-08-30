@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from "react-router-dom";
 
 export default class ForgottenPassword extends React.Component{
  render(){
@@ -6,7 +7,7 @@ export default class ForgottenPassword extends React.Component{
     <div>
       <div>Восстановление пароля</div>
       <p></p>
-      <a href='/login'>Назад</a>
+      <Link to="/">Назад</Link>
     </div>
    );
   }

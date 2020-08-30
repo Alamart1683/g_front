@@ -1,23 +1,43 @@
-import React from 'react';
+import React, { Component } from 'react';
+import { Form, Button } from 'react-bootstrap';
+import { Link } from "react-router-dom";
 
-export default class LoginPage extends React.Component{
+export default class LoginPage extends Component{
  render(){
    return(
      <div>
-        <div>Гостевая страница</div>
-        <div>
-          <form method="POST" action="/login">
-            <h2>Вход в систему</h2>
-            <div>
-              
-            </div>
-          </form>
-        </div>
-        <p></p>
-        <a href='/register'>Регистрация</a>
-        <p></p>
-        <a href='/forgotten_password'>Восстановить пароль</a>
-        <p></p>
+        <Form>
+
+          <Form.Group controlId="formBasicEmail">
+            <Form.Label>Логин</Form.Label>
+            <Form.Control type="email" placeholder="Введите почту" />
+          </Form.Group>
+
+          <Form.Group controlId="formBasicPassword">
+            <Form.Label>Пароль</Form.Label>
+            <Form.Control type="password" placeholder="Введите пароль" />
+            
+            <Link to="/forgotten_password">
+              <Form.Text className="text-muted">
+                Забыли пароль? Восстановить
+              </Form.Text>
+            </Link>
+
+          </Form.Group>
+
+          <Button variant="primary" type="submit">
+            Войти в систему
+          </Button>
+
+          <p>Или</p>
+
+          <Link to="/registration" >
+            <Button variant="primary" type="submit">
+              Создать аккаунт
+            </Button>
+          </Link>
+
+        </Form>
      </div>
    );
   }

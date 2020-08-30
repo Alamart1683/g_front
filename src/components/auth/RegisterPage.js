@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from "react-router-dom";
 
 export default class RegisterPage extends React.Component{
  render(){
@@ -6,7 +7,7 @@ export default class RegisterPage extends React.Component{
     <div>
       <div>Регистрация</div>
       <p></p>
-      <a href='/'>Назад</a>
+      <Link to="/">Назад</Link>
     </div>
    );
   }
