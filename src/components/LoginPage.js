@@ -25,9 +25,11 @@ export default class LoginPage extends Component{
 
           </Form.Group>
 
-          <Button variant="primary" type="submit">
-            Войти в систему
-          </Button>
+          <Link to="/user" >
+            <Button variant="primary" type="submit">
+              Войти в систему
+            </Button>
+          </Link>
 
           <p>Или</p>
 
@@ -38,6 +40,8 @@ export default class LoginPage extends Component{
           </Link>
 
         </Form>
+
+        <Link to="/">Назад</Link>
      </div>
    );
   }
