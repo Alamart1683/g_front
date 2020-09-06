@@ -7,7 +7,7 @@ export default class ForgottenPassword extends React.Component{
     <div>
       <div>Восстановление пароля</div>
       <p></p>
-      <Link to="/">Назад</Link>
+      <Link to="/login">Назад</Link>
     </div>
    );
   }

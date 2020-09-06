@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import { Route, Switch } from "react-router-dom";
 import LoginPage from './components/LoginPage';
-import RegisterPage from './components/auth/RegisterPage';
-import ForgottenPassword from './components/auth/FogottenPassword';
+import RegisterPage from './components/RegisterPage';
+import ForgottenPassword from './components/FogottenPasswordPage';
 import HomePage from './components/HomePage';
 import UserPage from './components/UserPage';
-import AuthRoute from './components/auth/AuthRoute';
+import AuthRoute from './auth/AuthRoute';
 
 
 export default class App extends Component {

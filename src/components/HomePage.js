@@ -11,6 +11,8 @@ export default class MainPage extends Component{
         <p></p>
         <Link to="/registration" >Регистрация</Link>
         <p></p>
+        <Link to="/user" >Страница пользователя</Link>
+        <p></p>
         <Link to="/">Выход</Link>
       </div>
    );
