@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import { Route, Switch } from "react-router-dom";
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
@@ -9,16 +9,18 @@ import AuthRoute from './auth/AuthRoute';
 import { AuthContext } from './auth/AuthContext';
 
 
-export default class App extends Component {
+export default function App() {
 
-  state = {
-
+  const existingTokens = JSON.parse(localStorage.getItem("tokens"));
+  const [authTokens, setAuthTokens] = useState(existingTokens);
+  
+  const setTokens = (data) => {
+    localStorage.setItem("tokens", JSON.stringify(data));
+    setAuthTokens(data);
   }
   
-  render() {
-
-    return (
-      <AuthContext.Provider value={ false }>
+  return (
+      <AuthContext.Provider value={{ authTokens, setAuthTokens: setTokens }}>
         <div className="App">
           <Switch>
             <Route exact path='/' component={HomePage} />
@@ -29,6 +31,6 @@ export default class App extends Component {
           </Switch>
         </div>
       </AuthContext.Provider>
-    );
-  }
+  );
+
 }
