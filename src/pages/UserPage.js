@@ -1,14 +1,14 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { Link } from "react-router-dom";
 
-export default class UserPage extends Component{
- render(){
-   return(
-     <div>
-        <p>Страница пользователя</p>
+export default function UserPage() {
+  return(
+    <div>
+      <p>Страница пользователя</p>
 
-        <Link to="/">Назад</Link>
-     </div>
-   );
-  }
+      <Link to="/">Назад</Link>
+
+    </div>
+  );
+
 }

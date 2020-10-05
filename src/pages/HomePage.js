@@ -1,9 +1,9 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { Link } from "react-router-dom";
-import { useAuthContext } from '../auth/AuthContext';
+//import { useAuthContext } from '../auth/AuthContext';
 
 export default function MainPage() {
-  const { authTokens } = useAuthContext();
+  //const { authTokens } = useAuthContext();
 
   var i;
   console.log("local storage");
@@ -16,9 +16,9 @@ export default function MainPage() {
 
       <p>Начальная страница</p>
       <p></p>
-      <Link to="/login" >Логин</Link>
+      <Link to="/guest/login" >Логин</Link>
       <p></p>
-      <Link to="/registration" >Регистрация</Link>
+      <Link to="/guest/registration" >Регистрация</Link>
       <p></p>
       <Link to="/user" >Страница пользователя</Link>
       <p></p>

@@ -6,6 +6,8 @@ import ForgottenPassword from './pages/FogottenPasswordPage';
 import HomePage from './pages/HomePage';
 import UserPage from './pages/UserPage';
 import AuthRoute from './auth/AuthRoute';
+import GuestHeader from './components/GuestHeader';
+import Footer from './components/Footer';
 import { AuthContext } from './auth/AuthContext';
 
 
@@ -21,15 +23,24 @@ export default function App() {
   
   return (
       <AuthContext.Provider value={{ authTokens, setAuthTokens: setTokens }}>
-        <div className="App">
+        
+        <div class="wrapper">
+
+          <Route path='/guest' component={GuestHeader} />
+
           <Switch>
             <Route exact path='/' component={HomePage} />
-            <Route exact path='/login' component={LoginPage} />
-            <Route exact path='/registration' component={RegisterPage} />
-            <Route exact path='/forgotten_password' component={ForgottenPassword} />
+            <Route exact path='/guest/login' component={LoginPage} />
+            <Route exact path='/guest/registration' component={RegisterPage} />
+            <Route exact path='/guest/forgotten_password' component={ForgottenPassword} />
             <AuthRoute exact path='/user' component={UserPage} />
           </Switch>
+
+        <div class="push"></div>
         </div>
+
+        <Route path='/' component={Footer} />
+
       </AuthContext.Provider>
   );
 

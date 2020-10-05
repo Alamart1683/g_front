@@ -8,11 +8,11 @@ import { apiURL } from '../Config';
 export default function LoginPage() {
 
   const [isLoggedIn, setLoggedIn] = useState(false);
-  const [isError, setIsError] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const { setAuthTokens } = useAuthContext();
 
+  // Обработка запроса на логин по введенным данным
   function postLogin() {
     const params = new URLSearchParams();
     params.append('email', email);
@@ -24,13 +24,19 @@ export default function LoginPage() {
     })
     .then(result => {
       if (result.status === 200) {
-        setAuthTokens(result.data);
-        setLoggedIn(true);
+        if (result.data === "Для авторизации необходимо подтвердить регистрацию аккаунта" ||
+            result.data === "Неверная комбинация логина и пароля") {
+          document.getElementById("errorMessage").innerHTML = result.data;
+        }
+        else {
+          setAuthTokens(result.data);
+          setLoggedIn(true);
+        }
       } else {
-        setIsError(true);
+        document.getElementById("errorMessage").innerHTML = "Ошибка подключения";
       }
     }).catch(e => {
-      setIsError(true);
+      document.getElementById("errorMessage").innerHTML = "Неопределенная ошибка";
     });
   }
 
@@ -53,7 +59,7 @@ export default function LoginPage() {
             <Form.Label>Пароль</Form.Label>
             <Form.Control type="password" onChange={e => {setPassword(e.target.value);}} 
               placeholder="Введите пароль" />
-            <Link to="/forgotten_password">
+            <Link to="/guest/forgotten_password">
                 <Form.Text className="text-muted">
                 Забыли пароль? Восстановить
                 </Form.Text>
@@ -62,12 +68,12 @@ export default function LoginPage() {
 
           <Form.Group controlId="formLoginSubmit" onClick={postLogin}>
             <Button>Войти в систему</Button>
-            { isError && <div>Почтовый адрес или пароль введены неправильно!</div> }
+            <p id = "errorMessage"></p>
           </Form.Group>
 
           <p>Или</p>
 
-          <Link to="/registration" >
+          <Link to="/guest/registration" >
             <Button>Зарегистрироваться</Button>
           </Link>
 
