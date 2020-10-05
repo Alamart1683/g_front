@@ -6,7 +6,7 @@ export default function ForgottenPassword(){
     <div>
       <div>Восстановление пароля</div>
       <p></p>
-      <Link to="/login">Назад</Link>
+      <Link to="/guest/login">Назад</Link>
     </div>
    );
    

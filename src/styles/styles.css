@@ -1,0 +1,71 @@
+* {
+	padding: 0;
+	margin: 0;
+}
+
+html, body {
+	height: 100vh;
+	min-height: 60vh;
+	font-family: 'PT Sans', sans-serif;
+    background-color: #F1F4FB;
+}
+
+/* Заголовок сайта */
+.guest-header {
+	font-size: 160%;
+	text-align: center;
+	background-color: lightgoldenrodyellow;
+}
+
+/* Отступ снизу, размер футера */
+.wrapper {
+	min-height: 100vh;
+	margin-bottom: -50px;
+}
+
+/* Размер футера */
+.footer, .push {
+	height: 30px;
+	text-align: center;
+	padding-top: 20px;
+}
+
+/* Заголовок сайта */
+.size-72 {
+    font-size: 72px;
+}
+
+/* Заголовки форм */
+.size-48 {
+    font-size: 48px;
+}
+
+/* Текст кнопок */
+.size-32 {
+    font-size: 32px;
+}
+
+/* Текст "или" и "уже есть аккаунт?" */
+.size-24 {
+    font-size: 24px;
+}
+
+/* Прочий текст форм */
+.size-21 {
+    font-size: 21px;
+}
+
+/* Светлый текст */
+.light {
+    color:  #F1F4FB;
+}
+
+/* Тёмный текст */
+.dark {
+	color: #3A5985;
+}
+
+.light-background
+{
+	background-color: #B2CAEE;
+}

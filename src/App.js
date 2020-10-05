@@ -9,6 +9,7 @@ import AuthRoute from './auth/AuthRoute';
 import GuestHeader from './components/GuestHeader';
 import Footer from './components/Footer';
 import { AuthContext } from './auth/AuthContext';
+import './styles/styles.css';
 
 
 export default function App() {
@@ -24,7 +25,7 @@ export default function App() {
   return (
       <AuthContext.Provider value={{ authTokens, setAuthTokens: setTokens }}>
         
-        <div class="wrapper">
+        <div className="wrapper">
 
           <Route path='/guest' component={GuestHeader} />
 
@@ -36,7 +37,7 @@ export default function App() {
             <AuthRoute exact path='/user' component={UserPage} />
           </Switch>
 
-        <div class="push"></div>
+        <div className="push"></div>
         </div>
 
         <Route path='/' component={Footer} />

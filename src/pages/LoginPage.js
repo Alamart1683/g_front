@@ -24,9 +24,9 @@ export default function LoginPage() {
     })
     .then(result => {
       if (result.status === 200) {
-        if (result.data === "Для авторизации необходимо подтвердить регистрацию аккаунта" ||
-            result.data === "Неверная комбинация логина и пароля") {
-          document.getElementById("errorMessage").innerHTML = result.data;
+        if (result.data.message == "Для авторизации необходимо подтвердить регистрацию аккаунта" ||
+            result.data.message == "Неверная комбинация логина и пароля") {
+          document.getElementById("errorMessage").innerHTML = result.data.message;
         }
         else {
           setAuthTokens(result.data);
