@@ -3,7 +3,7 @@ import { Redirect } from "react-router-dom";
 import { useAuthContext } from '../../auth/AuthContext';
 
 export default function StartPage() {
-  const { authTokens } = useAuthContext();
+  const { authTokens, setAuthTokens } = useAuthContext();
 
   var role;
   try {
@@ -15,10 +15,12 @@ export default function StartPage() {
 
   switch (role) {
     case null:
+      setAuthTokens(null);
       return <Redirect to="/guest/login" />;
     case 'student':
       return <Redirect to="/stu/info" />;
     default:
+      setAuthTokens(null);
       return <Redirect to="/guest/login" />;
   }
 

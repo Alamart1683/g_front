@@ -47,34 +47,35 @@ export default function LoginPage() {
   return(
     <div>
 
-        <Form>
+        <Form className="loginForm light-background">
+          <p className="size-48 dark loginForm-topLabel">Вход</p>
 
           <Form.Group controlId="formLoginEmail">
-            <Form.Label>Логин</Form.Label>
-            <Form.Control type="email" value={email} 
-              onChange={e => {setEmail(e.target.value);}} placeholder="Введите почту" />
+            <Form.Label className="size-21 dark loginForm-label1">Логин</Form.Label>
+            <Form.Control type="email" value={email} onChange={e => {setEmail(e.target.value);}} 
+              placeholder="Введите почту" className="size-24 loginForm-input"/>
           </Form.Group>
 
           <Form.Group controlId="formLoginPassword">
-            <Form.Label>Пароль</Form.Label>
+            <Form.Label className="size-21 dark loginForm-label1">Пароль</Form.Label>
             <Form.Control type="password" onChange={e => {setPassword(e.target.value);}} 
-              placeholder="Введите пароль" />
+              placeholder="Введите пароль" className="size-24 loginForm-input"/>
             <Link to="/guest/forgotten_password">
-                <Form.Text className="text-muted">
+                <Form.Text className="size-21 dark loginForm-label2">
                 Забыли пароль? Восстановить
                 </Form.Text>
             </Link>
           </Form.Group>
 
           <Form.Group controlId="formLoginSubmit" onClick={postLogin}>
-            <Button>Войти в систему</Button>
-            <p id = "errorMessage"></p>
+            <Button className="size-32 dark-background light loginForm-button">Войти в систему</Button>
+            <p id = "errorMessage" className="size-21 dark"></p>
           </Form.Group>
 
-          <p>Или</p>
+          <p className="size-21 dark loginForm-label3">Или</p>
 
           <Link to="/guest/registration" >
-            <Button>Зарегистрироваться</Button>
+            <Button className="size-32 dark-background light loginForm-button">Создать аккаунт</Button>
           </Link>
 
         </Form>

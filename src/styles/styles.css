@@ -1,6 +1,7 @@
 * {
 	padding: 0;
 	margin: 0;
+	
 }
 
 html, body {
@@ -10,12 +11,68 @@ html, body {
     background-color: #F1F4FB;
 }
 
-/* Заголовок сайта */
+/* Заголовок гостевых страниц */
 .guest-header {
-	font-size: 160%;
+	font-size: 72px;
 	text-align: center;
-	background-color: lightgoldenrodyellow;
 }
+
+/* Форма логина */
+.loginForm {
+	margin-top: 120px;
+	margin-left: auto;
+    margin-right: auto;
+	width: 405px;
+	height: 575px;
+	text-align: center;
+	display: block;
+	border-radius: 7px;
+}
+
+/* Для "Вход" */
+.loginForm-topLabel {
+	display: inline-block;
+	margin-top: 15px;
+}
+
+/* Для "Логин" и "Пароль" */
+.loginForm-label1 {
+	display: block;
+	text-align: left;
+	margin-left: 55px;
+	margin-top: 25px;
+	margin-bottom: 5px;
+}
+
+/* Для "Забыли пароль? Восстановить" */
+.loginForm-label2 {
+	display: block;
+	margin-top: 5px;
+	margin-bottom: 35px;
+}
+
+/* Для "ИЛИ" */
+.loginForm-label3 {
+	display: block;
+	margin-top: 15px;
+	margin-bottom: 15px;
+}
+
+/* Ввод на форме логина */
+.loginForm-input {
+	width: 280px;
+	height: 55px;
+	padding-left: 15px;;
+	border-radius: 7px;
+}
+
+/* Кнопки на форме логина */
+.loginForm-button {
+	width: 295px;
+	height: 70px;
+	border-radius: 7px;
+}
+
 
 /* Отступ снизу, размер футера */
 .wrapper {
@@ -65,7 +122,13 @@ html, body {
 	color: #3A5985;
 }
 
+/* Светлый фон */
 .light-background
 {
 	background-color: #B2CAEE;
+}
+
+/* Тёмный фон */
+.dark-background {
+	background-color: #89AFE0;
 }
