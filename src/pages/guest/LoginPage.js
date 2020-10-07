@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import { Link, Redirect } from 'react-router-dom';
 import { Form, Button } from 'react-bootstrap';
 import axios from 'axios';
-import { useAuthContext } from '../auth/AuthContext';
-import { apiURL } from '../Config';
+import { useAuthContext } from '../../auth/AuthContext';
+import { apiURL } from '../../Config';
 
 export default function LoginPage() {
 
@@ -24,8 +24,8 @@ export default function LoginPage() {
     })
     .then(result => {
       if (result.status === 200) {
-        if (result.data.message == "Для авторизации необходимо подтвердить регистрацию аккаунта" ||
-            result.data.message == "Неверная комбинация логина и пароля") {
+        if (result.data.message === "Для авторизации необходимо подтвердить регистрацию аккаунта" ||
+            result.data.message === "Неверная комбинация логина и пароля") {
           document.getElementById("errorMessage").innerHTML = result.data.message;
         }
         else {
@@ -41,7 +41,7 @@ export default function LoginPage() {
   }
 
   if (isLoggedIn) {
-    return <Redirect to="/user" />;
+    return <Redirect to="/" />;
   }
 
   return(
@@ -79,7 +79,6 @@ export default function LoginPage() {
 
         </Form>
 
-        <Link to="/">Назад</Link>
      </div>
    );
 

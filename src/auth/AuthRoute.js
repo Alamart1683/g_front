@@ -9,7 +9,7 @@ export default function AuthRoute({ component: Component, ...rest}) {
     <Route {...rest} render = {(props) => (
       authTokens
         ? <Component {...props} />
-        : <Redirect to='/login'/>
+        : <Redirect to='/guest/login'/>
     )}
     />
   );

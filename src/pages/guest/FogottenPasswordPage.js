@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from "react-router-dom";
 
-export default function ForgottenPassword(){
+export default function ForgottenPasswordPage(){
   return(
     <div>
       <div>Восстановление пароля</div>
