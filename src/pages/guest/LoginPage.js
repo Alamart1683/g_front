@@ -69,7 +69,7 @@ export default function LoginPage() {
 
           <Form.Group controlId="formLoginSubmit" onClick={postLogin}>
             <Button className="size-32 dark-background light loginForm-button">Войти в систему</Button>
-            <p id = "errorMessage" className="size-21 dark"></p>
+            <p id = "errorMessage" className="size-21 red loginForm-label3"></p>
           </Form.Group>
 
           <p className="size-21 dark loginForm-label3">Или</p>

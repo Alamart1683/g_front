@@ -15,6 +15,7 @@ html, body {
 .guest-header {
 	font-size: 72px;
 	text-align: center;
+	background-image: url('../images/headline.png');
 }
 
 /* Форма логина */
@@ -23,7 +24,7 @@ html, body {
 	margin-left: auto;
     margin-right: auto;
 	width: 405px;
-	height: 575px;
+	height: 625px;
 	text-align: center;
 	display: block;
 	border-radius: 7px;
@@ -73,7 +74,6 @@ html, body {
 	border-radius: 7px;
 }
 
-
 /* Отступ снизу, размер футера */
 .wrapper {
 	min-height: 100vh;
@@ -107,6 +107,11 @@ html, body {
     font-size: 24px;
 }
 
+/* Тек4ст футера */
+.size-22 {
+    font-size: 22px;
+}
+
 /* Прочий текст форм */
 .size-21 {
     font-size: 21px;
@@ -120,6 +125,11 @@ html, body {
 /* Тёмный текст */
 .dark {
 	color: #3A5985;
+}
+
+/* Тёмный текст */
+.red {
+	color:  #ce2a45;
 }
 
 /* Светлый фон */
