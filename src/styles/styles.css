@@ -40,6 +40,7 @@ html, body {
 	text-align: center;
 	display: block;
 	border-radius: 7px;
+	border-width: 0px;
 }
 
 /* Для "Вход" */
@@ -77,6 +78,8 @@ html, body {
 	height: 55px;
 	padding-left: 15px;;
 	border-radius: 7px;
+	/* border-color: #618FCA; */
+	border-width: 0px;
 }
 
 /* Кнопки на форме логина */
@@ -84,6 +87,12 @@ html, body {
 	width: 295px;
 	height: 70px;
 	border-radius: 7px;
+	/* border-color: #618FCA; */
+	border-width: 0px;
+}
+
+.loginForm-button:hover {
+	background-color: #618FCA;
 }
 
 /* Отступ снизу, размер футера */
@@ -119,7 +128,7 @@ html, body {
     font-size: 24px;
 }
 
-/* Тек4ст футера */
+/* Текст футера */
 .size-22 {
     font-size: 22px;
 }
