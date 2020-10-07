@@ -13,9 +13,21 @@ html, body {
 
 /* Заголовок гостевых страниц */
 .guest-header {
+	display: block;
+	
+	background-size: 100vw 100%;
+	margin-left: auto;
+    margin-right: auto;
 	font-size: 72px;
 	text-align: center;
 	background-image: url('../images/headline.png');
+	background-repeat: no-repeat;
+	background-position: center top;
+}
+
+.outer-guest-header {
+	width: 100%;
+	background-color: #3A5985;
 }
 
 /* Форма логина */
