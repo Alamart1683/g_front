@@ -1,3 +1,5 @@
+@import url(https://fonts.googleapis.com/css?family=PT+Sans:400,400italic,700,700italic);
+
 * {
 	padding: 0;
 	margin: 0;
@@ -8,13 +10,13 @@ html, body {
 	height: 100vh;
 	min-height: 60vh;
 	font-family: 'PT Sans', sans-serif;
+	font-weight: 400;
     background-color: #F1F4FB;
 }
 
 /* Заголовок гостевых страниц */
 .guest-header {
 	display: block;
-	
 	background-size: 100vw 100%;
 	margin-left: auto;
     margin-right: auto;
@@ -74,16 +76,18 @@ html, body {
 /* Ввод на форме логина */
 .loginForm-input {
 	width: 280px;
-	height: 55px;
+	height: 45px;
 	padding-left: 15px;;
 	border-radius: 7px;
+	font-family: 'PT Sans', sans-serif;
 }
 
 /* Кнопки на форме логина */
 .loginForm-button {
 	width: 295px;
-	height: 70px;
+	height: 68px;
 	border-radius: 7px;
+	font-family: 'PT Sans', sans-serif;
 }
 
 /* Отступ снизу, размер футера */
