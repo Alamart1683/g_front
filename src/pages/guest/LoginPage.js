@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link, Redirect } from 'react-router-dom';
-import { Form, Button } from 'react-bootstrap';
+import { Form } from 'react-bootstrap';
 import axios from 'axios';
 import { useAuthContext } from '../../auth/AuthContext';
 import { apiURL } from '../../Config';
@@ -24,8 +24,8 @@ export default function LoginPage() {
     })
     .then(result => {
       if (result.status === 200) {
-        if (result.data.message === "Для авторизации необходимо подтвердить регистрацию аккаунта" ||
-            result.data.message === "Неверная комбинация логина и пароля") {
+        if (result.data.message === "Аккаунт не подтвержден" ||
+            result.data.message === "Неверный логин или пароль") {
           document.getElementById("errorMessage").style.visibility = 'visible';
           document.getElementById("errorMessage").innerHTML = result.data.message;
         }
@@ -39,7 +39,7 @@ export default function LoginPage() {
       }
     }).catch(e => {
       document.getElementById("errorMessage").style.visibility = 'visible';
-      document.getElementById("errorMessage").innerHTML = "Неопределенная ошибка";
+      document.getElementById("errorMessage").innerHTML = "Непредвиденная ошибка";
     });
   }
 
@@ -50,7 +50,7 @@ export default function LoginPage() {
   return(
     <div>
 
-        <Form className="loginForm light-background">
+        <Form className="loginForm light-background" onSubmit={ e => {e.preventDefault(); postLogin();} }>
           <p className="size-48 dark loginForm-topLabel">Вход</p>
 
           <Form.Group controlId="formLoginEmail" className='loginForm-formGroup'>
@@ -72,14 +72,14 @@ export default function LoginPage() {
             </Link>
           </Form.Group>
 
-          <Form.Group controlId="formLoginSubmit" onClick={postLogin}  className='loginForm-formGroup'>
-            <Button className="size-32 dark-background light loginForm-button">Войти в систему</Button>
+          <Form.Group controlId="formLoginSubmit" onClick={postLogin} className='loginForm-formGroup'>
+            <button type='submit' className="size-32 dark-background light loginForm-button">Войти в систему</button>
           </Form.Group>
 
           <p className="size-21 dark loginForm-label3">Или</p>
 
           <Link to="/guest/registration" >
-            <Button className="size-32 dark-background light loginForm-button">Создать аккаунт</Button>
+            <button type='button' className="size-32 dark-background light loginForm-button">Создать аккаунт</button>
           </Link>
 
         </Form>

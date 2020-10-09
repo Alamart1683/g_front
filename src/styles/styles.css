@@ -121,8 +121,40 @@ html, body {
 	background-color: #618FCA;
 }
 
+.loginForm-button:focus {
+    outline: none !important;
+    border: none !important;
+    -webkit-box-shadow: none !important;
+    box-shadow: none !important;
+}
+
+/* Кнопки на панели навигации студента */
 .student-navbar-button {
-	
+	padding-left: 5px;
+	padding-right: 5px;
+	display: inline-flex;
+	flex-wrap: wrap;
+	justify-content: center;
+  	align-items: center;
+	transition: 0s;
+	border-radius: 7px;
+	border-width: 0px;
+}
+
+.student-navbar-button:focus {
+    outline: none !important;
+    border: none !important;
+    -webkit-box-shadow: none !important;
+    box-shadow: none !important;
+}
+
+.student-navbar-image {
+	margin-left: -5px;
+	border-width: 0px;
+}
+
+.student-navbar-button:hover, .student-navbar-button:hover .student-navbar-image {
+	background-color: #618FCA;
 }
 
 /* Отступ снизу, размер футера */
