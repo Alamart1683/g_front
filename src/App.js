@@ -11,7 +11,9 @@ import StudentHeader from './components/StudentHeader';
 import Footer from './components/Footer';
 import NoMatch from './components/NoMatch';
 import { AuthContext } from './auth/AuthContext';
+import '../node_modules/bootstrap/dist/css/bootstrap.css';
 import './styles/styles.css';
+
 
 export default function App() {
 
@@ -31,7 +33,7 @@ export default function App() {
         <div className="wrapper">
 
           <Route path='/guest' component={GuestHeader} />
-          <Route path='/stu' component={StudentHeader} />
+          <AuthRoute path='/stu' component={StudentHeader} />
 
           <Switch>
             <Route exact path='/' component={StartPage} />

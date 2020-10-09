@@ -3,7 +3,6 @@
 * {
 	padding: 0;
 	margin: 0;
-	
 }
 
 html, body {
@@ -38,47 +37,70 @@ html, body {
 	margin-left: auto;
     margin-right: auto;
 	width: 405px;
-	height: 625px;
+	height: 575px;
 	text-align: center;
 	display: block;
 	border-radius: 7px;
 	border-width: 0px;
 }
 
+.loginForm-formGroup {
+	margin-bottom: 0px;
+}
+
 /* Для "Вход" */
 .loginForm-topLabel {
 	display: inline-block;
 	margin-top: 15px;
+	margin-bottom: -6px;
 }
 
-/* Для "Логин" и "Пароль" */
+/* Для "Логин" */
 .loginForm-label1 {
 	display: block;
 	text-align: left;
 	margin-left: 55px;
-	margin-top: 25px;
-	margin-bottom: 5px;
+	margin-top: 20px;
+	margin-bottom: -1px;
 }
 
 /* Для "Забыли пароль? Восстановить" */
 .loginForm-label2 {
 	display: block;
-	margin-top: 5px;
-	margin-bottom: 35px;
+	margin-top: 15px;
+	margin-bottom: 28px;
 }
 
 /* Для "ИЛИ" */
 .loginForm-label3 {
 	display: block;
-	margin-top: 15px;
-	margin-bottom: 15px;
+	margin-top: 16px;
+	margin-bottom: 16px;
+}
+
+/* Для "Пароль" */
+.loginForm-label4 {
+	display: block;
+	text-align: left;
+	margin-left: 55px;
+	margin-top: 8px;
+	margin-bottom: -1px;
+}
+
+/* Для сообщения об ошибке логина */
+.loginForm-label5 {
+	display: block;
+	margin-top: 2px;
+	margin-bottom: -6px;
+	visibility: hidden;
 }
 
 /* Ввод на форме логина */
 .loginForm-input {
-	width: 280px;
+	width: 295px;
 	height: 45px;
-	padding-left: 15px;;
+	margin-left: 55px;
+	padding-left: 15px;
 	border-radius: 7px;
 	font-family: 'PT Sans', sans-serif;
 	/* border-color: #618FCA; */
@@ -97,6 +119,10 @@ html, body {
 
 .loginForm-button:hover {
 	background-color: #618FCA;
+}
+
+.student-navbar-button {
+	
 }
 
 /* Отступ снизу, размер футера */
@@ -131,6 +157,10 @@ html, body {
 /* Текст кнопок */
 .size-32 {
     font-size: 32px;
+}
+
+.size-30 {
+    font-size: 30px;
 }
 
 /* Текст "или" и "уже есть аккаунт?" */

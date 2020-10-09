@@ -19,13 +19,14 @@ export default function LoginPage() {
     params.append('password', password);
     axios({
       method: 'post',
-      url: apiURL + "/authorization",
+      url: apiURL + '/authorization',
       data: params
     })
     .then(result => {
       if (result.status === 200) {
         if (result.data.message === "Для авторизации необходимо подтвердить регистрацию аккаунта" ||
             result.data.message === "Неверная комбинация логина и пароля") {
+          document.getElementById("errorMessage").style.visibility = 'visible';
           document.getElementById("errorMessage").innerHTML = result.data.message;
         }
         else {
@@ -33,9 +34,11 @@ export default function LoginPage() {
           setLoggedIn(true);
         }
       } else {
+        document.getElementById("errorMessage").style.visibility = 'visible';
         document.getElementById("errorMessage").innerHTML = "Ошибка подключения";
       }
     }).catch(e => {
+      document.getElementById("errorMessage").style.visibility = 'visible';
       document.getElementById("errorMessage").innerHTML = "Неопределенная ошибка";
     });
   }
@@ -50,14 +53,16 @@ export default function LoginPage() {
         <Form className="loginForm light-background">
           <p className="size-48 dark loginForm-topLabel">Вход</p>
 
-          <Form.Group controlId="formLoginEmail">
+          <Form.Group controlId="formLoginEmail" className='loginForm-formGroup'>
             <Form.Label className="size-21 dark loginForm-label1">Логин</Form.Label>
             <Form.Control type="email" value={email} onChange={e => {setEmail(e.target.value);}} 
               placeholder="Введите почту" className="size-24 loginForm-input"/>
           </Form.Group>
 
-          <Form.Group controlId="formLoginPassword">
-            <Form.Label className="size-21 dark loginForm-label1">Пароль</Form.Label>
+          <p id = "errorMessage" className="size-21 red loginForm-label5">ErrorMessage</p>
+
+          <Form.Group controlId="formLoginPassword" className='loginForm-formGroup'>
+            <Form.Label className="size-21 dark loginForm-label4">Пароль</Form.Label>
             <Form.Control type="password" onChange={e => {setPassword(e.target.value);}} 
               placeholder="Введите пароль" className="size-24 loginForm-input"/>
             <Link to="/guest/forgotten_password">
@@ -67,9 +72,8 @@ export default function LoginPage() {
             </Link>
           </Form.Group>
 
-          <Form.Group controlId="formLoginSubmit" onClick={postLogin}>
+          <Form.Group controlId="formLoginSubmit" onClick={postLogin}  className='loginForm-formGroup'>
             <Button className="size-32 dark-background light loginForm-button">Войти в систему</Button>
-            <p id = "errorMessage" className="size-21 red loginForm-label3"></p>
           </Form.Group>
 
           <p className="size-21 dark loginForm-label3">Или</p>
