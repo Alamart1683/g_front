@@ -9,6 +9,7 @@ import AuthRoute from './auth/AuthRoute';
 import GuestHeader from './components/GuestHeader';
 import StudentHeader from './components/StudentHeader';
 import Footer from './components/Footer';
+import NoMatch from './components/NoMatch';
 import { AuthContext } from './auth/AuthContext';
 import './styles/styles.css';
 
@@ -40,6 +41,7 @@ export default function App() {
 
             <AuthRoute exact path='/stu/info' component={StudentInfoPage} />
 
+            <Route path='*' component={NoMatch} />
           </Switch>
 
         <div className="push"></div>

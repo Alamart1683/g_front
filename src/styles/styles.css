@@ -112,6 +112,12 @@ html, body {
 	padding-top: 20px;
 }
 
+/* Текст страницы о ненайденной странице */
+.no-match {
+	margin-top: 15px;
+	text-align: center;
+}
+
 /* Заголовок сайта */
 .size-72 {
     font-size: 72px;
