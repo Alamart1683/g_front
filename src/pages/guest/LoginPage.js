@@ -67,7 +67,7 @@ export default function LoginPage() {
       }
     }).catch(e => {
       setPopoverShow(true);
-      document.getElementById("errorPopoverContent").innerHTML = "Непредвиденная ошибка";
+      document.getElementById("errorPopoverContent").innerHTML = "Нет связи с сервером";
     });
   }
 
