@@ -31,7 +31,7 @@ export default function StudentHeader() {
                     </button>
                 </Nav.Link>
                 <Nav.Link href='#'>
-                    <button type='button' class="btn" className='student-navbar-button dark-background light size-30'>
+                    <button type='button' className='student-navbar-button dark-background light size-30'>
                         <Image src={iconMyProject} thumbnail className='student-navbar-image dark-background'/>
                         Мой проект
                     </button>
