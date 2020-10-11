@@ -13,6 +13,11 @@ html, body {
     background-color: #F1F4FB;
 }
 
+/* Общие настройки элеметовReact Popover */
+.popover, .popover-body, .popover-header {
+	border-radius: 7px;
+}
+
 /* Заголовок гостевых страниц */
 .guest-header {
 	display: block;
@@ -83,7 +88,7 @@ html, body {
 	display: block;
 	text-align: left;
 	margin-left: 55px;
-	margin-top: 8px;
+	margin-top: 29px;
 	margin-bottom: -1px;
 }
 
