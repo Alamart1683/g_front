@@ -1,7 +1,7 @@
 import React from 'react';
 import { Navbar, Nav, Image } from 'react-bootstrap';
 
-import iconBell from '../images/icons/bell.png';
+//import iconBell from '../images/icons/bell.png';
 import iconInfo from '../images/icons/info.png';
 import iconFind from '../images/icons/find.png';
 import iconDisc from '../images/icons/disc.png';

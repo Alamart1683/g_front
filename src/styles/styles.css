@@ -15,7 +15,10 @@ html, body {
 
 /* Общие настройки элеметовReact Popover */
 .popover, .popover-body, .popover-header {
+	font-family: 'PT Sans', sans-serif;
 	border-radius: 7px;
+	border-width: 1px;
+	border-color: #89AFE0;
 }
 
 /* Заголовок гостевых страниц */
@@ -131,6 +134,10 @@ html, body {
     border: none !important;
     -webkit-box-shadow: none !important;
     box-shadow: none !important;
+}
+
+.loginForm-spinner {
+	vertical-align: middle;
 }
 
 /* Кнопки на панели навигации студента */
