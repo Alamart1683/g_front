@@ -1,5 +1,6 @@
 import React from 'react';
-import { Navbar, Nav, Image } from 'react-bootstrap';
+import { Navbar, Nav, Image, NavDropdown } from 'react-bootstrap';
+import { useAuthContext } from '../auth/AuthContext';
 
 //import iconBell from '../images/icons/bell.png';
 import iconInfo from '../images/icons/info.png';
@@ -8,6 +9,20 @@ import iconDisc from '../images/icons/disc.png';
 import iconMyProject from '../images/icons/myproject.png';
 
 export default function StudentHeader() {
+    const { authTokens, setAuthTokens  } = useAuthContext();
+
+    function logOut() {
+        setAuthTokens(null);
+    }
+
+    var studentName;
+    try {
+        studentName = authTokens.fio;
+    }
+    catch (e) {
+        studentName = 'Ошибка имени';
+    };
+
 
     return(
         <div>
@@ -36,7 +51,12 @@ export default function StudentHeader() {
                         Мой проект
                     </button>
                 </Nav.Link>
-                
+                <NavDropdown title={studentName} id='studentName' >
+                    <NavDropdown.Item>Action</NavDropdown.Item>
+                    <NavDropdown.Item>Another action</NavDropdown.Item>
+                    <NavDropdown.Divider />
+                    <NavDropdown.Item onClick={ () => { logOut() }}>Выйти</NavDropdown.Item>
+                </NavDropdown>
             </Navbar>
         </div>
 

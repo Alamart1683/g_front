@@ -5,6 +5,12 @@
 	margin: 0;
 }
 
+.float-right {
+	padding-left: 150px;
+	margin-left: 150px;
+	float: right;
+}
+
 html, body {
 	height: 100vh;
 	min-height: 60vh;
@@ -167,6 +173,14 @@ html, body {
 
 .student-navbar-button:hover, .student-navbar-button:hover .student-navbar-image {
 	background-color: #618FCA;
+}
+
+.info-form {
+	margin-top: 20px;
+	margin-left: auto;
+	margin-right: auto;
+	width: 500px;
+	display: block;
 }
 
 /* Отступ снизу, размер футера */
