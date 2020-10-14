@@ -51,7 +51,7 @@ export default function StudentInfoPage(){
         ).then(result => {
             //console.log(result.data.taskDataView.studentFio);
             setStudentFio(result.data.taskDataView.studentFio);
-            console.log(studentFio);
+            //console.log(studentFio);
             setStudentGroup(result.data.taskDataView.studentGroup);
             setStudentTheme(result.data.taskDataView.studentTheme);
             setAdvisorFio(result.data.taskDataView.advisorFio);
@@ -92,7 +92,7 @@ export default function StudentInfoPage(){
             const url = window.URL.createObjectURL(new Blob([response.data]));
             const link = document.createElement('a');
             link.href = url;
-            link.setAttribute('download', 'file.docx');
+            link.setAttribute('download', 'Задание НИР.docx');
             document.body.appendChild(link);
             link.click();
           }).catch(result => {
@@ -111,7 +111,7 @@ export default function StudentInfoPage(){
                                 <div className='info-row'>
                                     <div className='info-column'>
                                         <Form.Label column className="size-21 dark info-input-label">ФИО:</Form.Label>
-                                        <Form.Control type='text' defaultValue={studentFio} onChange={e => { setStudentFio(e.target.value); console.log(studentFio); }} className="size-24 info-input"/>
+                                        <Form.Control type='text' defaultValue={studentFio} onChange={e => { setStudentFio(e.target.value); }} className="size-24 info-input"/>
                                         <Form.Label column className="size-21 dark info-input-label">Группа:</Form.Label>
                                         <Form.Control type='text' value={studentGroup} onChange={e => { setStudentGroup(e.target.value); }} className="size-24 info-input"/>
                                         <Form.Label column className="size-21 dark info-input-label">Тема НИР:</Form.Label>
