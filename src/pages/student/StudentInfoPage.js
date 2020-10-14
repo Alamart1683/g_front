@@ -5,6 +5,9 @@ import { useAuthContext } from '../../auth/AuthContext';
 import { apiURL } from '../../Config';
 
 import InfoTextBlock1 from '../../components/infoText/InfoTextBlock1';
+import InfoTextBlock2 from '../../components/infoText/InfoTextBlock2';
+import InfoTextBlock3 from '../../components/infoText/InfoTextBlock3';
+import InfoTextBlock4 from '../../components/infoText/InfoTextBlock4';
 
 import infoBlock1 from '../../images/infographics blocks/block1_0.png';
 import infoBlock2 from '../../images/infographics blocks/block2_0.png';
@@ -32,7 +35,6 @@ export default function StudentInfoPage(){
     const [orderEndDate, setOrderEndDate] = useState('');
     const [orderSpeciality, setOrderSpeciality] = useState('');
 
-    //console.log(authTokens);
 
     if (!fetchedData) {
         getInputData();
@@ -49,9 +51,7 @@ export default function StudentInfoPage(){
                 }
             }
         ).then(result => {
-            //console.log(result.data.taskDataView.studentFio);
             setStudentFio(result.data.taskDataView.studentFio);
-            //console.log(studentFio);
             setStudentGroup(result.data.taskDataView.studentGroup);
             setStudentTheme(result.data.taskDataView.studentTheme);
             setAdvisorFio(result.data.taskDataView.advisorFio);
@@ -111,29 +111,29 @@ export default function StudentInfoPage(){
                                 <div className='info-row'>
                                     <div className='info-column'>
                                         <Form.Label column className="size-21 dark info-input-label">ФИО:</Form.Label>
-                                        <Form.Control type='text' defaultValue={studentFio} onChange={e => { setStudentFio(e.target.value); }} className="size-24 info-input"/>
+                                        <Form.Control type='text' defaultValue={studentFio} onChange={e => { setStudentFio(e.target.value); }} className="dark size-24 info-input"/>
                                         <Form.Label column className="size-21 dark info-input-label">Группа:</Form.Label>
-                                        <Form.Control type='text' value={studentGroup} onChange={e => { setStudentGroup(e.target.value); }} className="size-24 info-input"/>
+                                        <Form.Control type='text' value={studentGroup} onChange={e => { setStudentGroup(e.target.value); }} className="dark size-24 info-input"/>
                                         <Form.Label column className="size-21 dark info-input-label">Тема НИР:</Form.Label>
-                                        <Form.Control type='text' value={studentTheme} onChange={e => { setStudentTheme(e.target.value); }} className="size-24 info-input"/>
+                                        <Form.Control type='text' value={studentTheme} onChange={e => { setStudentTheme(e.target.value); }} className="dark size-24 info-input"/>
                                         <Form.Label column className="size-21 dark info-input-label">ФИО научного руководителя:</Form.Label>
-                                        <Form.Control type='text' value={advisorFio} onChange={e => { setAdvisorFio(e.target.value); }} className="size-24 info-input"/>
+                                        <Form.Control type='text' value={advisorFio} onChange={e => { setAdvisorFio(e.target.value); }} className="dark size-24 info-input"/>
                                         <Form.Label column className="size-21 dark info-input-label">ФИО зав. кафедры:</Form.Label>
-                                        <Form.Control type='text' value={headFio} onChange={e => { setHeadFio(e.target.value); }} className="size-24 info-input"/>
+                                        <Form.Control type='text' value={headFio} onChange={e => { setHeadFio(e.target.value); }} className="dark size-24 info-input"/>
                                         <Form.Label column className="size-21 dark info-input-label">Кафедра:</Form.Label>
-                                        <Form.Control type='text' value={cathedra} onChange={e => { setCathedra(e.target.value); }} className="size-24 info-input"/>
+                                        <Form.Control type='text' value={cathedra} onChange={e => { setCathedra(e.target.value); }} className="dark size-24 info-input"/>
                                     </div>
                                     <div className='info-column'>
                                         <Form.Label column className="size-21 dark info-input-label">Номер приказа:</Form.Label>
-                                        <Form.Control  type='text' value={orderNumber} onChange={e => { setOrderNumber(e.target.value); }} className="size-24 info-input"/>
+                                        <Form.Control  type='text' value={orderNumber} onChange={e => { setOrderNumber(e.target.value); }} className="dark size-24 info-input"/>
                                         <Form.Label column className="size-21 dark info-input-label">Дата выпуска приказа:</Form.Label>
-                                        <Form.Control  type='text' value={orderDate} onChange={e => { setOrderDate(e.target.value); }} className="size-24 info-input"/>
+                                        <Form.Control  type='text' value={orderDate} onChange={e => { setOrderDate(e.target.value); }} className="dark size-24 info-input"/>
                                         <Form.Label column className="size-21 dark info-input-label">Дата начала НИР:</Form.Label>
-                                        <Form.Control  type='text' value={orderStartDate} onChange={e => { setOrderStartDate(e.target.value); }} className="size-24 info-input"/>
+                                        <Form.Control  type='text' value={orderStartDate} onChange={e => { setOrderStartDate(e.target.value); }} className="dark size-24 info-input"/>
                                         <Form.Label column className="size-21 dark info-input-label">Дата конца НИР:</Form.Label>
-                                        <Form.Control  type='text' value={orderEndDate} onChange={e => { setOrderEndDate(e.target.value); }} className="size-24 info-input"/>
+                                        <Form.Control  type='text' value={orderEndDate} onChange={e => { setOrderEndDate(e.target.value); }} className="dark size-24 info-input"/>
                                         <Form.Label column className="size-21 dark info-input-label">Направление:</Form.Label>
-                                        <Form.Control  type='text' value={orderSpeciality} onChange={e => { setOrderSpeciality(e.target.value); }} className="size-24 info-input"/>
+                                        <Form.Control  type='text' value={orderSpeciality} onChange={e => { setOrderSpeciality(e.target.value); }} className="dark size-24 info-input"/>
                                     </div>
                                 </div>
                                 <button type='button' onClick={getNIR} className='size-30 light dark-background info-button'>Получить индивидуальное задание НИР</button>
@@ -145,13 +145,13 @@ export default function StudentInfoPage(){
                     </Tabs>
                 </Tab>
                 <Tab eventKey='info2' title={<Image src={infoBlock2} thumbnail className='info-form-image'/>}>
-                    2
+                    <InfoTextBlock2/>
                 </Tab>
                 <Tab eventKey='info3' title={<Image src={infoBlock3} thumbnail className='info-form-image'/>}>
-                    3 
+                    <InfoTextBlock3/>
                 </Tab>
                 <Tab eventKey='info4' title={<Image src={infoBlock4} thumbnail className='info-form-image'/>}>
-                    4
+                    <InfoTextBlock4/>
                 </Tab>
             </Tabs>
             

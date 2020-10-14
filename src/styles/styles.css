@@ -193,6 +193,10 @@ html, body {
 	background-color: #F1F4FB;
 }
 
+.info-text-block {
+	height: 500px;
+}
+
 .info-text-block-title {
 	text-align: center;
 	font-weight: 700;

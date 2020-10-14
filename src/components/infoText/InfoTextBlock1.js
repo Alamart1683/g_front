@@ -1,14 +1,14 @@
 import React from 'react';
-//import { Form } from 'react-bootstrap';
+
 
 export default class InfoTextBlock1 extends React.Component {
     render() {
         return(
-        <div className='dark'>
+        <div className='dark info-text-block'>
             <p className='size-24 info-text-block-title'>НАУЧНО-ИССЛЕДОВАТЕЛЬСКАЯ РАБОТА</p>
             <div>
-                <p id='NIRStart' className='size-20 info-text-block-start-date'>Начало: 1.09.20</p>
-                <p id='NIREnd' className='size-20 info-text-block-end-date'>Конец: 21.12.20</p>
+                <p id='NIRStart' className='size-20 info-text-block-start-date'><b>Начало: 1.09.2020</b></p>
+                <p id='NIREnd' className='size-20 info-text-block-end-date'><b>Конец: 21.12.2020</b></p>
             </div>
             <div style={{clear: 'both'}}></div>
             <div className='size-20 info-text-block-content'>
