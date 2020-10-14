@@ -26,7 +26,7 @@ export default function StudentHeader() {
 
     return(
         <div>
-            <Navbar className='light-background light'>
+            <Navbar className='light-background light student-nav'>
                 <Nav.Link href='/stu/info'>
                     <button type='button' className='student-navbar-button dark-background light size-30'>
                         <Image src={iconInfo} thumbnail className='student-navbar-image dark-background'/>

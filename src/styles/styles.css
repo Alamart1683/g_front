@@ -5,12 +5,6 @@
 	margin: 0;
 }
 
-.float-right {
-	padding-left: 150px;
-	margin-left: 150px;
-	float: right;
-}
-
 html, body {
 	height: 100vh;
 	min-height: 60vh;
@@ -127,7 +121,6 @@ html, body {
 	height: 68px;
 	border-radius: 7px;
 	font-family: 'PT Sans', sans-serif;
-	/* border-color: #618FCA; */
 	border-width: 0px;
 }
 
@@ -140,10 +133,6 @@ html, body {
     border: none !important;
     -webkit-box-shadow: none !important;
     box-shadow: none !important;
-}
-
-.loginForm-spinner {
-	vertical-align: middle;
 }
 
 /* Кнопки на панели навигации студента */
@@ -175,12 +164,110 @@ html, body {
 	background-color: #618FCA;
 }
 
+/* Растояние между элементами панели навигации студента */
+.student-nav .nav-link {
+	padding: 0px 1em;
+}
+
+.student-nav.navbar-light {
+	padding: 0px 0px;
+}
+
 .info-form {
 	margin-top: 20px;
 	margin-left: auto;
 	margin-right: auto;
-	width: 500px;
+	width: 1526px;
 	display: block;
+}
+
+.info-form-tabs, .info-form-image, .info-form-tabs .nav-link {
+	padding: 0px;
+}
+
+.info-form-subtab .nav-tabs {
+	background-color: #B2CAEE;
+}
+
+.info-form-subtab .nav-link, .info-form-subtab .nav-link.active {
+	background-color: #F1F4FB;
+}
+
+.info-text-block-title {
+	text-align: center;
+	font-weight: 700;
+}
+
+.info-text-block-start-date {
+	float: left;
+	text-align: left;
+	margin-left: 14px;
+	width: 30%;
+}
+
+.info-text-block-end-date {
+	float: right;
+	text-align: right;
+	margin-right: 14px;
+	width: 30%;
+}
+
+.info-text-block-content {
+	column-count: 2;
+	column-gap: 70px;
+	column-rule-width: 2px;
+	column-rule-style: solid;
+	column-rule-color: #3A5985;
+	margin-left: 14px;
+	margin-right: 14px;
+	margin-bottom: 20px;
+}
+
+.info-row:after {
+	content: '';
+  	display: table;
+  	clear: both;
+}
+
+.info-column {
+	float: left;
+  	width: 50%;
+}
+
+.info-input-label {
+	margin-left: 40px;
+}
+
+.info-input {
+	margin-left: 50px;
+	width: 600px;
+}
+
+.info-error {
+	overflow: auto;
+}
+
+.info-button {
+	float: right;
+	margin-right: 115px;
+	margin-top: 40px;
+	margin-bottom: 40px;
+	width: 550px;
+	height: 80px;
+	border-radius: 7px;
+	font-family: 'PT Sans', sans-serif;
+	border-width: 0px;
+}
+
+.info-button:hover {
+	background-color: #618FCA;
+}
+
+.info-button:focus {
+    outline: none !important;
+    border: none !important;
+    -webkit-box-shadow: none !important;
+    box-shadow: none !important;
 }
 
 /* Отступ снизу, размер футера */
@@ -236,6 +323,10 @@ html, body {
     font-size: 21px;
 }
 
+.size-20 {
+    font-size: 20px;
+}
+
 /* Светлый текст */
 .light {
     color:  #F1F4FB;
@@ -255,6 +346,11 @@ html, body {
 .light-background
 {
 	background-color: #B2CAEE;
+}
+
+.white-background
+{
+	background-color: #F1F4FB;
 }
 
 /* Тёмный фон */

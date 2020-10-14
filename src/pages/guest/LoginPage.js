@@ -44,7 +44,6 @@ export default function LoginPage() {
     const params = new URLSearchParams();
     params.append('email', email);
     params.append('password', password);
-    // TODO: Переписать через fetch
     axios({
       method: 'post',
       url: apiURL + '/authorization',
