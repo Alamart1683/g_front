@@ -5,7 +5,7 @@ export default class InfoTextBlock3 extends React.Component {
     render() {
         return(
         <div className='dark info-text-block'>
-            <p className='size-24 info-text-block-title'>ПРАКТИКА ПО ПОЛУЧЕНИЮ ПРОФЕССИОНАЛЬНЫХ УМЕНИЙ И ОПЫТА ПРОФЕССИОНАЛЬНОЙ ДЕЯТЕЛЬНОСТИ</p>
+            <p className='size-24 info-text-block-title'>ПРЕДДИПЛОМНАЯ ПРАКТИКА</p>
             <div>
                 <p id='NIRStart' className='size-20 info-text-block-start-date'><b>Начало: 20.04.2021</b></p>
                 <p id='NIREnd' className='size-20 info-text-block-end-date'><b>Конец: 17.05.2021</b></p>
