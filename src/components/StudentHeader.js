@@ -36,12 +36,6 @@ export default function StudentHeader() {
                 </Nav.Link>
                 <Nav.Link as={Link} to='#'>
                     <button type='button' className='student-navbar-button dark-background light size-30'>
-                        <Image src={iconFind} thumbnail className='student-navbar-image dark-background'/>
-                        Найти ВКР
-                    </button>
-                </Nav.Link>
-                <Nav.Link as={Link} to='#'>
-                    <button type='button' className='student-navbar-button dark-background light size-30'>
                         <Image src={iconDisc} thumbnail className='student-navbar-image dark-background'/>
                         Обучающие<br></br>программы
                     </button>

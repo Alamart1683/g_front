@@ -13,6 +13,10 @@ html, body {
     background-color: #F1F4FB;
 }
 
+.centered {
+	text-align: center;
+}
+
 /* Общие настройки элеметовReact Popover */
 .popover, .popover-body, .popover-header {
 	font-family: 'PT Sans', sans-serif;
@@ -20,6 +24,12 @@ html, body {
 	border-width: 1px;
 	border-color: #89AFE0;
 }
+
+.thumbnail-icon {
+	margin-left: -5px;
+	border-width: 0px;
+}
+
 
 /* Заголовок гостевых страниц */
 .guest-header {
@@ -111,7 +121,6 @@ html, body {
 	padding-left: 15px;
 	border-radius: 7px;
 	font-family: 'PT Sans', sans-serif;
-	/* border-color: #618FCA; */
 	border-width: 0px;
 }
 
@@ -227,44 +236,58 @@ html, body {
 	margin-bottom: 20px;
 }
 
-.info-row:after {
-	content: '';
-  	display: table;
-  	clear: both;
-}
-
-.info-column {
-	float: left;
-  	width: 50%;
+.info-sub-tab-div {
+	padding-top: 20px;
+	padding-bottom: 30px;
+	margin-bottom: 30px;
 }
 
 .info-input-label {
-	margin-left: 40px;
+	margin-left: 17%;
 }
 
 .info-input {
-	margin-left: 50px;
-	width: 600px;
+	margin-left: 16.5%;
+	width: 66%;
+	padding: 6px 12px;
+	border-radius: 7px;
+	border-width: 0px;
 }
 
-.info-error {
-	overflow: auto;
+.info-input-area {
+	margin-left: 16.5%;
+	width: 66%;
+	height: 84px;
+	padding: 6px 12px;
+	border-radius: 7px;
+	border-width: 0px;
 }
 
-.info-button {
-	float: right;
-	margin-right: 115px;
+.info-input:focus, .info-input-area:focus {
+	color: #3A5985;
+    outline: none !important;
+    border: none !important;
+    -webkit-box-shadow: none !important;
+    box-shadow: none !important;
+}
+
+.info-button-block {
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+	padding: 2px 4px;
 	margin-top: 40px;
-	margin-bottom: 40px;
-	width: 550px;
-	height: 80px;
 	border-radius: 7px;
 	font-family: 'PT Sans', sans-serif;
 	border-width: 0px;
 }
 
-.info-button:hover {
-	background-color: #618FCA;
+.info-button-inline-block {
+	display: inline-block;
+	padding: 2px 4px;
+	border-radius: 7px;
+	font-family: 'PT Sans', sans-serif;
+	border-width: 0px;
 }
 
 .info-button:focus {
@@ -272,6 +295,25 @@ html, body {
     border: none !important;
     -webkit-box-shadow: none !important;
     box-shadow: none !important;
+}
+
+.info-input-file-hidden {
+	width: 0.1px;
+	height: 0.1px;
+	opacity: 0;
+	overflow: hidden;
+	position: absolute;
+	z-index: -1;
+}
+
+.info-file-label1 {
+	margin-left: 20px;
+	margin-right: 40px;
+	padding: 2px 4px;
+	cursor: pointer;
+	border-radius: 7px;
+	font-family: 'PT Sans', sans-serif;
+	border-width: 0px;
 }
 
 /* Отступ снизу, размер футера */

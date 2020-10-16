@@ -14,6 +14,9 @@ import infoBlock2 from '../../images/infographics blocks/block2_0.png';
 import infoBlock3 from '../../images/infographics blocks/block3_0.png';
 import infoBlock4 from '../../images/infographics blocks/block4_0.png';
 
+import iconDocument from '../../images/icons/documents.png';
+import iconProject from '../../images/icons/myproject.png';
+import iconInfo from '../../images/icons/info.png';
 
 export default function StudentInfoPage(){
     const { authTokens } = useAuthContext();
@@ -34,10 +37,15 @@ export default function StudentInfoPage(){
     const [orderStartDate, setOrderStartDate] = useState('');
     const [orderEndDate, setOrderEndDate] = useState('');
     const [orderSpeciality, setOrderSpeciality] = useState('');
+    // Задание на НИР
+    const [toExplore, setToExplore] = useState('');
+    const [toCreate, setToCreate] = useState('');
+    const [toFamiliarize, setToFamiliarize] = useState('');
+    const [additionalTask, setAdditionalTask] = useState('');
 
 
     if (!fetchedData) {
-        getInputData();
+        //getInputData();
         setFetchedData(true);
     }
 
@@ -100,47 +108,81 @@ export default function StudentInfoPage(){
         });
     }
 
+    function getNIRShort() {
+        axios({
+            url: apiURL + '/student/document/download/task/nir/short',
+            method: 'GET',
+            responseType: 'blob',
+            params: {
+                taskType: 'Научно-исследовательская работа',
+                studentTheme: studentTheme,
+                toExplore: toExplore,
+                toCreate: toCreate,
+                toFamiliarize: toFamiliarize,
+                additionalTask: additionalTask
+            },
+            headers: { 'Authorization': 'Bearer ' + authTokens.accessToken },
+          }).then((response) => {
+            const url = window.URL.createObjectURL(new Blob([response.data]));
+            const link = document.createElement('a');
+            link.href = url;
+            link.setAttribute('download', 'Задание НИР.docx');
+            document.body.appendChild(link);
+            link.click();
+          }).catch(result => {
+            console.log(result.data);
+        });
+    }
+
+    function uploadNIR() {
+        console.log('done');
+    }
+
     return(
         <Form className='info-form light-background'>
             <Tabs defaultActiveKey='info1' className='info-form-tabs'>
                 <Tab eventKey='info1' title={<Image src={infoBlock1} thumbnail className='info-form-image'/>} className='info-form-tabs'>
                     <InfoTextBlock1/>
                     <Tabs defaultActiveKey='info11' className='info-form-subtab'>
-                        <Tab eventKey='info11' title={<p className='size-24 dark white-background'>Задание на НИР</p>}>
-                            <div className='info-row'>
-                                <div className='info-row'>
-                                    <div className='info-column'>
-                                        <Form.Label column className="size-21 dark info-input-label">ФИО:</Form.Label>
-                                        <Form.Control type='text' defaultValue={studentFio} onChange={e => { setStudentFio(e.target.value); }} className="dark size-24 info-input"/>
-                                        <Form.Label column className="size-21 dark info-input-label">Группа:</Form.Label>
-                                        <Form.Control type='text' value={studentGroup} onChange={e => { setStudentGroup(e.target.value); }} className="dark size-24 info-input"/>
-                                        <Form.Label column className="size-21 dark info-input-label">Тема НИР:</Form.Label>
-                                        <Form.Control type='text' value={studentTheme} onChange={e => { setStudentTheme(e.target.value); }} className="dark size-24 info-input"/>
-                                        <Form.Label column className="size-21 dark info-input-label">ФИО научного руководителя:</Form.Label>
-                                        <Form.Control type='text' value={advisorFio} onChange={e => { setAdvisorFio(e.target.value); }} className="dark size-24 info-input"/>
-                                        <Form.Label column className="size-21 dark info-input-label">ФИО зав. кафедры:</Form.Label>
-                                        <Form.Control type='text' value={headFio} onChange={e => { setHeadFio(e.target.value); }} className="dark size-24 info-input"/>
-                                        <Form.Label column className="size-21 dark info-input-label">Кафедра:</Form.Label>
-                                        <Form.Control type='text' value={cathedra} onChange={e => { setCathedra(e.target.value); }} className="dark size-24 info-input"/>
-                                    </div>
-                                    <div className='info-column'>
-                                        <Form.Label column className="size-21 dark info-input-label">Номер приказа:</Form.Label>
-                                        <Form.Control  type='text' value={orderNumber} onChange={e => { setOrderNumber(e.target.value); }} className="dark size-24 info-input"/>
-                                        <Form.Label column className="size-21 dark info-input-label">Дата выпуска приказа:</Form.Label>
-                                        <Form.Control  type='text' value={orderDate} onChange={e => { setOrderDate(e.target.value); }} className="dark size-24 info-input"/>
-                                        <Form.Label column className="size-21 dark info-input-label">Дата начала НИР:</Form.Label>
-                                        <Form.Control  type='text' value={orderStartDate} onChange={e => { setOrderStartDate(e.target.value); }} className="dark size-24 info-input"/>
-                                        <Form.Label column className="size-21 dark info-input-label">Дата конца НИР:</Form.Label>
-                                        <Form.Control  type='text' value={orderEndDate} onChange={e => { setOrderEndDate(e.target.value); }} className="dark size-24 info-input"/>
-                                        <Form.Label column className="size-21 dark info-input-label">Направление:</Form.Label>
-                                        <Form.Control  type='text' value={orderSpeciality} onChange={e => { setOrderSpeciality(e.target.value); }} className="dark size-24 info-input"/>
-                                    </div>
-                                </div>
-                                <button type='button' onClick={getNIR} className='size-30 light dark-background info-button'>Получить индивидуальное задание НИР</button>
+                        <Tab eventKey='info11' title={<p className='size-24 dark white-background'>Оформить задание для НИР</p>}>
+                            <div className='info-sub-tab-div'>
+                                <Form.Label column className="size-21 dark info-input-label">Тема НИР:</Form.Label>
+                                <input type='text' value={studentTheme} onChange={e => { setStudentTheme(e.target.value); }} className="dark size-24 info-input"/>
+
+                                <Form.Label column className="size-21 dark info-input-label">Изучить:</Form.Label>
+                                <textarea value={toExplore} onChange={e => { setToExplore(e.target.value);}} className='dark size-24 info-input-area'/>
+
+                                <Form.Label column className="size-21 dark info-input-label">Практически выполнить:</Form.Label>
+                                <textarea value={toCreate} onChange={e => { setToCreate(e.target.value);}} className='dark size-24 info-input-area'/>
+
+                                <Form.Label column className="size-21 dark info-input-label">Ознакомиться:</Form.Label>
+                                <textarea value={toFamiliarize} onChange={e => { setToFamiliarize(e.target.value);}} className='dark size-24 info-input-area'/>
+
+                                <Form.Label column className="size-21 dark info-input-label">Дополнительное задание:</Form.Label>
+                                <textarea value={additionalTask} onChange={e => { setAdditionalTask(e.target.value);console.log(additionalTask) }} className='dark size-24 info-input-area'/>
+
+                                <button type='button' onClick={getNIRShort} className='size-30 light dark-background info-button-block'>
+                                    <Image src={iconDocument} thumbnail className='dark-background thumbnail-icon'/>
+                                    Получить индивидуальное задание НИР
+                                </button>
+
                             </div>
                         </Tab>
-                        <Tab eventKey='info12' title={<p className='size-24 dark  white-background'>Отчет</p>}>
-                            12
+                        <Tab eventKey='info12' title={<p className='size-24 dark  white-background'>Загрузить отчет о прохождении НИР</p>}>
+                            <div className='info-sub-tab-div'>
+                                <div className='centered'>
+                                    <input type="file" name="file" id="file" className="info-input-file-hidden" />
+                                    <label htmlFor="file" className='size-30 dark-background light info-file-label1'>
+                                        <Image src={iconInfo} thumbnail className='dark-background thumbnail-icon'/>
+                                        Выберите файл
+                                    </label>
+                                    <button type='button' onClick={uploadNIR} className='size-30 light dark-background info-button-inline-block'>
+                                        <Image src={iconProject} thumbnail className='dark-background thumbnail-icon'/>
+                                        Загрузить отчет о прохождении НИР
+                                    </button>
+                                </div>
+                                
+                            </div>
                         </Tab>
                     </Tabs>
                 </Tab>
