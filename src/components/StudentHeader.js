@@ -5,7 +5,7 @@ import { useAuthContext } from '../auth/AuthContext';
 
 //import iconBell from '../images/icons/bell.png';
 import iconInfo from '../images/icons/info.png';
-import iconFind from '../images/icons/find.png';
+//import iconFind from '../images/icons/find.png';
 import iconDisc from '../images/icons/disc.png';
 import iconMyProject from '../images/icons/myproject.png';
 

@@ -124,7 +124,9 @@ export default function StudentInfoPage(){
                 toFamiliarize: toFamiliarize,
                 additionalTask: additionalTask
             },
-            headers: { 'Authorization': 'Bearer ' + authTokens.accessToken },
+            headers: { 
+                'Authorization': 'Bearer ' + authTokens.accessToken 
+            },
           }).then((response) => {
             const url = window.URL.createObjectURL(new Blob([response.data]));
             const link = document.createElement('a');
@@ -137,21 +139,28 @@ export default function StudentInfoPage(){
         });
     }
 
+    // Загрузка отчета по НИР на сервер
     function uploadNIR() {
+        console.log(fileNir);
+        var formData = new FormData();
+        formData.append('documentFormType', 'Научно-исследовательская работа');
+        formData.append('documentFormKind', 'Отчёт');
+        formData.append('documentFormDescription', 'Пример отчёта');
+        formData.append('documentFormViewRights', 'Я и мой научный руководитель');
+        formData.append('file', fileNir);
         axios({
-            url: apiURL + '/',
+            url: apiURL + '/student/document/report/upload',
             method: 'POST',
-            params: {
-                documentFormType: '?',
-                documentFormKind: '?',
-                documentFormDescription: '?',
-                documentFormViewRights: '?',
-                file: fileNir
+            data: formData,
+            headers: {
+                'Content-Type': 'multipart/form-data',
+                'Authorization': 'Bearer ' + authTokens.accessToken 
             },
-            headers: { 'Authorization': 'Bearer ' + authTokens.accessToken },
         }).then((response) => {
+            console.log('success');
             console.log(response);
         }).catch(result => {
+            console.log('failure');
             console.log(result.data);
         });
     }
@@ -191,8 +200,8 @@ export default function StudentInfoPage(){
                                 <div className='centered'>
                                     <input type="file" name="file" id="fileNir" accept='.docx' className="info-input-file-hidden"
                                         onChange={e => {
-                                            if (e.target.files.length != 0) {
-                                               if (e.target.files[0].type == 'application/vnd.openxmlformats-officedocument.wordprocessingml.document') {
+                                            if (e.target.files.length !== 0) {
+                                               if (e.target.files[0].type === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document') {
                                                     fileNir = e.target.files[0];
                                                     document.getElementById('fileNirName').innerHTML = e.target.files[0].name;
                                                 }
@@ -202,7 +211,7 @@ export default function StudentInfoPage(){
                                                 } 
                                             }
                                         }} 
-                                         />
+                                    />
                                     <label htmlFor="fileNir"  className='size-30 dark-background light info-file-label1'>
                                         <Image src={iconInfo} thumbnail className='dark-background thumbnail-icon'/>
                                         <p id='fileNirName' style={{display: 'inline-block'}}>Выберите файл</p>
