@@ -141,7 +141,6 @@ export default function StudentInfoPage(){
 
     // Загрузка отчета по НИР на сервер
     function uploadNIR() {
-        console.log(fileNir);
         var formData = new FormData();
         formData.append('documentFormType', 'Научно-исследовательская работа');
         formData.append('documentFormKind', 'Отчёт');
@@ -157,11 +156,11 @@ export default function StudentInfoPage(){
                 'Authorization': 'Bearer ' + authTokens.accessToken 
             },
         }).then((response) => {
-            console.log('success');
-            console.log(response);
+            document.getElementById('errorNirMessage').style.visibility = 'visible';
+            document.getElementById('errorNirMessage').innerHTML = 'Отчет загружен!';
         }).catch(result => {
-            console.log('failure');
-            console.log(result.data);
+            document.getElementById('errorNirMessage').style.visibility = 'visible';
+            document.getElementById('errorNirMessage').innerHTML = 'При загрузке произошла ошибка!';
         });
     }
 
@@ -220,6 +219,7 @@ export default function StudentInfoPage(){
                                         <Image src={iconProject} thumbnail className='dark-background thumbnail-icon'/>
                                         Загрузить отчет о прохождении НИР
                                     </button>
+                                    <p id='errorNirMessage' className='size-24 dark' style={{visibility: 'hidden'}}>errorNir</p>
                                 </div>
                                 
                             </div>
