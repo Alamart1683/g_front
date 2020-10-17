@@ -43,6 +43,9 @@ export default function StudentInfoPage(){
     const [toFamiliarize, setToFamiliarize] = useState('');
     const [additionalTask, setAdditionalTask] = useState('');
 
+    // Загруженный отчет НИР
+    var fileNir;
+
 
     if (!fetchedData) {
         //getInputData();
@@ -135,7 +138,22 @@ export default function StudentInfoPage(){
     }
 
     function uploadNIR() {
-        console.log('done');
+        axios({
+            url: apiURL + '/',
+            method: 'POST',
+            params: {
+                documentFormType: '?',
+                documentFormKind: '?',
+                documentFormDescription: '?',
+                documentFormViewRights: '?',
+                file: fileNir
+            },
+            headers: { 'Authorization': 'Bearer ' + authTokens.accessToken },
+        }).then((response) => {
+            console.log(response);
+        }).catch(result => {
+            console.log(result.data);
+        });
     }
 
     return(
@@ -171,10 +189,23 @@ export default function StudentInfoPage(){
                         <Tab eventKey='info12' title={<p className='size-24 dark  white-background'>Загрузить отчет о прохождении НИР</p>}>
                             <div className='info-sub-tab-div'>
                                 <div className='centered'>
-                                    <input type="file" name="file" id="file" className="info-input-file-hidden" />
-                                    <label htmlFor="file" className='size-30 dark-background light info-file-label1'>
+                                    <input type="file" name="file" id="fileNir" accept='.docx' className="info-input-file-hidden"
+                                        onChange={e => {
+                                            if (e.target.files.length != 0) {
+                                               if (e.target.files[0].type == 'application/vnd.openxmlformats-officedocument.wordprocessingml.document') {
+                                                    fileNir = e.target.files[0];
+                                                    document.getElementById('fileNirName').innerHTML = e.target.files[0].name;
+                                                }
+                                                else {
+                                                    fileNir = null;
+                                                    document.getElementById('fileNirName').innerHTML = 'Ошибка загрузки файла!';
+                                                } 
+                                            }
+                                        }} 
+                                         />
+                                    <label htmlFor="fileNir"  className='size-30 dark-background light info-file-label1'>
                                         <Image src={iconInfo} thumbnail className='dark-background thumbnail-icon'/>
-                                        Выберите файл
+                                        <p id='fileNirName' style={{display: 'inline-block'}}>Выберите файл</p>
                                     </label>
                                     <button type='button' onClick={uploadNIR} className='size-30 light dark-background info-button-inline-block'>
                                         <Image src={iconProject} thumbnail className='dark-background thumbnail-icon'/>
