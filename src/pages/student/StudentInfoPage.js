@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Form, Tabs, Tab, Image } from 'react-bootstrap';
+import { Form, Tabs, Tab, Image, Nav } from 'react-bootstrap';
 import axios from 'axios';
 import { useAuthContext } from '../../auth/AuthContext';
 import { apiURL } from '../../Config';
@@ -166,12 +166,19 @@ export default function StudentInfoPage(){
 
     return(
         <Form className='info-form light-background'>
-            <Tabs defaultActiveKey='info1' className='info-form-tabs'>
+            <Tabs defaultActiveKey='info1' className='info-form-main-tabs'>
                 <Tab eventKey='info1' title={<Image src={infoBlock1} thumbnail className='info-form-image'/>} className='info-form-tabs'>
                     <InfoTextBlock1/>
-                    <Tabs defaultActiveKey='info11' className='info-form-subtab'>
-                        <Tab eventKey='info11' title={<p className='size-24 dark white-background'>Оформить задание для НИР</p>}>
+                    <div className='info-break-div'>&nbsp;</div>
+                    <Tabs defaultActiveKey='none' className='info-form-subtab light-background container-fluid'>
+                        <Tab eventKey='info11' title={
+                            <p className='size-30 light dark-background info-form-subtab-title'>
+                                <Image src={iconDocument} thumbnail className='dark-background info-form-subtab-icon icon-small'/>
+                                Задание на НИР
+                            </p>
+                        }>
                             <div className='info-sub-tab-div'>
+                                <div className='info-break-div'>&nbsp;</div>
                                 <Form.Label column className="size-21 dark info-input-label">Тема НИР:</Form.Label>
                                 <input type='text' value={studentTheme} onChange={e => { setStudentTheme(e.target.value); }} className="dark size-24 info-input"/>
 
@@ -189,12 +196,18 @@ export default function StudentInfoPage(){
 
                                 <button type='button' onClick={getNIRShort} className='size-30 light dark-background info-button-block'>
                                     <Image src={iconDocument} thumbnail className='dark-background thumbnail-icon'/>
-                                    Получить индивидуальное задание НИР
+                                    Скачать задание на НИР
                                 </button>
 
                             </div>
                         </Tab>
-                        <Tab eventKey='info12' title={<p className='size-24 dark  white-background'>Загрузить отчет о прохождении НИР</p>}>
+                        <Tab eventKey='info12' title={
+                            <p className='size-30 light dark-background info-form-subtab-title' style={{marginLeft: '846px'}}>
+                                <Image src={iconDocument} thumbnail className='dark-background info-form-subtab-icon icon-small'/>
+                                Отчет о<br/>прохождении НИР
+                            </p>
+                        }>
+                            <div className='info-break-div'>&nbsp;</div>
                             <div className='info-sub-tab-div'>
                                 <div className='centered'>
                                     <input type="file" name="file" id="fileNir" accept='.docx' className="info-input-file-hidden"
@@ -231,6 +244,7 @@ export default function StudentInfoPage(){
                 </Tab>
                 <Tab eventKey='info3' title={<Image src={infoBlock3} thumbnail className='info-form-image'/>}>
                     <InfoTextBlock3/>
+                    
                 </Tab>
                 <Tab eventKey='info4' title={<Image src={infoBlock4} thumbnail className='info-form-image'/>}>
                     <InfoTextBlock4/>

@@ -3,9 +3,8 @@ import { Link } from 'react-router-dom';
 import { Navbar, Nav, Image, NavDropdown } from 'react-bootstrap';
 import { useAuthContext } from '../auth/AuthContext';
 
-//import iconBell from '../images/icons/bell.png';
+import iconBell from '../images/icons/bell.png';
 import iconInfo from '../images/icons/info.png';
-//import iconFind from '../images/icons/find.png';
 import iconDisc from '../images/icons/disc.png';
 import iconMyProject from '../images/icons/myproject.png';
 
@@ -46,7 +45,12 @@ export default function StudentHeader() {
                         Мой проект
                     </button>
                 </Nav.Link>
-                <NavDropdown title={studentName} id='studentName' >
+                <NavDropdown title={
+                    <p className='student-navbar-name dark-background light size-30'>
+                        <Image src={iconBell} thumbnail className='student-navbar-image dark-background'/>
+                        {studentName}
+                    </p>
+                    } id='studentName' >
                     <NavDropdown.Item>Action</NavDropdown.Item>
                     <NavDropdown.Item>Another action</NavDropdown.Item>
                     <NavDropdown.Divider />

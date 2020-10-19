@@ -17,6 +17,11 @@ html, body {
 	text-align: center;
 }
 
+.icon-small {
+	width: 70px;
+	height: 70px;
+}
+
 /* Общие настройки элеметовReact Popover */
 .popover, .popover-body, .popover-header {
 	font-family: 'PT Sans', sans-serif;
@@ -29,7 +34,6 @@ html, body {
 	margin-left: -5px;
 	border-width: 0px;
 }
-
 
 /* Заголовок гостевых страниц */
 .guest-header {
@@ -173,6 +177,17 @@ html, body {
 	background-color: #618FCA;
 }
 
+.student-navbar-name {
+	padding-left: 5px;
+	padding-right: 5px;
+	display: inline-flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	align-items: center;
+	border-radius: 7px;
+	border-width: 0px;
+}
+
 /* Растояние между элементами панели навигации студента */
 .student-nav .nav-link {
 	padding: 0px 1em;
@@ -186,20 +201,67 @@ html, body {
 	margin-top: 20px;
 	margin-left: auto;
 	margin-right: auto;
-	width: 1526px;
+	width: 1489px;
 	display: block;
+	border-radius: 7px;
+	border-width: 0;
 }
 
-.info-form-tabs, .info-form-image, .info-form-tabs .nav-link {
+.info-form-main-tabs .nav-link {
+	padding: 0px 0px;
+	border-width: 0px;
+}
+
+.info-form-image {
 	padding: 0px;
+	border-width: 0px;
 }
 
-.info-form-subtab .nav-tabs {
+.info-form-subtab {
+	padding: 4px 4px;
+	border-radius: 7px;
+	border-width: 0px;
+}
+
+.info-form-subtab .nav-link {
+	padding: 0px 0px;
+	margin-left: 7px;
+	border-width: 0px;
+}
+
+.info-form-subtab .nav-link.active {
+	padding: 0px 0px;
 	background-color: #B2CAEE;
 }
 
-.info-form-subtab .nav-link, .info-form-subtab .nav-link.active {
-	background-color: #F1F4FB;
+.info-form-subtab .nav-link:focus .info-form-subtab-title,
+.info-form-subtab .nav-link:focus .info-form-subtab-icon {
+	background-color: #618FCA;
+}
+
+.info-form-subtab-title {
+	margin: 0px 0px;
+	padding: 0px 6px;
+	height: 84px;
+	border-radius: 7px;
+	display: inline-flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	align-items: center;
+	text-align: center;
+}
+
+.info-form-subtab-icon {
+	margin-left: -5px;
+	border-width: 0px;
+}
+
+.info-form-subtab-icon:hover, .info-form-subtab-title:hover .info-form-subtab-icon {
+	background-color: #618FCA;
+}
+
+.info-form-subtab-title:hover {
+	background-color: #618FCA;
 }
 
 .info-text-block {
@@ -236,8 +298,14 @@ html, body {
 	margin-bottom: 20px;
 }
 
+.info-break-div {
+	height: 16px;
+	width: 100%;
+	content: '';
+	background-color:   #F1F4FB;
+}
+
 .info-sub-tab-div {
-	padding-top: 20px;
 	padding-bottom: 30px;
 	margin-bottom: 30px;
 }
@@ -389,13 +457,11 @@ html, body {
 }
 
 /* Светлый фон */
-.light-background
-{
+.light-background {
 	background-color: #B2CAEE;
 }
 
-.white-background
-{
+.white-background {
 	background-color: #F1F4FB;
 }
 
