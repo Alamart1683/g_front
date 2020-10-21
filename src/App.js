@@ -4,7 +4,8 @@ import LoginPage from './pages/guest/LoginPage';
 import RegisterPage from './pages/guest/RegisterPage';
 import ForgottenPasswordPage from './pages/guest/FogottenPasswordPage';
 import StartPage from './pages/guest/StartPage';
-import StudentInfoPage from './pages/student/StudentInfoPage'
+import StudentInfoPage from './pages/student/StudentInfoPage';
+import StudentDocumentPage from './pages/student/StudentDocumentPage';
 import AuthRoute from './auth/AuthRoute';
 import GuestHeader from './components/GuestHeader';
 import StudentHeader from './components/StudentHeader';
@@ -42,6 +43,7 @@ export default function App() {
             <Route exact path='/guest/forgotten_password' component={ForgottenPasswordPage} />
 
             <AuthRoute exact path='/stu/info' component={StudentInfoPage} />
+            <AuthRoute exact path='/stu/docs' component={StudentDocumentPage} />
 
             <Route path='*' component={NoMatch} />
           </Switch>

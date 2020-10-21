@@ -22,6 +22,19 @@ html, body {
 	height: 70px;
 }
 
+.icon-smaller {
+	width: 58px;
+	height: 58px;
+	margin-left: -10px;
+	border-width: 0px;
+	padding: 0 0;
+}
+
+.icon-large {
+	width: 90px;
+	height: 90px;
+}
+
 /* Общие настройки элеметовReact Popover */
 .popover, .popover-body, .popover-header {
 	font-family: 'PT Sans', sans-serif;
@@ -382,6 +395,127 @@ html, body {
 	border-radius: 7px;
 	font-family: 'PT Sans', sans-serif;
 	border-width: 0px;
+}
+
+.student-document-form {
+	margin-top: 34px;
+	margin-left: auto;
+    margin-right: auto;
+	width: 1440px;
+	display: block;
+}
+
+.student-document-form:after {
+	content: "";
+  	display: table;
+  	clear: both;
+}
+
+.student-document-form-menu {
+	float: left;
+	width: 345px;
+	border-radius: 7px;
+	min-height: 500px;
+	padding: 10px 10px;
+}
+
+.student-document-form-docs {
+	float: left;
+	margin-left: 10px;
+	width: 1085px;
+	border-radius: 7px;
+	min-height: 500px;
+	padding: 10px 10px;
+}
+
+.student-document-button {
+	margin-bottom: 10px;
+	height: 68px;
+	width: 325px;
+	border-width: 0px;
+	border-radius: 7px;
+}
+
+.student-document-search-div {
+	display: inline-block;
+	width: 100%;
+	height: 88px;
+	margin-bottom: 10px;
+	border-radius: 7px;
+	padding: 10px 10px;
+}
+
+.student-document-search {
+	margin-top: 0px;
+	width: 1238px;
+	border-radius: 7px;
+	border-width: 0;
+	height: 68px;
+	padding-left: 6px;
+}
+
+.student-document-search-button {
+	width: 172px;
+	height: 68px;
+	border-radius: 7px;
+	border-width: 0;
+	padding: 5px 5px;
+	margin-left: 1249px;
+	margin-top: -67px;
+	display: table;
+}
+
+.student-document-search {
+	outline: none !important;
+    border: none !important;
+    -webkit-box-shadow: none !important;
+    box-shadow: none !important;
+}
+
+.student-file {
+	height: 90px;
+	width: 100%;
+	margin-bottom: 10px;
+	border-radius: 7px;
+	display: inline-flex;
+}
+
+.student-file-selectable {
+	border-radius: 7px;
+	height: 90px;
+	width: 965px;
+	padding: 5px 10px;
+}
+
+.student-file-selectable:hover {
+	cursor: pointer;
+}
+
+.student-file-selected {
+	background-color: #618FCA !important;
+}
+
+.student-file-icon {
+	margin-top: -70px;
+	display: inline-block;
+}
+
+.student-file-content {
+	margin-top: 15px;
+	margin-left: 5px;
+	display: inline-block;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	max-width: 882px;
+}
+
+.student-file-delete-button {
+	margin-left: 10px;
+	width: 90px;
+	height: 90px;
+	border-radius: 7px;
+	border-width: 0;
 }
 
 /* Отступ снизу, размер футера */

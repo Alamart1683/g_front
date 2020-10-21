@@ -33,16 +33,16 @@ export default function StudentHeader() {
                         Информация
                     </button>
                 </Nav.Link>
-                <Nav.Link as={Link} to='#'>
+                <Nav.Link as={Link} to='/stu/docs'>
                     <button type='button' className='student-navbar-button dark-background light size-30'>
-                        <Image src={iconDisc} thumbnail className='student-navbar-image dark-background'/>
-                        Обучающие<br></br>программы
+                        <Image src={iconMyProject} thumbnail className='student-navbar-image dark-background'/>
+                        Документы
                     </button>
                 </Nav.Link>
                 <Nav.Link as={Link} to='#'>
                     <button type='button' className='student-navbar-button dark-background light size-30'>
-                        <Image src={iconMyProject} thumbnail className='student-navbar-image dark-background'/>
-                        Мой проект
+                        <Image src={iconDisc} thumbnail className='student-navbar-image dark-background'/>
+                        Обучающие<br></br>программы
                     </button>
                 </Nav.Link>
                 <NavDropdown title={
