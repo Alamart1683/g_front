@@ -156,6 +156,7 @@ export default function StudentInfoPage(){
                 'Authorization': 'Bearer ' + authTokens.accessToken 
             },
         }).then((response) => {
+            console.log(response);
             document.getElementById('errorNirMessage').style.visibility = 'visible';
             document.getElementById('errorNirMessage').innerHTML = 'Отчет загружен!';
         }).catch(result => {

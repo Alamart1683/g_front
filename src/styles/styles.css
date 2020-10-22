@@ -424,7 +424,7 @@ html, body {
 	margin-left: 10px;
 	width: 1085px;
 	border-radius: 7px;
-	min-height: 500px;
+	min-height: 780px;
 	padding: 10px 10px;
 }
 
@@ -518,6 +518,64 @@ html, body {
 	border-width: 0;
 }
 
+.file-filter-div {
+	margin-bottom: 10px;
+}
+
+.file-filter-group {
+	display: block;
+	white-space: nowrap;
+	overflow: hidden;
+}
+
+.file-filter-checkbox {
+	height: 30px;
+	width: 30px;
+	border-radius: 7px;
+	margin-left: 10px;
+	margin-right: 11px;
+}
+
+.file-filter-checkbox-label {
+	display:inline-block;
+	position: relative;
+	top: -6px;
+}
+
+.file-delete-modal {
+	position: absolute;
+	float: left;
+	left: 50%;
+	top: 50%;
+	transform: translate(-50%, -50%);
+	width: 446px;
+	height: 189px;
+	border-radius: 7px;
+	padding: 0px 0px;
+	overflow: hidden !important;
+	white-space: nowrap;
+}
+
+.file-delete-modal .modal-content {
+	margin: 0px 0px;
+	border-width: 0px;
+	background-color: #B2CAEE;
+}
+
+.file-delete-modal-text {
+	margin-top: -24px;
+	margin-left: 13px;
+	width: 416px;
+}
+
+.file-delete-modal-button {
+	position: absolute;
+	width: 150px;
+	height: 68px;
+	border-radius: 7px;
+	border-width: 0px;
+}
+
 /* Отступ снизу, размер футера */
 .wrapper {
 	min-height: 100vh;
@@ -554,6 +612,10 @@ html, body {
 
 .size-30 {
     font-size: 30px;
+}
+
+.size-28 {
+    font-size: 28px;
 }
 
 /* Текст "или" и "уже есть аккаунт?" */
@@ -602,4 +664,8 @@ html, body {
 /* Тёмный фон */
 .dark-background {
 	background-color: #89AFE0;
+}
+
+.grey-background {
+	background-color: #95b0d2;
 }
