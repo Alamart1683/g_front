@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Image, Modal } from 'react-bootstrap';
 import axios from 'axios';
 import { useAuthContext } from '../../auth/AuthContext';
@@ -16,11 +16,12 @@ export default function StudentDocumentPage() {
 
     const [showDeleteModal, setShowDeleteModal] = useState(false);
 
-    // TODO useState не работает с массивом JSON
-    var documentData;
-    //const [documentData, setDocumentData] = useState('');
-
+    const [documentData, setDocumentData] = useState('');
     const [fileToDelete, setFileToDelete] = useState([]);
+
+    useEffect(() => {
+        showFiles(documentData);
+    }, [documentData]);
 
     if (!fetchedData) {
         setFetchedData(true);
@@ -35,9 +36,9 @@ export default function StudentDocumentPage() {
                 'Authorization': 'Bearer ' + authTokens.accessToken 
             },
           }).then((response) => {
-            documentData = response.data;
-            //setDocumentData(response.data).then(() => {showFiles(documentData);});
-            showFiles(documentData);
+            
+            setDocumentData(response.data);
+            
           }).catch(result => {
             console.log(result.data);
         });
@@ -53,6 +54,7 @@ export default function StudentDocumentPage() {
             file.className += ' ' + documentType;
             var documentKind = item.documentKind.replace(/\s+/g, '-').toLowerCase();
             file.className += ' ' + documentKind;
+            file.id = 'file' + i;
 
             var selectableDiv = document.createElement('div');
             selectableDiv.className = 'student-file-selectable dark-background';
@@ -92,7 +94,6 @@ export default function StudentDocumentPage() {
     }
 
     function deleteFile() {
-        //console.log(fileToDelete);
         var fileName = $('#'+fileToDelete).parent().find('.student-file-content')[0].innerText;
         console.log(fileName);
         var formData = new FormData();
@@ -113,9 +114,30 @@ export default function StudentDocumentPage() {
 
     function downloadFile() {
         if ($('.student-file-selected').length != 0) {
-            var fileName = $('.student-file-selected').find('.student-file-content')[0].innerText;
-            console.log(fileName);
-
+            var fileNum = $('.student-file-selected').parent()[0].id.slice(-1);
+            console.log(fileNum);
+            console.log(documentData);
+            axios({
+                url: apiURL + '/document/download/',
+                method: 'GET',
+                responseType: 'blob',
+                params: {
+                    creator_id: documentData[fileNum].systemCreatorID,
+                    documentName: documentData[fileNum].documentName,
+                },
+                headers: { 
+                    'Authorization': 'Bearer ' + authTokens.accessToken 
+                },
+              }).then((response) => {
+                const url = window.URL.createObjectURL(new Blob([response.data]));
+                const link = document.createElement('a');
+                link.href = url;
+                link.setAttribute('download', documentData[fileNum].documentName);
+                document.body.appendChild(link);
+                link.click();
+              }).catch(result => {
+                console.log(result.data);
+            });
         }
     }
 
