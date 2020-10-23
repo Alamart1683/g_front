@@ -141,46 +141,68 @@ export default function StudentDocumentPage() {
         }
     }
 
+    function searchFiles() {
+        var input = $('#fileSearch')[0].value.toUpperCase();
+        console.log(input);
+        $('.student-file-selectable').removeClass('student-file-selected');
+        var files = $('.student-file');
+        //console.log(files);
+        for (var i = 0; i < files.length; i++) {
+            console.log(i);
+            var fileName = files[i].textContent.toUpperCase();
+            if (fileName.indexOf(input) > -1) {
+                //console.log('unhid');
+                //console.log(fileName);
+                $('#file'+i).removeClass('student-file-search-hidden');
+            }
+            else {
+                //console.log('hid');
+                //console.log(fileName);
+                $('#file'+i).addClass('student-file-search-hidden');
+            }
+        }
+    }
+
     $(document).ready(function() {
         
         $('#checkZadanie').on('click', function(event) {
-            $('.задание').toggle();
+            $('.задание').toggleClass('student-file-filter-type-hidden');
             $('.задание .student-file-selectable').removeClass('student-file-selected');
             event.stopImmediatePropagation();
         });
 
         $('#checkPrikaz').on('click', function(event) {
-            $('.приказ').toggle();
+            $('.приказ').toggleClass('student-file-filter-type-hidden');
             $('.приказ .student-file-selectable').removeClass('student-file-selected');
             event.stopImmediatePropagation();
         });
 
         $('#checkOtchet').on('click', function(event) {
-            $('.отчёт').toggle();
+            $('.отчёт').toggleClass('student-file-filter-type-hidden');
             $('.отчёт .student-file-selectable').removeClass('student-file-selected');
             event.stopImmediatePropagation();
         });
 
         $('#checkNir').on('click', function(event) {
-            $('.научно-исследовательская-работа').toggle();
+            $('.научно-исследовательская-работа').toggleClass('student-file-filter-kind-hidden');
             $('.научно-исследовательская-работа .student-file-selectable').removeClass('student-file-selected');
             event.stopImmediatePropagation();
         });
 
         $('#checkLongPP').on('click', function(event) {
-            $('.практика-по-получению-знаний-и-умений').toggle();
+            $('.практика-по-получению-знаний-и-умений').toggleClass('student-file-filter-kind-hidden');
             $('.практика-по-получению-знаний-и-умений .student-file-selectable').removeClass('student-file-selected');
             event.stopImmediatePropagation();
         });
 
         $('#checkPP').on('click', function(event) {
-            $('.преддипломная-практика').toggle();
+            $('.преддипломная-практика').toggleClass('student-file-filter-kind-hidden');
             $('.преддипломная-практика .student-file-selectable').removeClass('student-file-selected');
             event.stopImmediatePropagation();
         });
 
         $('#checkVkr').on('click', function(event) {
-            $('.вкр').toggle();
+            $('.вкр').toggleClass('student-file-filter-kind-hidden');
             $('.вкр .student-file-selectable').removeClass('student-file-selected');
             event.stopImmediatePropagation();
         });
@@ -202,8 +224,8 @@ export default function StudentDocumentPage() {
     return(
         <div className='student-document-form'>
             <div className='student-document-search-div light-background'>
-                <input type='text' className='student-document-search dark size-32'/>
-                <button className='student-document-search-button dark-background light size-32'>
+                <input id='fileSearch' type='text' className='student-document-search dark size-32'/>
+                <button onClick={()=>{searchFiles();}} className='student-document-search-button dark-background light size-32'>
                     <Image src={iconLookingGlass} thumbnail className='icon-smaller dark-background'/>
                     Поиск
                 </button>
