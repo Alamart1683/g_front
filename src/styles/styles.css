@@ -368,6 +368,8 @@ html, body {
 	border-radius: 7px;
 	font-family: 'PT Sans', sans-serif;
 	border-width: 0px;
+	width: 414px;
+	height: 134px;
 }
 
 .info-button-1:hover, .info-button-1:hover .thumbnail-icon {
@@ -599,6 +601,10 @@ html, body {
 	overflow: hidden;
 }
 
+.filter-title {
+	margin-left: 20px;
+}
+
 .file-filter-checkbox {
 	height: 30px;
 	width: 30px;
@@ -611,6 +617,10 @@ html, body {
 	display:inline-block;
 	position: relative;
 	top: -6px;
+}
+
+.file-filter-checkbox:hover, .file-filter-checkbox-label:hover {
+	cursor: pointer;
 }
 
 .file-delete-modal {
@@ -645,6 +655,111 @@ html, body {
 	height: 68px;
 	border-radius: 7px;
 	border-width: 0px;
+}
+
+.student-nir-task-version-div {
+	width: 100%;
+
+}
+
+.no-versions-message {
+	text-align: center;
+}
+
+.nir-version {
+	width: 1290px;
+	background-color: rgb(255, 255, 255);
+	margin-left: 100px;
+	margin-bottom: 20px;
+	border-radius: 7px;
+}
+
+.nir-version-header {
+	width: 100%;
+	height: 50px;
+	border-radius: 7px;
+	border: 1px solid grey;
+}
+
+.nir-header-text {
+	display: inline-block;
+	margin-right: 5px;
+}
+
+.nir-version-clickable {
+	width: 670px;
+	height: 50px;
+	border-radius: 7px;
+	cursor: pointer;
+	display: inline-block;
+	position: relative;
+	top: -2px;
+}
+
+.nir-version-titles {
+	width: 670px;
+	height: 50px;
+	border-radius: 7px;
+	display: inline-block;
+	position: relative;
+	top: -2px;
+}
+
+.nir-version-header-button {
+	position: relative;
+	top: 7px;
+	margin-left: 5px;
+	padding: 0px 2px;
+	border-radius: 7px;
+	border-width: 0;
+}
+
+.nir-version-content {
+	display: none;
+	min-height: 100px;
+	width: 100%;
+	border-radius: 7px;
+	border: 1px solid grey;
+	border-top: 0px;
+}
+
+.nir-text-area {
+	margin-left: 40px;
+	width: 414px;
+	height: 84px;
+	padding: 6px 12px;
+	border-radius: 7px;
+	border-width: 0px;
+}
+
+.nir-text-area2 {
+	margin-left: 135px;
+	width: 414px;
+	height: 84px;
+	padding: 6px 12px;
+	border-radius: 7px;
+	border-width: 0px;
+}
+
+.nir-text-area:disabled, .nir-text-area2:disabled {
+	background-color:  #dcdfe6;
+}
+
+.nir-text-label {
+	margin-left: 40px;
+}
+
+.nir-text-label2 {
+	margin-left: 135px;
+}
+
+.nir-copy-button {
+	margin-left: 135px;
+	margin-top: 45px;
+	width: 414px;
+	height: 64px;
+	border-radius: 7px;
+	border-width: 0;
 }
 
 /* Отступ снизу, размер футера */

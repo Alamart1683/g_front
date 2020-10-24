@@ -113,7 +113,7 @@ export default function StudentDocumentPage() {
     }
 
     function downloadFile() {
-        if ($('.student-file-selected').length != 0) {
+        if ($('.student-file-selected').length !== 0) {
             var fileNum = $('.student-file-selected').parent()[0].id.slice(-1);
             console.log(fileNum);
             console.log(documentData);
@@ -143,27 +143,20 @@ export default function StudentDocumentPage() {
 
     function searchFiles() {
         var input = $('#fileSearch')[0].value.toUpperCase();
-        console.log(input);
         $('.student-file-selectable').removeClass('student-file-selected');
         var files = $('.student-file');
-        //console.log(files);
         for (var i = 0; i < files.length; i++) {
-            console.log(i);
             var fileName = files[i].textContent.toUpperCase();
             if (fileName.indexOf(input) > -1) {
-                //console.log('unhid');
-                //console.log(fileName);
                 $('#file'+i).removeClass('student-file-search-hidden');
             }
             else {
-                //console.log('hid');
-                //console.log(fileName);
                 $('#file'+i).addClass('student-file-search-hidden');
             }
         }
     }
 
-    $(document).ready(function() {
+    $(function() {
         
         $('#checkZadanie').on('click', function(event) {
             $('.задание').toggleClass('student-file-filter-type-hidden');
@@ -233,7 +226,7 @@ export default function StudentDocumentPage() {
             <div className='student-document-form-menu light-background'>
                 <p className='dark size-32'>Фильтры:</p>
                 <div className='file-filter-div'>
-                    <p className='dark size-28'>Тип:</p>
+                    <p className='dark size-28 filter-title'>Тип:</p>
                     <div className='file-filter-group'>
                         <input type='checkbox' id='checkZadanie' name='checkZadanie' className='file-filter-checkbox' defaultChecked/>
                         <label htmlFor='checkZadanie' className='dark size-24 file-filter-checkbox-label'>Задание</label>
@@ -249,7 +242,7 @@ export default function StudentDocumentPage() {
                     
                 </div>
                 <div>
-                    <p className='dark size-28'>Вид:</p>
+                    <p className='dark size-28 filter-title'>Вид:</p>
                     <div>
                         <input type='checkbox' id='checkNir' name='checkNir' className='file-filter-checkbox' defaultChecked/>
                         <label htmlFor='checkNir' className='dark size-24 file-filter-checkbox-label'>НИР</label>
