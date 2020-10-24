@@ -19,6 +19,8 @@ export default function StartPage() {
       return <Redirect to="/guest/login" />;
     case 'student':
       return <Redirect to="/stu/info" />;
+    case 'scientific_advisor':
+      return <Redirect to='/sca/students'/>;
     default:
       setAuthTokens(null);
       return <Redirect to="/guest/login" />;

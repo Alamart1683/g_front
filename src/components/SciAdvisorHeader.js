@@ -3,34 +3,31 @@ import { Link } from 'react-router-dom';
 import { Navbar, Nav, Image, NavDropdown } from 'react-bootstrap';
 import { useAuthContext } from '../auth/AuthContext';
 
-import iconBell from '../images/icons/bell.png';
-import iconInfo from '../images/icons/info.png';
-import iconDisc from '../images/icons/disc.png';
-import iconMyProject from '../images/icons/myproject.png';
+import iconStudents from '../images/icons/students.png';
 
-export default function StudentHeader() {
-    const { authTokens, setAuthTokens  } = useAuthContext();
+export default function SciAdvisorHeader() {
 
-    function logOut() {
-        setAuthTokens(null);
-    }
+  const { authTokens, setAuthTokens  } = useAuthContext();
 
-    var studentName;
-    try {
-        studentName = authTokens.fio;
-    }
-    catch (e) {
-        studentName = 'Ошибка имени';
-    };
+  function logOut() {
+      setAuthTokens(null);
+  }
 
+  var studentName;
+  try {
+      studentName = authTokens.fio;
+  }
+  catch (e) {
+      studentName = 'Ошибка имени';
+  };
 
-    return(
-        <div>
+  return (
+    <div>
             <Navbar className='light-background light student-nav'>
-                <Nav.Link as={Link} to='/stu/info'>
+                <Nav.Link as={Link} to='/sca/students'>
                     <button type='button' className='student-navbar-button dark-background light size-30'>
-                        <Image src={iconInfo} thumbnail className='student-navbar-image dark-background'/>
-                        Информация
+                        <Image src={iconStudents} thumbnail className='student-navbar-image dark-background'/>
+                        Мои студенты
                     </button>
                 </Nav.Link>
                 <NavDropdown title={
@@ -45,8 +42,7 @@ export default function StudentHeader() {
                 </NavDropdown>
             </Navbar>
         </div>
+  );
 
-    );
-    
 
 }

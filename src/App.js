@@ -1,20 +1,25 @@
 import React, { useState } from 'react';
 import { Route, Switch } from "react-router-dom";
+import { AuthContext } from './auth/AuthContext';
+
+import '../node_modules/bootstrap/dist/css/bootstrap.css';
+import './styles/styles.css';
+
 import LoginPage from './pages/guest/LoginPage';
 import RegisterPage from './pages/guest/RegisterPage';
 import ForgottenPasswordPage from './pages/guest/FogottenPasswordPage';
 import StartPage from './pages/guest/StartPage';
-import StudentInfoPage from './pages/student/StudentInfoPage';
-import StudentDocumentPage from './pages/student/StudentDocumentPage';
 import AuthRoute from './auth/AuthRoute';
 import GuestHeader from './components/GuestHeader';
-import StudentHeader from './components/StudentHeader';
 import Footer from './components/Footer';
 import NoMatch from './components/NoMatch';
-import { AuthContext } from './auth/AuthContext';
-import '../node_modules/bootstrap/dist/css/bootstrap.css';
-import './styles/styles.css';
 
+import StudentHeader from './components/StudentHeader';
+import StudentInfoPage from './pages/student/StudentInfoPage';
+import StudentDocumentPage from './pages/student/StudentDocumentPage';
+
+import SciAdvisorHeader from './components/SciAdvisorHeader';
+import SciAdvisorStudentsPage from './pages/scientific_advisor/SciAdvisorStudentsPage';
 
 export default function App() {
 
@@ -35,6 +40,7 @@ export default function App() {
 
           <Route path='/guest' component={GuestHeader} />
           <AuthRoute path='/stu' component={StudentHeader} />
+          <AuthRoute path='/sca' component={SciAdvisorHeader} />
 
           <Switch>
             <Route exact path='/' component={StartPage} />
@@ -44,6 +50,8 @@ export default function App() {
 
             <AuthRoute exact path='/stu/info' component={StudentInfoPage} />
             <AuthRoute exact path='/stu/docs' component={StudentDocumentPage} />
+
+            <AuthRoute exact path='/sca/students' component={SciAdvisorStudentsPage} />
 
             <Route path='*' component={NoMatch} />
           </Switch>
