@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Image, Table } from 'react-bootstrap';
+import { Redirect } from 'react-router-dom';
 import axios from 'axios';
 import { useAuthContext } from '../../auth/AuthContext';
 import { apiURL } from '../../Config';
@@ -11,6 +12,7 @@ export default function SciAdvisorStudentsPage() {
     const { authTokens } = useAuthContext();
     const [fetchedData, setFetchedData] = useState(false);
 
+    const [redirect, setRedirect] = useState(false);
     const [students, setStudents] = useState([]);
 
     useEffect(() => {
@@ -25,7 +27,7 @@ export default function SciAdvisorStudentsPage() {
     // Получение данных о студентах
     function getStudents() {
         axios({
-            url: apiURL + '/scientific_advisor/student/active',
+            url: apiURL + '/scientific_advisor/student/active/without_project',
             method: 'GET',
             headers: { 
                 'Authorization': 'Bearer ' + authTokens.accessToken 
@@ -39,10 +41,9 @@ export default function SciAdvisorStudentsPage() {
 
     // Заполнение таблицы студентов
     function showStudents(studentArray) {
-        console.log('show');
         for (var i=0; i<studentArray.length; i++) {
             var item = studentArray[i];
-            console.log(item);
+            //console.log(item);
 
             var student = document.createElement('tr');
             student.id = 'student' + i;
@@ -81,13 +82,13 @@ export default function SciAdvisorStudentsPage() {
 
     $(function() {
 
-        $('.student-table-button').on('click', function(event) {
+        $('.student-table-button').off().on('click', function(event) {
             var studentId = $(this).parent().parent().attr('id');
             var arrayId = studentId.substr(studentId.length - 1);
-            console.log(arrayId);
-            //sessionStorage.setItem('currentViewedStudent', students[arrayId]);
-
-
+            sessionStorage.setItem('viewedStudentId', students[arrayId].systemStudentID);
+            sessionStorage.setItem('viewedStudentName', students[arrayId].fio);
+            console.log('away');
+            setRedirect(true);
         });
 
     });
@@ -118,6 +119,8 @@ export default function SciAdvisorStudentsPage() {
                     </tbody>
                 </Table>
             </div>
+
+            { redirect ? (<Redirect push to='/sca-stu/view'/>) : null }
         </div>
     );
 }

@@ -20,6 +20,8 @@ import StudentDocumentPage from './pages/student/StudentDocumentPage';
 
 import SciAdvisorHeader from './components/SciAdvisorHeader';
 import SciAdvisorStudentsPage from './pages/scientific_advisor/SciAdvisorStudentsPage';
+import ScaStuViewHeader from './components/ScaStuViewHeader';
+import ScaStuViewPage from './pages/scientific_advisor/ScaStuViewPage';
 
 export default function App() {
 
@@ -41,6 +43,7 @@ export default function App() {
           <Route path='/guest' component={GuestHeader} />
           <AuthRoute path='/stu' component={StudentHeader} />
           <AuthRoute path='/sca' component={SciAdvisorHeader} />
+          <AuthRoute path='/sca-stu' component={ScaStuViewHeader} />
 
           <Switch>
             <Route exact path='/' component={StartPage} />
@@ -52,6 +55,7 @@ export default function App() {
             <AuthRoute exact path='/stu/docs' component={StudentDocumentPage} />
 
             <AuthRoute exact path='/sca/students' component={SciAdvisorStudentsPage} />
+            <AuthRoute exact path='/sca-stu/view' component={ScaStuViewPage} />
 
             <Route path='*' component={NoMatch} />
           </Switch>

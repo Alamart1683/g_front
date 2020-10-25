@@ -1,5 +1,5 @@
 import React from 'react';
-import { Redirect } from "react-router-dom";
+import { Redirect } from 'react-router-dom';
 import { useAuthContext } from '../../auth/AuthContext';
 
 export default function StartPage() {

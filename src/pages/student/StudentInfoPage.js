@@ -42,13 +42,16 @@ export default function StudentInfoPage(){
     if (!fetchedData) {
         setFetchedData(true);
         getNirVersions();
-        //getNirOtchetVersions();
+        getNirOtchetVersions();
     }
 
     useEffect(() => {
         showNirVersions(nirVersions);
-        //showNirOtchetVersions(nirOtchetVersions);
     }, [nirVersions]);
+
+    useEffect(() => {
+        showNirOtchetVersions(nirOtchetVersions);
+    }, [nirOtchetVersions]);
 
     // Получение версий заданий НИР
     function getNirVersions() {
@@ -315,7 +318,6 @@ export default function StudentInfoPage(){
 
 
     $(function() {
-
         // Послать версию задания науч руку
         $('.nir-version-send-button').on('click', function(event) {
             console.log('sent');
@@ -400,14 +402,6 @@ export default function StudentInfoPage(){
             setToCreate(nirVersions[arrayID].toCreate);
             setToFamiliarize(nirVersions[arrayID].toFamiliarize);
             setAdditionalTask(nirVersions[arrayID].additionalTask);
-
-            console.log(studentTheme);
-            console.log(toExplore);
-            console.log(toCreate);
-            console.log(toFamiliarize);
-            console.log(additionalTask);
-
-            //event.stopImmediatePropagation();
         });
 
         // Создание новой версии задания НИР
@@ -442,6 +436,7 @@ export default function StudentInfoPage(){
             $(this).parent().parent().find('.nir-version-content').toggle();
             event.stopImmediatePropagation();
         });
+
     });
 
     return(
