@@ -20,6 +20,9 @@ import iconProject from '../../images/icons/myproject.png';
 import iconInfo from '../../images/icons/info.png';
 
 export default function StudentInfoPage(){
+
+    // TODO массив версий иногда не грузится, приводит к крэше при нажатии кнопок
+
     const { authTokens } = useAuthContext();
     const [fetchedData, setFetchedData] = useState(false);
 
@@ -35,142 +38,87 @@ export default function StudentInfoPage(){
     const [nirVersions, setNirVersions] = useState([]);
     const [nirOtchetVersions, setNirOtchetVersions] = useState([]);
 
-    useEffect(() => {
-        showNirVersions(nirVersions);
-    }, [nirVersions]);
-
-    useEffect(() => {
-        showNirOtchetVersions(nirOtchetVersions);
-    }, [nirOtchetVersions]);
     
     if (!fetchedData) {
         setFetchedData(true);
         getNirVersions();
-        getNirOtchetVersions();
+        //getNirOtchetVersions();
     }
-    
-    /*function getNIRShort() {
+
+    useEffect(() => {
+        showNirVersions(nirVersions);
+        //showNirOtchetVersions(nirOtchetVersions);
+    }, [nirVersions]);
+
+    // Получение версий заданий НИР
+    function getNirVersions() {
         axios({
-            url: apiURL + '/student/document/download/task/nir/short',
+            url: apiURL + '/student/document/task/view',
             method: 'GET',
-            responseType: 'blob',
             params: {
-                taskType: 'Научно-исследовательская работа',
-                studentTheme: studentTheme,
-                toExplore: toExplore,
-                toCreate: toCreate,
-                toFamiliarize: toFamiliarize,
-                additionalTask: additionalTask
+                'taskType': 'Научно-исследовательская работа',
             },
             headers: { 
                 'Authorization': 'Bearer ' + authTokens.accessToken 
             },
           }).then((response) => {
-            const url = window.URL.createObjectURL(new Blob([response.data]));
-            const link = document.createElement('a');
-            link.href = url;
-            link.setAttribute('download', 'Задание НИР.docx');
-            document.body.appendChild(link);
-            link.click();
+            
+            setNirVersions(response.data);
+            console.log(response.data);
+            
           }).catch(result => {
             console.log(result.data);
         });
     }
-    */
 
-    // Загрузка отчета по НИР на сервер
-    function uploadNIR() {
-        var formData = new FormData();
-        formData.append('documentFormType', 'Научно-исследовательская работа');
-        formData.append('documentFormKind', 'Отчёт');
-        formData.append('documentFormDescription', 'Пример отчёта');
-        formData.append('documentFormViewRights', 'Я и мой научный руководитель');
-        formData.append('file', fileNirOtchet);
-        axios({
-            url: apiURL + '/student/document/report/upload',
-            method: 'POST',
-            data: formData,
-            headers: {
-                'Content-Type': 'multipart/form-data',
-                'Authorization': 'Bearer ' + authTokens.accessToken 
-            },
-        }).then((response) => {
-            console.log(response);
-            document.getElementById('errorNirMessage').style.visibility = 'visible';
-            document.getElementById('errorNirMessage').innerHTML = 'Отчет загружен!';
-        }).catch(result => {
-            document.getElementById('errorNirMessage').style.visibility = 'visible';
-            document.getElementById('errorNirMessage').innerHTML = 'При загрузке произошла ошибка!';
-        });
-    }
-
-    // TODO WRITE REQUEST fill array
-    // Получение версий заданий НИР
-    function getNirVersions() {
-        var exampleNirVersions = [
-            {
-                "data": null,
-            },
-            {
-                "data": null,
-            },
-            {
-                "data": null,
-            }
-        ]
-
-        setNirVersions(exampleNirVersions);
-    }
-
-    // FIX TODOS
     // Вывод на экран версий задания нир
     function showNirVersions(nirVersionArray) {
         if (nirVersionArray.length > 0) {
-           for (var i=0; i<nirVersionArray.length; i++) {
+            for (var i=0; i<nirVersionArray.length; i++) {
                 var item = nirVersionArray[i];
 
                 var nirVersion = document.createElement('div');
                 nirVersion.className = 'nir-version light-background';
-                nirVersion.id = 'nir-version' + i;
+                nirVersion.id = 'nir-version-' + i;
 
                 var nirVersionHeader = document.createElement('div');
                 nirVersionHeader.className = 'nir-version-header dark-background';
 
+                // Имя версии
                 var versionName = document.createElement('p');
                 versionName.className = 'light size-24 nir-header-text';
-                //TODO get version name
-                versionName.innerText = 'Версия  23.10.2020 14:10';
+                versionName.innerText = 'Версия: ' + item.versionEditionDate;
 
+                // Статус версии
                 var versionStatus = document.createElement('p');
                 versionStatus.className = 'light size-24 nir-header-text';
-                //TODO get version status
-                versionStatus.innerText = 'Статус: рассматривается';
+                versionStatus.innerText = 'Статус: ' + item.status;
 
+                // Кнопка отправить науч руку
                 var sendButton = document.createElement('button');
-                sendButton.className = 'dark size-24 nir-version-header-button';
+                sendButton.className = 'dark size-24 nir-version-header-button nir-version-send-button';
                 sendButton.innerText = 'Отправить науч. руку';
                 sendButton.type='button';
-                // TODO if already sent
-                if (false) {
+                // Запретить отсылку, если версия отправлена
+                if (item.status !== 'Не отправлено') {
                     sendButton.disabled = true;
                 }
-                // TODO Button function SEND
 
+                // Кнопка скачать документ
                 var downloadButton = document.createElement('button');
-                downloadButton.className = 'dark size-24 nir-version-header-button';
+                downloadButton.className = 'dark size-24 nir-version-header-button nir-version-download-button';
                 downloadButton.innerText = 'Скачать документ';
                 downloadButton.type='button';
-                // TODO Button function DOWNLOAD
 
+                // Кнопка удалить
                 var deleteButton = document.createElement('button');
-                deleteButton.className = 'dark size-24 nir-version-header-button';
+                deleteButton.className = 'dark size-24 nir-version-header-button nir-version-delete-button';
                 deleteButton.innerText = 'Удалить версию';
                 deleteButton.type='button';
-                // TODO if cant delete
-                if (false) {
+                // Запретить удаление, если версия отправлена
+                if (item.status !== 'Не отправлено') {
                     deleteButton.disabled = true;
                 }
-                // TODO Button function DELETE
 
                 var clickableArea = document.createElement('div');
                 clickableArea.className = 'nir-version-clickable';
@@ -182,51 +130,51 @@ export default function StudentInfoPage(){
                 themeLabel.className = 'dark size-21 nir-text-label';
                 themeLabel.innerText = 'Тема НИР:';
 
+                // Тема нир
                 var themeArea = document.createElement('textarea');
                 themeArea.className = 'dark size-18 nir-text-area'
                 themeArea.disabled = true;
-                // TODO fill value
-                themeArea.value = 'тема';
+                themeArea.value = item.theme;
 
                 var exploreLabel = document.createElement('p');
                 exploreLabel.className = 'dark size-21 nir-text-label';
                 exploreLabel.innerText = 'Изучить:';
 
+                // Изучить
                 var exploreArea = document.createElement('textarea');
                 exploreArea.className = 'dark size-18 nir-text-area'
                 exploreArea.disabled = true;
-                // TODO fill value
-                exploreArea.value = 'изучить';
+                exploreArea.value = item.toExplore;
 
                 var createLabel = document.createElement('p');
                 createLabel.className = 'dark size-21 nir-text-label';
                 createLabel.innerText = 'Выполнить:';
 
+                // Выполнить
                 var createArea = document.createElement('textarea');
                 createArea.className = 'dark size-18 nir-text-area'
                 createArea.disabled = true;
-                // TODO fill value
-                createArea.value = 'выполнить';
+                createArea.value = item.toCreate;
 
                 var familiarizeLabel = document.createElement('p');
                 familiarizeLabel.className = 'dark size-21 nir-text-label2';
                 familiarizeLabel.innerText = 'Ознакомиться:';
 
+                // Ознакомиться
                 var familiarizeArea = document.createElement('textarea');
                 familiarizeArea.className = 'dark size-18 nir-text-area2'
                 familiarizeArea.disabled = true;
-                // TODO fill value
-                familiarizeArea.value = 'ознакомиться';
+                familiarizeArea.value = item.toFamiliarize;
 
                 var taskLabel = document.createElement('p');
                 taskLabel.className = 'dark size-21 nir-text-label2';
                 taskLabel.innerText = 'Дополнительное задание:';
 
+                // Доп задание
                 var taskArea = document.createElement('textarea');
                 taskArea.className = 'dark size-18 nir-text-area2'
                 taskArea.disabled = true;
-                // TODO fill value
-                taskArea.value = 'доп задание';
+                taskArea.value = item.additionalTask;
 
                 var copyButton = document.createElement('button');
                 copyButton.className = 'light dark-background size-21 nir-copy-button';
@@ -265,12 +213,7 @@ export default function StudentInfoPage(){
                 document.getElementById('student-nir-task-version-div').appendChild(nirVersion);
             } 
         }
-        else {
-            var noVersionMessage = document.createElement('p');
-            noVersionMessage.className = 'dark size-32';
-            noVersionMessage.innerText = 'Создайте версию задания на НИР в меню ниже!';
-            document.getElementById('student-nir-task-version-div').appendChild(noVersionMessage);
-        }
+
     }
 
     // TODO WRITE REQUEST fill array
@@ -291,6 +234,8 @@ export default function StudentInfoPage(){
         setNirOtchetVersions(exampleNirOtchetVersions);
     }
 
+    // FIX TODOS
+    // Вывод на экран версий отчетов НИР
     function showNirOtchetVersions(nirOtchetVersionArray) {
         if (nirOtchetVersionArray.length > 0) {
             for (var i=0; i<nirOtchetVersionArray.length; i++) {
@@ -361,21 +306,138 @@ export default function StudentInfoPage(){
         }
     }
 
+    // TODO
+    // Отправка версии отчета на сервер
+    function sendNirOtchetVersion() {
+        console.log('sent otchet');
+
+    }
+
 
     $(function() {
-        // TODO Copy data from array to 
-        $('.nir-copy-button').on('click', function(event) {
-            var versionId = $(this).parent().parent().parent().parent().attr('id');
-            var arrayID = versionId.substr(versionId.length - 1);
+
+        // Послать версию задания науч руку
+        $('.nir-version-send-button').on('click', function(event) {
+            console.log('sent');
+            var versionId = $(this).parent().parent().attr('id');
+            var arrayID = versionId.split('-')[2];
             console.log(arrayID);
-            //setStudentTheme();
-            //setToExplore();
-            //setToCreate();
-            //setToFamiliarize();
-            //setAdditionalTask();
-            event.stopImmediatePropagation();
+            axios({
+                url: apiURL + '/student/document/management/task/nir/send',
+                method: 'POST',
+                params: {
+                    'newStatus': 'Рассматривается',
+                    'versionID': nirVersions[arrayID].systemVersionID,
+                },
+                headers: { 
+                    'Authorization': 'Bearer ' + authTokens.accessToken 
+                },
+              }).then((response) => {
+                window.location.reload(true);
+              }).catch(result => {
+                console.log(result.data);
+            });
         });
 
+        // Скачать версию задания
+        $('.nir-version-download-button').on('click', function(event) {
+            var versionId = $(this).parent().parent().attr('id');
+            var arrayID = versionId.split('-')[2];
+            console.log(arrayID);
+            axios({
+                url: apiURL + '/document/download/version',
+                method: 'GET',
+                responseType: 'blob',
+                params: {
+                    versionID: nirVersions[arrayID].systemVersionID,
+                },
+                headers: { 
+                    'Authorization': 'Bearer ' + authTokens.accessToken 
+                },
+              }).then((response) => {
+                const url = window.URL.createObjectURL(new Blob([response.data]));
+                const link = document.createElement('a');
+                link.href = url;
+                link.setAttribute('download', 'Задание на НИР.docx');
+                document.body.appendChild(link);
+                link.click();
+                
+              }).catch(result => {
+                console.log(result.data);
+            });
+        });
+
+        // Удалить версию задания
+        $('.nir-version-delete-button').on('click', function(event) {
+            console.log('delete');
+            var versionId = $(this).parent().parent().attr('id');
+            var arrayID = versionId.split('-')[2];
+            console.log(arrayID);
+            axios({
+                url: apiURL + '/student/document/task/version/delete',
+                method: 'DELETE',
+                params: {
+                    versionID: nirVersions[arrayID].systemVersionID,
+                },
+                headers: { 
+                    'Authorization': 'Bearer ' + authTokens.accessToken 
+                },
+              }).then((response) => {
+                window.location.reload(true);
+              }).catch(result => {
+                console.log(result.data);
+            });
+        });
+
+        // Функция кнопки "перенести в меню"
+        $('.nir-copy-button').off().on('click', function(event) {
+            var versionId = $(this).parent().parent().parent().parent().attr('id');
+            var arrayID = versionId.split('-')[2];
+
+            console.log(nirVersions);
+            setStudentTheme(nirVersions[arrayID].theme);
+            setToExplore(nirVersions[arrayID].toExplore);
+            setToCreate(nirVersions[arrayID].toCreate);
+            setToFamiliarize(nirVersions[arrayID].toFamiliarize);
+            setAdditionalTask(nirVersions[arrayID].additionalTask);
+
+            console.log(studentTheme);
+            console.log(toExplore);
+            console.log(toCreate);
+            console.log(toFamiliarize);
+            console.log(additionalTask);
+
+            //event.stopImmediatePropagation();
+        });
+
+        // Создание новой версии задания НИР
+        $('#send-nir-task-button').off().on('click',function(event) {
+            console.log('made');
+            var formData = new FormData();
+            formData.append('taskType', 'Научно-исследовательская работа');
+            formData.append('studentTheme', studentTheme);
+            formData.append('toExplore', toExplore);
+            formData.append('toCreate', toCreate);
+            formData.append('toFamiliarize', toFamiliarize);
+            formData.append('additionalTask', additionalTask);
+
+            axios({
+                url: apiURL + '/student/document/management/task/nir/create',
+                method: 'POST',
+                data: formData,
+                headers: { 
+                    'Authorization': 'Bearer ' + authTokens.accessToken 
+                },
+            }).then((response) => {
+                window.location.reload();
+                console.log(response);
+                
+            }).catch(result => {
+                console.log(result.data);
+            });
+        })
+
+        // Показ полей версии задания
         $(document).on('click', '.nir-version-clickable', function(event) {
             $(this).parent().parent().find('.nir-version-content').toggle();
             event.stopImmediatePropagation();
@@ -404,23 +466,23 @@ export default function StudentInfoPage(){
                                 <div className='info-row'>
                                     <div className='info-column'>
                                         <Form.Label column className="size-21 dark info-input-label">Тема НИР:</Form.Label>
-                                        <textarea value={studentTheme} onChange={e => { setStudentTheme(e.target.value);}} className='dark size-24 info-input-area'/>
+                                        <textarea value={studentTheme} onChange={(e) => { setStudentTheme(e.target.value); console.log(studentTheme);}} className='dark size-24 info-input-area'/>
 
                                         <Form.Label column className="size-21 dark info-input-label">Изучить:</Form.Label>
-                                        <textarea value={toExplore} onChange={e => { setToExplore(e.target.value);}} className='dark size-24 info-input-area'/>
+                                        <textarea value={toExplore} onChange={(e) => { setToExplore(e.target.value);}} className='dark size-24 info-input-area'/>
 
                                         <Form.Label column className="size-21 dark info-input-label">Практически выполнить:</Form.Label>
-                                        <textarea value={toCreate} onChange={e => { setToCreate(e.target.value);}} className='dark size-24 info-input-area'/>
+                                        <textarea value={toCreate} onChange={(e) => { setToCreate(e.target.value);}} className='dark size-24 info-input-area'/>
                                     </div>
 
                                     <div className='info-column'>
                                         <Form.Label column className="size-21 dark info-input-label">Ознакомиться:</Form.Label>
-                                        <textarea value={toFamiliarize} onChange={e => { setToFamiliarize(e.target.value);}} className='dark size-24 info-input-area'/>
+                                        <textarea value={toFamiliarize} onChange={(e) => { setToFamiliarize(e.target.value);}} className='dark size-24 info-input-area'/>
 
                                         <Form.Label column className="size-21 dark info-input-label">Дополнительное задание:</Form.Label>
-                                        <textarea value={additionalTask} onChange={e => { setAdditionalTask(e.target.value);console.log(additionalTask) }} className='dark size-24 info-input-area'/>
+                                        <textarea value={additionalTask} onChange={(e) => { setAdditionalTask(e.target.value); console.log(additionalTask) }} className='dark size-24 info-input-area'/>
 
-                                        <button type='button' onClick={e=> { console.log('nirTaskClick'); }} className='size-30 light dark-background info-button-1'>
+                                        <button type='button' id='send-nir-task-button' className='size-30 light dark-background info-button-1'>
                                             <Image src={iconDocument} thumbnail className='dark-background thumbnail-icon'/>
                                             Создать новую версию<br/>задания на НИР
                                         </button>
@@ -457,11 +519,11 @@ export default function StudentInfoPage(){
                                     />
                                     <label htmlFor="fileNir"  className='size-30 dark-background light info-file-label1'>
                                         <Image src={iconInfo} thumbnail className='dark-background thumbnail-icon'/>
-                                        <p id='fileNirName' style={{display: 'inline-block'}}>Выберите файл</p>
+                                        <p id='fileNirName' style={{display: 'inline-block'}}>Выбрать файл с содержанием отчета</p>
                                     </label>
-                                    <button type='button' onClick={uploadNIR} className='size-30 light dark-background info-button-inline-block'>
+                                    <button type='button' className='size-30 light dark-background info-button-inline-block'>
                                         <Image src={iconProject} thumbnail className='dark-background thumbnail-icon'/>
-                                        Загрузить отчет о прохождении НИР
+                                        Сформировать и загрузить версию отчета
                                     </button>
                                     <p id='errorNirMessage' className='size-24 dark' style={{visibility: 'hidden'}}>errorNir</p>
                                 </div>

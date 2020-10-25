@@ -21,7 +21,7 @@ export default function StudentDocumentPage() {
 
     useEffect(() => {
         showFiles(documentData);
-    }, [documentData]);
+    });
 
     if (!fetchedData) {
         setFetchedData(true);
