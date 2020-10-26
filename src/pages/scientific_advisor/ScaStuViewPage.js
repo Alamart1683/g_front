@@ -15,6 +15,9 @@ import iconProject from '../../images/icons/myproject.png';
 import iconInfo from '../../images/icons/info.png';
 
 export default function ScaStuViewPage() {
+
+    // TODO обработка сообщения, что нельзя добавлять версии, если студент ещё ничего не создал
+
     const { authTokens } = useAuthContext();
     const [fetchedData, setFetchedData] = useState(false);
 
@@ -27,18 +30,23 @@ export default function ScaStuViewPage() {
 
     // Загруженное содержание НИР
     var fileNirOtchet;
+    const [nirTaskApproval, setNirTaskApproval] = useState(true);
     const [nirVersions, setNirVersions] = useState([]);
     const [nirOtchetVersions, setNirOtchetVersions] = useState([]);
 
     if (!fetchedData) {
         setFetchedData(true);
         getStudentNirVersions();
-        //getNirOtchetVersions();
+        getNirOtchetVersions();
     }
 
     useEffect(() => {
         showStudentNirVersions(nirVersions);
     }, [nirVersions]);
+
+    useEffect(() => {
+        showNirOtchetVersions(nirOtchetVersions);
+    }, [nirOtchetVersions]);
 
     // Получение заданий НИР для студента
     function getStudentNirVersions() {
@@ -226,11 +234,8 @@ export default function ScaStuViewPage() {
         }
     }
 
-    // TODO науч рук оценивает собственные версии
+    // Отправить студенту задание со статусом
     function gradeNirTask(arrayId, status) {
-        console.log(nirVersions[arrayId]);
-        console.log(status);
-        console.log(nirVersions[arrayId].systemVersionID);
         axios({
             url: apiURL + '/scientific_advisor/document/management/task/nir/check',
             method: 'POST',
@@ -243,15 +248,155 @@ export default function ScaStuViewPage() {
             },
           }).then((response) => {
 
-            //window.location.reload(true);
+            window.location.reload(true);
 
           }).catch(result => {
             console.log(result.data);
         });
     }
 
+    // Получение версий отчетов
+    function getNirOtchetVersions() {
+        axios({
+            url: apiURL + '/scientific_advisor/document/report/view',
+            method: 'GET',
+            params: {
+                'taskType': 'Научно-исследовательская работа',
+                'studentID': sessionStorage.getItem('viewedStudentId'),
+            },
+            headers: { 
+                'Authorization': 'Bearer ' + authTokens.accessToken 
+            },
+          }).then((response) => {
+            
+            setNirOtchetVersions(response.data);
+            console.log(response.data);
+            
+          }).catch(result => {
+            console.log(result.data);
+        });
+    }
+
+    // Показать версии отчётов
+    function showNirOtchetVersions(nirOtchetVersionArray) {
+        if (nirOtchetVersionArray.length > 0) {
+            for (var i=0; i<nirOtchetVersionArray.length; i++) {
+                var item = nirOtchetVersionArray[i];
+
+                var nirVersion = document.createElement('div');
+                nirVersion.className = 'nir-version light-background';
+                nirVersion.id = 'nir-otchet-version-' + i;
+
+                var nirVersionHeader = document.createElement('div');
+                nirVersionHeader.className = 'nir-version-header dark-background';
+
+                // Имя версии
+                var versionName = document.createElement('p');
+                versionName.className = 'light size-24 nir-header-text';
+                versionName.innerText = 'Версия: ' + item.versionEditionDate;
+
+                // Статус версии
+                var versionStatus = document.createElement('p');
+                versionStatus.className = 'light size-24 nir-header-text';
+                versionStatus.innerText = 'Статус: ' + item.status;
+
+                // Кнопка отправить науч руку
+                var sendButton = document.createElement('button');
+                sendButton.className = 'dark size-24 nir-version-header-button nir-version-send-button';
+                sendButton.innerText = 'Отправить студенту:';
+                sendButton.type='button';
+                if (item.status === 'Одобрено' || item.status === 'Замечания') {
+                    sendButton.disabled = true;
+                }
+
+                var dropdownDiv = document.createElement('div');
+                dropdownDiv.className = 'sci-advisor-status-dropdown-div';
+
+                var dropdownContent = document.createElement('div');
+                dropdownContent.className = 'sci-advisor-status-dropdown-content';
+
+                var statusOdobreno = document.createElement('p');
+                statusOdobreno.className = 'dark size-18 nir-otchet-status-odobreno';
+                statusOdobreno.innerText = 'Одобрено';
+
+                var statusZamechaniya = document.createElement('p');
+                statusZamechaniya.className = 'dark size-18 nir-otchet-status-zamechaniya';
+                statusZamechaniya.innerText = 'Замечания';
+
+                // Кнопка скачать отчёт
+                var downloadButton = document.createElement('button');
+                downloadButton.className = 'dark size-24 nir-version-header-button nir-otchet-download-button';
+                downloadButton.innerText = 'Скачать документ';
+                downloadButton.type='button';
+
+                // Кнопка удалить
+                var deleteButton = document.createElement('button');
+                deleteButton.className = 'dark size-24 nir-version-header-button nir-otchet-delete-button';
+                deleteButton.innerText = 'Удалить версию';
+                deleteButton.type='button';
+                if (item.status !== 'Не отправлено') {
+                    deleteButton.disabled = true;
+                }
+
+                var titlesArea = document.createElement('div');
+                titlesArea.className = 'nir-version-titles';
+
+                titlesArea.appendChild(versionName);
+                titlesArea.appendChild(versionStatus);
+                nirVersionHeader.appendChild(titlesArea);
+
+
+                dropdownDiv.appendChild(sendButton);
+                dropdownContent.appendChild(statusOdobreno);
+                dropdownContent.appendChild(statusZamechaniya);
+                dropdownDiv.appendChild(dropdownContent);
+                nirVersionHeader.appendChild(dropdownDiv);
+
+                nirVersionHeader.appendChild(downloadButton);
+                nirVersionHeader.appendChild(deleteButton);
+                nirVersion.appendChild(nirVersionHeader);
+
+                document.getElementById('student-nir-otchet-version-div').appendChild(nirVersion);
+            }
+        }
+    }
+
+    // Отправить студенту отчёт со статусом
+    function gradeNirOtchet(arrayId, status) {
+        console.log(nirVersions[arrayId]);
+        console.log(status);
+        console.log(nirOtchetVersions[arrayId].systemVersionID);
+        axios({
+            url: apiURL + '/scientific_advisor/document/management/report/nir/check',
+            method: 'POST',
+            params: {
+                'versionID': nirOtchetVersions[arrayId].systemVersionID,
+                'newStatus': status,
+            },
+            headers: { 
+                'Authorization': 'Bearer ' + authTokens.accessToken 
+            },
+          }).then((response) => {
+
+            window.location.reload(true);
+
+          }).catch(result => {
+            console.log(result.data);
+        });
+    }
+
+    function checkTaskApproval() {
+        for (var i=0; i<nirVersions.length; i++) {
+            if (nirVersions[i].status === 'Одобрено') {
+                return true;
+            }
+        }
+        return false;
+    }
+
     $(function() {
 
+        // Оценка задания НИР
         $('.nir-version-send-button').off().on('click', function(event) {
             $(this).parent().find('.sci-advisor-status-dropdown-content').toggle();
             //console.log('show');
@@ -270,7 +415,7 @@ export default function ScaStuViewPage() {
         });
 
         // Скачать версию задания
-        $('.nir-version-download-button').on('click', function(event) {
+        $('.nir-version-download-button').off().on('click', function(event) {
             var versionId = $(this).parent().parent().attr('id');
             var arrayID = versionId.split('-')[2];
             console.log(arrayID);
@@ -298,7 +443,7 @@ export default function ScaStuViewPage() {
         });
 
         // Удалить версию задания
-        $('.nir-version-delete-button').on('click', function(event) {
+        $('.nir-version-delete-button').off().on('click', function(event) {
             console.log('delete');
             var versionId = $(this).parent().parent().attr('id');
             var arrayID = versionId.split('-')[2];
@@ -333,6 +478,7 @@ export default function ScaStuViewPage() {
             setAdditionalTask(nirVersions[arrayID].additionalTask);
         });
 
+        // TODO empty upload catch
         // Создание новой версии задания НИР
         $('#send-nir-task-button').off().on('click',function(event) {
             console.log('made');
@@ -352,7 +498,13 @@ export default function ScaStuViewPage() {
                     'Authorization': 'Bearer ' + authTokens.accessToken 
                 },
             }).then((response) => {
-                window.location.reload();
+                if (response.data === 'Вы не можете добавлять версии заданию студенту, пока он его не сгенерирует') {
+                    console.log('Вы не можете добавлять версии заданию студенту, пока он его не сгенерирует');
+
+                }
+                else {
+                    window.location.reload();
+                }
                 console.log(response);
                 
             }).catch(result => {
@@ -364,6 +516,89 @@ export default function ScaStuViewPage() {
         $(document).on('click', '.nir-version-clickable', function(event) {
             $(this).parent().parent().find('.nir-version-content').toggle();
             event.stopImmediatePropagation();
+        });
+
+        // Оценка отчёта НИР
+        $('.nir-otchet-status-odobreno').off().on('click', function(event) {
+            var versionId = $(this).parent().parent().parent().parent().attr('id');
+            var arrayID = versionId.split('-')[3];
+            gradeNirOtchet(arrayID, 'Одобрено');
+        });
+
+        $('.nir-otchet-status-zamechaniya').off().on('click', function(event) {
+            var versionId = $(this).parent().parent().parent().parent().attr('id');
+            var arrayID = versionId.split('-')[3];
+            gradeNirOtchet(arrayID, 'Замечания');
+        });
+
+        // TODO empty upload catch
+        // Создание науч руком версии отчета НИР
+        $('#make-nir-otchet-button').off().on('click', function(event) {
+            var taskApproval = checkTaskApproval();
+            if (taskApproval) {
+                setNirTaskApproval(true);
+                if (fileNirOtchet != null) {
+                    document.getElementById('errorNirMessage').style.visibility = 'hidden';
+                    var formData = new FormData();
+                    formData.append('documentFormType', 'Научно-исследовательская работа');
+                    formData.append('documentFormKind', 'Отчёт');
+                    formData.append('documentFormDescription', 'Пример отчёта');
+                    formData.append('documentFormViewRights', 'Я и мой научный руководитель');
+                    formData.append('file', fileNirOtchet);
+                    formData.append('studentID', sessionStorage.getItem('viewedStudentId'));
+                    axios({
+                        url: apiURL + '/scientific_advisor/document/report/upload/version',
+                        method: 'POST',
+                        data: formData,
+                        headers: {
+                            'Content-Type': 'multipart/form-data',
+                            'Authorization': 'Bearer ' + authTokens.accessToken 
+                        },
+                    }).then((response) => {
+                        if (response.data === 'Вы не можете загрузить версию отчёта студента пока он его не загрузит') {
+                            console.log(response);
+                        }
+                        else {
+                            document.getElementById('errorNirMessage').style.visibility = 'visible';
+                            document.getElementById('errorNirMessage').innerHTML = 'Отчет загружен!';
+                            window.location.reload();
+                        }
+                    }).catch(result => {
+                        document.getElementById('errorNirMessage').style.visibility = 'visible';
+                        document.getElementById('errorNirMessage').innerHTML = 'При загрузке произошла ошибка!';
+                    });
+                }
+                else {
+                    document.getElementById('errorNirMessage').innerHTML = 'Не выбран файл!';
+                    document.getElementById('errorNirMessage').style.visibility = 'visible';
+                }
+            }
+            else {
+                setNirTaskApproval(false);
+                document.getElementById('errorNirMessage').style.visibility = 'hidden';
+            }
+        });
+
+        // Удаление версии отчёта
+        $('.nir-otchet-delete-button').off().on('click', function(event) {
+            console.log('delete otchet');
+            var versionId = $(this).parent().parent().attr('id');
+            var arrayID = versionId.split('-')[3];
+            axios({
+                url: apiURL + '/scientific_advisor/document/report/version/delete',
+                method: 'DELETE',
+                params: {
+                    versionID: nirOtchetVersions[arrayID].systemVersionID,
+                    'studentID': sessionStorage.getItem('viewedStudentId'),
+                },
+                headers: { 
+                    'Authorization': 'Bearer ' + authTokens.accessToken 
+                },
+              }).then((response) => {
+                window.location.reload(true);
+              }).catch(result => {
+                console.log(result.data);
+            });
         });
 
     });
@@ -445,11 +680,15 @@ export default function ScaStuViewPage() {
                                         <Image src={iconInfo} thumbnail className='dark-background thumbnail-icon'/>
                                         <p id='fileNirName' style={{display: 'inline-block'}}>Выбрать файл с содержанием отчета</p>
                                     </label>
-                                    <button type='button' className='size-30 light dark-background info-button-inline-block'>
+                                    <button type='button' id='make-nir-otchet-button' className='size-30 light dark-background info-button-inline-block'>
                                         <Image src={iconProject} thumbnail className='dark-background thumbnail-icon'/>
                                         Сформировать и загрузить версию отчета
                                     </button>
                                     <p id='errorNirMessage' className='size-24 dark' style={{visibility: 'hidden'}}>errorNir</p>
+                                </div>
+
+                                <div>
+                                    { !nirTaskApproval ? (<p className='dark size-24 nir-approval-message'>Нет одобренного задания!</p>) : null }
                                 </div>
                                 
                             </div>

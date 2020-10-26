@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Navbar, Nav } from 'react-bootstrap';
-import { useAuthContext } from '../auth/AuthContext';
+//import { useAuthContext } from '../auth/AuthContext';
 import { Redirect } from 'react-router-dom';
 
 export default function ScaStuHeader() {
-    const { authTokens } = useAuthContext();
+    //const { authTokens } = useAuthContext();
     const [redirect, setRedirect] = useState(false);
     const [fetchedData, setFetchedData] = useState(false);
     const [studentName, setStudentName] = useState('');
@@ -22,6 +22,7 @@ export default function ScaStuHeader() {
     }
 
     console.log(studentName);
+    console.log(sessionStorage.getItem('viewedStudentId'));
 
     return(
         <div>

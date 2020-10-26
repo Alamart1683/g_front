@@ -308,7 +308,6 @@ export default function StudentInfoPage(){
     function checkTaskApproval() {
         for (var i=0; i<nirVersions.length; i++) {
             if (nirVersions[i].status === 'Одобрено') {
-                //setNirTaskApproval(true);
                 return true;
             }
         }
@@ -317,7 +316,7 @@ export default function StudentInfoPage(){
 
     $(function() {
         // Послать версию задания науч руку
-        $('.nir-version-send-button').on('click', function(event) {
+        $('.nir-version-send-button').off().on('click', function(event) {
             //console.log('sent');
             var versionId = $(this).parent().parent().attr('id');
             var arrayID = versionId.split('-')[2];
@@ -340,7 +339,7 @@ export default function StudentInfoPage(){
         });
 
         // Скачать версию задания
-        $('.nir-version-download-button').on('click', function(event) {
+        $('.nir-version-download-button').off().on('click', function(event) {
             var versionId = $(this).parent().parent().attr('id');
             var arrayID = versionId.split('-')[2];
             //console.log(arrayID);
@@ -368,7 +367,7 @@ export default function StudentInfoPage(){
         });
 
         // Удалить версию задания
-        $('.nir-version-delete-button').on('click', function(event) {
+        $('.nir-version-delete-button').off().on('click', function(event) {
             var versionId = $(this).parent().parent().attr('id');
             var arrayID = versionId.split('-')[2];
             console.log(arrayID);
@@ -440,6 +439,7 @@ export default function StudentInfoPage(){
             if (taskApproval) {
                 setNirTaskApproval(true);
                 if (fileNirOtchet != null) {
+                    document.getElementById('errorNirMessage').style.visibility = 'hidden';
                     var formData = new FormData();
                     formData.append('documentFormType', 'Научно-исследовательская работа');
                     formData.append('documentFormKind', 'Отчёт');
@@ -466,12 +466,13 @@ export default function StudentInfoPage(){
                 }
                 else {
                     document.getElementById('errorNirMessage').innerHTML = 'Не выбран файл!';
+                    document.getElementById('errorNirMessage').style.visibility = 'visible';
                 }
             }
             else {
                 setNirTaskApproval(false);
+                document.getElementById('errorNirMessage').style.visibility = 'hidden';
             }
-            console.log(taskApproval);
         });
 
         // Отправить отчёт науч руку
@@ -522,6 +523,7 @@ export default function StudentInfoPage(){
                 console.log(result.data);
             });
         });
+
     });
 
     return(
@@ -609,7 +611,7 @@ export default function StudentInfoPage(){
                                 </div>
 
                                 <div>
-                                    { !nirTaskApproval ? (<p className='dark size-24'>Нет одобренного задания!</p>) : null }
+                                    { !nirTaskApproval ? (<p className='dark size-24 nir-approval-message'>Нет одобренного задания!</p>) : null }
                                 </div>
                                 
                             </div>

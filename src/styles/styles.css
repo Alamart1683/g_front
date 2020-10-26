@@ -659,7 +659,6 @@ html, body {
 
 .student-nir-task-version-div {
 	width: 100%;
-
 }
 
 .no-versions-message {
@@ -843,6 +842,10 @@ html, body {
 .sci-advisor-status-dropdown-content p:hover {
 	background-color: #ddd;
 	cursor: pointer;
+}
+
+.nir-approval-message {
+	text-align: center;
 }
 
 /* Отступ снизу, размер футера */

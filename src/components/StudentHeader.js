@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Navbar, Nav, Image, NavDropdown } from 'react-bootstrap';
+import { Navbar, Nav, Image } from 'react-bootstrap';
 import { useAuthContext } from '../auth/AuthContext';
 import axios from 'axios';
 import { apiURL } from '../Config';

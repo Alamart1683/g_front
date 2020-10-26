@@ -7,8 +7,7 @@ import iconStudents from '../images/icons/students.png';
 
 export default function SciAdvisorHeader() {
 
-    const { authTokens, setAuthTokens } = useAuthContext();
-    //console.log(authTokens);
+    const { setAuthTokens } = useAuthContext();
 
     function logOut() {
         setAuthTokens(null);
