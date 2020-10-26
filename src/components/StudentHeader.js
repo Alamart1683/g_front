@@ -50,16 +50,16 @@ export default function StudentHeader() {
                         Информация
                     </button>
                 </Nav.Link>
-                <NavDropdown title={
-                    <p className='student-navbar-name dark-background light size-30'>
+                <Nav.Link>
+                    <button type='button' className='student-navbar-button dark-background light size-30'>
                         Научный руководитель: <br/>{scientificAdvisor}
-                    </p>
-                    }>
-                    <NavDropdown.Item>Action</NavDropdown.Item>
-                    <NavDropdown.Item>Another action</NavDropdown.Item>
-                    <NavDropdown.Divider />
-                    <NavDropdown.Item onClick={ () => { logOut() }}>Выйти</NavDropdown.Item>
-                </NavDropdown>
+                    </button>
+                </Nav.Link>
+                <Nav.Link>
+                    <button type='button' onClick={ () => { logOut() }} className='student-navbar-button dark-background light size-30'>
+                        Выйти
+                    </button>
+                </Nav.Link>
             </Navbar>
         </div>
 

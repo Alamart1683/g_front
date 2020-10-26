@@ -35,6 +35,7 @@ export default function StudentInfoPage(){
 
     // Загруженное содержание НИР
     var fileNirOtchet;
+    const [nirTaskApproval, setNirTaskApproval] = useState(true);
     const [nirVersions, setNirVersions] = useState([]);
     const [nirOtchetVersions, setNirOtchetVersions] = useState([]);
 
@@ -67,7 +68,7 @@ export default function StudentInfoPage(){
           }).then((response) => {
             
             setNirVersions(response.data);
-            console.log(response.data);
+            //console.log(response.data);
             
           }).catch(result => {
             console.log(result.data);
@@ -219,26 +220,28 @@ export default function StudentInfoPage(){
 
     }
 
-    // TODO WRITE REQUEST fill array
     // Получение версий отчетов
     function getNirOtchetVersions() {
-        var exampleNirOtchetVersions = [
-            {
-                "data": null,
-            },
-            {
-                "data": null,
-            },
-            {
-                "data": null,
-            }
-        ]
 
-        
-        setNirOtchetVersions(exampleNirOtchetVersions);
+        axios({
+            url: apiURL + '/student/document/report/view',
+            method: 'GET',
+            params: {
+                'taskType': 'Научно-исследовательская работа',
+            },
+            headers: { 
+                'Authorization': 'Bearer ' + authTokens.accessToken 
+            },
+          }).then((response) => {
+            
+            setNirOtchetVersions(response.data);
+            console.log(response.data);
+            
+          }).catch(result => {
+            console.log(result.data);
+        });
     }
 
-    // FIX TODOS
     // Вывод на экран версий отчетов НИР
     function showNirOtchetVersions(nirOtchetVersionArray) {
         if (nirOtchetVersionArray.length > 0) {
@@ -247,46 +250,44 @@ export default function StudentInfoPage(){
 
                 var nirVersion = document.createElement('div');
                 nirVersion.className = 'nir-version light-background';
-                nirVersion.id = 'nir-otchet-version' + i;
+                nirVersion.id = 'nir-otchet-version-' + i;
 
                 var nirVersionHeader = document.createElement('div');
                 nirVersionHeader.className = 'nir-version-header dark-background';
 
+                // Имя версии
                 var versionName = document.createElement('p');
                 versionName.className = 'light size-24 nir-header-text';
-                //TODO get version name
-                versionName.innerText = 'Версия  23.10.2020 14:10';
+                versionName.innerText = 'Версия: ' + item.versionEditionDate;
 
+                // Статус версии
                 var versionStatus = document.createElement('p');
                 versionStatus.className = 'light size-24 nir-header-text';
-                //TODO get version status
-                versionStatus.innerText = 'Статус: рассматривается';
+                versionStatus.innerText = 'Статус: ' + item.status;
 
+                // Кнопка отправить науч руку
                 var sendButton = document.createElement('button');
-                sendButton.className = 'dark size-24 nir-version-header-button';
+                sendButton.className = 'dark size-24 nir-version-header-button nir-otchet-send-button';
                 sendButton.innerText = 'Отправить науч. руку';
                 sendButton.type='button';
-                // TODO if already sent
-                if (false) {
+                if (item.status !== 'Не отправлено') {
                     sendButton.disabled = true;
                 }
-                // TODO Button function SEND
 
+                // Кнопка скачать отчёт
                 var downloadButton = document.createElement('button');
-                downloadButton.className = 'dark size-24 nir-version-header-button';
+                downloadButton.className = 'dark size-24 nir-version-header-button nir-otchet-download-button';
                 downloadButton.innerText = 'Скачать документ';
                 downloadButton.type='button';
-                // TODO Button function DOWNLOAD
 
+                // Кнопка удалить
                 var deleteButton = document.createElement('button');
-                deleteButton.className = 'dark size-24 nir-version-header-button';
+                deleteButton.className = 'dark size-24 nir-version-header-button nir-otchet-delete-button';
                 deleteButton.innerText = 'Удалить версию';
                 deleteButton.type='button';
-                // TODO if cant delete
-                if (false) {
+                if (item.status !== 'Не отправлено') {
                     deleteButton.disabled = true;
                 }
-                // TODO Button function DELETE
 
                 var titlesArea = document.createElement('div');
                 titlesArea.className = 'nir-version-titles';
@@ -302,29 +303,25 @@ export default function StudentInfoPage(){
                 document.getElementById('student-nir-otchet-version-div').appendChild(nirVersion);
             }
         }
-        else {
-            var noVersionMessage = document.createElement('p');
-            noVersionMessage.className = 'dark size-32 no-versions-message';
-            noVersionMessage.innerText = 'Создайте версию отчёте на НИР с помощью кнопок ниже!';
-            document.getElementById('student-nir-otchet-version-div').appendChild(noVersionMessage);
+    }
+
+    function checkTaskApproval() {
+        for (var i=0; i<nirVersions.length; i++) {
+            if (nirVersions[i].status === 'Одобрено') {
+                //setNirTaskApproval(true);
+                return true;
+            }
         }
+        return false;
     }
-
-    // TODO
-    // Отправка версии отчета на сервер
-    function sendNirOtchetVersion() {
-        console.log('sent otchet');
-
-    }
-
 
     $(function() {
         // Послать версию задания науч руку
         $('.nir-version-send-button').on('click', function(event) {
-            console.log('sent');
+            //console.log('sent');
             var versionId = $(this).parent().parent().attr('id');
             var arrayID = versionId.split('-')[2];
-            console.log(arrayID);
+            //console.log(arrayID);
             axios({
                 url: apiURL + '/student/document/management/task/nir/send',
                 method: 'POST',
@@ -346,7 +343,7 @@ export default function StudentInfoPage(){
         $('.nir-version-download-button').on('click', function(event) {
             var versionId = $(this).parent().parent().attr('id');
             var arrayID = versionId.split('-')[2];
-            console.log(arrayID);
+            //console.log(arrayID);
             axios({
                 url: apiURL + '/document/download/version',
                 method: 'GET',
@@ -372,7 +369,6 @@ export default function StudentInfoPage(){
 
         // Удалить версию задания
         $('.nir-version-delete-button').on('click', function(event) {
-            console.log('delete');
             var versionId = $(this).parent().parent().attr('id');
             var arrayID = versionId.split('-')[2];
             console.log(arrayID);
@@ -438,8 +434,93 @@ export default function StudentInfoPage(){
             event.stopImmediatePropagation();
         });
 
+        // Создать версию отчёта
         $('#make-nir-otchet-button').off().on('click', function(event) {
-            console.log('sent');
+            var taskApproval = checkTaskApproval();
+            if (taskApproval) {
+                setNirTaskApproval(true);
+                if (fileNirOtchet != null) {
+                    var formData = new FormData();
+                    formData.append('documentFormType', 'Научно-исследовательская работа');
+                    formData.append('documentFormKind', 'Отчёт');
+                    formData.append('documentFormDescription', 'Пример отчёта');
+                    formData.append('documentFormViewRights', 'Я и мой научный руководитель');
+                    formData.append('file', fileNirOtchet);
+                    axios({
+                        url: apiURL + '/student/document/report/upload',
+                        method: 'POST',
+                        data: formData,
+                        headers: {
+                            'Content-Type': 'multipart/form-data',
+                            'Authorization': 'Bearer ' + authTokens.accessToken 
+                        },
+                    }).then((response) => {
+                        //console.log(response);
+                        document.getElementById('errorNirMessage').style.visibility = 'visible';
+                        document.getElementById('errorNirMessage').innerHTML = 'Отчет загружен!';
+                        window.location.reload();
+                    }).catch(result => {
+                        document.getElementById('errorNirMessage').style.visibility = 'visible';
+                        document.getElementById('errorNirMessage').innerHTML = 'При загрузке произошла ошибка!';
+                    });
+                }
+                else {
+                    document.getElementById('errorNirMessage').innerHTML = 'Не выбран файл!';
+                }
+            }
+            else {
+                setNirTaskApproval(false);
+            }
+            console.log(taskApproval);
+        });
+
+        // Отправить отчёт науч руку
+        $('.nir-otchet-send-button').off().on('click', function(event) {
+            var versionId = $(this).parent().parent().attr('id');
+            console.log( $(this).parent().parent() );
+            var arrayID = versionId.split('-')[3];
+            axios({
+                url: apiURL + '/student/document/management/report/nir/send',
+                method: 'POST',
+                params: {
+                    'newStatus': 'Рассматривается',
+                    'versionID': nirOtchetVersions[arrayID].systemVersionID,
+                },
+                headers: { 
+                    'Authorization': 'Bearer ' + authTokens.accessToken 
+                },
+              }).then((response) => {
+                window.location.reload(true);
+              }).catch(result => {
+                console.log(result.data);
+            });
+        });
+
+        // TODO
+        // Скачать отчёт
+        $('.nir-otchet-download-button').off().on('click', function(event) {
+            console.log('download otchet');
+        });
+
+        // Удалить отчёт
+        $('.nir-otchet-delete-button').off().on('click', function(event) {
+            console.log('delete otchet');
+            var versionId = $(this).parent().parent().attr('id');
+            var arrayID = versionId.split('-')[3];
+            axios({
+                url: apiURL + '/student/document/report/version/delete',
+                method: 'DELETE',
+                params: {
+                    versionID: nirOtchetVersions[arrayID].systemVersionID,
+                },
+                headers: { 
+                    'Authorization': 'Bearer ' + authTokens.accessToken 
+                },
+              }).then((response) => {
+                window.location.reload(true);
+              }).catch(result => {
+                console.log(result.data);
+            });
         });
     });
 
@@ -525,6 +606,10 @@ export default function StudentInfoPage(){
                                         Сформировать и загрузить версию отчета
                                     </button>
                                     <p id='errorNirMessage' className='size-24 dark' style={{visibility: 'hidden'}}>errorNir</p>
+                                </div>
+
+                                <div>
+                                    { !nirTaskApproval ? (<p className='dark size-24'>Нет одобренного задания!</p>) : null }
                                 </div>
                                 
                             </div>

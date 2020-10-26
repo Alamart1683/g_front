@@ -87,7 +87,6 @@ export default function SciAdvisorStudentsPage() {
             var arrayId = studentId.substr(studentId.length - 1);
             sessionStorage.setItem('viewedStudentId', students[arrayId].systemStudentID);
             sessionStorage.setItem('viewedStudentName', students[arrayId].fio);
-            console.log('away');
             setRedirect(true);
         });
 
