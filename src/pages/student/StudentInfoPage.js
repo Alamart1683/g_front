@@ -234,6 +234,7 @@ export default function StudentInfoPage(){
             }
         ]
 
+        
         setNirOtchetVersions(exampleNirOtchetVersions);
     }
 
@@ -406,7 +407,7 @@ export default function StudentInfoPage(){
 
         // Создание новой версии задания НИР
         $('#send-nir-task-button').off().on('click',function(event) {
-            console.log('made');
+            //console.log('made');
             var formData = new FormData();
             formData.append('taskType', 'Научно-исследовательская работа');
             formData.append('studentTheme', studentTheme);
@@ -429,7 +430,7 @@ export default function StudentInfoPage(){
             }).catch(result => {
                 console.log(result.data);
             });
-        })
+        });
 
         // Показ полей версии задания
         $(document).on('click', '.nir-version-clickable', function(event) {
@@ -437,6 +438,9 @@ export default function StudentInfoPage(){
             event.stopImmediatePropagation();
         });
 
+        $('#make-nir-otchet-button').off().on('click', function(event) {
+            console.log('sent');
+        });
     });
 
     return(
@@ -461,7 +465,7 @@ export default function StudentInfoPage(){
                                 <div className='info-row'>
                                     <div className='info-column'>
                                         <Form.Label column className="size-21 dark info-input-label">Тема НИР:</Form.Label>
-                                        <textarea value={studentTheme} onChange={(e) => { setStudentTheme(e.target.value); console.log(studentTheme);}} className='dark size-24 info-input-area'/>
+                                        <textarea value={studentTheme} onChange={(e) => { setStudentTheme(e.target.value);}} className='dark size-24 info-input-area'/>
 
                                         <Form.Label column className="size-21 dark info-input-label">Изучить:</Form.Label>
                                         <textarea value={toExplore} onChange={(e) => { setToExplore(e.target.value);}} className='dark size-24 info-input-area'/>
@@ -475,7 +479,7 @@ export default function StudentInfoPage(){
                                         <textarea value={toFamiliarize} onChange={(e) => { setToFamiliarize(e.target.value);}} className='dark size-24 info-input-area'/>
 
                                         <Form.Label column className="size-21 dark info-input-label">Дополнительное задание:</Form.Label>
-                                        <textarea value={additionalTask} onChange={(e) => { setAdditionalTask(e.target.value); console.log(additionalTask) }} className='dark size-24 info-input-area'/>
+                                        <textarea value={additionalTask} onChange={(e) => { setAdditionalTask(e.target.value);}} className='dark size-24 info-input-area'/>
 
                                         <button type='button' id='send-nir-task-button' className='size-30 light dark-background info-button-1'>
                                             <Image src={iconDocument} thumbnail className='dark-background thumbnail-icon'/>
@@ -516,7 +520,7 @@ export default function StudentInfoPage(){
                                         <Image src={iconInfo} thumbnail className='dark-background thumbnail-icon'/>
                                         <p id='fileNirName' style={{display: 'inline-block'}}>Выбрать файл с содержанием отчета</p>
                                     </label>
-                                    <button type='button' className='size-30 light dark-background info-button-inline-block'>
+                                    <button type='button' id='make-nir-otchet-button' className='size-30 light dark-background info-button-inline-block'>
                                         <Image src={iconProject} thumbnail className='dark-background thumbnail-icon'/>
                                         Сформировать и загрузить версию отчета
                                     </button>

@@ -26,14 +26,14 @@ export default function ScaStuHeader() {
     return(
         <div>
             <Navbar className='light-background light student-nav'>
-                <Nav.Link as={Link} to='/sca/students'>
-                    <button type='button' className='student-navbar-button dark-background light size-30'>
-                        Вернуться
-                    </button>
-                </Nav.Link>
                 <Nav.Link as={Link} to='#'>
                     <button type='button' className='student-navbar-button dark-background light size-30'>
                         Студент: <br/> {studentName}
+                    </button>
+                </Nav.Link>
+                <Nav.Link as={Link} to='/sca/students'>
+                    <button type='button' className='student-navbar-button dark-background light size-30'>
+                        Вернуться
                     </button>
                 </Nav.Link>
             </Navbar>
