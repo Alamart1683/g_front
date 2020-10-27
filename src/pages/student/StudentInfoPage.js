@@ -500,7 +500,32 @@ export default function StudentInfoPage(){
         // TODO
         // Скачать отчёт
         $('.nir-otchet-download-button').off().on('click', function(event) {
-            console.log('download otchet');
+            var versionId = $(this).parent().parent().attr('id');
+            console.log( $(this).parent().parent() );
+            var arrayID = versionId.split('-')[3];
+
+            axios({
+                url: apiURL + '/student/document/download/report',
+                method: 'GET',
+                responseType: 'blob',
+                params: {
+                    'type': 'Научно-исследовательская работа',
+                    'reportVersion': nirOtchetVersions[arrayID].systemVersionID,
+                },
+                headers: {
+                    'Authorization': 'Bearer ' + authTokens.accessToken 
+                },
+              }).then((response) => {
+                const url = window.URL.createObjectURL(new Blob([response.data]));
+                const link = document.createElement('a');
+                link.href = url;
+                link.setAttribute('download', 'Отчёт по НИР.docx');
+                document.body.appendChild(link);
+                link.click();
+                
+              }).catch(result => {
+                console.log(result.data);
+            });
         });
 
         // Удалить отчёт

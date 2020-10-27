@@ -418,7 +418,7 @@ export default function ScaStuViewPage() {
         $('.nir-version-download-button').off().on('click', function(event) {
             var versionId = $(this).parent().parent().attr('id');
             var arrayID = versionId.split('-')[2];
-            console.log(arrayID);
+            //console.log(arrayID);
             axios({
                 url: apiURL + '/document/download/version',
                 method: 'GET',
@@ -444,10 +444,10 @@ export default function ScaStuViewPage() {
 
         // Удалить версию задания
         $('.nir-version-delete-button').off().on('click', function(event) {
-            console.log('delete');
+            //console.log('delete');
             var versionId = $(this).parent().parent().attr('id');
             var arrayID = versionId.split('-')[2];
-            console.log(arrayID);
+            //console.log(arrayID);
             axios({
                 url: apiURL + '/scientific_advisor/document/task/version/delete',
                 method: 'DELETE',
@@ -581,7 +581,7 @@ export default function ScaStuViewPage() {
 
         // Удаление версии отчёта
         $('.nir-otchet-delete-button').off().on('click', function(event) {
-            console.log('delete otchet');
+            //console.log('delete otchet');
             var versionId = $(this).parent().parent().attr('id');
             var arrayID = versionId.split('-')[3];
             axios({
@@ -596,6 +596,37 @@ export default function ScaStuViewPage() {
                 },
               }).then((response) => {
                 window.location.reload(true);
+              }).catch(result => {
+                console.log(result.data);
+            });
+        });
+
+        // Скачать версию отчёта
+        $('.nir-otchet-download-button').off().on('click', function(event) {
+            var versionId = $(this).parent().parent().attr('id');
+            //console.log( $(this).parent().parent() );
+            var arrayID = versionId.split('-')[3];
+
+            axios({
+                url: apiURL + '/scientific_advisor/document/download/report',
+                method: 'GET',
+                responseType: 'blob',
+                params: {
+                    'type': 'Научно-исследовательская работа',
+                    'reportVersion': nirOtchetVersions[arrayID].systemVersionID,
+                    'studentID': sessionStorage.getItem('viewedStudentId'),
+                },
+                headers: {
+                    'Authorization': 'Bearer ' + authTokens.accessToken 
+                },
+              }).then((response) => {
+                const url = window.URL.createObjectURL(new Blob([response.data]));
+                const link = document.createElement('a');
+                link.href = url;
+                link.setAttribute('download', 'Отчёт по НИР.docx');
+                document.body.appendChild(link);
+                link.click();
+                
               }).catch(result => {
                 console.log(result.data);
             });
