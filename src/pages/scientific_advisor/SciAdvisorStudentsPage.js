@@ -5,10 +5,8 @@ import axios from 'axios';
 import { useAuthContext } from '../../auth/AuthContext';
 import { apiURL } from '../../Config';
 import $ from 'jquery';
-import Popper from 'popper.js';
+//import Popper from 'popper.js';
 import 'bootstrap/dist/js/bootstrap.bundle.min';
-
-import iconLookingGlass from '../../images/icons/lookingglass.png';
 
 export default function SciAdvisorStudentsPage() {
     const { authTokens } = useAuthContext();
@@ -82,6 +80,9 @@ export default function SciAdvisorStudentsPage() {
             nirTaskStatus.htmlFor = nirTaskCheckbox;
             nirTaskStatus.innerText = 'Задание на НИР';
 
+            var nirTaskDiv = document.createElement('div');
+            nirTaskDiv.style.minWidth = '170px';
+
             var nirReportCheckbox = document.createElement('input');
             nirReportCheckbox.type = 'checkbox';
             nirReportCheckbox.className = 'sci-table-checkbox';
@@ -92,6 +93,8 @@ export default function SciAdvisorStudentsPage() {
             var nirReportStatus = document.createElement('label');
             nirReportStatus.htmlFor = nirReportCheckbox;
             nirReportStatus.innerText = 'Отчет по НИР';
+
+            var nirReportDiv = document.createElement('div');
 
             // ППП...
             var studentLongPP = document.createElement('th');
@@ -107,6 +110,9 @@ export default function SciAdvisorStudentsPage() {
             longPPTaskStatus.htmlFor = longPPTaskCheckbox;
             longPPTaskStatus.innerText = 'Задание по ПпППУиОПД';
 
+            var longPPTaskDiv = document.createElement('div');
+            longPPTaskDiv.style.minWidth = '250px';
+
             var longPPReportCheckbox = document.createElement('input');
             longPPReportCheckbox.type = 'checkbox';
             longPPReportCheckbox.className = 'sci-table-checkbox';
@@ -117,6 +123,8 @@ export default function SciAdvisorStudentsPage() {
             var longPPReportStatus = document.createElement('label');
             longPPReportStatus.htmlFor = longPPReportCheckbox;
             longPPReportStatus.innerText = 'Отчет по ПпППУиОПД';
+
+            var longPPReportDiv = document.createElement('div');
 
             // ПП
             var studentPP = document.createElement('th');
@@ -132,6 +140,9 @@ export default function SciAdvisorStudentsPage() {
             ppTaskStatus.htmlFor = ppTaskCheckbox;
             ppTaskStatus.innerText = 'Задание по ПП';
 
+            var ppTaskDiv = document.createElement('div');
+            ppTaskDiv.style.minWidth = '160px';
+
             var ppReportCheckbox = document.createElement('input');
             ppReportCheckbox.type = 'checkbox';
             ppReportCheckbox.className = 'sci-table-checkbox';
@@ -142,6 +153,8 @@ export default function SciAdvisorStudentsPage() {
             var ppReportStatus = document.createElement('label');
             ppReportStatus.htmlFor = ppReportCheckbox;
             ppReportStatus.innerText = 'Отчет по ПП:';
+            
+            var ppReportDiv = document.createElement('div');
 
             // ВКР
             var studentVkr = document.createElement('th');
@@ -235,22 +248,34 @@ export default function SciAdvisorStudentsPage() {
             studentFio.appendChild(popover);
             student.appendChild(studentFio);
 
-            studentNir.appendChild(nirTaskStatus);
-            studentNir.appendChild(nirTaskCheckbox);
-            studentNir.appendChild(nirReportStatus);
-            studentNir.appendChild(nirReportCheckbox);
+            nirTaskDiv.appendChild(nirTaskStatus);
+            nirTaskDiv.appendChild(nirTaskCheckbox);
+            studentNir.appendChild(nirTaskDiv);
+
+            nirReportDiv.appendChild(nirReportStatus);
+            nirReportDiv.appendChild(nirReportCheckbox);
+            studentNir.appendChild(nirReportDiv);
+
             student.appendChild(studentNir);
 
-            studentLongPP.appendChild(longPPTaskStatus);
-            studentLongPP.appendChild(longPPTaskCheckbox);
-            studentLongPP.appendChild(longPPReportStatus);
-            studentLongPP.appendChild(longPPReportCheckbox);
+            longPPTaskDiv.appendChild(longPPTaskStatus);
+            longPPTaskDiv.appendChild(longPPTaskCheckbox);
+            studentLongPP.appendChild(longPPTaskDiv);
+
+            longPPReportDiv.appendChild(longPPReportStatus);
+            longPPReportDiv.appendChild(longPPReportCheckbox);
+            studentLongPP.appendChild(longPPReportDiv);
+
             student.appendChild(studentLongPP);
 
-            studentPP.appendChild(ppTaskStatus);
-            studentPP.appendChild(ppTaskCheckbox);
-            studentPP.appendChild(ppReportStatus);
-            studentPP.appendChild(ppReportCheckbox);
+            ppTaskDiv.appendChild(ppTaskStatus);
+            ppTaskDiv.appendChild(ppTaskCheckbox);
+            studentPP.appendChild(ppTaskDiv);
+
+            ppReportDiv.appendChild(ppReportStatus);
+            ppReportDiv.appendChild(ppReportCheckbox);
+            studentPP.appendChild(ppReportDiv);
+
             student.appendChild(studentPP);
 
             vkrAdvisorFeedbackDiv.appendChild(vkrAdvisorFeedbackStatus);
@@ -292,6 +317,7 @@ export default function SciAdvisorStudentsPage() {
             var arrayId = studentId.substr(studentId.length - 1);
             sessionStorage.setItem('viewedStudentId', students[arrayId].systemStudentID);
             sessionStorage.setItem('viewedStudentName', students[arrayId].fio);
+            sessionStorage.setItem('student', JSON.stringify(students[arrayId]));
             setRedirect(true);
         });
 
