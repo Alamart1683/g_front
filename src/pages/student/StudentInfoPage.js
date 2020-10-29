@@ -676,7 +676,6 @@ export default function StudentInfoPage(){
                 </Tab>
                 <Tab eventKey='info3' title={<Image id='image3' src={infoBlock3} thumbnail className='info-form-image'/>}>
                     <InfoTextBlock3/>
-                    
                 </Tab>
                 <Tab eventKey='info4' title={<Image id='image4' src={infoBlock4} thumbnail className='info-form-image'/>}>
                     <InfoTextBlock4/>

@@ -33,8 +33,6 @@ export default function App() {
   const [authTokens, setAuthTokens] = useState(existingTokens);
   
   const setTokens = (data) => {
-    console.log("data");
-    console.log(data);
     localStorage.setItem("tokens", JSON.stringify(data));
     setAuthTokens(data);
   }

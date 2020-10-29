@@ -774,7 +774,7 @@ html, body {
 	margin-top: 34px;
 	margin-left: auto;
     margin-right: auto;
-	width: 1440px;
+	width: 1600px;
 	display: block;
 }
 
@@ -871,6 +871,11 @@ html, body {
 .popover-body {
 	font-size: 20px;
 	color: #3A5985;
+}
+
+.sci-table-checkbox {
+	transform: scale(1.5);
+	margin-left: 10px;
 }
 
 /* Отступ снизу, размер футера */

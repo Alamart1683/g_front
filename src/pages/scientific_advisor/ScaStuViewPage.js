@@ -9,6 +9,10 @@ import infoBlock1 from '../../images/infographics blocks/block1_0.png';
 import infoBlock2 from '../../images/infographics blocks/block2_0.png';
 import infoBlock3 from '../../images/infographics blocks/block3_0.png';
 import infoBlock4 from '../../images/infographics blocks/block4_0.png';
+import infoBlock11 from '../../images/infographics blocks/block1.png';
+import infoBlock22 from '../../images/infographics blocks/block2.png';
+import infoBlock33 from '../../images/infographics blocks/block3.png';
+import infoBlock44 from '../../images/infographics blocks/block4.png';
 
 import iconDocument from '../../images/icons/documents.png';
 import iconProject from '../../images/icons/myproject.png';
@@ -634,10 +638,29 @@ export default function ScaStuViewPage() {
 
     return(
         <Form className='info-form light-background'>
-            <Tabs defaultActiveKey='info1' className='info-form-main-tabs'>
-                <Tab eventKey='info1' title={<Image src={infoBlock1} thumbnail className='info-form-image'/>} className='info-form-tabs'>
+            <Tabs defaultActiveKey='info1' className='info-form-main-tabs' onSelect={(firstTab) => {
+                    $('#image1').attr('src', infoBlock1);
+                    $('#image2').attr('src', infoBlock2);
+                    $('#image3').attr('src', infoBlock3);
+                    $('#image4').attr('src', infoBlock4);
+                    console.log(firstTab);
+                    switch(firstTab) {
+                        case 'info1':
+                            $('#image1').attr('src', infoBlock11);
+                            break;
+                        case 'info2':
+                            $('#image2').attr('src', infoBlock22);
+                            break;
+                        case 'info3':
+                            $('#image3').attr('src', infoBlock33);
+                            break;
+                        case 'info4':
+                            $('#image4').attr('src', infoBlock44);
+                            break;
+                    }
+                }}>
+                <Tab eventKey='info1' title={<Image id='image1' src={infoBlock11} thumbnail className='info-form-image'/>} className='info-form-tabs'>
                     
-                    <div className='info-break-div'>&nbsp;</div>
                     <Tabs defaultActiveKey='none' onSelect={() => { setTimeout(function(){window.scrollTo(0, 2000);},1);  }} className='info-form-subtab light-background container-fluid'>
                         <Tab eventKey='info11' title={
                             <p className='size-30 light dark-background info-form-subtab-title'>
@@ -730,14 +753,14 @@ export default function ScaStuViewPage() {
                         </Tab>
                     </Tabs>
                 </Tab>
-                <Tab eventKey='info2' title={<Image src={infoBlock2} thumbnail className='info-form-image'/>}>
+                <Tab eventKey='info2' title={<Image id='image2' src={infoBlock2} thumbnail className='info-form-image'/>}>
                     
                 </Tab>
-                <Tab eventKey='info3' title={<Image src={infoBlock3} thumbnail className='info-form-image'/>}>
+                <Tab eventKey='info3' title={<Image id='image3' src={infoBlock3} thumbnail className='info-form-image'/>}>
                     
                     
                 </Tab>
-                <Tab eventKey='info4' title={<Image src={infoBlock4} thumbnail className='info-form-image'/>}>
+                <Tab eventKey='info4' title={<Image id='image4' src={infoBlock4} thumbnail className='info-form-image'/>}>
                     
                 </Tab>
             </Tabs>

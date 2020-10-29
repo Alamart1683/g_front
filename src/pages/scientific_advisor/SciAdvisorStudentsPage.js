@@ -49,14 +49,13 @@ export default function SciAdvisorStudentsPage() {
 
             var student = document.createElement('tr');
             student.id = 'student' + i;
-            student.className = 'size-24 dark'
+            student.className = 'size-20 dark'
 
             var studentNum = document.createElement('th');
             studentNum.innerText = i+1;
 
             // Имя студента
             var studentFio = document.createElement('th');
-            //studentFio.innerText = item.fio;
 
             var popover = document.createElement('a');
             popover.href='#';
@@ -68,28 +67,218 @@ export default function SciAdvisorStudentsPage() {
                                             "<br /> Телефон: " + item.phone +
                                             "<br /> Почта: " + item.email);
             popover.innerText = item.fio;
-            //popover.dataContent = 'content';
 
-            var studentGroup = document.createElement('th');
-            studentGroup.innerText = item.group;
+            // НИР
+            var studentNir = document.createElement('th');
+            
+            var nirTaskCheckbox = document.createElement('input');
+            nirTaskCheckbox.type = 'checkbox';
+            nirTaskCheckbox.className = 'sci-table-checkbox';
+            nirTaskCheckbox.disabled = true;
+            if (item.documentsStatusView.nirTaskStatus) {
+                nirTaskCheckbox.checked = true;
+            }
+            var nirTaskStatus = document.createElement('label');
+            nirTaskStatus.htmlFor = nirTaskCheckbox;
+            nirTaskStatus.innerText = 'Задание на НИР';
 
-            var studentPhone = document.createElement('th');
-            studentPhone.innerText = item.phone;
+            var nirReportCheckbox = document.createElement('input');
+            nirReportCheckbox.type = 'checkbox';
+            nirReportCheckbox.className = 'sci-table-checkbox';
+            nirReportCheckbox.disabled = true;
+            if (item.documentsStatusView.nirReportStatus) {
+                nirReportCheckbox.checked = true;
+            }
+            var nirReportStatus = document.createElement('label');
+            nirReportStatus.htmlFor = nirReportCheckbox;
+            nirReportStatus.innerText = 'Отчет по НИР';
 
-            var studentMail = document.createElement('th');
-            studentMail.innerText = item.email;
+            // ППП...
+            var studentLongPP = document.createElement('th');
+
+            var longPPTaskCheckbox = document.createElement('input');
+            longPPTaskCheckbox.type = 'checkbox';
+            longPPTaskCheckbox.className = 'sci-table-checkbox';
+            longPPTaskCheckbox.disabled = true;
+            if (item.documentsStatusView.ppppuipdTaskStatus) {
+                longPPTaskCheckbox.checked = true;
+            }
+            var longPPTaskStatus = document.createElement('label');
+            longPPTaskStatus.htmlFor = longPPTaskCheckbox;
+            longPPTaskStatus.innerText = 'Задание по ПпППУиОПД';
+
+            var longPPReportCheckbox = document.createElement('input');
+            longPPReportCheckbox.type = 'checkbox';
+            longPPReportCheckbox.className = 'sci-table-checkbox';
+            longPPReportCheckbox.disabled = true;
+            if (item.documentsStatusView.longPPReportStatus) {
+                longPPReportCheckbox.checked = true;
+            }
+            var longPPReportStatus = document.createElement('label');
+            longPPReportStatus.htmlFor = longPPReportCheckbox;
+            longPPReportStatus.innerText = 'Отчет по ПпППУиОПД';
+
+            // ПП
+            var studentPP = document.createElement('th');
+
+            var ppTaskCheckbox = document.createElement('input');
+            ppTaskCheckbox.type = 'checkbox';
+            ppTaskCheckbox.className = 'sci-table-checkbox';
+            ppTaskCheckbox.disabled = true;
+            if (item.documentsStatusView.ppppuipdTaskStatus) {
+                ppTaskCheckbox.checked = true;
+            }
+            var ppTaskStatus = document.createElement('label');
+            ppTaskStatus.htmlFor = ppTaskCheckbox;
+            ppTaskStatus.innerText = 'Задание по ПП';
+
+            var ppReportCheckbox = document.createElement('input');
+            ppReportCheckbox.type = 'checkbox';
+            ppReportCheckbox.className = 'sci-table-checkbox';
+            ppReportCheckbox.disabled = true;
+            if (item.documentsStatusView.ppReportStatus) {
+                ppReportCheckbox.checked = true;
+            }
+            var ppReportStatus = document.createElement('label');
+            ppReportStatus.htmlFor = ppReportCheckbox;
+            ppReportStatus.innerText = 'Отчет по ПП:';
+
+            // ВКР
+            var studentVkr = document.createElement('th');
+
+            var vkrAdvisorFeedbackCheckbox = document.createElement('input');
+            vkrAdvisorFeedbackCheckbox.type = 'checkbox';
+            vkrAdvisorFeedbackCheckbox.className = 'sci-table-checkbox';
+            vkrAdvisorFeedbackCheckbox.disabled = true;
+            if (item.documentsStatusView.vkrAdvisorFeedback) {
+                vkrAdvisorFeedbackCheckbox.checked = true;
+            }
+            var vkrAdvisorFeedbackStatus = document.createElement('label');
+            vkrAdvisorFeedbackStatus.htmlFor = vkrAdvisorFeedbackCheckbox;
+            vkrAdvisorFeedbackStatus.innerText = 'Отзыв руководителя:';
+
+            var vkrAdvisorFeedbackDiv = document.createElement('div');
+            vkrAdvisorFeedbackDiv.style.minWidth = '220px';
+
+            var vkrAllowanceCheckbox = document.createElement('input');
+            vkrAllowanceCheckbox.type = 'checkbox';
+            vkrAllowanceCheckbox.className = 'sci-table-checkbox';
+            vkrAllowanceCheckbox.disabled = true;
+            if (item.documentsStatusView.vkrAllowance) {
+                vkrAllowanceCheckbox.checked = true;
+            }
+            var vkrAllowanceStatus = document.createElement('label');
+            vkrAllowanceStatus.htmlFor = vkrAllowanceCheckbox;
+            vkrAllowanceStatus.innerText = 'Допуск к ВКР:';
+
+            var vkrAllowanceStatusDiv = document.createElement('div');
+
+            var vkrTaskCheckbox = document.createElement('input');
+            vkrTaskCheckbox.type = 'checkbox';
+            vkrTaskCheckbox.className = 'sci-table-checkbox';
+            vkrTaskCheckbox.disabled = true;
+            if (item.documentsStatusView.vkrTask) {
+                vkrTaskCheckbox.checked = true;
+            }
+            var vkrTaskStatus = document.createElement('label');
+            vkrTaskStatus.htmlFor = vkrTaskCheckbox;
+            vkrTaskStatus.innerText = 'Задание ВКР:';
+
+            var vkrTaskDiv = document.createElement('div');
+
+            var vkrRPZCheckbox = document.createElement('input');
+            vkrRPZCheckbox.type = 'checkbox';
+            vkrRPZCheckbox.className = 'sci-table-checkbox';
+            vkrRPZCheckbox.disabled = true;
+            if (item.documentsStatusView.vkrRPZ) {
+                vkrRPZCheckbox.checked = true;
+            }
+            var vkrRPZStatus = document.createElement('label');
+            vkrRPZStatus.htmlFor = vkrRPZCheckbox;
+            vkrRPZStatus.innerText = 'РПЗ:';
+
+            var vkrRPZDiv = document.createElement('div');
+
+            var vkrAntiplagiatCheckbox = document.createElement('input');
+            vkrAntiplagiatCheckbox.type = 'checkbox';
+            vkrAntiplagiatCheckbox.className = 'sci-table-checkbox';
+            vkrAntiplagiatCheckbox.disabled = true;
+            if (item.documentsStatusView.vkrAntiplagiat) {
+                vkrAntiplagiatCheckbox.checked = true;
+            }
+            var vkrAntiplagiatStatus = document.createElement('label');
+            vkrAntiplagiatStatus.htmlFor = vkrAntiplagiatCheckbox;
+            vkrAntiplagiatStatus.innerText = 'Антиплагиат:';
+
+            var vkrAntiplagiatDiv = document.createElement('div');
+
+            var vkrPresentationCheckbox = document.createElement('input');
+            vkrPresentationCheckbox.type = 'checkbox';
+            vkrPresentationCheckbox.className = 'sci-table-checkbox';
+            vkrPresentationCheckbox.disabled = true;
+            if (item.documentsStatusView.vkrPresentation) {
+                vkrPresentationCheckbox.checked = true;
+            }
+            var vkrPresentationStatus = document.createElement('label');
+            vkrPresentationStatus.htmlFor = vkrPresentationCheckbox;
+            vkrPresentationStatus.innerText = 'Презентация:';
+
+            var vkrPresentationDiv = document.createElement('div');
 
             var studentButtonTh = document.createElement('th');
             var studentButton = document.createElement('button');
+            studentButton.style.minWidth = '100px';
             studentButton.className = 'student-table-button';
             studentButton.innerText = 'Перейти к студенту';
 
             student.appendChild(studentNum);
             studentFio.appendChild(popover);
             student.appendChild(studentFio);
-            student.appendChild(studentGroup);
-            student.appendChild(studentPhone);
-            student.appendChild(studentMail);
+
+            studentNir.appendChild(nirTaskStatus);
+            studentNir.appendChild(nirTaskCheckbox);
+            studentNir.appendChild(nirReportStatus);
+            studentNir.appendChild(nirReportCheckbox);
+            student.appendChild(studentNir);
+
+            studentLongPP.appendChild(longPPTaskStatus);
+            studentLongPP.appendChild(longPPTaskCheckbox);
+            studentLongPP.appendChild(longPPReportStatus);
+            studentLongPP.appendChild(longPPReportCheckbox);
+            student.appendChild(studentLongPP);
+
+            studentPP.appendChild(ppTaskStatus);
+            studentPP.appendChild(ppTaskCheckbox);
+            studentPP.appendChild(ppReportStatus);
+            studentPP.appendChild(ppReportCheckbox);
+            student.appendChild(studentPP);
+
+            vkrAdvisorFeedbackDiv.appendChild(vkrAdvisorFeedbackStatus);
+            vkrAdvisorFeedbackDiv.appendChild(vkrAdvisorFeedbackCheckbox);
+            studentVkr.appendChild(vkrAdvisorFeedbackDiv);
+
+            vkrAllowanceStatusDiv.appendChild(vkrAllowanceStatus);
+            vkrAllowanceStatusDiv.appendChild(vkrAllowanceCheckbox);
+            studentVkr.appendChild(vkrAllowanceStatusDiv);
+
+            vkrTaskDiv.appendChild(vkrTaskStatus);
+            vkrTaskDiv.appendChild(vkrTaskCheckbox);
+            studentVkr.appendChild(vkrTaskDiv);
+
+            vkrRPZDiv.appendChild(vkrRPZStatus);
+            vkrRPZDiv.appendChild(vkrRPZCheckbox);
+            studentVkr.appendChild(vkrRPZDiv);
+
+            vkrAntiplagiatDiv.appendChild(vkrAntiplagiatStatus);
+            vkrAntiplagiatDiv.appendChild(vkrAntiplagiatCheckbox);
+            studentVkr.appendChild(vkrAntiplagiatDiv);
+
+            vkrPresentationDiv.appendChild(vkrPresentationStatus);
+            vkrPresentationDiv.appendChild(vkrPresentationCheckbox);
+            studentVkr.appendChild(vkrPresentationDiv);
+
+            student.appendChild(studentVkr);
+
             studentButtonTh.appendChild(studentButton);
             student.appendChild(studentButtonTh);
             document.getElementById('student-table-body').appendChild(student);
