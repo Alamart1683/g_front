@@ -9,6 +9,8 @@ import LoginPage from './pages/guest/LoginPage';
 import RegisterPage from './pages/guest/RegisterPage';
 import ForgottenPasswordPage from './pages/guest/FogottenPasswordPage';
 import StartPage from './pages/guest/StartPage';
+import OrdersPage from './pages/common/OrdersPage'
+import TemplatesPage from './pages/common/TemplatesPage'
 import AuthRoute from './auth/AuthRoute';
 import GuestHeader from './components/GuestHeader';
 import Footer from './components/Footer';
@@ -37,6 +39,9 @@ export default function App() {
     setAuthTokens(data);
   }
   
+  // <AuthRoute exact path='/orders' component={OrdersPage} />
+  // <AuthRoute exact path='/templates' component={TemplatesPage} />
+
   return (
       <AuthContext.Provider value={{ authTokens, setAuthTokens: setTokens }}>
         
@@ -53,6 +58,10 @@ export default function App() {
             <Route exact path='/guest/login' component={LoginPage} />
             <Route exact path='/guest/registration' component={RegisterPage} />
             <Route exact path='/guest/forgotten_password' component={ForgottenPasswordPage} />
+            <AuthRoute exact path='/stu/orders' component={OrdersPage} />
+            <AuthRoute exact path='/stu/templates' component={TemplatesPage} />
+            <AuthRoute exact path='/sca/orders' component={OrdersPage} />
+            <AuthRoute exact path='/sca/templates' component={TemplatesPage} />
 
             <AuthRoute exact path='/stu/info' component={StudentInfoPage} />
 

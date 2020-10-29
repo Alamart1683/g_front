@@ -324,7 +324,7 @@ export default function StudentInfoPage(){
             //console.log('sent');
             var versionId = $(this).parent().parent().attr('id');
             var arrayID = versionId.split('-')[2];
-            //console.log(arrayID);
+            console.log(arrayID);
             axios({
                 url: apiURL + '/student/document/management/task/nir/send',
                 method: 'POST',

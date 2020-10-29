@@ -8,6 +8,9 @@ import { apiURL } from '../Config';
 
 //import iconBell from '../images/icons/bell.png';
 import iconInfo from '../images/icons/info.png';
+import orderImage from '../images/icons/order.png';
+import templateImage from '../images/icons/template.png';
+import exitImage from '../images/icons/exit.png';
 //import iconDisc from '../images/icons/disc.png';
 //import iconMyProject from '../images/icons/myproject.png';
 
@@ -55,8 +58,21 @@ export default function StudentHeader() {
                         Научный руководитель: <br/>{scientificAdvisor}
                     </button>
                 </Nav.Link>
+                <Nav.Link as={Link} to='/stu/orders'>
+                    <button type='button' className='student-navbar-button dark-background light size-30'>
+                        <Image src={orderImage} thumbnail className='student-navbar-image dark-background'/>
+                        Приказы
+                    </button>
+                </Nav.Link>
+                <Nav.Link as={Link} to='/stu/templates'>
+                    <button type='button' className='student-navbar-button dark-background light size-30'>
+                        <Image src={templateImage} thumbnail className='student-navbar-image dark-background'/>
+                        Шаблоны <br/> заданий
+                    </button>
+                </Nav.Link>
                 <Nav.Link>
                     <button type='button' onClick={ () => { logOut() }} className='student-navbar-button dark-background light size-30'>
+                        <Image src={exitImage} thumbnail className='student-navbar-image dark-background'/>
                         Выйти
                     </button>
                 </Nav.Link>
