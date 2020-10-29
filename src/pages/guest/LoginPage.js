@@ -90,14 +90,9 @@ export default function LoginPage() {
             <Form.Label className="size-21 dark loginForm-label4">Пароль</Form.Label>
             <Form.Control type="password" onChange={e => {setPassword(e.target.value); setPopoverShow(false);}} 
               placeholder="Введите пароль" className="size-24 loginForm-input"/>
-            <Link to="/guest/forgotten_password">
-                <Form.Text className="size-21 dark loginForm-label2">
-                  Забыли пароль? Восстановить
-                </Form.Text>
-            </Link>
           </Form.Group>
 
-          <Form.Group controlId="formLoginSubmit" onClick={postLogin} className='loginForm-formGroup'>
+          <Form.Group controlId="formLoginSubmit" onClick={postLogin} className='loginForm-formGroup' style={{marginTop: '80px'}}>
             
             <OverlayTrigger trigger='click' placement='right' show={popoverShow} overlay={errorPopover}>
               <button type='submit' className="size-32 dark-background light loginForm-button">Войти в систему</button>
@@ -105,10 +100,10 @@ export default function LoginPage() {
             
           </Form.Group>
 
-          <p className="size-24 dark loginForm-label3">Или</p>
+          <p className="size-24 dark loginForm-label3">Забыли пароль?</p>
 
-          <Link to="/guest/registration" >
-            <button type='button' className="size-32 dark-background light loginForm-button">Создать аккаунт</button>
+          <Link to="/guest/forgotten_password" >
+            <button type='button' className="size-32 dark-background light loginForm-button">Восстановить</button>
           </Link>
 
         </Form>

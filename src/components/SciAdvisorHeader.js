@@ -4,6 +4,7 @@ import { Navbar, Nav, Image } from 'react-bootstrap';
 import { useAuthContext } from '../auth/AuthContext';
 
 import iconStudents from '../images/icons/students.png';
+import iconDocuments from '../images/icons/documents.png';
 
 export default function SciAdvisorHeader() {
 
@@ -20,6 +21,12 @@ export default function SciAdvisorHeader() {
                     <button type='button' className='student-navbar-button dark-background light size-30'>
                         <Image src={iconStudents} thumbnail className='student-navbar-image dark-background' />
                         Мои студенты
+                    </button>
+                </Nav.Link>
+                <Nav.Link as={Link} to='/sca/stu-docs'>
+                    <button type='button' className='student-navbar-button dark-background light size-30'>
+                        <Image src={iconDocuments} thumbnail className='student-navbar-image dark-background' />
+                        Документы<br/>студентов
                     </button>
                 </Nav.Link>
                 <Nav>

@@ -14,6 +14,10 @@ import infoBlock1 from '../../images/infographics blocks/block1_0.png';
 import infoBlock2 from '../../images/infographics blocks/block2_0.png';
 import infoBlock3 from '../../images/infographics blocks/block3_0.png';
 import infoBlock4 from '../../images/infographics blocks/block4_0.png';
+import infoBlock11 from '../../images/infographics blocks/block1.png';
+import infoBlock22 from '../../images/infographics blocks/block2.png';
+import infoBlock33 from '../../images/infographics blocks/block3.png';
+import infoBlock44 from '../../images/infographics blocks/block4.png';
 
 import iconDocument from '../../images/icons/documents.png';
 import iconProject from '../../images/icons/myproject.png';
@@ -111,7 +115,7 @@ export default function StudentInfoPage(){
                 // Кнопка скачать документ
                 var downloadButton = document.createElement('button');
                 downloadButton.className = 'dark size-24 nir-version-header-button nir-version-download-button';
-                downloadButton.innerText = 'Скачать документ';
+                downloadButton.innerText = 'Сохранить документ';
                 downloadButton.type='button';
 
                 // Кнопка удалить
@@ -120,7 +124,7 @@ export default function StudentInfoPage(){
                 deleteButton.innerText = 'Удалить версию';
                 deleteButton.type='button';
                 // Запретить удаление, если версия отправлена
-                if (item.status !== 'Не отправлено') {
+                if (item.status !== 'Не отправлено' && item.status !== 'Замечания') {
                     deleteButton.disabled = true;
                 }
 
@@ -277,7 +281,7 @@ export default function StudentInfoPage(){
                 // Кнопка скачать отчёт
                 var downloadButton = document.createElement('button');
                 downloadButton.className = 'dark size-24 nir-version-header-button nir-otchet-download-button';
-                downloadButton.innerText = 'Скачать документ';
+                downloadButton.innerText = 'Сохранить документ';
                 downloadButton.type='button';
 
                 // Кнопка удалить
@@ -285,7 +289,7 @@ export default function StudentInfoPage(){
                 deleteButton.className = 'dark size-24 nir-version-header-button nir-otchet-delete-button';
                 deleteButton.innerText = 'Удалить версию';
                 deleteButton.type='button';
-                if (item.status !== 'Не отправлено') {
+                if (item.status !== 'Не отправлено' && item.status !== 'Замечания') {
                     deleteButton.disabled = true;
                 }
 
@@ -342,7 +346,6 @@ export default function StudentInfoPage(){
         $('.nir-version-download-button').off().on('click', function(event) {
             var versionId = $(this).parent().parent().attr('id');
             var arrayID = versionId.split('-')[2];
-            //console.log(arrayID);
             axios({
                 url: apiURL + '/document/download/version',
                 method: 'GET',
@@ -497,7 +500,6 @@ export default function StudentInfoPage(){
             });
         });
 
-        // TODO
         // Скачать отчёт
         $('.nir-otchet-download-button').off().on('click', function(event) {
             var versionId = $(this).parent().parent().attr('id');
@@ -553,8 +555,28 @@ export default function StudentInfoPage(){
 
     return(
         <Form className='info-form light-background'>
-            <Tabs defaultActiveKey='info1' className='info-form-main-tabs'>
-                <Tab eventKey='info1' title={<Image src={infoBlock1} thumbnail className='info-form-image'/>} className='info-form-tabs'>
+            <Tabs defaultActiveKey='info1' className='info-form-main-tabs' onSelect={(firstTab) => {
+                    $('#image1').attr('src', infoBlock1);
+                    $('#image2').attr('src', infoBlock2);
+                    $('#image3').attr('src', infoBlock3);
+                    $('#image4').attr('src', infoBlock4);
+                    console.log(firstTab);
+                    switch(firstTab) {
+                        case 'info1':
+                            $('#image1').attr('src', infoBlock11);
+                            break;
+                        case 'info2':
+                            $('#image2').attr('src', infoBlock22);
+                            break;
+                        case 'info3':
+                            $('#image3').attr('src', infoBlock33);
+                            break;
+                        case 'info4':
+                            $('#image4').attr('src', infoBlock44);
+                            break;
+                    }
+                }}>
+                <Tab eventKey='info1'  title={<Image id='image1' src={infoBlock11} thumbnail className='info-form-image'/>} className='info-form-tabs'>
                     <InfoTextBlock1/>
                     <div className='info-break-div'>&nbsp;</div>
                     <Tabs defaultActiveKey='none' onSelect={() => { setTimeout(function(){window.scrollTo(0, 2000);},1);  }} className='info-form-subtab light-background container-fluid'>
@@ -567,6 +589,8 @@ export default function StudentInfoPage(){
                             <div className='info-sub-tab-div'>
 
                                 <div className='info-break-div'  style={{marginBottom: '20px'}}>&nbsp;</div>
+
+                                <p className='size-30 dark info-sub-tab-title'>Задание на НИР</p>
 
                                 <div id='student-nir-task-version-div' className='student-nir-task-version-div light-background'></div>
 
@@ -606,6 +630,8 @@ export default function StudentInfoPage(){
                         }>
                             <div className='info-break-div'  style={{marginBottom: '20px'}}>&nbsp;</div>
 
+                            <p className='size-30 dark info-sub-tab-title'>Отчет о прохождении НИР</p>
+
                             <div id='student-nir-otchet-version-div' className='student-nir-task-version-div light-background'></div>
                             
                             <div className='info-sub-tab-div'>
@@ -616,10 +642,12 @@ export default function StudentInfoPage(){
                                                if (e.target.files[0].type === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document') {
                                                     fileNirOtchet = e.target.files[0];
                                                     document.getElementById('fileNirName').innerHTML = 'Файл выбран';
+                                                    document.getElementById('make-nir-otchet-button').disabled = false;
                                                 }
                                                 else {
                                                     fileNirOtchet = null;
                                                     document.getElementById('fileNirName').innerHTML = 'Ошибка загрузки файла!';
+                                                    document.getElementById('make-nir-otchet-button').disabled = true;
                                                 } 
                                             }
                                         }} 
@@ -628,7 +656,7 @@ export default function StudentInfoPage(){
                                         <Image src={iconInfo} thumbnail className='dark-background thumbnail-icon'/>
                                         <p id='fileNirName' style={{display: 'inline-block'}}>Выбрать файл с содержанием отчета</p>
                                     </label>
-                                    <button type='button' id='make-nir-otchet-button' className='size-30 light dark-background info-button-inline-block'>
+                                    <button type='button' id='make-nir-otchet-button' disabled className='size-30 light dark-background info-button-inline-block'>
                                         <Image src={iconProject} thumbnail className='dark-background thumbnail-icon'/>
                                         Сформировать и загрузить версию отчета
                                     </button>
@@ -643,14 +671,14 @@ export default function StudentInfoPage(){
                         </Tab>
                     </Tabs>
                 </Tab>
-                <Tab eventKey='info2' title={<Image src={infoBlock2} thumbnail className='info-form-image'/>}>
+                <Tab eventKey='info2' title={<Image id='image2' src={infoBlock2} thumbnail className='info-form-image'/>}>
                     <InfoTextBlock2/>
                 </Tab>
-                <Tab eventKey='info3' title={<Image src={infoBlock3} thumbnail className='info-form-image'/>}>
+                <Tab eventKey='info3' title={<Image id='image3' src={infoBlock3} thumbnail className='info-form-image'/>}>
                     <InfoTextBlock3/>
                     
                 </Tab>
-                <Tab eventKey='info4' title={<Image src={infoBlock4} thumbnail className='info-form-image'/>}>
+                <Tab eventKey='info4' title={<Image id='image4' src={infoBlock4} thumbnail className='info-form-image'/>}>
                     <InfoTextBlock4/>
                 </Tab>
             </Tabs>

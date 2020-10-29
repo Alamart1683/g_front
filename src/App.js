@@ -16,12 +16,16 @@ import NoMatch from './components/NoMatch';
 
 import StudentHeader from './components/StudentHeader';
 import StudentInfoPage from './pages/student/StudentInfoPage';
-import StudentDocumentPage from './pages/student/StudentDocumentPage';
+//import StudentDocumentPage from './pages/student/StudentDocumentPage';
 
 import SciAdvisorHeader from './components/SciAdvisorHeader';
 import SciAdvisorStudentsPage from './pages/scientific_advisor/SciAdvisorStudentsPage';
 import ScaStuViewHeader from './components/ScaStuViewHeader';
 import ScaStuViewPage from './pages/scientific_advisor/ScaStuViewPage';
+import SciAdvisorStudentsDocsPage from './pages/scientific_advisor/SciAdvisorStudentsDocsPage';
+
+import HocHeader from './components/HocHeader';
+import HocDocumentooborotPage from './pages/head_of_cafedra/HocDocumentooborotPage';
 
 export default function App() {
 
@@ -44,6 +48,7 @@ export default function App() {
           <AuthRoute path='/stu' component={StudentHeader} />
           <AuthRoute path='/sca' component={SciAdvisorHeader} />
           <AuthRoute path='/sca-stu' component={ScaStuViewHeader} />
+          <AuthRoute path='/hoc' component={HocHeader} />
 
           <Switch>
             <Route exact path='/' component={StartPage} />
@@ -52,10 +57,12 @@ export default function App() {
             <Route exact path='/guest/forgotten_password' component={ForgottenPasswordPage} />
 
             <AuthRoute exact path='/stu/info' component={StudentInfoPage} />
-            <AuthRoute exact path='/stu/docs' component={StudentDocumentPage} />
 
             <AuthRoute exact path='/sca/students' component={SciAdvisorStudentsPage} />
+            <AuthRoute exact path='/sca/stu-docs' component={SciAdvisorStudentsDocsPage} />
             <AuthRoute exact path='/sca-stu/view' component={ScaStuViewPage} />
+
+            <AuthRoute exact path='/hoc/documentooborot' component={HocDocumentooborotPage} />
 
             <Route path='*' component={NoMatch} />
           </Switch>

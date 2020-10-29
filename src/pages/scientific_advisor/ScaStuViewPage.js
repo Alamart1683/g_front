@@ -118,7 +118,7 @@ export default function ScaStuViewPage() {
                 // Кнопка скачать документ
                 var downloadButton = document.createElement('button');
                 downloadButton.className = 'dark size-24 nir-version-header-button nir-version-download-button';
-                downloadButton.innerText = 'Скачать документ';
+                downloadButton.innerText = 'Сохранить документ';
                 downloadButton.type='button';
 
                 // Кнопка удалить
@@ -127,7 +127,7 @@ export default function ScaStuViewPage() {
                 deleteButton.innerText = 'Удалить версию';
                 deleteButton.type='button';
                 // Запретить удаление, если версия отправлена
-                if (item.status !== 'Не отправлено') {
+                if (item.status !== 'Не отправлено' && item.status !== 'Замечания') {
                     deleteButton.disabled = true;
                 }
 
@@ -326,7 +326,7 @@ export default function ScaStuViewPage() {
                 // Кнопка скачать отчёт
                 var downloadButton = document.createElement('button');
                 downloadButton.className = 'dark size-24 nir-version-header-button nir-otchet-download-button';
-                downloadButton.innerText = 'Скачать документ';
+                downloadButton.innerText = 'Сохранить документ';
                 downloadButton.type='button';
 
                 // Кнопка удалить
@@ -334,7 +334,7 @@ export default function ScaStuViewPage() {
                 deleteButton.className = 'dark size-24 nir-version-header-button nir-otchet-delete-button';
                 deleteButton.innerText = 'Удалить версию';
                 deleteButton.type='button';
-                if (item.status !== 'Не отправлено') {
+                if (item.status !== 'Не отправлено' && item.status !== 'Замечания') {
                     deleteButton.disabled = true;
                 }
 
@@ -344,7 +344,6 @@ export default function ScaStuViewPage() {
                 titlesArea.appendChild(versionName);
                 titlesArea.appendChild(versionStatus);
                 nirVersionHeader.appendChild(titlesArea);
-
 
                 dropdownDiv.appendChild(sendButton);
                 dropdownContent.appendChild(statusOdobreno);
@@ -418,7 +417,6 @@ export default function ScaStuViewPage() {
         $('.nir-version-download-button').off().on('click', function(event) {
             var versionId = $(this).parent().parent().attr('id');
             var arrayID = versionId.split('-')[2];
-            //console.log(arrayID);
             axios({
                 url: apiURL + '/document/download/version',
                 method: 'GET',
@@ -436,7 +434,6 @@ export default function ScaStuViewPage() {
                 link.setAttribute('download', 'Задание на НИР.docx');
                 document.body.appendChild(link);
                 link.click();
-                
               }).catch(result => {
                 console.log(result.data);
             });
@@ -444,10 +441,10 @@ export default function ScaStuViewPage() {
 
         // Удалить версию задания
         $('.nir-version-delete-button').off().on('click', function(event) {
-            //console.log('delete');
+            console.log('delete');
             var versionId = $(this).parent().parent().attr('id');
             var arrayID = versionId.split('-')[2];
-            //console.log(arrayID);
+            console.log(arrayID);
             axios({
                 url: apiURL + '/scientific_advisor/document/task/version/delete',
                 method: 'DELETE',
@@ -459,6 +456,7 @@ export default function ScaStuViewPage() {
                     'Authorization': 'Bearer ' + authTokens.accessToken 
                 },
               }).then((response) => {
+                //console.log(response);
                 window.location.reload(true);
               }).catch(result => {
                 console.log(result.data);
@@ -651,6 +649,8 @@ export default function ScaStuViewPage() {
 
                                 <div className='info-break-div'  style={{marginBottom: '20px'}}>&nbsp;</div>
 
+                                <p className='size-30 dark info-sub-tab-title'>Задание на НИР</p>
+
                                 <div id='student-nir-task-version-div' className='student-nir-task-version-div light-background'></div>
 
                                 <div className='info-row'>
@@ -689,6 +689,8 @@ export default function ScaStuViewPage() {
                         }>
                             <div className='info-break-div'  style={{marginBottom: '20px'}}>&nbsp;</div>
 
+                            <p className='size-30 dark info-sub-tab-title'>Отчет о прохождении НИР</p>
+
                             <div id='student-nir-otchet-version-div' className='student-nir-task-version-div light-background'></div>
                             
                             <div className='info-sub-tab-div'>
@@ -699,10 +701,12 @@ export default function ScaStuViewPage() {
                                                if (e.target.files[0].type === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document') {
                                                     fileNirOtchet = e.target.files[0];
                                                     document.getElementById('fileNirName').innerHTML = 'Файл выбран';
+                                                    document.getElementById('make-nir-otchet-button').disabled = false;
                                                 }
                                                 else {
                                                     fileNirOtchet = null;
                                                     document.getElementById('fileNirName').innerHTML = 'Ошибка загрузки файла!';
+                                                    document.getElementById('make-nir-otchet-button').disabled = true;
                                                 } 
                                             }
                                         }} 
@@ -711,7 +715,7 @@ export default function ScaStuViewPage() {
                                         <Image src={iconInfo} thumbnail className='dark-background thumbnail-icon'/>
                                         <p id='fileNirName' style={{display: 'inline-block'}}>Выбрать файл с содержанием отчета</p>
                                     </label>
-                                    <button type='button' id='make-nir-otchet-button' className='size-30 light dark-background info-button-inline-block'>
+                                    <button type='button' id='make-nir-otchet-button' disabled className='size-30 light dark-background info-button-inline-block'>
                                         <Image src={iconProject} thumbnail className='dark-background thumbnail-icon'/>
                                         Сформировать и загрузить версию отчета
                                     </button>

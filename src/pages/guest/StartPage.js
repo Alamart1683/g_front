@@ -21,6 +21,8 @@ export default function StartPage() {
       return <Redirect to="/stu/info" />;
     case 'scientific_advisor':
       return <Redirect to='/sca/students'/>;
+    case 'head_of_cathedra':
+      return <Redirect to='/hoc/documentooborot' />;
     default:
       setAuthTokens(null);
       return <Redirect to="/guest/login" />;

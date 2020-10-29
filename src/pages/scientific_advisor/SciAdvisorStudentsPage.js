@@ -5,6 +5,8 @@ import axios from 'axios';
 import { useAuthContext } from '../../auth/AuthContext';
 import { apiURL } from '../../Config';
 import $ from 'jquery';
+import Popper from 'popper.js';
+import 'bootstrap/dist/js/bootstrap.bundle.min';
 
 import iconLookingGlass from '../../images/icons/lookingglass.png';
 
@@ -52,8 +54,21 @@ export default function SciAdvisorStudentsPage() {
             var studentNum = document.createElement('th');
             studentNum.innerText = i+1;
 
+            // Имя студента
             var studentFio = document.createElement('th');
-            studentFio.innerText = item.fio;
+            //studentFio.innerText = item.fio;
+
+            var popover = document.createElement('a');
+            popover.href='#';
+            popover.className = 'student-popover dark size-24';
+            $(popover).attr('data-toggle', 'popover');
+            $(popover).attr('title', 'Данные студента:');
+            $(popover).attr('data-html', 'true');
+            $(popover).attr('data-content', "Группа: " + item.group + 
+                                            "<br /> Телефон: " + item.phone +
+                                            "<br /> Почта: " + item.email);
+            popover.innerText = item.fio;
+            //popover.dataContent = 'content';
 
             var studentGroup = document.createElement('th');
             studentGroup.innerText = item.group;
@@ -70,6 +85,7 @@ export default function SciAdvisorStudentsPage() {
             studentButton.innerText = 'Перейти к студенту';
 
             student.appendChild(studentNum);
+            studentFio.appendChild(popover);
             student.appendChild(studentFio);
             student.appendChild(studentGroup);
             student.appendChild(studentPhone);
@@ -90,26 +106,29 @@ export default function SciAdvisorStudentsPage() {
             setRedirect(true);
         });
 
+        $('[data-toggle="popover"]').popover();
+
+        $('body').on('click', function (e) {
+            $('[data-toggle=popover]').each(function () {
+                if (!$(this).is(e.target) && $(this).has(e.target).length === 0 && $('.popover').has(e.target).length === 0) {
+                    $(this).popover('hide');
+                }
+            });
+        });
     });
 
     return(
         <div className='sci-advisor-students-form'>
-            <div className='sci-advisor-students-search-div light-background'>
-                <input id='studentSearch' type='text' className='sci-advisor-students-search dark size-32'/>
-                <button onClick={()=>{ console.log('search')}} className='sci-advisor-students-search-button dark-background light size-32'>
-                    <Image src={iconLookingGlass} thumbnail className='icon-smaller dark-background'/>
-                    Поиск
-                </button>
-            </div>
             <div>
                 <Table striped bordered hover>
                     <thead className='size-24 dark'>
                         <tr>
                             <th>#</th>
                             <th>ФИО</th>
-                            <th>Группа</th>
-                            <th>Телефон</th>
-                            <th>Почта</th>
+                            <th>НИР</th>
+                            <th>ПпППУиОПД</th>
+                            <th>ПП</th>
+                            <th>ВКР</th>
                             <th></th>
                         </tr>
                     </thead>

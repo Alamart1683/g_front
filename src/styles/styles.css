@@ -72,7 +72,7 @@ html, body {
 	margin-left: auto;
     margin-right: auto;
 	width: 405px;
-	height: 575px;
+	height: 625px;
 	text-align: center;
 	display: block;
 	border-radius: 7px;
@@ -106,11 +106,10 @@ html, body {
 	margin-bottom: 28px;
 }
 
-/* Для "ИЛИ" */
 .loginForm-label3 {
 	display: block;
-	margin-top: 16px;
-	margin-bottom: 16px;
+	margin-top: 50px;
+	margin-bottom: 3px;
 }
 
 /* Для "Пароль" */
@@ -324,7 +323,7 @@ html, body {
 }
 
 .info-input-label {
-	margin-left: 17%;
+	margin-left: 5%;
 }
 
 .info-input {
@@ -336,8 +335,8 @@ html, body {
 }
 
 .info-input-area {
-	margin-left: 140px;
-	width: 414px;
+	margin-left: 40px;
+	width: 670px;
 	height: 84px;
 	padding: 6px 12px;
 	border-radius: 7px;
@@ -391,8 +390,16 @@ html, body {
 	border-width: 0px;
 }
 
+.info-button-inline-block:disabled, .info-button-inline-block:disabled .thumbnail-icon {
+	background-color:  #859dbb;
+}
+
+.info-button-inline-block:disabled {
+	pointer-events: none;
+}
+
 .info-button-inline-block:hover, .info-button-inline-block:hover .thumbnail-icon {
-    background-color: #618FCA;
+    background-color: #618FCA !important;
 }
 
 .info-button-inline-block:focus {
@@ -441,16 +448,15 @@ html, body {
 
 .student-document-form-menu {
 	float: left;
-	width: 345px;
+	width: 210px;
 	border-radius: 7px;
-	min-height: 500px;
 	padding: 10px 10px;
 }
 
 .student-document-form-docs {
 	float: left;
 	margin-left: 10px;
-	width: 1085px;
+	width: 1220px;
 	border-radius: 7px;
 	min-height: 780px;
 	padding: 10px 10px;
@@ -666,9 +672,8 @@ html, body {
 }
 
 .nir-version {
-	width: 1290px;
-	background-color: rgb(255, 255, 255);
-	margin-left: 100px;
+	width: 1450px;
+	margin-left: 15px;
 	margin-bottom: 20px;
 	border-radius: 7px;
 }
@@ -686,7 +691,7 @@ html, body {
 }
 
 .nir-version-clickable {
-	width: 670px;
+	width: 810px;
 	height: 50px;
 	border-radius: 7px;
 	cursor: pointer;
@@ -698,13 +703,12 @@ html, body {
 }
 
 .nir-version-titles {
-	width: 670px;
+	width: 810px;
 	height: 50px;
 	border-radius: 7px;
 	display: inline-block;
 	position: relative;
 	top: -2px;
-	
 	padding-left: 15px;
 	padding-top: 8px;
 }
@@ -728,8 +732,8 @@ html, body {
 }
 
 .nir-text-area {
-	margin-left: 40px;
-	width: 414px;
+	margin-left: 25px;
+	width: 670px;
 	height: 84px;
 	padding: 6px 12px;
 	border-radius: 7px;
@@ -737,8 +741,8 @@ html, body {
 }
 
 .nir-text-area2 {
-	margin-left: 135px;
-	width: 414px;
+	margin-left: 40px;
+	width: 670px;
 	height: 84px;
 	padding: 6px 12px;
 	border-radius: 7px;
@@ -774,50 +778,6 @@ html, body {
 	display: block;
 }
 
-.sci-advisor-students-search-div {
-	display: inline-block;
-	width: 100%;
-	height: 88px;
-	margin-bottom: 10px;
-	border-radius: 7px;
-	padding: 10px 10px;
-}
-
-.sci-advisor-students-search {
-	margin-top: 0px;
-	width: 1238px;
-	border-radius: 7px;
-	border-width: 0;
-	height: 68px;
-	padding-left: 6px;
-	outline: none !important;
-    border: none !important;
-    -webkit-box-shadow: none !important;
-    box-shadow: none !important;
-}
-
-.sci-advisor-students-search-button {
-	width: 172px;
-	height: 68px;
-	border-radius: 7px;
-	border-width: 0;
-	padding: 5px 5px;
-	margin-left: 1249px;
-	margin-top: -67px;
-	display: table;
-}
-
-.sci-advisor-students-search-button:hover, .sci-advisor-students-search-button:hover .icon-smaller {
-    background-color: #618FCA;
-}
-
-.sci-advisor-students-search-button:focus {
-    outline: none !important;
-    border: none !important;
-    -webkit-box-shadow: none !important;
-    box-shadow: none !important;
-}
-
 .sci-advisor-status-dropdown-div {
 	position: relative;
 	display: inline-block;
@@ -846,6 +806,71 @@ html, body {
 
 .nir-approval-message {
 	text-align: center;
+}
+
+.hoc-documentooborot-div {
+	margin-top: 20px;
+	margin-left: auto;
+	margin-right: auto;
+	width: 1489px;
+	min-height: 500px;
+}
+
+.hoc-documentooborot-side-div {
+	float: left;
+	width: 345px;
+	border-radius: 7px;
+	min-height: 500px;
+	padding: 10px 10px;
+}
+
+.hoc-documentooborot-menu-button {
+	width: 285px;
+	border-radius: 7px;
+	border-width: 0px;
+	margin-bottom: 5px;
+}
+
+.hoc-documentooborot-content {
+	float: left;
+	margin-left: 10px;
+	width: 1130px;
+	border-radius: 7px;
+	min-height: 500px;
+	padding: 10px 10px;
+	display: none;
+}
+
+.hoc-documentooborot-content-selected {
+	display: block;
+}
+
+.hoc-documentooborot-input {
+	margin-left: 30px;
+	width: 414px;
+	height: 44px;
+	padding: 6px 12px;
+	border-radius: 7px;
+	border-width: 0px;
+}
+
+.info-sub-tab-title {
+	display: block;
+	text-align: center;
+}
+
+.student-popover {
+	white-space: pre-wrap;
+}
+
+.popover-header {
+	font-size: 24px;
+	color: #3A5985;
+}
+
+.popover-body {
+	font-size: 20px;
+	color: #3A5985;
 }
 
 /* Отступ снизу, размер футера */
