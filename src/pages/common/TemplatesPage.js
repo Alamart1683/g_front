@@ -102,19 +102,47 @@ export default function TemplatesPage() {
                 console.log(result.data);
             });
         });
+
+        $('.contentButton').off().on('click', function (event) {
+            $('.contentPanel').addClass('contentPanel-hidden');
+            var buttonId = $(this).attr('id');
+            switch (buttonId) {
+                case 'button-1':
+                    $('#contentPanel1').removeClass('contentPanel-hidden');
+                    break;
+                case 'button-2':
+                    $('#contentPanel2').removeClass('contentPanel-hidden');
+                    break;
+                case 'button-3':
+                    $('#contentPanel3').removeClass('contentPanel-hidden');
+                    break;
+                case 'button-4':
+                    $('#contentPanel4').removeClass('contentPanel-hidden');
+                    break;
+            }
+        })
     });
 
     return (
         <div className="templatesPanel">
             <div className="typeButtonPanel">
-                <button type='submit' className="contentButton light size-22">Научно-исследовательская работа</button>
-                <button type='submit' className="contentButton light size-22">ПпППУиОПД</button>
-                <button type='submit' className="contentButton light size-22">Преддипломная практика</button>
-                <button type='submit' className="contentButton light size-22" style={{marginRight:"0px"}}>Защита ВКР</button>
+                <button type='submit' id='button-1' className="contentButton light size-22">Научно-исследовательская работа</button>
+                <button type='submit' id='button-2' className="contentButton light size-22">ПпППУиОПД</button>
+                <button type='submit' id='button-3' className="contentButton light size-22">Преддипломная практика</button>
+                <button type='submit' id='button-4' className="contentButton light size-22" style={{marginRight:"0px"}}>Защита ВКР</button>
             </div>
 
             <div id="contentPanel1" className="contentPanel">
                 
+            </div>
+            <div id="contentPanel2" className="contentPanel contentPanel-hidden">
+
+            </div>
+            <div id="contentPanel3" className="contentPanel contentPanel-hidden">
+
+            </div>
+            <div id="contentPanel4" className="contentPanel contentPanel-hidden">
+
             </div>
         </div>
     );

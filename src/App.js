@@ -58,16 +58,16 @@ export default function App() {
             <Route exact path='/guest/login' component={LoginPage} />
             <Route exact path='/guest/registration' component={RegisterPage} />
             <Route exact path='/guest/forgotten_password' component={ForgottenPasswordPage} />
+            
+            <AuthRoute exact path='/stu/info' component={StudentInfoPage} />
             <AuthRoute exact path='/stu/orders' component={OrdersPage} />
             <AuthRoute exact path='/stu/templates' component={TemplatesPage} />
-            <AuthRoute exact path='/sca/orders' component={OrdersPage} />
-            <AuthRoute exact path='/sca/templates' component={TemplatesPage} />
-
-            <AuthRoute exact path='/stu/info' component={StudentInfoPage} />
 
             <AuthRoute exact path='/sca/students' component={SciAdvisorStudentsPage} />
             <AuthRoute exact path='/sca/stu-docs' component={SciAdvisorStudentsDocsPage} />
             <AuthRoute exact path='/sca-stu/view' component={ScaStuViewPage} />
+            <AuthRoute exact path='/sca/orders' component={OrdersPage} />
+            <AuthRoute exact path='/sca/templates' component={TemplatesPage} />
 
             <AuthRoute exact path='/hoc/documentooborot' component={HocDocumentooborotPage} />
 
