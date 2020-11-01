@@ -202,7 +202,7 @@ html, body {
 
 /* Растояние между элементами панели навигации студента */
 .student-nav .nav-link {
-	padding: 0px 1em;
+	padding: 0px 0.2em;
 }
 
 .student-nav.navbar-light {
@@ -1094,4 +1094,76 @@ html, body {
 .order-name-text {
 	display:inline-block;
 	margin-left: 20px;
+}
+
+.sca-scu-version-div {
+	width: 100%;
+	border-radius: 7px;
+	margin-bottom: 5px;
+}
+
+.sca-scu-version-header-div {
+	width: 100%;
+	border-radius: 7px;
+	height: 90px;
+}
+
+.sca-scu-version-titles-div {
+	width: 860px;
+	height: 90px;
+	display: inline-block;
+	position: relative;
+	top: 0px;
+	border-radius: 7px;
+}
+
+.sca-scu-version-button {
+	position: relative;
+	top: -71px;
+	margin-left: 5px;
+	padding: 0px 4px;
+	border-radius: 7px;
+	border-width: 0;
+	height: 90px;
+}
+
+.sca-scu-version-title-div1 {
+	display: inline-block;
+	height: 40px;
+	position: relative;
+	top: -15px;
+}
+
+.sca-scu-version-title-div2 {
+	display: inline-block;
+	margin-left: 80px;
+	height: 40px;
+	position: relative;
+	top: -30px;
+}
+
+.sca-scu-version-status-dropdown-content {
+	display: none;
+	position: absolute;
+	background-color: #f1f1f1;
+	min-width: 160px;
+	overflow: auto;
+	box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+	z-index: 1;
+	top: 20px;
+}
+
+.sca-scu-version-status-dropdown-content p {
+	padding: 12px 16px;
+	text-decoration: none;
+	display: block;
+}
+  
+.sca-scu-version-status-dropdown-content p:hover {
+	background-color: #ddd;
+	cursor: pointer;
+}
+
+.info-task-block {
+	min-height: 100px;
 }

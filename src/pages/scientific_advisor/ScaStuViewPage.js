@@ -213,13 +213,11 @@ export default function ScaStuViewPage() {
                 clickableArea.appendChild(versionStatus);
                 nirVersionHeader.appendChild(clickableArea);
 
-
                 dropdownDiv.appendChild(sendButton);
                 dropdownContent.appendChild(statusOdobreno);
                 dropdownContent.appendChild(statusZamechaniya);
                 dropdownDiv.appendChild(dropdownContent);
                 nirVersionHeader.appendChild(dropdownDiv);
-
 
                 nirVersionHeader.appendChild(downloadButton);
                 nirVersionHeader.appendChild(deleteButton);
@@ -372,9 +370,9 @@ export default function ScaStuViewPage() {
 
     // Отправить студенту отчёт со статусом
     function gradeNirOtchet(arrayId, status) {
-        console.log(nirVersions[arrayId]);
-        console.log(status);
-        console.log(nirOtchetVersions[arrayId].systemVersionID);
+        //console.log(nirVersions[arrayId]);
+        //console.log(status);
+        //console.log(nirOtchetVersions[arrayId].systemVersionID);
         axios({
             url: apiURL + '/scientific_advisor/document/management/report/nir/check',
             method: 'POST',
@@ -935,6 +933,8 @@ export default function ScaStuViewPage() {
                         case 'info4':
                             $('#image4').attr('src', infoBlock44);
                             break;
+                        default:
+                            console.log('tabError');
                     }
                 }}>
                     <Tab eventKey='info1' title={<Image id='image1' src={infoBlock11} thumbnail className='info-form-image' />} className='info-form-tabs'>

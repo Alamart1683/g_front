@@ -18,6 +18,7 @@ import NoMatch from './components/NoMatch';
 
 import StudentHeader from './components/StudentHeader';
 import StudentInfoPage from './pages/student/StudentInfoPage';
+import StudentTasksPage from './pages/student/StudentTasksPage';
 //import StudentDocumentPage from './pages/student/StudentDocumentPage';
 
 import SciAdvisorHeader from './components/SciAdvisorHeader';
@@ -60,6 +61,7 @@ export default function App() {
             <Route exact path='/guest/forgotten_password' component={ForgottenPasswordPage} />
             
             <AuthRoute exact path='/stu/info' component={StudentInfoPage} />
+            <AuthRoute exact path='/stu/tasks' component={StudentTasksPage} />
             <AuthRoute exact path='/stu/orders' component={OrdersPage} />
             <AuthRoute exact path='/stu/templates' component={TemplatesPage} />
 

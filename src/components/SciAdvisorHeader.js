@@ -45,12 +45,12 @@ export default function SciAdvisorHeader() {
                         Шаблоны <br/> заданий
                     </button>
                 </Nav.Link>
-                <Nav>
+                <Nav.Link as={Link} to='#'>
                     <button type='button' onClick={() => { logOut() }} className='student-navbar-button dark-background light size-30'>
                         <Image src={exitImage} thumbnail className='student-navbar-image dark-background'/>
                         Выйти
                     </button>
-                </Nav>
+                </Nav.Link>
             </Navbar>
         </div>
     );

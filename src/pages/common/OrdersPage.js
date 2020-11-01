@@ -3,12 +3,12 @@ import axios from 'axios';
 import { useAuthContext } from '../../auth/AuthContext';
 import { apiURL } from '../../Config';
 import $ from 'jquery';
+
 import orderImage from '../../images/icons/order.png';
 
 export default function OrdersPage() {
     const { authTokens } = useAuthContext();
     const [fetchedData, setFetchedData] = useState(false);
-    const [redirect, setRedirect] = useState(false);
     const [orders, setOrders] = useState([]);
 
     useEffect(() => {
@@ -81,6 +81,8 @@ export default function OrdersPage() {
                 case 'ВКР':
                     document.getElementById("orderContentPanel4").appendChild(orderFile);
                     break;
+                default:
+                    console.log('switchError');
             }
 
         }
@@ -133,6 +135,8 @@ export default function OrdersPage() {
                 case 'button-4':
                     $('#orderContentPanel4').removeClass('contentPanel-hidden');
                     break;
+                default:
+                    console.log('switchError');
             }
         })
 

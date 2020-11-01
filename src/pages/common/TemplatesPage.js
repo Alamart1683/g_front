@@ -8,7 +8,6 @@ import $ from 'jquery';
 export default function TemplatesPage() {
     const { authTokens } = useAuthContext();
     const [fetchedData, setFetchedData] = useState(false);
-    const [redirect, setRedirect] = useState(false);
     const [templates, setTemplates] = useState([]);
 
     useEffect(() => {
@@ -68,7 +67,22 @@ export default function TemplatesPage() {
             documentFile.appendChild(templateName);
             documentFile.appendChild(templateDownload);
 
-            document.getElementById("contentPanel1").appendChild(documentFile);
+            switch (template.documentType) {
+                case 'Научно-исследовательская работа':
+                    document.getElementById("contentPanel1").appendChild(documentFile);
+                    break;
+                case 'Практика по получению знаний и умений':
+                    document.getElementById("contentPanel2").appendChild(documentFile);
+                    break;
+                case 'Преддипломная практика':
+                    document.getElementById("contentPanel3").appendChild(documentFile);
+                    break;
+                case 'ВКР':
+                    document.getElementById("contentPanel4").appendChild(documentFile);
+                    break;
+                default:
+                    console.log('switch error');
+            }
         }
     }
 
@@ -119,6 +133,8 @@ export default function TemplatesPage() {
                 case 'button-4':
                     $('#contentPanel4').removeClass('contentPanel-hidden');
                     break;
+                default:
+                    console.log('switchError');
             }
         })
     });

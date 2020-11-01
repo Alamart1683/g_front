@@ -6,7 +6,7 @@ import { useAuthContext } from '../auth/AuthContext';
 import iconInfo from '../images/icons/info.png';
 
 export default function ScaStuHeader() {
-    const { authTokens, setAuthTokens } = useAuthContext();
+    const { setAuthTokens } = useAuthContext();
 
     function logOut() {
         setAuthTokens(null);

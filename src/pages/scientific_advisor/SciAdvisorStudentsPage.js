@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Image, Table } from 'react-bootstrap';
+import { Table } from 'react-bootstrap';
 import { Redirect } from 'react-router-dom';
 import axios from 'axios';
 import { useAuthContext } from '../../auth/AuthContext';
