@@ -1127,6 +1127,10 @@ html, body {
 	height: 90px;
 }
 
+.sca-scu-version-button:disabled {
+	background-color:  #859dbb;
+}
+
 .sca-scu-version-title-div1 {
 	display: inline-block;
 	height: 40px;
@@ -1166,4 +1170,20 @@ html, body {
 
 .info-task-block {
 	min-height: 100px;
+}
+
+.filter-nir {
+	display: none !important;
+}
+
+.filter-long-pp {
+	display: none !important;
+}
+
+.filter-pp {
+	display: none !important;
+}
+
+.filter-vkr {
+	display: none !important;
 }

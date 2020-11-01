@@ -39,9 +39,6 @@ export default function App() {
     localStorage.setItem("tokens", JSON.stringify(data));
     setAuthTokens(data);
   }
-  
-  // <AuthRoute exact path='/orders' component={OrdersPage} />
-  // <AuthRoute exact path='/templates' component={TemplatesPage} />
 
   return (
       <AuthContext.Provider value={{ authTokens, setAuthTokens: setTokens }}>

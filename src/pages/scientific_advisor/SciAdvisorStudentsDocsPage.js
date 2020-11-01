@@ -41,19 +41,70 @@ export default function SciAdvisorStudentsDocsPage() {
         });
     }
 
+    // TODO handle new file type
     function showFiles(documentArray) {
         for (var i = 0; i < documentArray.length; i++) {
-            var documentItem = documentArray[i].documentVersions;
+            var documentItem;
+
             var studentName = documentArray[i].documentDownloader.split(' ');
             studentName = studentName[0] + ' ' + studentName[1].substring(0, 1) + '. ' + studentName[2].substring(0, 1) + '.';
             var documentType = documentArray[i].documentType;
             var documentKind = documentArray[i].documentKind;
+            var documentName;
+            // TODO add more version names
+            // TODO handle other stage documents
+            switch (documentType) {
+                case 'Научно-исследовательская работа':
+                    switch (documentKind) {
+                        case 'Задание':
+                            documentName = 'Задание по НИР';
+                            documentItem = documentArray[i].taskVersions;
+                            break;
+                        case 'Отчёт':
+                            documentName = 'Отчет по НИР';
+                            documentItem = documentArray[i].reportVersions;
+                            break;
+                        default:
+                            documentName = 'Неопознанный документ по НИР';
+                    }
+                    break;
+                case 'Практика по получению знаний и умений':
+                    switch (documentKind) {
+                        case 'Задание':
+                            documentName = 'Задание по практике по получению знаний и умений';
+                            break;
+                        case 'Отчет':
+                            documentName = 'Отчет по практике по получению знаний и умений';
+                            break;
+                        default:
+                            documentName = 'Неопознанный документ по практике по получению знаний и умений';
+                    }
+                    break;
+                case 'Преддипломная практика':
+                    switch (documentKind) {
+                        default:
+                            documentName = 'Неопознанный документ по преддипломной практике';
+                    }
+                    break;
+                case 'ВКР':
+                    switch (documentKind) {
+                        default:
+                            documentName = 'Неопознанный документ по ВКР';
+                    }
+                    break;
+                default:
+                    documentName = 'Неопознанный документ';
+            }
+
             for (var j = 0; j < documentItem.length; j++) {
                 var documentVersion = documentItem[j];
                 //console.log(documentVersion);
 
                 var versionDiv = document.createElement('div');
-                versionDiv.className = 'sca-scu-version-div';
+                versionDiv.className = 'sca-scu-version-div ' + 
+                                        documentType.replace(/\s+/g, '-').toLowerCase() + 
+                                        ' ' + 
+                                        documentKind.replace(/\s+/g, '-').toLowerCase();
                 versionDiv.id = 'version-' + i + '-' + j;
 
                 var titlesDiv = document.createElement('div');
@@ -65,52 +116,11 @@ export default function SciAdvisorStudentsDocsPage() {
 
                 var versionName = document.createElement('p');
                 versionName.className = 'order-name-text light size-24';
-                // TODO add more version names
-                switch (documentType) {
-                    case 'Научно-исследовательская работа':
-                        switch (documentKind) {
-                            case 'Задание':
-                                versionName.innerText = 'Задание по НИР';
-                                break;
-                            case 'Отчёт':
-                                versionName.innerText = 'Отчет по НИР';
-                                break;
-                            default:
-                                versionName.innerText = 'Неопознанный документ по НИР';
-                        }
-                        break;
-                    case 'Практика по получению знаний и умений':
-                        switch (documentKind) {
-                            case 'Задание':
-                                versionName.innerText = 'Задание по практике по получению знаний и умений';
-                                break;
-                            case 'Отчет':
-                                versionName.innerText = 'Отчет по практике по получению знаний и умений';
-                                break;
-                            default:
-                                versionName.innerText = 'Неопознанный документ по практике по получению знаний и умений';
-                        }
-                        break;
-                    case 'Преддипломная практика':
-                        switch (documentKind) {
-                            default:
-                                versionName.innerText = 'Неопознанный документ по преддипломной практике';
-                        }
-                        break;
-                    case 'ВКР':
-                        switch (documentKind) {
-                            default:
-                                versionName.innerText = 'Неопознанный документ по ВКР';
-                        }
-                        break;
-                    default:
-                        versionName.innerText = 'Неопознанный документ';
-                }
+                versionName.innerText = documentName;
 
                 var versionStatus = document.createElement('p');
                 versionStatus.className = 'order-name-text light size-24';
-                // TODO
-                versionStatus.innerText = 'Статус: ' + 'Замечания';
+                versionStatus.innerText = 'Статус: ' + documentVersion.status;
 
                 var titleDiv1 = document.createElement('div');
                 titleDiv1.className = 'sca-scu-version-title-div1';
@@ -132,9 +142,9 @@ export default function SciAdvisorStudentsDocsPage() {
                 sendButton.innerText = 'Отправить\nстуденту:';
                 sendButton.type = 'button';
                 // Запретить отсылку, если версия отправлена
-                //if (item.status === 'Одобрено' || item.status === 'Замечания') {
-                //    sendButton.disabled = true;
-                //}
+                if (documentVersion.status === 'Одобрено' || documentVersion.status === 'Замечания') {
+                    sendButton.disabled = true;
+                }
 
                 var dropdownDiv = document.createElement('div');
                 dropdownDiv.className = 'sci-advisor-status-dropdown-div';
@@ -162,9 +172,9 @@ export default function SciAdvisorStudentsDocsPage() {
                 deleteButton.innerText = 'Удалить\nверсию';
                 deleteButton.type = 'button';
                 // Запретить удаление, если версия отправлена
-                //if (item.status !== 'Не отправлено' && item.status !== 'Замечания') {
-                //    deleteButton.disabled = true;
-                //}
+                if (documentVersion.status !== 'Не отправлено' && documentVersion.status !== 'Замечания' && documentVersion.status !== 'Рассматривается') {
+                    deleteButton.disabled = true;
+                }
 
                 var versionHeaderDiv = document.createElement('div');
                 versionHeaderDiv.className = 'sca-scu-version-header-div';
@@ -197,32 +207,45 @@ export default function SciAdvisorStudentsDocsPage() {
         }
     }
 
-    // TODO
+    // Поиск
     function searchFiles() {
-        console.log('search');
+        //console.log('search');
+        var input = $('#fileSearch')[0].value.toUpperCase();
+        console.log(input);
+        var files = $('.sca-scu-version-div');
+        for (var i = 0; i < files.length; i++) {
+            var fileText = files[i].querySelector('.sca-scu-version-titles-div').textContent.toUpperCase();
+            //console.log(fileText);
+            if (fileText.indexOf(input) > -1) {
+                files[i].classList.remove('student-file-search-hidden');
+            }
+            else {
+                files[i].classList.add('student-file-search-hidden');
+            }
+        }
     }
 
     function downloadNirTask(versionId) {
         console.log('download nir task');
         axios({
-                url: apiURL + '/document/download/version',
-                method: 'GET',
-                responseType: 'blob',
-                params: {
-                    versionID: versionId,
-                },
-                headers: {
-                    'Authorization': 'Bearer ' + authTokens.accessToken
-                },
-            }).then((response) => {
-                const url = window.URL.createObjectURL(new Blob([response.data]));
-                const link = document.createElement('a');
-                link.href = url;
-                link.setAttribute('download', 'Задание на НИР.docx');
-                document.body.appendChild(link);
-                link.click();
-            }).catch(result => {
-                console.log(result.data);
+            url: apiURL + '/document/download/version',
+            method: 'GET',
+            responseType: 'blob',
+            params: {
+                versionID: versionId,
+            },
+            headers: {
+                'Authorization': 'Bearer ' + authTokens.accessToken
+            },
+        }).then((response) => {
+            const url = window.URL.createObjectURL(new Blob([response.data]));
+            const link = document.createElement('a');
+            link.href = url;
+            link.setAttribute('download', 'Задание на НИР.docx');
+            document.body.appendChild(link);
+            link.click();
+        }).catch(result => {
+            console.log(result.data);
         });
     }
 
@@ -334,20 +357,65 @@ export default function SciAdvisorStudentsDocsPage() {
         });
     }
 
-    $(function () {
+    // TODO add more version names
+    // TODO handle other stage documents
+    // Получение ид версии документа
+    function getVersionId(arrayId1, arrayId2) {
+        var documentType = documentData[arrayId1].documentType;
+        var documentKind = documentData[arrayId1].documentKind;
 
+        switch (documentType) {
+            case 'Научно-исследовательская работа':
+                switch (documentKind) {
+                    case 'Задание':
+                        return documentData[arrayId1].taskVersions[arrayId2].systemVersionID;
+                    case 'Отчёт':
+                        return documentData[arrayId1].reportVersions[arrayId2].systemVersionID;
+                    default:
+                        console.log('getting version id error');
+                        return -1;
+                }
+            case 'Практика по получению знаний и умений':
+                switch (documentKind) {
+                    case 'Задание':
+                        return documentData[arrayId1].taskVersions[arrayId2].systemVersionID;
+                    case 'Отчёт':
+                        return documentData[arrayId1].reportVersions[arrayId2].systemVersionID;
+                    default:
+                        console.log('getting version id error');
+                        return -1;
+                }
+            case 'Преддипломная практика':
+                switch (documentKind) {
+                    default:
+                        console.log('getting version id error');
+                        return -1;
+                }
+            case 'ВКР':
+                switch (documentKind) {
+                    default:
+                        console.log('getting version id error');
+                        return -1;
+                }
+            default:
+                console.log('getting version id error');
+                        return -1;
+        }
+    }
+
+    $(function () {
+        // Вывод меню статусов
         $('.version-send-button').off().on('click', function (event) {
             $(this).parent().find('.sca-scu-version-status-dropdown-content').toggle();
         });
 
-        // TODO versionId
+        // TODO handle new document types
         // Отправить со статусом "Одобрено"
         $('.status-odobreno').off().on('click', function (event) {
-            var versionId = $(this).parent().parent().parent().parent().attr('id');
-            var arrayID1 = versionId.split('-')[1];
-            var arrayID2 = versionId.split('-')[2];
-            //console.log(documentData[arrayID1].documentVersions[arrayID2].systemDocumentID);
-            var versionId = 0;
+            var documentId = $(this).parent().parent().parent().parent().attr('id');
+            var arrayID1 = documentId.split('-')[1];
+            var arrayID2 = documentId.split('-')[2];
+            var versionId = getVersionId(arrayID1, arrayID2);
             switch (documentData[arrayID1].documentType) {
                 case 'Научно-исследовательская работа':
                     switch (documentData[arrayID1].documentKind) {
@@ -389,11 +457,10 @@ export default function SciAdvisorStudentsDocsPage() {
         // TODO versionId
         // Отправить со статусом "Замечания"
         $('.status-zamechaniya').off().on('click', function (event) {
-            var versionId = $(this).parent().parent().parent().parent().attr('id');
-            var arrayID1 = versionId.split('-')[1];
-            var arrayID2 = versionId.split('-')[2];
-            //console.log(documentData[arrayID1].documentVersions[arrayID2].systemDocumentID);
-            var versionId = 0;
+            var documentId = $(this).parent().parent().parent().parent().attr('id');
+            var arrayID1 = documentId.split('-')[1];
+            var arrayID2 = documentId.split('-')[2];
+            var versionId = getVersionId(arrayID1, arrayID2);
             switch (documentData[arrayID1].documentType) {
                 case 'Научно-исследовательская работа':
                     switch (documentData[arrayID1].documentKind) {
@@ -430,24 +497,21 @@ export default function SciAdvisorStudentsDocsPage() {
             }
         });
 
-        // TODO versionId
+        // TODO handle new document types
         // Удалить версию
         $('.version-delete-button').off().on('click', function (event) {
-            var versionId = $(this).parent().parent().attr('id');
-            var arrayID1 = versionId.split('-')[1];
-            var arrayID2 = versionId.split('-')[2];
-            //console.log(documentData[arrayID1].documentVersions[arrayID2].systemDocumentID);
-            var versionId = 0;
+            var documentId = $(this).parent().parent().attr('id');
+            var arrayID1 = documentId.split('-')[1];
+            var arrayID2 = documentId.split('-')[2];
+            var versionId = getVersionId(arrayID1, arrayID2);
             var studentId = documentData[arrayID1].systemCreatorID
             switch (documentData[arrayID1].documentType) {
                 case 'Научно-исследовательская работа':
                     switch (documentData[arrayID1].documentKind) {
                         case 'Задание':
-                            //TODO
                             deleteNirTask(studentId, versionId);
                             break;
                         case 'Отчёт':
-                            //TODO
                             deleteNirReport(studentId, versionId);
                             break;
                         default:
@@ -477,23 +541,23 @@ export default function SciAdvisorStudentsDocsPage() {
             }
         });
 
-        // TODO versionId
+        // TODO handle new document types
         // Скачать версию
         $('.version-download-button').off().on('click', function (event) {
-            var versionId = $(this).parent().parent().attr('id');
-            var arrayID1 = versionId.split('-')[1];
-            var arrayID2 = versionId.split('-')[2];
-            //console.log(documentData[arrayID1].documentVersions[arrayID2].systemDocumentID);
-            //TODO
-            var versionId = 0;
+            var documentId = $(this).parent().parent().attr('id');
+            var arrayID1 = documentId.split('-')[1];
+            var arrayID2 = documentId.split('-')[2];
+            var versionId = getVersionId(arrayID1, arrayID2);
             var studentId = documentData[arrayID1].systemCreatorID
             switch (documentData[arrayID1].documentType) {
                 case 'Научно-исследовательская работа':
                     switch (documentData[arrayID1].documentKind) {
                         case 'Задание':
+                            //console.log(versionId);
                             downloadNirTask(versionId);
                             break;
                         case 'Отчёт':
+                            //console.log(versionId);
                             downloadNirReport(versionId, studentId);
                             break;
                         default:
@@ -523,7 +587,21 @@ export default function SciAdvisorStudentsDocsPage() {
             }
         });
 
-        
+        $('#checkNir').off().on('click', function(event) {
+            $('.научно-исследовательская-работа').toggleClass('filter-nir');
+        });
+
+        $('#checkLongPP').off().on('click', function(event) {
+            $('.практика-по-получению-знаний-и-умений').toggleClass('filter-long-pp');
+        });
+
+        $('#checkPP').off().on('click', function(event) {
+            $('.преддипломная-практика').toggleClass('filter-pp');
+        });
+
+        $('#checkVkr').off().on('click', function(event) {
+            $('.вкр').toggleClass('filter-vkr');
+        });
     });
 
     return (
