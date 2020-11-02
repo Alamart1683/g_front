@@ -1197,8 +1197,38 @@ html, body {
 }
 
 .sca-projects-menu-div {
-	min-height: 300px;
+	min-height: 770px;
 	width: 490px;
 	border-radius: 7px;
 	float: left;
+	text-align: center;
+}
+
+.sca-projects-table-button {
+	display: block;
+	margin: auto;
+}
+
+.sca-projects-title {
+	margin-top: 20px;
+	margin-bottom: 15px;
+}
+
+.sca-projects-text-area {
+	width: 400px;
+	border-radius: 7px;
+}
+
+.sca-projects-dropdown {
+	width: 400px;
+	padding: 2px 4px;
+	margin-bottom: 10px;
+	border-radius: 7px;
+}
+
+.sca-projects-button {
+	width: 300px;
+	min-height: 60px;
+	border-radius: 7px;
+	margin-top: 5px;
 }

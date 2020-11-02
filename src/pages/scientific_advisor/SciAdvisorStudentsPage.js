@@ -45,11 +45,11 @@ export default function SciAdvisorStudentsPage() {
     function showStudents(studentArray) {
         for (var i=0; i<studentArray.length; i++) {
             var item = studentArray[i];
-            console.log(item);
+            //console.log(item);
 
             var student = document.createElement('tr');
             student.id = 'student' + i;
-            student.className = 'size-20 dark'
+            student.className = 'size-20 dark';
 
             var studentNum = document.createElement('th');
             studentNum.innerText = i+1;
