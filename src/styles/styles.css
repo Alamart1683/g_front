@@ -1187,3 +1187,18 @@ html, body {
 .filter-vkr {
 	display: none !important;
 }
+
+.sca-projects-table-div {
+	min-height: 300px;
+	width: 945px;
+	margin-right: 5px;
+	border-radius: 7px;
+	float: left;
+}
+
+.sca-projects-menu-div {
+	min-height: 300px;
+	width: 490px;
+	border-radius: 7px;
+	float: left;
+}

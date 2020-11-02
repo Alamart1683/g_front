@@ -25,7 +25,7 @@ export default function SciAdvisorStudentsDocsPage() {
     }
 
     function getStudentDocs() {
-        console.log('getfiles');
+        //console.log('getfiles');
         axios({
             url: apiURL + '/scientific_advisor/document/view/students',
             method: 'GET',

@@ -67,7 +67,7 @@ export default function StudentTasksPage() {
           }).then((response) => {
             
             setNirVersions(response.data);
-            //console.log(response.data);
+            console.log(response.data);
             
           }).catch(result => {
             console.log(result.data);

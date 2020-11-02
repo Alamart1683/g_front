@@ -33,6 +33,12 @@ export default function SciAdvisorHeader() {
                         Документы<br/>студентов
                     </button>
                 </Nav.Link>
+                <Nav.Link as={Link} to='/sca/projects'>
+                    <button type='button' className='student-navbar-button dark-background light size-30'>
+                        <Image src={iconDocuments} thumbnail className='student-navbar-image dark-background' />
+                        Мои проекты
+                    </button>
+                </Nav.Link>
                 <Nav.Link as={Link} to='/sca/orders'>
                     <button type='button' className='student-navbar-button dark-background light size-30'>
                         <Image src={orderImage} thumbnail className='student-navbar-image dark-background'/>

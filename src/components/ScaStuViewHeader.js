@@ -21,8 +21,8 @@ export default function ScaStuHeader() {
         }
     }
 
-    console.log(studentName);
-    console.log(sessionStorage.getItem('viewedStudentId'));
+    //console.log(studentName);
+    //console.log(sessionStorage.getItem('viewedStudentId'));
 
     return(
         <div>
