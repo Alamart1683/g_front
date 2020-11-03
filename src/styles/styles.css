@@ -1215,15 +1215,25 @@ html, body {
 }
 
 .sca-projects-text-area {
-	width: 400px;
+	width: 450px;
 	border-radius: 7px;
+	padding-left: 10px;
 }
 
 .sca-projects-dropdown {
-	width: 400px;
+	width: 450px;
 	padding: 2px 4px;
 	margin-bottom: 10px;
 	border-radius: 7px;
+	white-space: nowrap;
+	overflow: hidden;
+  	text-overflow: ellipsis;
+}
+
+.sca-projects-dropdown option {
+	white-space: nowrap;
+	overflow: hidden;
+  	text-overflow: ellipsis;
 }
 
 .sca-projects-button {
@@ -1231,4 +1241,20 @@ html, body {
 	min-height: 60px;
 	border-radius: 7px;
 	margin-top: 5px;
+}
+
+.sca-projects-button:hover {
+	background-color: #618FCA;
+}
+
+.sca-projects-button:disabled {
+	background-color:  #859dbb;
+}
+
+.add-student-dropdown-div {
+	position: relative;
+}
+
+.add-student-dropdown-div .sci-advisor-status-dropdown-content {
+	text-align: center;
 }

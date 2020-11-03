@@ -433,7 +433,7 @@ export default function ScaStuViewPage() {
 
             // Проект студента
             var studentProject = document.createElement('th');
-            studentProject.innerText = 'Проект проект';
+            studentProject.innerText = item.projectArea + '\n' + item.projectName;
 
             // НИР
             var studentNir = document.createElement('th');

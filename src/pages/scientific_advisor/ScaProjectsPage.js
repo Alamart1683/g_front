@@ -20,7 +20,10 @@ export default function ScaProjectsPage() {
     const [projectAreaDataLoaded, setProjectAreaDataLoaded] = useState(false);
     const [projectDataLoaded, setProjectDataLoaded] = useState(false);
     const [unassociatedStudentsLoaded, setUnassociatedStudentsLoaded] = useState(false);
-    //const [shownProjects, setShownProjects] = useState(false);
+    const [projectsShown, setProjectsShown] = useState(false);
+
+    const [projectAreaName, setProjectAreaName] = useState('');
+    const [projectName, setProjectName] = useState('');
 
     useEffect(() => {
         if (isFirstRun1.current) {
@@ -110,7 +113,9 @@ export default function ScaProjectsPage() {
 
     function showProjects() {
 
-        if (projectDataLoaded && projectAreaDataLoaded && unassociatedStudentsLoaded) {
+        if (projectDataLoaded && projectAreaDataLoaded && unassociatedStudentsLoaded && !projectsShown) {
+            setProjectsShown(true);
+            loadDropdownOptions();
             var counter = 0;
 
             for (var i = 0; i < projectAreaData.length; i++) {
@@ -119,7 +124,6 @@ export default function ScaProjectsPage() {
 
                 for (var j = 0; j < projectData.length; j++) {
                     if (projectData[j].projectArea === projectAreaName) {
-
                         areaNotEmpty = true;
 
                         for (var k = 0; k < projectData[j].occupiedStudents.length; k++) {
@@ -133,27 +137,28 @@ export default function ScaProjectsPage() {
 
                             var rowArea = document.createElement('th');
                             rowArea.innerText = projectAreaName;
-                            rowArea.id = 'area-'+i+'-'+j+'-'+k;
+                            rowArea.id = 'area-' + i + '-' + j + '-' + k;
 
                             var rowProject = document.createElement('th');
                             rowProject.innerText = projectData[j].projectName;
-                            rowProject.id = 'project-'+i+'-'+j+'-'+k;
+                            rowProject.id = 'project-' + i + '-' + j + '-' + k;
 
                             var rowStudentName = document.createElement('th');
-                            rowStudentName.innerText = student.fio.split(' ')[0] + 
-                                                        '. ' + 
-                                                        student.fio.split(' ')[1].charAt(0)  + 
-                                                        '. ' + 
-                                                        student.fio.split(' ')[2].charAt(0) + 
+                            rowStudentName.innerText = student.fio.split(' ')[0] +
+                                                        '. ' +
+                                                        student.fio.split(' ')[1].charAt(0) +
+                                                        '. ' +
+                                                        student.fio.split(' ')[2].charAt(0) +
                                                         '.';
-                            rowStudentName.id = 'student'+i+'-'+j+'-'+k;
+                            rowStudentName.id = 'student-' + i + '-' + j + '-' + k;
 
                             var rowStudentRemove = document.createElement('th');
 
                             var deleteButton = document.createElement('button');
                             deleteButton.type = 'button';
+                            deleteButton.id = 'delete-student-' + j + '-' + k;
                             deleteButton.innerText = 'Удалить студента из проекта';
-                            deleteButton.className = 'sca-projects-table-button';
+                            deleteButton.className = 'sca-projects-table-button delete-student-from-project';
 
                             studentRow.appendChild(rowNum);
                             studentRow.appendChild(rowArea);
@@ -167,87 +172,255 @@ export default function ScaProjectsPage() {
 
                         }
 
-                        var studentRow = document.createElement('tr');
-                        //studentRow.id = 'student' + counter;
-                        studentRow.className = 'size-20 dark';
+                        var studentRowLast = document.createElement('tr');
+                        studentRowLast.className = 'size-20 dark';
 
-                        var rowNum = document.createElement('th');
+                        var rowNumLast = document.createElement('th');
                         counter++;
-                        rowNum.innerText = counter;
+                        rowNumLast.innerText = counter;
 
-                        var rowArea = document.createElement('th');
-                        rowArea.innerText = projectAreaName;
-                        rowArea.id = 'area-'+i+'-'+j+'-'+ projectData[j].occupiedStudents.length;
+                        var rowAreaLast = document.createElement('th');
+                        rowAreaLast.innerText = projectAreaName;
+                        rowAreaLast.id = 'area-' + i + '-' + j + '-' + projectData[j].occupiedStudents.length;
 
-                        var rowProject = document.createElement('th');
-                        rowProject.innerText = projectData[j].projectName;
-                        rowProject.id = 'project-'+i+'-'+j+'-'+ projectData[j].occupiedStudents.length;
+                        var rowProjectLast = document.createElement('th');
+                        rowProjectLast.innerText = projectData[j].projectName;
+                        rowProjectLast.id = 'project-' + i + '-' + j + '-' + projectData[j].occupiedStudents.length;
 
-                        var rowAdd = document.createElement('th');
+                        var rowAddLast = document.createElement('th');
 
-                        var addButton = document.createElement('button');
-                        addButton.type = 'button';
-                        addButton.innerText = 'Добавить студента';
-                        addButton.className = 'sca-projects-table-button';
 
-                        if (projectData[j].occupiedStudents.length === 0) {
-                            var deleteButton = document.createElement('button');
-                            deleteButton.type = 'button';
-                            deleteButton.innerText = 'Удалить проект';
-                            deleteButton.className = 'sca-projects-table-button';
-                            deleteButton.style.marginTop = '10px';
+                        var addButtonLast = document.createElement('button');
+                        addButtonLast.type = 'button';
+                        addButtonLast.innerText = 'Добавить\nстудента';
+                        addButtonLast.className = 'sca-projects-table-button add-student-button';
+
+                        var dropdownDiv = document.createElement('div');
+                        dropdownDiv.className = 'add-student-dropdown-div';
+
+                        var dropdownContent = document.createElement('div');
+                        dropdownContent.className = 'sci-advisor-status-dropdown-content';
+
+                        for (var p = 0; p < unassociatedStudents.length; p++) {
+                            var studentRecord = document.createElement('p');
+                            studentRecord.id = 'student-' + j + '-' + p;
+                            studentRecord.className = 'dark size-18 student-add-to-project';
+                            studentRecord.innerText = unassociatedStudents[p].fio.split(' ')[0] +
+                                                        '. ' +
+                                                        unassociatedStudents[p].fio.split(' ')[1].charAt(0) +
+                                                        '. ' +
+                                                        unassociatedStudents[p].fio.split(' ')[2].charAt(0) +
+                                                        '.';
+
+                            dropdownContent.appendChild(studentRecord);
                         }
 
-                        studentRow.appendChild(rowNum);
-                        studentRow.appendChild(rowArea);
-                        studentRow.appendChild(rowProject);
-                        studentRow.appendChild(document.createElement('th'));
 
-                        rowAdd.appendChild(addButton);
                         if (projectData[j].occupiedStudents.length === 0) {
-                            rowAdd.appendChild(deleteButton);
+                            var deleteButtonLast = document.createElement('button');
+                            deleteButtonLast.type = 'button';
+                            deleteButtonLast.id = 'delete-project-' + j;
+                            deleteButtonLast.innerText = 'Удалить проект';
+                            deleteButtonLast.className = 'sca-projects-table-button delete-ptoject-button';
+                            deleteButtonLast.style.marginTop = '10px';
+                        }
+
+                        studentRowLast.appendChild(rowNumLast);
+                        studentRowLast.appendChild(rowAreaLast);
+                        studentRowLast.appendChild(rowProjectLast);
+                        studentRowLast.appendChild(document.createElement('th'));
+
+                        dropdownDiv.appendChild(addButtonLast);
+                        dropdownDiv.appendChild(dropdownContent);
+                        rowAddLast.appendChild(dropdownDiv);
+
+                        if (projectData[j].occupiedStudents.length === 0) {
+                            rowAddLast.appendChild(deleteButtonLast);
                         }
                         else {
-                            
-                        }
-                        studentRow.appendChild(rowAdd);
 
-                        document.getElementById('project-table-body').appendChild(studentRow);
+                        }
+                        studentRowLast.appendChild(rowAddLast);
+
+                        document.getElementById('project-table-body').appendChild(studentRowLast);
                     }
                 }
 
                 if (!areaNotEmpty) {
-                    var studentRow = document.createElement('tr');
-                    studentRow.className = 'size-20 dark';
+                    var studentRowEmpty = document.createElement('tr');
+                    studentRowEmpty.className = 'size-20 dark';
 
-                    var rowNum = document.createElement('th');
+                    var rowNumEmpty = document.createElement('th');
                     counter++;
-                    rowNum.innerText = counter;
+                    rowNumEmpty.innerText = counter;
 
-                    var rowArea = document.createElement('th');
-                    rowArea.innerText = projectAreaName;
-                    rowArea.id = 'area-'+i+'-'+ 0+'-'+ 0;
+                    var rowAreaEmpty = document.createElement('th');
+                    rowAreaEmpty.innerText = projectAreaName;
+                    rowAreaEmpty.id = 'area-' + i + '-' + 0 + '-' + 0;
 
-                    var rowDelete = document.createElement('th');
+                    var rowDeleteEmpty = document.createElement('th');
 
                     var deleteAreaButton = document.createElement('button');
+                    deleteAreaButton.id = 'delete-area-' + i;
                     deleteAreaButton.type = 'button';
                     deleteAreaButton.innerText = 'Удалить программу проектов';
-                    deleteAreaButton.className = 'sca-projects-table-button';
+                    deleteAreaButton.className = 'sca-projects-table-button delete-project-area-button';
 
-                    studentRow.appendChild(rowNum);
-                    studentRow.appendChild(rowArea);
-                    studentRow.appendChild(document.createElement('th'));
-                    studentRow.appendChild(document.createElement('th'));
+                    studentRowEmpty.appendChild(rowNumEmpty);
+                    studentRowEmpty.appendChild(rowAreaEmpty);
+                    studentRowEmpty.appendChild(document.createElement('th'));
+                    studentRowEmpty.appendChild(document.createElement('th'));
 
-                    rowDelete.appendChild(deleteAreaButton);
-                    studentRow.appendChild(rowDelete);
+                    rowDeleteEmpty.appendChild(deleteAreaButton);
+                    studentRowEmpty.appendChild(rowDeleteEmpty);
 
-                    document.getElementById('project-table-body').appendChild(studentRow);
+                    document.getElementById('project-table-body').appendChild(studentRowEmpty);
                 }
             }
         }
     }
+
+    function loadDropdownOptions() {
+        //console.log('loaded dropdown');
+        for (var i = 0; i < projectAreaData.length; i++) {
+            var areaOption = document.createElement('option');
+            areaOption.value = projectAreaData[i];
+            areaOption.innerText = projectAreaData[i];
+            document.getElementById('area-dropdown-list').appendChild(areaOption);
+        }
+    }
+
+    $(function () {
+        // Показать список неассоциированных студентов
+        $('.add-student-button').off().on('click', function (event) {
+            $(this).parent().find('.sci-advisor-status-dropdown-content').toggle();
+        });
+
+        // Создать программу проектов
+        $('#add-project-area-button').off().on('click', function (event) {
+            console.log(projectAreaName);
+            axios({
+                url: apiURL + '/scientific_advisor/project/area/save/',
+                method: 'POST',
+                params: {
+                    area: projectAreaName,
+                },
+                headers: {
+                    'Authorization': 'Bearer ' + authTokens.accessToken
+                },
+            }).then((response) => {
+                //console.log(response);
+                window.location.reload();
+            }).catch(result => {
+                console.log(result);
+            });
+        });
+
+        // Создать проект
+        $('#add-project-button').off().on('click', function (event) {
+            //console.log(projectName);
+            //console.log( $('#area-dropdown-list :selected').val() );
+            var formData = new FormData();
+            formData.append('projectName', projectName);
+            formData.append('projectTheme', $('#area-dropdown-list :selected').val());
+            formData.append('projectDescription', 'Описание проекта');
+            axios({
+                url: apiURL + '/scientific_advisor/project/add',
+                method: 'POST',
+                data: formData,
+                headers: {
+                    'Authorization': 'Bearer ' + authTokens.accessToken
+                },
+            }).then((response) => {
+                //console.log(response);
+                window.location.reload();
+            }).catch(result => {
+                console.log(result);
+            });
+        });
+
+        // Удалить программу проектов
+        $('.delete-project-area-button').off().on('click', function (event) {
+            //console.log( $(this).attr('id') );
+            var areaId = $(this).attr('id').split('-')[2];
+            //console.log(projectAreaData[areaId]);
+            axios({
+                url: apiURL + '/scientific_advisor/project/area/delete/',
+                method: 'DELETE',
+                params: {
+                    area: projectAreaData[areaId],
+                },
+                headers: {
+                    'Authorization': 'Bearer ' + authTokens.accessToken
+                },
+            }).then((response) => {
+                window.location.reload(true);
+            }).catch(result => {
+                console.log(result.data);
+            });
+        });
+    
+        // Удалить проект
+        $('.delete-ptoject-button').off().on('click', function() {
+            var projectId = $(this).attr('id').split('-')[2];
+            //console.log(projectData[projectId]);
+            axios({
+                url: apiURL + '/scientific_advisor/project/delete/' + projectData[projectId].systemProjectID,
+                method: 'DELETE',
+                headers: {
+                    'Authorization': 'Bearer ' + authTokens.accessToken
+                },
+            }).then((response) => {
+                window.location.reload(true);
+            }).catch(result => {
+                console.log(result.data);
+            });
+        });
+
+        // Добавить студента впроект
+        $('.student-add-to-project').off().on('click', function (event) {
+            var projectId = $(this).attr('id').split('-')[1];
+            var studentId = $(this).attr('id').split('-')[2];
+            axios({
+                url: apiURL + '/scientific_advisor/project/student/add/',
+                method: 'POST',
+                params: {
+                    studentID: unassociatedStudents[studentId].systemStudentID,
+                    projectID: projectData[projectId].systemProjectID,
+                },
+                headers: {
+                    'Authorization': 'Bearer ' + authTokens.accessToken
+                },
+            }).then((response) => {
+                //console.log(response);
+                window.location.reload();
+            }).catch(result => {
+                console.log(result);
+            });
+        });
+
+        // Удалить студента из проекта
+        $('.delete-student-from-project').off().on('click', function (event) {
+            var projectId = $(this).attr('id').split('-')[2];
+            var studentId = $(this).attr('id').split('-')[3];
+            axios({
+                url: apiURL + '/scientific_advisor/project/student/delete/',
+                method: 'DELETE',
+                params: {
+                    studentID: projectData[projectId].occupiedStudents[studentId].systemStudentID,
+                    projectID: projectData[projectId].systemProjectID,
+                },
+                headers: {
+                    'Authorization': 'Bearer ' + authTokens.accessToken
+                },
+            }).then((response) => {
+                window.location.reload(true);
+            }).catch(result => {
+                console.log(result.data);
+            });
+        });
+
+    });
 
     return (
         <div className='student-document-form'>
@@ -259,7 +432,7 @@ export default function ScaProjectsPage() {
                             <th >Программа проектов</th>
                             <th>Проект</th>
                             <th>Студент</th>
-                            <th></th>
+                            <th style={{width:'180px'}}></th>
                         </tr>
                     </thead>
                     <tbody id='project-table-body'>
@@ -268,28 +441,47 @@ export default function ScaProjectsPage() {
                 </Table>
             </div>
             <div className='sca-projects-menu-div light-background'>
-                <p className='dark size-30 sca-projects-title'>Добавление программы проектов</p>
+                <p className='dark size-30 sca-projects-title'><b>Добавление программы проектов</b></p>
                 <p className='dark size-24'>Название программы проектов:</p>
-                <textarea className='dark size-24 sca-projects-text-area'>
+                <textarea id='project-area-name' value={projectAreaName} onChange={(e) => {
+                    setProjectAreaName(e.target.value);
+                    if (e.target.value.length > 0) {
+                        document.getElementById('add-project-area-button').disabled = false;
+                    }
+                    else {
+                        document.getElementById('add-project-area-button').disabled = true;
+                    }
+                }} className='dark size-24 sca-projects-text-area'>
 
                 </textarea>
-                <button type='button' className='light size-24 dark-background sca-projects-button'>
+                <button id='add-project-area-button' type='button' disabled className='light size-24 dark-background sca-projects-button'>
                     Добавить программу проектов
                 </button>
 
-                <p className='dark size-30 sca-projects-title'>Добавление проекта<br/>в программу проектов</p>
+                <p className='dark size-30 sca-projects-title'><b>Добавление проекта<br />в программу проектов</b></p>
                 <p className='dark size-24'>Название проекта:</p>
-                <textarea className='dark size-24 sca-projects-text-area'>
-                
+                <textarea id='project-name' value={projectName} onChange={(e) => {
+                    setProjectName(e.target.value);
+                    //console.log( $('#area-dropdown-list :selected').val() );
+                    if (e.target.value.length > 0 && $('#area-dropdown-list :selected').val() !== undefined) {
+                        document.getElementById('add-project-button').disabled = false;
+                    }
+                    else {
+                        document.getElementById('add-project-button').disabled = true;
+                    }
+                }} className='dark size-24 sca-projects-text-area'>
+
                 </textarea>
-                <p className='dark size-24'>Программа проектов,<br/>в которую добавить проект:</p>
-                <select id='dropdown-list' className='dark size-24 sca-projects-dropdown'>
-                    <option value="volvo">Программа проектов, в которую добавить проект:Программа проектов, в которую добавить проект:</option>
-                    <option value="saab">Saab</option>
-                    <option value="opel">Opel</option>
-                    <option value="audi">Audi</option>
+                <p className='dark size-24'>Программа проектов,<br />в которую добавить проект:</p>
+                <select id='area-dropdown-list' size={projectAreaData.length} className='dark size-24 sca-projects-dropdown'
+                    onChange={(e) => {
+                        if (projectName.length > 0 && $('#area-dropdown-list :selected').val() !== undefined) {
+                            document.getElementById('add-project-button').disabled = false;
+                        }
+                    }}>
+
                 </select>
-                <button type='button' className='light size-24 dark-background sca-projects-button'>
+                <button id='add-project-button' type='button' disabled className='light size-24 dark-background sca-projects-button' style={{ marginBottom: '30px' }}>
                     Добавить проект
                 </button>
             </div>
