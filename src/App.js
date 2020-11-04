@@ -19,6 +19,7 @@ import NoMatch from './components/NoMatch';
 import StudentHeader from './components/StudentHeader';
 import StudentInfoPage from './pages/student/StudentInfoPage';
 import StudentTasksPage from './pages/student/StudentTasksPage';
+import StudentExamplesPage from './pages/student/StudentExamplesPage';
 //import StudentDocumentPage from './pages/student/StudentDocumentPage';
 
 import SciAdvisorHeader from './components/SciAdvisorHeader';
@@ -63,6 +64,7 @@ export default function App() {
             <AuthRoute exact path='/stu/tasks' component={StudentTasksPage} />
             <AuthRoute exact path='/stu/orders' component={OrdersPage} />
             <AuthRoute exact path='/stu/templates' component={TemplatesPage} />
+            <AuthRoute exact path='/stu/examples' component={StudentExamplesPage} />
 
             <AuthRoute exact path='/sca/students' component={SciAdvisorStudentsPage} />
             <AuthRoute exact path='/sca/stu-docs' component={SciAdvisorStudentsDocsPage} />

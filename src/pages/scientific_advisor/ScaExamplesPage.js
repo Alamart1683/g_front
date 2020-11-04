@@ -94,12 +94,12 @@ export default function ScaExamplesPage() {
 
             var downloadButton = document.createElement('button');
             downloadButton.id = 'download-button-' + i;
-            downloadButton.className = 'sca-example-file-button light dark-background download-button';
+            downloadButton.className = 'sca-example-file-button size-24 light dark-background download-button';
             downloadButton.innerText = 'Сохранить';
 
             var deleteButton = document.createElement('button');
             deleteButton.id = 'delete-button-' + i;
-            deleteButton.className = 'sca-example-file-button light dark-background delete-button';
+            deleteButton.className = 'sca-example-file-button size-24 light dark-background delete-button';
             deleteButton.innerText = 'Удалить';
 
             clickableDiv.appendChild(iconImage);
@@ -138,11 +138,12 @@ export default function ScaExamplesPage() {
         }
     }
 
+    // TODO fix
     // Создание образца
     function createExample(file, type, area) {
-        console.log(file);
-        console.log(type);
-        console.log(area);
+        //console.log(file);
+        //console.log(type);
+        //console.log(area);
 
         var formData = new FormData();
         formData.append('documentFormType', type);
@@ -261,7 +262,7 @@ export default function ScaExamplesPage() {
                 </Modal.Header>
                 <Modal.Body className='light-background sca-examples-modal1-body'>
                     <select id='dropdown-create-type' defaultValue='' onChange={(e) => {
-                        if ($('#dropdown-create-type :selected').val() != '' && $('#dropdown-create-area :selected').val() != '') {
+                        if ($('#dropdown-create-type :selected').val() !== '' && $('#dropdown-create-area :selected').val() !== '') {
                             document.getElementById('create-example-button').disabled = false;
                         }
 
@@ -273,7 +274,7 @@ export default function ScaExamplesPage() {
                         <option value='ВКР'>ВКР</option>
                     </select>
                     <select id='dropdown-create-area' defaultValue='' onChange={(e) => {
-                        if ($('#dropdown-create-type :selected').val() != '' && $('#dropdown-create-area :selected').val() != '') {
+                        if ($('#dropdown-create-type :selected').val() !== '' && $('#dropdown-create-area :selected').val() !== '') {
                             document.getElementById('create-example-button').disabled = false;
                         }
                     }} className='dark size-24 sca-examples-dropdown'>

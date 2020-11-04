@@ -50,7 +50,7 @@ export default function OrdersPage() {
             orderName.id = 'order-doc-name';
 
             var orderNameText = document.createElement('p');
-            orderNameText.className = 'order-name-text light size-24'
+            orderNameText.className = 'order-name-text light size-24';
             orderNameText.innerText = order.documentDescription;
 
             var orderNameImage = document.createElement('img');
@@ -63,7 +63,7 @@ export default function OrdersPage() {
             var orderDownload = document.createElement('button');
             orderDownload.className = 'order-doc-download light size-24';
             orderDownload.id = 'order-doc-download';
-            orderDownload.innerText = "Сохранить приказ"
+            orderDownload.innerText = "Сохранить приказ";
 
             orderFile.appendChild(orderName);
             orderFile.appendChild(orderDownload);

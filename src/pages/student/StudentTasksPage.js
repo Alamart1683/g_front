@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Form, Tabs, Tab, Image } from 'react-bootstrap';
+import { Form, Tabs, Tab, Image, Accordion, Card } from 'react-bootstrap';
 import axios from 'axios';
 import { useAuthContext } from '../../auth/AuthContext';
 import { apiURL } from '../../Config';
@@ -25,6 +25,9 @@ export default function StudentTasksPage() {
     const { authTokens } = useAuthContext();
     const [fetchedData, setFetchedData] = useState(false);
 
+    // Образцы
+    const [examples, setExamples] = useState([]);
+
     // Задание на НИР
     const [studentTheme, setStudentTheme] = useState('');
     const [toExplore, setToExplore] = useState('');
@@ -38,10 +41,11 @@ export default function StudentTasksPage() {
     const [nirVersions, setNirVersions] = useState([]);
     const [nirOtchetVersions, setNirOtchetVersions] = useState([]);
 
-    
+
     if (!fetchedData) {
         setFetchedData(true);
         getNirVersions();
+        getExamples();
         getNirOtchetVersions();
     }
 
@@ -53,6 +57,10 @@ export default function StudentTasksPage() {
         showNirOtchetVersions(nirOtchetVersions);
     }, [nirOtchetVersions]);
 
+    useEffect(() => {
+        showExamples(examples);
+    }, [examples]);
+
     // Получение версий заданий НИР
     function getNirVersions() {
         axios({
@@ -61,15 +69,14 @@ export default function StudentTasksPage() {
             params: {
                 'taskType': 'Научно-исследовательская работа',
             },
-            headers: { 
-                'Authorization': 'Bearer ' + authTokens.accessToken 
+            headers: {
+                'Authorization': 'Bearer ' + authTokens.accessToken
             },
-          }).then((response) => {
-            
+        }).then((response) => {
             setNirVersions(response.data);
-            console.log(response.data);
-            
-          }).catch(result => {
+            //console.log(response.data);
+
+        }).catch(result => {
             console.log(result.data);
         });
     }
@@ -77,7 +84,7 @@ export default function StudentTasksPage() {
     // Вывод на экран версий задания нир
     function showNirVersions(nirVersionArray) {
         if (nirVersionArray.length > 0) {
-            for (var i=0; i<nirVersionArray.length; i++) {
+            for (var i = 0; i < nirVersionArray.length; i++) {
                 var item = nirVersionArray[i];
 
                 var nirVersion = document.createElement('div');
@@ -101,7 +108,7 @@ export default function StudentTasksPage() {
                 var sendButton = document.createElement('button');
                 sendButton.className = 'dark size-24 nir-version-header-button nir-version-send-button';
                 sendButton.innerText = 'Отправить науч. руку';
-                sendButton.type='button';
+                sendButton.type = 'button';
                 // Запретить отсылку, если версия отправлена
                 if (item.status !== 'Не отправлено') {
                     sendButton.disabled = true;
@@ -111,13 +118,13 @@ export default function StudentTasksPage() {
                 var downloadButton = document.createElement('button');
                 downloadButton.className = 'dark size-24 nir-version-header-button nir-version-download-button';
                 downloadButton.innerText = 'Сохранить документ';
-                downloadButton.type='button';
+                downloadButton.type = 'button';
 
                 // Кнопка удалить
                 var deleteButton = document.createElement('button');
                 deleteButton.className = 'dark size-24 nir-version-header-button nir-version-delete-button';
                 deleteButton.innerText = 'Удалить версию';
-                deleteButton.type='button';
+                deleteButton.type = 'button';
                 // Запретить удаление, если версия отправлена
                 if (item.status !== 'Не отправлено' && item.status !== 'Замечания') {
                     deleteButton.disabled = true;
@@ -182,7 +189,7 @@ export default function StudentTasksPage() {
                 var copyButton = document.createElement('button');
                 copyButton.className = 'light dark-background size-21 nir-copy-button';
                 copyButton.innerText = 'Перенести значения в меню';
-                copyButton.type='button';
+                copyButton.type = 'button';
 
                 var rowDiv = document.createElement('div');
                 rowDiv.className = 'info-row';
@@ -190,7 +197,7 @@ export default function StudentTasksPage() {
                 columnDiv1.className = 'info-column';
                 var columnDiv2 = document.createElement('div');
                 columnDiv2.className = 'info-column';
-                
+
                 clickableArea.appendChild(versionName);
                 clickableArea.appendChild(versionStatus);
                 nirVersionHeader.appendChild(clickableArea);
@@ -214,7 +221,7 @@ export default function StudentTasksPage() {
                 nirVersionContent.appendChild(rowDiv);
                 nirVersion.appendChild(nirVersionContent);
                 document.getElementById('student-nir-task-version-div').appendChild(nirVersion);
-            } 
+            }
         }
 
     }
@@ -227,15 +234,13 @@ export default function StudentTasksPage() {
             params: {
                 'taskType': 'Научно-исследовательская работа',
             },
-            headers: { 
-                'Authorization': 'Bearer ' + authTokens.accessToken 
+            headers: {
+                'Authorization': 'Bearer ' + authTokens.accessToken
             },
-          }).then((response) => {
-            
+        }).then((response) => {
             setNirOtchetVersions(response.data);
-            console.log(response.data);
-            
-          }).catch(result => {
+            //console.log(response.data);
+        }).catch(result => {
             console.log(result.data);
         });
     }
@@ -243,7 +248,7 @@ export default function StudentTasksPage() {
     // Вывод на экран версий отчетов НИР
     function showNirOtchetVersions(nirOtchetVersionArray) {
         if (nirOtchetVersionArray.length > 0) {
-            for (var i=0; i<nirOtchetVersionArray.length; i++) {
+            for (var i = 0; i < nirOtchetVersionArray.length; i++) {
                 var item = nirOtchetVersionArray[i];
 
                 var nirVersion = document.createElement('div');
@@ -267,7 +272,7 @@ export default function StudentTasksPage() {
                 var sendButton = document.createElement('button');
                 sendButton.className = 'dark size-24 nir-version-header-button nir-otchet-send-button';
                 sendButton.innerText = 'Отправить науч. руку';
-                sendButton.type='button';
+                sendButton.type = 'button';
                 if (item.status !== 'Не отправлено') {
                     sendButton.disabled = true;
                 }
@@ -276,13 +281,13 @@ export default function StudentTasksPage() {
                 var downloadButton = document.createElement('button');
                 downloadButton.className = 'dark size-24 nir-version-header-button nir-otchet-download-button';
                 downloadButton.innerText = 'Сохранить документ';
-                downloadButton.type='button';
+                downloadButton.type = 'button';
 
                 // Кнопка удалить
                 var deleteButton = document.createElement('button');
                 deleteButton.className = 'dark size-24 nir-version-header-button nir-otchet-delete-button';
                 deleteButton.innerText = 'Удалить версию';
-                deleteButton.type='button';
+                deleteButton.type = 'button';
                 if (item.status !== 'Не отправлено' && item.status !== 'Замечания') {
                     deleteButton.disabled = true;
                 }
@@ -304,7 +309,7 @@ export default function StudentTasksPage() {
     }
 
     function checkTaskApproval() {
-        for (var i=0; i<nirVersions.length; i++) {
+        for (var i = 0; i < nirVersions.length; i++) {
             if (nirVersions[i].status === 'Одобрено') {
                 return true;
             }
@@ -312,9 +317,31 @@ export default function StudentTasksPage() {
         return false;
     }
 
-    $(function() {
+    function getExamples() {
+        axios({
+            url: apiURL + '/document/view/templates/student',
+            method: 'GET',
+            headers: {
+                'Authorization': 'Bearer ' + authTokens.accessToken
+            },
+        }).then((response) => {
+            console.log(response.data);
+            setExamples(response.data);
+        }).catch(result => {
+            console.log(result.data);
+        });
+    }
+
+    function showExamples(examplesArray) {
+        for (var i = 0; i < examplesArray.length; i++) {
+            var example = examplesArray[i];
+            console.log(example);
+        }
+    }
+
+    $(function () {
         // Послать версию задания науч руку
-        $('.nir-version-send-button').off().on('click', function(event) {
+        $('.nir-version-send-button').off().on('click', function (event) {
             //console.log('sent');
             var versionId = $(this).parent().parent().attr('id');
             var arrayID = versionId.split('-')[2];
@@ -326,18 +353,18 @@ export default function StudentTasksPage() {
                     'newStatus': 'Рассматривается',
                     'versionID': nirVersions[arrayID].systemVersionID,
                 },
-                headers: { 
-                    'Authorization': 'Bearer ' + authTokens.accessToken 
+                headers: {
+                    'Authorization': 'Bearer ' + authTokens.accessToken
                 },
-              }).then((response) => {
+            }).then((response) => {
                 window.location.reload(true);
-              }).catch(result => {
+            }).catch(result => {
                 console.log(result.data);
             });
         });
 
         // Скачать версию задания
-        $('.nir-version-download-button').off().on('click', function(event) {
+        $('.nir-version-download-button').off().on('click', function (event) {
             var versionId = $(this).parent().parent().attr('id');
             var arrayID = versionId.split('-')[2];
             axios({
@@ -347,24 +374,24 @@ export default function StudentTasksPage() {
                 params: {
                     versionID: nirVersions[arrayID].systemVersionID,
                 },
-                headers: { 
-                    'Authorization': 'Bearer ' + authTokens.accessToken 
+                headers: {
+                    'Authorization': 'Bearer ' + authTokens.accessToken
                 },
-              }).then((response) => {
+            }).then((response) => {
                 const url = window.URL.createObjectURL(new Blob([response.data]));
                 const link = document.createElement('a');
                 link.href = url;
                 link.setAttribute('download', 'Задание на НИР.docx');
                 document.body.appendChild(link);
                 link.click();
-                
-              }).catch(result => {
+
+            }).catch(result => {
                 console.log(result.data);
             });
         });
 
         // Удалить версию задания
-        $('.nir-version-delete-button').off().on('click', function(event) {
+        $('.nir-version-delete-button').off().on('click', function (event) {
             var versionId = $(this).parent().parent().attr('id');
             var arrayID = versionId.split('-')[2];
             console.log(arrayID);
@@ -374,18 +401,18 @@ export default function StudentTasksPage() {
                 params: {
                     versionID: nirVersions[arrayID].systemVersionID,
                 },
-                headers: { 
-                    'Authorization': 'Bearer ' + authTokens.accessToken 
+                headers: {
+                    'Authorization': 'Bearer ' + authTokens.accessToken
                 },
-              }).then((response) => {
+            }).then((response) => {
                 window.location.reload(true);
-              }).catch(result => {
+            }).catch(result => {
                 console.log(result.data);
             });
         });
 
         // Функция кнопки "перенести в меню"
-        $('.nir-copy-button').off().on('click', function(event) {
+        $('.nir-copy-button').off().on('click', function (event) {
             var versionId = $(this).parent().parent().parent().parent().attr('id');
             var arrayID = versionId.split('-')[2];
 
@@ -398,7 +425,7 @@ export default function StudentTasksPage() {
         });
 
         // Создание новой версии задания НИР
-        $('#send-nir-task-button').off().on('click',function(event) {
+        $('#send-nir-task-button').off().on('click', function (event) {
             //console.log('made');
             var formData = new FormData();
             formData.append('taskType', 'Научно-исследовательская работа');
@@ -412,26 +439,26 @@ export default function StudentTasksPage() {
                 url: apiURL + '/student/document/management/task/nir/create',
                 method: 'POST',
                 data: formData,
-                headers: { 
-                    'Authorization': 'Bearer ' + authTokens.accessToken 
+                headers: {
+                    'Authorization': 'Bearer ' + authTokens.accessToken
                 },
             }).then((response) => {
                 window.location.reload();
                 //console.log(response);
-                
+
             }).catch(result => {
                 console.log(result.data);
             });
         });
 
         // Показ полей версии задания
-        $(document).on('click', '.nir-version-clickable', function(event) {
+        $(document).on('click', '.nir-version-clickable', function (event) {
             $(this).parent().parent().find('.nir-version-content').toggle();
             event.stopImmediatePropagation();
         });
 
         // Создать версию отчёта
-        $('#make-nir-otchet-button').off().on('click', function(event) {
+        $('#make-nir-otchet-button').off().on('click', function (event) {
             var taskApproval = checkTaskApproval();
             if (taskApproval) {
                 setNirTaskApproval(true);
@@ -449,7 +476,7 @@ export default function StudentTasksPage() {
                         data: formData,
                         headers: {
                             'Content-Type': 'multipart/form-data',
-                            'Authorization': 'Bearer ' + authTokens.accessToken 
+                            'Authorization': 'Bearer ' + authTokens.accessToken
                         },
                     }).then((response) => {
                         //console.log(response);
@@ -473,9 +500,9 @@ export default function StudentTasksPage() {
         });
 
         // Отправить отчёт науч руку
-        $('.nir-otchet-send-button').off().on('click', function(event) {
+        $('.nir-otchet-send-button').off().on('click', function (event) {
             var versionId = $(this).parent().parent().attr('id');
-            console.log( $(this).parent().parent() );
+            console.log($(this).parent().parent());
             var arrayID = versionId.split('-')[3];
             axios({
                 url: apiURL + '/student/document/management/report/nir/send',
@@ -484,20 +511,20 @@ export default function StudentTasksPage() {
                     'newStatus': 'Рассматривается',
                     'versionID': nirOtchetVersions[arrayID].systemVersionID,
                 },
-                headers: { 
-                    'Authorization': 'Bearer ' + authTokens.accessToken 
+                headers: {
+                    'Authorization': 'Bearer ' + authTokens.accessToken
                 },
-              }).then((response) => {
+            }).then((response) => {
                 window.location.reload(true);
-              }).catch(result => {
+            }).catch(result => {
                 console.log(result.data);
             });
         });
 
         // Скачать отчёт
-        $('.nir-otchet-download-button').off().on('click', function(event) {
+        $('.nir-otchet-download-button').off().on('click', function (event) {
             var versionId = $(this).parent().parent().attr('id');
-            console.log( $(this).parent().parent() );
+            console.log($(this).parent().parent());
             var arrayID = versionId.split('-')[3];
 
             axios({
@@ -509,23 +536,23 @@ export default function StudentTasksPage() {
                     'reportVersion': nirOtchetVersions[arrayID].systemVersionID,
                 },
                 headers: {
-                    'Authorization': 'Bearer ' + authTokens.accessToken 
+                    'Authorization': 'Bearer ' + authTokens.accessToken
                 },
-              }).then((response) => {
+            }).then((response) => {
                 const url = window.URL.createObjectURL(new Blob([response.data]));
                 const link = document.createElement('a');
                 link.href = url;
                 link.setAttribute('download', 'Отчёт по НИР.docx');
                 document.body.appendChild(link);
                 link.click();
-                
-              }).catch(result => {
+
+            }).catch(result => {
                 console.log(result.data);
             });
         });
 
         // Удалить отчёт
-        $('.nir-otchet-delete-button').off().on('click', function(event) {
+        $('.nir-otchet-delete-button').off().on('click', function (event) {
             console.log('delete otchet');
             var versionId = $(this).parent().parent().attr('id');
             var arrayID = versionId.split('-')[3];
@@ -535,69 +562,80 @@ export default function StudentTasksPage() {
                 params: {
                     versionID: nirOtchetVersions[arrayID].systemVersionID,
                 },
-                headers: { 
-                    'Authorization': 'Bearer ' + authTokens.accessToken 
+                headers: {
+                    'Authorization': 'Bearer ' + authTokens.accessToken
                 },
-              }).then((response) => {
+            }).then((response) => {
                 window.location.reload(true);
-              }).catch(result => {
+            }).catch(result => {
                 console.log(result.data);
             });
         });
 
     });
 
-    return(
+    return (
         <Form className='info-form light-background'>
             <Tabs defaultActiveKey='info1' className='info-form-main-tabs' onSelect={(firstTab) => {
-                    $('#image1').attr('src', infoBlock1);
-                    $('#image2').attr('src', infoBlock2);
-                    $('#image3').attr('src', infoBlock3);
-                    $('#image4').attr('src', infoBlock4);
-                    console.log(firstTab);
-                    switch(firstTab) {
-                        case 'info1':
-                            $('#image1').attr('src', infoBlock11);
-                            break;
-                        case 'info2':
-                            $('#image2').attr('src', infoBlock22);
-                            break;
-                        case 'info3':
-                            $('#image3').attr('src', infoBlock33);
-                            break;
-                        case 'info4':
-                            $('#image4').attr('src', infoBlock44);
-                            break;
-                        default:
-                            console.log('tabError');
-                    }
-                }}>
-                <Tab eventKey='info1'  title={<Image id='image1' src={infoBlock11} thumbnail className='info-form-image'/>} className='info-form-tabs'>
-                    
+                $('#image1').attr('src', infoBlock1);
+                $('#image2').attr('src', infoBlock2);
+                $('#image3').attr('src', infoBlock3);
+                $('#image4').attr('src', infoBlock4);
+                console.log(firstTab);
+                switch (firstTab) {
+                    case 'info1':
+                        $('#image1').attr('src', infoBlock11);
+                        break;
+                    case 'info2':
+                        $('#image2').attr('src', infoBlock22);
+                        break;
+                    case 'info3':
+                        $('#image3').attr('src', infoBlock33);
+                        break;
+                    case 'info4':
+                        $('#image4').attr('src', infoBlock44);
+                        break;
+                    default:
+                        console.log('tabError');
+                }
+            }}>
+                <Tab eventKey='info1' title={<Image id='image1' src={infoBlock11} thumbnail className='info-form-image' />} className='info-form-tabs'>
+
                     <div className='dark info-task-block'>
                         <p className='size-24 info-text-block-title'>НАУЧНО-ИССЛЕДОВАТЕЛЬСКАЯ РАБОТА</p>
                         <div>
                             <p id='NIRStart' className='size-20 info-text-block-start-date'><b>Начало: 1.09.2020</b></p>
                             <p id='NIREnd' className='size-20 info-text-block-end-date'><b>Конец: 21.12.2020</b></p>
                         </div>
-                        <div style={{clear: 'both'}}></div>
+                        <div style={{ clear: 'both' }}></div>
 
-                        <div>
-                            Образцы нир
+                        <div className='task-page-accordion-div'>
+                            <Accordion>
+                                <Card>
+                                    <Accordion.Toggle as={Card.Header} eventKey="acc0" className='dark size-28'>
+                                        Образцы по НИР
+                                    </Accordion.Toggle>
+                                    <Accordion.Collapse eventKey="acc0">
+                                        <Card.Body>
+                                            
+                                        </Card.Body>
+                                    </Accordion.Collapse>
+                                </Card>
+                            </Accordion>
                         </div>
                     </div>
 
                     <div className='info-break-div'>&nbsp;</div>
-                    <Tabs defaultActiveKey='none' onSelect={() => { setTimeout(function(){window.scrollTo(0, 2000);},1);  }} className='info-form-subtab light-background container-fluid'>
+                    <Tabs defaultActiveKey='none' onSelect={() => { setTimeout(function () { window.scrollTo(0, 2000); }, 1); }} className='info-form-subtab light-background container-fluid'>
                         <Tab eventKey='info11' title={
                             <p className='size-30 light dark-background info-form-subtab-title'>
-                                <Image src={iconDocument} thumbnail className='dark-background info-form-subtab-icon icon-small'/>
+                                <Image src={iconDocument} thumbnail className='dark-background info-form-subtab-icon icon-small' />
                                 Задание на НИР
                             </p>
                         }>
                             <div className='info-sub-tab-div'>
 
-                                <div className='info-break-div'  style={{marginBottom: '20px'}}>&nbsp;</div>
+                                <div className='info-break-div' style={{ marginBottom: '20px' }}>&nbsp;</div>
 
                                 <p className='size-30 dark info-sub-tab-title'>Задание на НИР</p>
 
@@ -606,49 +644,49 @@ export default function StudentTasksPage() {
                                 <div className='info-row'>
                                     <div className='info-column'>
                                         <Form.Label column className="size-21 dark info-input-label">Тема НИР:</Form.Label>
-                                        <textarea value={studentTheme} onChange={(e) => { setStudentTheme(e.target.value);}} className='dark size-24 info-input-area'/>
+                                        <textarea value={studentTheme} onChange={(e) => { setStudentTheme(e.target.value); }} className='dark size-24 info-input-area' />
 
                                         <Form.Label column className="size-21 dark info-input-label">Изучить:</Form.Label>
-                                        <textarea value={toExplore} onChange={(e) => { setToExplore(e.target.value);}} className='dark size-24 info-input-area'/>
+                                        <textarea value={toExplore} onChange={(e) => { setToExplore(e.target.value); }} className='dark size-24 info-input-area' />
 
                                         <Form.Label column className="size-21 dark info-input-label">Практически выполнить:</Form.Label>
-                                        <textarea value={toCreate} onChange={(e) => { setToCreate(e.target.value);}} className='dark size-24 info-input-area'/>
+                                        <textarea value={toCreate} onChange={(e) => { setToCreate(e.target.value); }} className='dark size-24 info-input-area' />
                                     </div>
 
                                     <div className='info-column'>
                                         <Form.Label column className="size-21 dark info-input-label">Ознакомиться:</Form.Label>
-                                        <textarea value={toFamiliarize} onChange={(e) => { setToFamiliarize(e.target.value);}} className='dark size-24 info-input-area'/>
+                                        <textarea value={toFamiliarize} onChange={(e) => { setToFamiliarize(e.target.value); }} className='dark size-24 info-input-area' />
 
                                         <Form.Label column className="size-21 dark info-input-label">Дополнительное задание:</Form.Label>
-                                        <textarea value={additionalTask} onChange={(e) => { setAdditionalTask(e.target.value);}} className='dark size-24 info-input-area'/>
+                                        <textarea value={additionalTask} onChange={(e) => { setAdditionalTask(e.target.value); }} className='dark size-24 info-input-area' />
 
                                         <button type='button' id='send-nir-task-button' className='size-30 light dark-background info-button-1'>
-                                            <Image src={iconDocument} thumbnail className='dark-background thumbnail-icon'/>
-                                            Создать новую версию<br/>задания на НИР
+                                            <Image src={iconDocument} thumbnail className='dark-background thumbnail-icon' />
+                                            Создать новую версию<br />задания на НИР
                                         </button>
                                     </div>
                                 </div>
-                                
+
                             </div>
                         </Tab>
                         <Tab eventKey='info12' title={
-                            <p className='size-30 light dark-background info-form-subtab-title' style={{marginLeft: '846px'}}>
-                                <Image src={iconDocument} thumbnail className='dark-background info-form-subtab-icon icon-small'/>
-                                Отчет о<br/>прохождении НИР
+                            <p className='size-30 light dark-background info-form-subtab-title' style={{ marginLeft: '846px' }}>
+                                <Image src={iconDocument} thumbnail className='dark-background info-form-subtab-icon icon-small' />
+                                Отчет о<br />прохождении НИР
                             </p>
                         }>
-                            <div className='info-break-div'  style={{marginBottom: '20px'}}>&nbsp;</div>
+                            <div className='info-break-div' style={{ marginBottom: '20px' }}>&nbsp;</div>
 
                             <p className='size-30 dark info-sub-tab-title'>Отчет о прохождении НИР</p>
 
                             <div id='student-nir-otchet-version-div' className='student-nir-task-version-div light-background'></div>
-                            
+
                             <div className='info-sub-tab-div'>
                                 <div className='centered'>
                                     <input type="file" name="file" id="fileNir" accept='.docx' className="info-input-file-hidden"
                                         onChange={e => {
                                             if (e.target.files.length !== 0) {
-                                               if (e.target.files[0].type === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document') {
+                                                if (e.target.files[0].type === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document') {
                                                     fileNirOtchet = e.target.files[0];
                                                     document.getElementById('fileNirName').innerHTML = 'Файл выбран';
                                                     document.getElementById('make-nir-otchet-button').disabled = false;
@@ -657,74 +695,104 @@ export default function StudentTasksPage() {
                                                     fileNirOtchet = null;
                                                     document.getElementById('fileNirName').innerHTML = 'Ошибка загрузки файла!';
                                                     document.getElementById('make-nir-otchet-button').disabled = true;
-                                                } 
+                                                }
                                             }
-                                        }} 
+                                        }}
                                     />
-                                    <label htmlFor="fileNir"  className='size-30 dark-background light info-file-label1'>
-                                        <Image src={iconInfo} thumbnail className='dark-background thumbnail-icon'/>
-                                        <p id='fileNirName' style={{display: 'inline-block'}}>Выбрать файл с содержанием отчета</p>
+                                    <label htmlFor="fileNir" className='size-30 dark-background light info-file-label1'>
+                                        <Image src={iconInfo} thumbnail className='dark-background thumbnail-icon' />
+                                        <p id='fileNirName' style={{ display: 'inline-block' }}>Выбрать файл с содержанием отчета</p>
                                     </label>
                                     <button type='button' id='make-nir-otchet-button' disabled className='size-30 light dark-background info-button-inline-block'>
-                                        <Image src={iconProject} thumbnail className='dark-background thumbnail-icon'/>
+                                        <Image src={iconProject} thumbnail className='dark-background thumbnail-icon' />
                                         Сформировать и загрузить версию отчета
                                     </button>
-                                    <p id='errorNirMessage' className='size-24 dark' style={{visibility: 'hidden'}}>errorNir</p>
+                                    <p id='errorNirMessage' className='size-24 dark' style={{ visibility: 'hidden' }}>errorNir</p>
                                 </div>
 
                                 <div>
-                                    { !nirTaskApproval ? (<p className='dark size-24 nir-approval-message'>Нет одобренного задания!</p>) : null }
+                                    {!nirTaskApproval ? (<p className='dark size-24 nir-approval-message'>Нет одобренного задания!</p>) : null}
                                 </div>
-                                
+
                             </div>
                         </Tab>
                     </Tabs>
                 </Tab>
-                <Tab eventKey='info2' title={<Image id='image2' src={infoBlock2} thumbnail className='info-form-image'/>}>
+                <Tab eventKey='info2' title={<Image id='image2' src={infoBlock2} thumbnail className='info-form-image' />}>
                     <div className='dark info-task-block'>
                         <p className='size-24 info-text-block-title'>ПРАКТИКА ПО ПОЛУЧЕНИЮ ПРОФЕССИОНАЛЬНЫХ УМЕНИЙ И ОПЫТА ПРОФЕССИОНАЛЬНОЙ ДЕЯТЕЛЬНОСТИ</p>
                         <div>
-                            <p id='NIRStart' className='size-20 info-text-block-start-date'><b>Начало: 09.02.2021</b></p>
-                            <p id='NIREnd' className='size-20 info-text-block-end-date'><b>Конец: 05.04.2021</b></p>
+                            <p className='size-20 info-text-block-start-date'><b>Начало: 09.02.2021</b></p>
+                            <p className='size-20 info-text-block-end-date'><b>Конец: 05.04.2021</b></p>
                         </div>
-                        <div style={{clear: 'both'}}></div>
-
-                        <div>
-                            Образцы ппп
+                        <div style={{ clear: 'both' }}></div>
+                        <div className='task-page-accordion-div'>
+                            <Accordion>
+                                <Card>
+                                    <Accordion.Toggle as={Card.Header} eventKey="acc1" className='dark size-28'>
+                                        Образцы по ПпППУиОПД
+                                    </Accordion.Toggle>
+                                    <Accordion.Collapse eventKey="acc1">
+                                        <Card.Body>
+                                            
+                                        </Card.Body>
+                                    </Accordion.Collapse>
+                                </Card>
+                            </Accordion>
                         </div>
                     </div>
                 </Tab>
-                <Tab eventKey='info3' title={<Image id='image3' src={infoBlock3} thumbnail className='info-form-image'/>}>
+                <Tab eventKey='info3' title={<Image id='image3' src={infoBlock3} thumbnail className='info-form-image' />}>
                     <div className='dark info-task-block'>
                         <p className='size-24 info-text-block-title'>ПРЕДДИПЛОМНАЯ ПРАКТИКА</p>
                         <div>
-                            <p id='NIRStart' className='size-20 info-text-block-start-date'><b>Начало: 20.04.2021</b></p>
-                            <p id='NIREnd' className='size-20 info-text-block-end-date'><b>Конец: 17.05.2021</b></p>
+                            <p className='size-20 info-text-block-start-date'><b>Начало: 20.04.2021</b></p>
+                            <p className='size-20 info-text-block-end-date'><b>Конец: 17.05.2021</b></p>
                         </div>
-                        <div style={{clear: 'both'}}></div>
-
-                        <div>
-                            Образцы пп
+                        <div style={{ clear: 'both' }}></div>
+                        <div className='task-page-accordion-div'>
+                            <Accordion>
+                                <Card>
+                                    <Accordion.Toggle as={Card.Header} eventKey="acc2" className='dark size-28'>
+                                        Образцы по ПП
+                                    </Accordion.Toggle>
+                                    <Accordion.Collapse eventKey="acc2">
+                                        <Card.Body>
+                                            
+                                        </Card.Body>
+                                    </Accordion.Collapse>
+                                </Card>
+                            </Accordion>
                         </div>
                     </div>
                 </Tab>
-                <Tab eventKey='info4' title={<Image id='image4' src={infoBlock4} thumbnail className='info-form-image'/>}>
+                <Tab eventKey='info4' title={<Image id='image4' src={infoBlock4} thumbnail className='info-form-image' />}>
                     <div className='dark info-task-block'>
                         <p className='size-24 info-text-block-title'>ПОДГОТОВКА И ЗАЩИТА ВКР</p>
                         <div>
-                            <p id='NIRStart' className='size-20 info-text-block-start-date'><b>Начало: 25.05.2021</b></p>
-                            <p id='NIREnd' className='size-20 info-text-block-end-date'><b>Конец: 05.07.2021</b></p>
+                            <p className='size-20 info-text-block-start-date'><b>Начало: 25.05.2021</b></p>
+                            <p className='size-20 info-text-block-end-date'><b>Конец: 05.07.2021</b></p>
                         </div>
-                        <div style={{clear: 'both'}}></div>
-
-                        <div>
-                            Образцы вкр
+                        <div style={{ clear: 'both' }}></div>
+                        <div className='task-page-accordion-div'>
+                            <Accordion>
+                                <Card>
+                                    <Accordion.Toggle as={Card.Header} eventKey="acc3" className='dark size-28'>
+                                        Образцы по ВКР
+                                    </Accordion.Toggle>
+                                    <Accordion.Collapse eventKey="acc3">
+                                        <Card.Body>
+                                            
+                                        </Card.Body>
+                                    </Accordion.Collapse>
+                                </Card>
+                            </Accordion>
                         </div>
                     </div>
                 </Tab>
             </Tabs>
-            
+
         </Form>
-        
+
     );
 }

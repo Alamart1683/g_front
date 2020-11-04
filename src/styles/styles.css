@@ -1395,3 +1395,37 @@ html, body {
 .sca-modal-button:disabled {
 	background-color:  #859dbb;
 }
+
+.student-example-div {
+	width: 1460px;
+	margin-left: 10px;
+	margin-top: 10px;
+	display: inline-block;
+}
+
+.student-example-title {
+	width: 1180px;
+	border-radius: 7px;
+	height: 90px;
+	float: left;
+}
+
+.student-example-download {
+	width: 270px;
+	height: 90px;
+	margin-left: 10px;
+	background-color: #89AFE0;;
+	border-radius: 7px;
+	border-width: 0px;
+}
+
+.student-example-download:hover {
+	background: #618FCA;
+}
+
+.task-page-accordion-div {
+	width: 1460px;
+	margin-left: auto;
+	margin-right: auto;
+	margin-bottom: 15px;
+}
