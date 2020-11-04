@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { Modal } from 'react-bootstrap';
 import axios from 'axios';
 import { useAuthContext } from '../../auth/AuthContext';
 import { apiURL } from '../../Config';
@@ -10,13 +11,21 @@ export default function ScaExamplesPage() {
     const { authTokens } = useAuthContext();
     const [fetchedData, setFetchedData] = useState(false);
     const [examples, setExamples] = useState([]);
+    const [projectAreaData, setProjectAreaData] = useState([]);
+
+    const [showCreate, setShowCreate] = useState(false);
 
     useEffect(() => {
         showExamples(examples);
     }, [examples]);
 
+    useEffect(() => {
+        //fillAreaData();
+    }, [projectAreaData]);
+
     if (!fetchedData) {
         setFetchedData(true);
+        getProjectAreaData()
         getExamples();
     }
 
@@ -39,7 +48,7 @@ export default function ScaExamplesPage() {
     function showExamples(examplesArray) {
         for (var i = 0; i < examplesArray.length; i++) {
             var example = examplesArray[i];
-            console.log(example);
+            //console.log(example);
 
             var exampleDiv = document.createElement('div');
             exampleDiv.className = 'sca-example-file-div';
@@ -105,6 +114,69 @@ export default function ScaExamplesPage() {
         }
     }
 
+    function getProjectAreaData() {
+        axios({
+            url: apiURL + '/scientific_advisor/project/area/all',
+            method: 'GET',
+            headers: {
+                'Authorization': 'Bearer ' + authTokens.accessToken
+            },
+        }).then((response) => {
+            setProjectAreaData(response.data);
+            //console.log(response.data);
+        }).catch(result => {
+            console.log(result.data);
+        });
+    }
+
+    function fillAreaData() {
+        for (var i = 0; i < projectAreaData.length; i++) {
+            var areaOption = document.createElement('option');
+            areaOption.value = projectAreaData[i];
+            areaOption.innerText = projectAreaData[i];
+            document.getElementById('dropdown-create-area').appendChild(areaOption);
+        }
+    }
+
+    // Создание образца
+    function createExample(file, type, area) {
+        console.log(file);
+        console.log(type);
+        console.log(area);
+
+        var formData = new FormData();
+        formData.append('documentFormType', type);
+        formData.append('documentFormKind', 'Задание');
+        formData.append('documentFormDescription', 'Описание образца');
+        // Если равно, дать доступ всем студентам
+        if (area !== 'Все мои студенты') {
+            formData.append('documentFormViewRights', 'Только для проектной области');
+        }
+        else {
+            formData.append('documentFormViewRights', 'Только мои студенты');
+        }
+        formData.append('file', file);
+        // Если равно, дать доступ всем студентам
+        if (area !== 'Все мои студенты') {
+            console.log(area);
+            formData.append('projectArea', projectAreaData);
+        }
+        axios({
+            url: apiURL + '/scientific_advisor/document/upload',
+            method: 'POST',
+            data: formData,
+            headers: {
+                'Content-Type': 'multipart/form-data',
+                'Authorization': 'Bearer ' + authTokens.accessToken
+            },
+        }).then((response) => {
+            //console.log(response);
+            window.location.reload();
+        }).catch(result => {
+            console.log(result);
+        });
+    }
+
     $(function () {
 
         // Выбор файла
@@ -115,7 +187,7 @@ export default function ScaExamplesPage() {
         });
 
         // Скачать пример
-        $('.download-button').off().on('click', function() {
+        $('.download-button').off().on('click', function () {
             var arrayId = $(this).attr('id').split('-')[2];
             axios({
                 url: apiURL + '/document/download/',
@@ -160,12 +232,17 @@ export default function ScaExamplesPage() {
             });
         });
 
+        // Открыть выбор файла при создании образца
+        $('#create-example-button').off().on('click', function () {
+            $('#example-file-input').trigger('click');
+        });
+
     });
 
     return (
         <div className='sca-examples-div'>
             <div className='sca-examples-menu-div light-background'>
-                <button type='button' className='light size-24 dark-background sca-examples-button'>
+                <button type='button' onClick={(e) => { setShowCreate(true); }} className='light size-24 dark-background sca-examples-button'>
                     Загрузить файл<br />образца на сайт
                 </button>
                 <button type='button' id='change-permissions-button' disabled className='light size-24 dark-background sca-examples-button'>
@@ -175,6 +252,46 @@ export default function ScaExamplesPage() {
             <div id='examples-div' className='sca-examples-files-div light-background'>
 
             </div>
+
+            <Modal centered show={showCreate} onEnter={(e) => { fillAreaData(); }} onHide={(e) => { setShowCreate(false); }} className='dark'>
+                <Modal.Header className='light-background sca-examples-modal1-header' closeButton>
+                    <Modal.Title className='size-30'>
+                        <p style={{ height: '50px', marginBottom: '0px', marginLeft: '200px' }}>Загрузить образец</p>
+                    </Modal.Title>
+                </Modal.Header>
+                <Modal.Body className='light-background sca-examples-modal1-body'>
+                    <select id='dropdown-create-type' defaultValue='' onChange={(e) => {
+                        if ($('#dropdown-create-type :selected').val() != '' && $('#dropdown-create-area :selected').val() != '') {
+                            document.getElementById('create-example-button').disabled = false;
+                        }
+
+                    }} className='dark size-24 sca-examples-dropdown'>
+                        <option value='' disabled hidden>Выберите тип образца</option>
+                        <option value='Научно-исследовательская работа'>Научно-исследовательская работа</option>
+                        <option value='Практика по получению знаний и умений'>Практика по получению знаний и умений</option>
+                        <option value='Преддипломная практика'>Преддипломная практика</option>
+                        <option value='ВКР'>ВКР</option>
+                    </select>
+                    <select id='dropdown-create-area' defaultValue='' onChange={(e) => {
+                        if ($('#dropdown-create-type :selected').val() != '' && $('#dropdown-create-area :selected').val() != '') {
+                            document.getElementById('create-example-button').disabled = false;
+                        }
+                    }} className='dark size-24 sca-examples-dropdown'>
+                        <option value='' disabled hidden>Выберите права доступа к образцу</option>
+                        <option value='Все мои студенты'>Все мои студенты</option>
+                    </select>
+                    <button id='create-example-button' disabled className='size-24 dark-background light sca-modal-button' style={{ marginLeft: '130px' }}>
+                        Загрузить файл и создать образец
+                    </button>
+                    <input id='example-file-input' type='file' style={{ display: 'none' }} onChange={(e) => {
+                        if (e.target.files.length !== 0) {
+                            document.getElementById('create-example-button').disabled = true;
+                            createExample(e.target.files[0], $('#dropdown-create-type :selected').val(), $('#dropdown-create-area :selected').val());
+                        }
+                    }} />
+                </Modal.Body>
+            </Modal>
+
         </div>
     );
 }

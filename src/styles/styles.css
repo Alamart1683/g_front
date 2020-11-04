@@ -458,7 +458,7 @@ html, body {
 	margin-left: 10px;
 	width: 1220px;
 	border-radius: 7px;
-	min-height: 780px;
+	min-height: 600px;
 	padding: 10px 10px;
 }
 
@@ -1212,8 +1212,7 @@ html, body {
 }
 
 .sca-projects-title {
-	margin-top: 20px;
-	margin-bottom: 15px;
+	margin-top: 10px;
 }
 
 .sca-projects-text-area {
@@ -1346,4 +1345,53 @@ html, body {
 .sca-example-image {
 	position: relative;
 	top: -35px;
+}
+
+.sca-examples-modal1-header {
+	border-top-left-radius: 7px;
+	border-top-right-radius: 7px;
+}
+
+.sca-examples-modal1-body {
+	border-bottom-left-radius: 7px;
+	border-bottom-right-radius: 7px;
+}
+
+.sca-examples-modal1-header, .sca-examples-modal1-body {
+	width: 690px;
+	position: relative;
+	left: -50px;
+}
+
+.sca-examples-dropdown {
+	width: 650px;
+	padding: 2px 4px;
+	margin-top: 5px;
+	margin-bottom: 10px;
+	border-radius: 7px;
+	white-space: nowrap;
+	overflow: hidden;
+  	text-overflow: ellipsis;
+}
+
+.sca-examples-dropdown option {
+	white-space: nowrap;
+	overflow: hidden;
+  	text-overflow: ellipsis;
+}
+
+.sca-modal-button {
+	width: 400px;
+	height: 90px;
+	border-radius: 7px;
+	margin-top: 10px;
+	margin-bottom: 10px;
+}
+
+.sca-modal-button:hover {
+	background-color:  #618FCA;
+}
+
+.sca-modal-button:disabled {
+	background-color:  #859dbb;
 }
