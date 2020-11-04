@@ -1000,6 +1000,10 @@ html, body {
 	border-width: 0px;
 }
 
+.contentButton-selected {
+	background: #618FCA;
+}
+
 .contentButton:hover {
 	background: #618FCA;
 }

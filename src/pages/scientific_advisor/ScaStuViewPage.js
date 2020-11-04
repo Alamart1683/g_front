@@ -401,10 +401,8 @@ export default function ScaStuViewPage() {
         return false;
     }
 
-    // TODO Show project name
     // Заполнение таблицы студентов
     function showStudent(item, i) {
-        //var item = studentArray[i];
         //console.log(item);
 
         var student = document.createElement('tr');

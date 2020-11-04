@@ -122,6 +122,8 @@ export default function OrdersPage() {
         $('.contentButton').off().on('click', function (event) {
             $('.contentPanel').addClass('contentPanel-hidden');
             var buttonId = $(this).attr('id');
+            $('.contentButton').removeClass('contentButton-selected');
+            $(this).addClass('contentButton-selected');
             switch (buttonId) {
                 case 'button-1':
                     $('#orderContentPanel1').removeClass('contentPanel-hidden');
@@ -145,7 +147,7 @@ export default function OrdersPage() {
     return (
         <div className="ordersPanel">
             <div className="typeButtonPanel">
-                <button type='submit' id='button-1' className="contentButton light size-22">Научно-исследовательская работа</button>
+                <button type='submit' id='button-1' className="contentButton contentButton-selected light size-22">Научно-исследовательская работа</button>
                 <button type='submit' id='button-2' className="contentButton light size-22">ПпППУиОПД</button>
                 <button type='submit' id='button-3' className="contentButton light size-22">Преддипломная практика</button>
                 <button type='submit' id='button-4' className="contentButton light size-22" style={{ marginRight: "0px" }}>Защита ВКР</button>
