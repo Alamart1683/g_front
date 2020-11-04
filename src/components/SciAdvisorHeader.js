@@ -40,7 +40,7 @@ export default function SciAdvisorHeader() {
                         Мои проекты
                     </button>
                 </Nav.Link>
-                <Nav.Link as={Link} to='#'>
+                <Nav.Link as={Link} to='/sca/examples'>
                     <button type='button' className='student-navbar-button dark-background light size-30'>
                         <Image src={iconSamples} thumbnail className='student-navbar-image dark-background' />
                         Образцы

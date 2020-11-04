@@ -27,6 +27,7 @@ import ScaStuViewHeader from './components/ScaStuViewHeader';
 import ScaStuViewPage from './pages/scientific_advisor/ScaStuViewPage';
 import SciAdvisorStudentsDocsPage from './pages/scientific_advisor/SciAdvisorStudentsDocsPage';
 import ScaProjectsPage from './pages/scientific_advisor/ScaProjectsPage';
+import ScaExamplesPage from './pages/scientific_advisor/ScaExamplesPage';
 
 import HocHeader from './components/HocHeader';
 import HocDocumentooborotPage from './pages/head_of_cafedra/HocDocumentooborotPage';
@@ -69,6 +70,7 @@ export default function App() {
             <AuthRoute exact path='/sca/orders' component={OrdersPage} />
             <AuthRoute exact path='/sca/templates' component={TemplatesPage} />
             <AuthRoute exact path='/sca/projects' component={ScaProjectsPage} />
+            <AuthRoute exact path='/sca/examples' component={ScaExamplesPage} />
 
             <AuthRoute exact path='/hoc/documentooborot' component={HocDocumentooborotPage} />
 

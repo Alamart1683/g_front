@@ -976,7 +976,6 @@ html, body {
 .templatesPanel {
 	width: 1478px;
 	height: 758px;
-	/*background-color: #ce2a45;*/
 	margin-left: auto;
 	margin-right: auto;
 	margin-top: 20px;
@@ -985,7 +984,6 @@ html, body {
 .ordersPanel {
 	width: 1478px;
 	height: 758px;
-	/*background-color: #ce2a45;*/
 	margin-left: auto;
 	margin-right: auto;
 	margin-top: 20px;
@@ -1261,4 +1259,91 @@ html, body {
 
 .add-student-dropdown-div .sci-advisor-status-dropdown-content {
 	text-align: center;
+}
+
+.sca-examples-div {
+	margin-top: 20px;
+	margin-left: auto;
+    margin-right: auto;
+	width: 1480px;
+	display: block;
+}
+
+.sca-examples-menu-div {
+	min-height: 215px;
+	width: 350px;
+	border-radius: 7px;
+	float: left;
+	text-align: center;
+}
+
+.sca-examples-files-div {
+	min-height: 600px;
+	width: 1125px;
+	border-radius: 7px;
+	float: left;
+	margin-left: 5px;
+}
+
+.sca-examples-button {
+	padding: 0px 4px;
+	border-radius: 7px;
+	width: 300px;
+	margin-top: 20px;
+}
+
+.sca-examples-button:hover {
+	background-color: #618FCA;
+}
+
+.sca-examples-button:disabled {
+	background-color:  #859dbb;
+}
+
+.sca-example-file-div {
+	margin-left: 10px;
+	margin-top: 10px;
+	width: 1105px;
+	height: 90px;
+}
+
+.sca-example-file-button {
+	height: 90px;
+	width: 120px;
+	margin-left: 5px;
+	border-radius: 7px;
+}
+
+.sca-example-file-button:hover {
+	background-color: #618FCA;
+}
+
+.sca-example-file-clickable {
+	height: 90px;
+	width: 855px;
+	border-radius: 7px;
+	float: left;
+}
+
+.sca-example-file-clickable:hover {
+	cursor: pointer;
+}
+
+.sca-example-file-clickable-selected {
+	background-color: #618FCA;
+}
+
+.sca-example-text-div {
+	display: inline-block;
+	margin-left: 10px;
+	width: 740px;
+	height: 86px;
+	white-space: nowrap;
+	overflow: hidden;
+  	text-overflow: ellipsis;
+}
+
+.sca-example-image {
+	position: relative;
+	top: -35px;
 }
