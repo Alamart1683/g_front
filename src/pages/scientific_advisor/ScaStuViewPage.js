@@ -926,31 +926,27 @@ export default function ScaStuViewPage() {
                 </Table>
             </div>
             <Form className='info-form light-background'>
-                <Tabs defaultActiveKey='info1' className='info-form-main-tabs' onSelect={(firstTab) => {
-                    $('#image1').attr('src', infoBlock1);
-                    $('#image2').attr('src', infoBlock2);
-                    $('#image3').attr('src', infoBlock3);
-                    $('#image4').attr('src', infoBlock4);
-                    console.log(firstTab);
+                <Tabs defaultActiveKey='info1' className='info-form-main-tabs sca-tabs' onSelect={(firstTab) => {
+                    $('.sca-tab-header').removeClass('sca-tab-header-active');
                     switch (firstTab) {
                         case 'info1':
-                            $('#image1').attr('src', infoBlock11);
+                            $('#header-1').addClass('sca-tab-header-active');
                             break;
                         case 'info2':
-                            $('#image2').attr('src', infoBlock22);
+                            $('#header-2').addClass('sca-tab-header-active');
                             break;
                         case 'info3':
-                            $('#image3').attr('src', infoBlock33);
+                            $('#header-3').addClass('sca-tab-header-active');
                             break;
                         case 'info4':
-                            $('#image4').attr('src', infoBlock44);
+                            $('#header-4').addClass('sca-tab-header-active');
                             break;
                         default:
                             console.log('tabError');
                     }
                 }}>
-                    <Tab eventKey='info1' title={<Image id='image1' src={infoBlock11} thumbnail className='info-form-image' />} className='info-form-tabs'>
-
+                    <Tab eventKey='info1' title={<p id='header-1' className='light-background light size-30 sca-tab-header sca-tab-header-active' style={{ lineHeight: '45px' }}>Научно-исследовательская работа</p>} className='info-form-tabs'>
+                        
                         <Tabs defaultActiveKey='none' onSelect={() => { setTimeout(function () { window.scrollTo(0, 2000); }, 1); }} className='info-form-subtab light-background container-fluid'>
                             <Tab eventKey='info11' title={
                                 <p className='size-30 light dark-background info-form-subtab-title'>
@@ -1043,13 +1039,13 @@ export default function ScaStuViewPage() {
                             </Tab>
                         </Tabs>
                     </Tab>
-                    <Tab eventKey='info2' title={<Image id='image2' src={infoBlock2} thumbnail className='info-form-image' />}>
+                    <Tab eventKey='info2' title={<p id='header-2' className='light-background light size-30 sca-tab-header' style={{ marginLeft: '14px' }}>ПпППУиОПД</p>}>
 
                     </Tab>
-                    <Tab eventKey='info3' title={<Image id='image3' src={infoBlock3} thumbnail className='info-form-image' />}>
+                    <Tab eventKey='info3' title={<p id='header-3' className='light-background light size-30 sca-tab-header' style={{ marginLeft: '14px' }}>Преддипломная практика</p>}>
 
                     </Tab>
-                    <Tab eventKey='info4' title={<Image id='image4' src={infoBlock4} thumbnail className='info-form-image' />}>
+                    <Tab eventKey='info4' title={<p id='header-4' className='light-background light size-30 sca-tab-header' style={{ marginLeft: '13px' }}>Защита ВКР</p>}>
 
                     </Tab>
                 </Tabs>

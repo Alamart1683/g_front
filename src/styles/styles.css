@@ -1429,3 +1429,25 @@ html, body {
 	margin-right: auto;
 	margin-bottom: 15px;
 }
+
+.sca-tab-header {
+	width: 362px;
+	height: 90px;
+	line-height:90px;
+	text-align: center;
+	vertical-align: middle;
+	border-radius: 7px;
+}
+
+.sca-tab-header:hover {
+	background: #618FCA;
+}
+
+.sca-tab-header-active {
+	background: #618FCA;
+}
+
+.sca-tabs .nav-link, .sca-tabs .nav-link.active {
+	background-color: #F1F4FB;
+	padding-bottom: 20px;
+}
