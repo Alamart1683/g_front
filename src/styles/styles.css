@@ -1451,3 +1451,7 @@ html, body {
 	background-color: #F1F4FB;
 	padding-bottom: 20px;
 }
+
+.accordion-clickable {
+	cursor: pointer;
+}

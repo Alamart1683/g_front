@@ -48,7 +48,7 @@ export default function ScaExamplesPage() {
     function showExamples(examplesArray) {
         for (var i = 0; i < examplesArray.length; i++) {
             var example = examplesArray[i];
-            //console.log(example);
+            console.log(example);
 
             var exampleDiv = document.createElement('div');
             exampleDiv.className = 'sca-example-file-div';
@@ -64,7 +64,14 @@ export default function ScaExamplesPage() {
             exampleName.innerText = example.documentName;
 
             var examplePermissions = document.createElement('p');
-            examplePermissions.innerText = 'Доступ: ' + 'Для всех';
+            if (example.area === 'Не назначена') {
+                examplePermissions.innerText = 'Доступ: для всех моих студентов';
+            }
+            else {
+                examplePermissions.innerText = 'Доступ: ' + example.area;
+            }
+            
+            //examplePermissions.innerText = ' ';
             examplePermissions.style.display = 'inline-block';
             examplePermissions.style.marginLeft = '15px';
 

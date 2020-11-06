@@ -12,8 +12,8 @@ export default function StudentExamplesPage() {
     const [examples, setExamples] = useState([]);
 
     useEffect(() => {
-        showExamples();
-    });
+        showExamples(examples);
+    }, [examples]);
 
     if (!fetchedData) {
         setFetchedData(true);
@@ -35,10 +35,10 @@ export default function StudentExamplesPage() {
         });
     }
 
-    function showExamples() {
+    function showExamples(examplesArray) {
         //console.log(examples);
-        for (var i = 0; i < examples.length; i++) {
-            var example = examples[i];
+        for (var i = 0; i < examplesArray.length; i++) {
+            var example = examplesArray[i];
 
             var exampleDiv = document.createElement('div');
             exampleDiv.className = 'student-example-div';

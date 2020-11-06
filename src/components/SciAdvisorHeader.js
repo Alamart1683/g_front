@@ -55,7 +55,7 @@ export default function SciAdvisorHeader() {
                 <Nav.Link as={Link} to='/sca/templates'>
                     <button type='button' className='student-navbar-button dark-background light size-30'>
                         <Image src={templateImage} thumbnail className='student-navbar-image dark-background'/>
-                        Шаблоны <br/> заданий
+                        Шаблоны
                     </button>
                 </Nav.Link>
                 <Nav.Link as={Link} to='#'>

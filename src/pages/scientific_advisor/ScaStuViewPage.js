@@ -5,15 +5,6 @@ import { useAuthContext } from '../../auth/AuthContext';
 import { apiURL } from '../../Config';
 import $ from 'jquery';
 
-import infoBlock1 from '../../images/infographics blocks/block1_0.png';
-import infoBlock2 from '../../images/infographics blocks/block2_0.png';
-import infoBlock3 from '../../images/infographics blocks/block3_0.png';
-import infoBlock4 from '../../images/infographics blocks/block4_0.png';
-import infoBlock11 from '../../images/infographics blocks/block1.png';
-import infoBlock22 from '../../images/infographics blocks/block2.png';
-import infoBlock33 from '../../images/infographics blocks/block3.png';
-import infoBlock44 from '../../images/infographics blocks/block4.png';
-
 import iconDocument from '../../images/icons/documents.png';
 import iconProject from '../../images/icons/myproject.png';
 import iconInfo from '../../images/icons/info.png';

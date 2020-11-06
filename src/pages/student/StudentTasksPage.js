@@ -17,6 +17,7 @@ import infoBlock44 from '../../images/infographics blocks/block4.png';
 import iconDocument from '../../images/icons/documents.png';
 import iconProject from '../../images/icons/myproject.png';
 import iconInfo from '../../images/icons/info.png';
+import iconExample from '../../images/icons/samples.png';
 
 export default function StudentTasksPage() {
 
@@ -336,6 +337,50 @@ export default function StudentTasksPage() {
         for (var i = 0; i < examplesArray.length; i++) {
             var example = examplesArray[i];
             console.log(example);
+
+            var exampleDiv = document.createElement('div');
+            exampleDiv.className = 'student-example-div';
+            exampleDiv.style.width = '1400px';
+
+            var titleDiv = document.createElement('div');
+            titleDiv.className = 'student-example-title dark-background';
+            titleDiv.style.width = '1120px';
+
+            var exampleImage = document.createElement('img');
+            exampleImage.className = 'order-name-image'
+            exampleImage.src = iconExample;
+
+            var exampleName = document.createElement('p');
+            exampleName.className = 'order-name-text light size-24';
+            exampleName.innerText = example.documentName;
+
+            var exampleDownload = document.createElement('button');
+            exampleDownload.className = 'student-example-download light size-24';
+            exampleDownload.type = 'button';
+            exampleDownload.id = 'example-download-' + i;
+            exampleDownload.innerText = "Сохранить образец";
+
+            titleDiv.appendChild(exampleImage);
+            titleDiv.appendChild(exampleName);
+            exampleDiv.appendChild(titleDiv);
+            exampleDiv.appendChild(exampleDownload);
+            
+            switch (example.documentType) {
+                case 'Научно-исследовательская работа':
+                    document.getElementById("example-panel-1").appendChild(exampleDiv);
+                    break;
+                case 'Практика по получению знаний и умений':
+                    document.getElementById("example-panel-2").appendChild(exampleDiv);
+                    break;
+                case 'Преддипломная практика':
+                    document.getElementById("example-panel-3").appendChild(exampleDiv);
+                    break;
+                case 'ВКР':
+                    document.getElementById("example-panel-4").appendChild(exampleDiv);
+                    break;
+                default:
+                    console.log('switchError');
+            }
         }
     }
 
@@ -572,6 +617,32 @@ export default function StudentTasksPage() {
             });
         });
 
+        // Скачать пример
+        $('.student-example-download').off().on('click', function() {
+            var arrayId = $(this).attr('id').split('-')[2];
+            axios({
+                url: apiURL + '/document/download/',
+                method: 'GET',
+                responseType: 'blob',
+                params: {
+                    'creator_id': examples[arrayId].systemCreatorID,
+                    'documentName': examples[arrayId].documentName,
+                },
+                headers: {
+                    'Authorization': 'Bearer ' + authTokens.accessToken
+                },
+            }).then((response) => {
+                const url = window.URL.createObjectURL(new Blob([response.data]));
+                const link = document.createElement('a');
+                link.href = url;
+                link.setAttribute('download', examples[arrayId].documentName);
+                document.body.appendChild(link);
+                link.click();
+
+            }).catch(result => {
+                console.log(result.data);
+            });
+        })
     });
 
     return (
@@ -612,11 +683,11 @@ export default function StudentTasksPage() {
                         <div className='task-page-accordion-div'>
                             <Accordion>
                                 <Card>
-                                    <Accordion.Toggle as={Card.Header} eventKey="acc0" className='dark size-28'>
+                                    <Accordion.Toggle as={Card.Header} eventKey="acc0" className='dark size-28 accordion-clickable'>
                                         Образцы по НИР
                                     </Accordion.Toggle>
                                     <Accordion.Collapse eventKey="acc0">
-                                        <Card.Body>
+                                        <Card.Body id='example-panel-1'>
                                             
                                         </Card.Body>
                                     </Accordion.Collapse>
@@ -729,11 +800,11 @@ export default function StudentTasksPage() {
                         <div className='task-page-accordion-div'>
                             <Accordion>
                                 <Card>
-                                    <Accordion.Toggle as={Card.Header} eventKey="acc1" className='dark size-28'>
+                                    <Accordion.Toggle as={Card.Header} eventKey="acc1" className='dark size-28 accordion-clickable'>
                                         Образцы по ПпППУиОПД
                                     </Accordion.Toggle>
                                     <Accordion.Collapse eventKey="acc1">
-                                        <Card.Body>
+                                        <Card.Body id='example-panel-2'>
                                             
                                         </Card.Body>
                                     </Accordion.Collapse>
@@ -741,6 +812,7 @@ export default function StudentTasksPage() {
                             </Accordion>
                         </div>
                     </div>
+                    <div className='info-break-div'>&nbsp;</div>
                 </Tab>
                 <Tab eventKey='info3' title={<Image id='image3' src={infoBlock3} thumbnail className='info-form-image' />}>
                     <div className='dark info-task-block'>
@@ -753,11 +825,11 @@ export default function StudentTasksPage() {
                         <div className='task-page-accordion-div'>
                             <Accordion>
                                 <Card>
-                                    <Accordion.Toggle as={Card.Header} eventKey="acc2" className='dark size-28'>
+                                    <Accordion.Toggle as={Card.Header} eventKey="acc2" className='dark size-28 accordion-clickable'>
                                         Образцы по ПП
                                     </Accordion.Toggle>
                                     <Accordion.Collapse eventKey="acc2">
-                                        <Card.Body>
+                                        <Card.Body id='example-panel-3'>
                                             
                                         </Card.Body>
                                     </Accordion.Collapse>
@@ -765,6 +837,7 @@ export default function StudentTasksPage() {
                             </Accordion>
                         </div>
                     </div>
+                    <div className='info-break-div'>&nbsp;</div>
                 </Tab>
                 <Tab eventKey='info4' title={<Image id='image4' src={infoBlock4} thumbnail className='info-form-image' />}>
                     <div className='dark info-task-block'>
@@ -777,11 +850,11 @@ export default function StudentTasksPage() {
                         <div className='task-page-accordion-div'>
                             <Accordion>
                                 <Card>
-                                    <Accordion.Toggle as={Card.Header} eventKey="acc3" className='dark size-28'>
+                                    <Accordion.Toggle as={Card.Header} eventKey="acc3" className='dark size-28 accordion-clickable'>
                                         Образцы по ВКР
                                     </Accordion.Toggle>
                                     <Accordion.Collapse eventKey="acc3">
-                                        <Card.Body>
+                                        <Card.Body id='example-panel-4'>
                                             
                                         </Card.Body>
                                     </Accordion.Collapse>
@@ -789,6 +862,7 @@ export default function StudentTasksPage() {
                             </Accordion>
                         </div>
                     </div>
+                    <div className='info-break-div'>&nbsp;</div>
                 </Tab>
             </Tabs>
 
