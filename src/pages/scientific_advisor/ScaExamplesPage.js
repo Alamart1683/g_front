@@ -154,7 +154,7 @@ export default function ScaExamplesPage() {
 
         var formData = new FormData();
         formData.append('documentFormType', type);
-        formData.append('documentFormKind', 'Задание');
+        formData.append('documentFormKind', 'Образец');
         formData.append('documentFormDescription', 'Описание образца');
         // Если равно, дать доступ всем студентам
         if (area !== 'Все мои студенты') {
