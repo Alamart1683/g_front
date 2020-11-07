@@ -31,7 +31,10 @@ import ScaProjectsPage from './pages/scientific_advisor/ScaProjectsPage';
 import ScaExamplesPage from './pages/scientific_advisor/ScaExamplesPage';
 
 import HocHeader from './components/HocHeader';
-import HocDocumentooborotPage from './pages/head_of_cafedra/HocDocumentooborotPage';
+//import HocDocumentooborotPage from './pages/head_of_cafedra/HocDocumentooborotPage';
+import HocOrdersPage from './pages/head_of_cafedra/HocOrdersPage';
+import HocTemplatesPage from './pages/head_of_cafedra/HocTemplatesPage';
+import HocStudentAssociationPage from './pages/head_of_cafedra/HocStudentAssociationPage';
 
 export default function App() {
 
@@ -74,7 +77,9 @@ export default function App() {
             <AuthRoute exact path='/sca/projects' component={ScaProjectsPage} />
             <AuthRoute exact path='/sca/examples' component={ScaExamplesPage} />
 
-            <AuthRoute exact path='/hoc/documentooborot' component={HocDocumentooborotPage} />
+            <AuthRoute exact path='/hoc/orders' component={HocOrdersPage} />
+            <AuthRoute exact path='/hoc/templates' component={HocTemplatesPage} />
+            <AuthRoute exact path='/hoc/association' component={HocStudentAssociationPage} />
 
             <Route path='*' component={NoMatch} />
           </Switch>

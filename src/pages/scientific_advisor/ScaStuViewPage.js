@@ -956,21 +956,21 @@ export default function ScaStuViewPage() {
                                     <div className='info-row'>
                                         <div className='info-column'>
                                             <Form.Label column className="size-21 dark info-input-label">Тема НИР:</Form.Label>
-                                            <textarea value={studentTheme} onChange={(e) => { setStudentTheme(e.target.value); }} className='dark size-24 info-input-area' />
+                                            <textarea maxLength='1024' value={studentTheme} onChange={(e) => { setStudentTheme(e.target.value); }} className='dark size-24 info-input-area' />
 
                                             <Form.Label column className="size-21 dark info-input-label">Изучить:</Form.Label>
-                                            <textarea value={toExplore} onChange={(e) => { setToExplore(e.target.value); }} className='dark size-24 info-input-area' />
+                                            <textarea maxLength='2048' value={toExplore} onChange={(e) => { setToExplore(e.target.value); }} className='dark size-24 info-input-area' />
 
                                             <Form.Label column className="size-21 dark info-input-label">Практически выполнить:</Form.Label>
-                                            <textarea value={toCreate} onChange={(e) => { setToCreate(e.target.value); }} className='dark size-24 info-input-area' />
+                                            <textarea maxLength='2048' value={toCreate} onChange={(e) => { setToCreate(e.target.value); }} className='dark size-24 info-input-area' />
                                         </div>
 
                                         <div className='info-column'>
                                             <Form.Label column className="size-21 dark info-input-label">Ознакомиться:</Form.Label>
-                                            <textarea value={toFamiliarize} onChange={(e) => { setToFamiliarize(e.target.value); }} className='dark size-24 info-input-area' />
+                                            <textarea maxLength='2048' value={toFamiliarize} onChange={(e) => { setToFamiliarize(e.target.value); }} className='dark size-24 info-input-area' />
 
                                             <Form.Label column className="size-21 dark info-input-label">Дополнительное задание:</Form.Label>
-                                            <textarea value={additionalTask} onChange={(e) => { setAdditionalTask(e.target.value); }} className='dark size-24 info-input-area' />
+                                            <textarea maxLength='2048' value={additionalTask} onChange={(e) => { setAdditionalTask(e.target.value); }} className='dark size-24 info-input-area' />
 
                                             <button type='button' id='send-nir-task-button' className='size-30 light dark-background info-button-1'>
                                                 <Image src={iconDocument} thumbnail className='dark-background thumbnail-icon' />

@@ -148,10 +148,6 @@ export default function ScaExamplesPage() {
     // TODO fix
     // Создание образца
     function createExample(file, type, area) {
-        //console.log(file);
-        //console.log(type);
-        //console.log(area);
-
         var formData = new FormData();
         formData.append('documentFormType', type);
         formData.append('documentFormKind', 'Образец');
@@ -167,7 +163,7 @@ export default function ScaExamplesPage() {
         // Если равно, дать доступ всем студентам
         if (area !== 'Все мои студенты') {
             console.log(area);
-            formData.append('projectArea', projectAreaData);
+            formData.append('projectArea', area);
         }
         axios({
             url: apiURL + '/scientific_advisor/document/upload',

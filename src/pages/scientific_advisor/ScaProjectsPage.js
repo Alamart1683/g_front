@@ -443,7 +443,7 @@ export default function ScaProjectsPage() {
             <div className='sca-projects-menu-div light-background'>
                 <p className='dark size-30 sca-projects-title'><b>Добавление программы проектов</b></p>
                 <p className='dark size-24'>Название программы проектов:</p>
-                <textarea id='project-area-name' value={projectAreaName} onChange={(e) => {
+                <textarea maxLength='256' id='project-area-name' value={projectAreaName} onChange={(e) => {
                     setProjectAreaName(e.target.value);
                     if (e.target.value.length > 0) {
                         document.getElementById('add-project-area-button').disabled = false;
@@ -460,7 +460,7 @@ export default function ScaProjectsPage() {
 
                 <p className='dark size-30 sca-projects-title'><b>Добавление проекта<br />в программу проектов</b></p>
                 <p className='dark size-24'>Название проекта:</p>
-                <textarea id='project-name' value={projectName} onChange={(e) => {
+                <textarea maxLength='100' id='project-name' value={projectName} onChange={(e) => {
                     setProjectName(e.target.value);
                     //console.log( $('#area-dropdown-list :selected').val() );
                     if (e.target.value.length > 0 && $('#area-dropdown-list :selected').val() !== undefined) {

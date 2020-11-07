@@ -40,7 +40,7 @@ export default function SciAdvisorStudentsPage() {
         });
     }
 
-    // TODO Show project name
+    // TODO Show project name or shortened project name
     // Заполнение таблицы студентов
     function showStudents(studentArray) {
         for (var i=0; i<studentArray.length; i++) {
