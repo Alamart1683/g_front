@@ -121,63 +121,20 @@ export default function HocStudentAssociationPage() {
         }
     }
 
-    // TODO
     // Получение списка науч руков
     function getSca() {
-        setScaData([
-            {
-                "systemID": 2,
-                "advisorName": "Григорьев Виктор Карлович",
-                "advisorCathedra": "МОСИТ",
-                "advisorEmail": "vkgrig490@mail.ru",
-                "advisorPhone": "+79652812343",
-                "totalAdvisorPlaces": 8,
-                "freeAdvisorPlaces": 5,
-                "occupiedAdvisorPlaces": 3,
-                "advisorProjectAreas": [
-                    "Программа проектов 1",
-                    "Программа проектов 2",
-                    "Программа проектов 3"
-                ],
-                "hasFreePlaces": true
+        axios({
+            url: apiURL + '/scientific_advisor/all',
+            method: 'GET',
+            headers: { 
+                'Authorization': 'Bearer ' + authTokens.accessToken 
             },
-            {
-                "systemID": 3,
-                "advisorName": "Иванов Иван Иванович",
-                "advisorCathedra": "МОСИТ",
-                "advisorEmail": "kakoyetomylo@mirea.ru",
-                "advisorPhone": "+79991488228",
-                "totalAdvisorPlaces": 10,
-                "freeAdvisorPlaces": 10,
-                "occupiedAdvisorPlaces": 0,
-                "advisorProjectAreas": [],
-                "hasFreePlaces": true
-            },
-            {
-                "systemID": 4,
-                "advisorName": "Некарева Немарина Неандреевна",
-                "advisorCathedra": "МОСИТ",
-                "advisorEmail": "korrafox@gmail.com",
-                "advisorPhone": "+79991488228",
-                "totalAdvisorPlaces": 15,
-                "freeAdvisorPlaces": 13,
-                "occupiedAdvisorPlaces": 2,
-                "advisorProjectAreas": [],
-                "hasFreePlaces": true
-            },
-            {
-                "systemID": 5,
-                "advisorName": "Головин Сергей Анатольевич",
-                "advisorCathedra": "МОСИТ",
-                "advisorEmail": "s_golovin256@mirea.ru",
-                "advisorPhone": "+74954349743",
-                "totalAdvisorPlaces": 3,
-                "freeAdvisorPlaces": 3,
-                "occupiedAdvisorPlaces": 0,
-                "advisorProjectAreas": [],
-                "hasFreePlaces": true
-            }
-        ]);
+          }).then((response) => {
+            //console.log(response);
+            setScaData(response.data);
+          }).catch(result => {
+            console.log(result.data);
+        });
     }
 
     // Поиск по таблице
