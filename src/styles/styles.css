@@ -1574,3 +1574,130 @@ html, body {
 	background-color: #ddd;
 	cursor: pointer;
 }
+
+/* Страницы шаблонов и приказов завкафа */
+
+.orders-templates-panel {
+	width: 1506px;
+	height: 660px;
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: 34px;
+	display: block;
+}
+
+.hoc-templates-orders-buttons-panel {
+	width: 380px;
+	height: 496px;
+	border-radius: 7px;
+	background-color: #B2CAEE;
+	float: left;
+}
+
+.orders-templates-button {
+	margin-top: 9px;
+	margin-left: 9px;
+	width: 362px;
+	height: 88px;
+	background-color: #89AFE0;
+	border-radius: 7px;
+	border-width: 0px;
+}
+
+.orders-templates-button:hover {
+	background-color: #618FCA;
+}
+
+.orders-templates-button-selected {
+	background-color: #618FCA;
+}
+
+.orders-templates-upload-button {
+	margin-top: 9px;
+	margin-left: 9px;
+	width: 362px;
+	height: 88px;
+	background-color: #89AFE0;
+	border-radius: 7px;
+	border-width: 0px;
+}
+
+.orders-templates-upload-button:hover {
+	background-color: #618FCA;
+}
+
+.orders-templates-upload-button-selected {
+	background-color: #618FCA;
+}
+
+.hoc-orders-templates-document-panel {
+	width: 1107px;
+	height: 660px;
+	background: #B2CAEE;
+	border-radius: 7px;
+	float: left;
+}
+
+.hoc-orders-templates-document-panel-common {
+	width: 1107px;
+	height: 660px;
+	background: #B2CAEE;
+	border-radius: 7px;
+	margin-left: 18px;
+	float: left;
+}
+
+.hoc-order-template-name {
+	display: inline-block;
+	width: 802px;
+	height: 90px;
+	background-color: #89AFE0;
+	border-radius: 7px;
+	border-width: 0px;
+}
+
+.hoc-order-template-download-button {
+	background: #89AFE0;
+	width: 127px;
+	height: 90px;
+	border-radius: 7px;
+	border-width: 0px;
+	margin-left: 13px;
+}
+
+.hoc-order-template-download-button :hover {
+	background-color: #618FCA;
+}
+
+.hoc-order-template-delete-button {
+	background: #89AFE0;
+	width: 127px;
+	height: 90px;
+	border-radius: 7px;
+	border-width: 0px;
+	margin-left: 13px;
+}
+
+.hoc-order-template-delete-button:hover {
+	background-color: #618FCA;
+}
+
+.hoc-order-template-name-image {
+	display:inline-block;
+}
+
+.hoc-order-template-name-text {
+	display:inline-block;
+	margin-left: 20px;
+}
+
+.hoc-order-template-doc {
+	width: 1082px;
+	display: inline-block;
+	margin-left: 13px;
+	margin-top: 10px;
+}
+
+.hoc-orders-templates-document-panel-hidden {
+	display: none;
+}

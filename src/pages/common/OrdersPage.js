@@ -51,7 +51,7 @@ export default function OrdersPage() {
 
             var orderNameText = document.createElement('p');
             orderNameText.className = 'order-name-text light size-24';
-            orderNameText.innerText = order.documentDescription;
+            orderNameText.innerText = order.documentName;
 
             var orderNameImage = document.createElement('img');
             orderNameImage.className = 'order-name-image'
@@ -89,7 +89,7 @@ export default function OrdersPage() {
     }
 
     $(function () {
-        // Скачать шаблон задания
+        // Скачать приказ
         $('.order-doc-download').off().on('click', function (event) {
             var systemDocumentId = $(this).parent().attr('id');
             // console.log(systemDocumentId);
