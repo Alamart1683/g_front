@@ -44,7 +44,6 @@ export default function ScaExamplesPage() {
         });
     }
 
-    // TODO permissions
     function showExamples(examplesArray) {
         for (var i = 0; i < examplesArray.length; i++) {
             var example = examplesArray[i];
@@ -145,7 +144,7 @@ export default function ScaExamplesPage() {
         }
     }
 
-    // TODO fix
+    // TODO add project selection
     // Создание образца
     function createExample(file, type, area) {
         var formData = new FormData();

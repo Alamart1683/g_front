@@ -1601,7 +1601,6 @@ html, body {
 	height: 88px;
 	background-color: #89AFE0;
 	border-radius: 7px;
-	border-width: 0px;
 }
 
 .orders-templates-button:hover {
@@ -1619,7 +1618,6 @@ html, body {
 	height: 88px;
 	background-color: #89AFE0;
 	border-radius: 7px;
-	border-width: 0px;
 }
 
 .orders-templates-upload-button:hover {
@@ -1651,9 +1649,27 @@ html, body {
 	display: inline-block;
 	width: 802px;
 	height: 90px;
-	background-color: #89AFE0;
 	border-radius: 7px;
-	border-width: 0px;
+	position: relative;
+	top: -9px;
+}
+
+.hoc-order-name-div {
+	display: inline-block;
+	width: 802px;
+	height: 125px;
+	border-radius: 7px;
+	position: relative;
+	top: -5px;
+}
+
+.hoc-order-titles-div {
+	display: inline-block;
+	width: 720px;
+	white-space: nowrap;
+	overflow: hidden;
+  	text-overflow: ellipsis;
+
 }
 
 .hoc-order-template-download-button {
@@ -1661,11 +1677,10 @@ html, body {
 	width: 127px;
 	height: 90px;
 	border-radius: 7px;
-	border-width: 0px;
 	margin-left: 13px;
 }
 
-.hoc-order-template-download-button :hover {
+.hoc-order-template-download-button:hover {
 	background-color: #618FCA;
 }
 
@@ -1674,7 +1689,6 @@ html, body {
 	width: 127px;
 	height: 90px;
 	border-radius: 7px;
-	border-width: 0px;
 	margin-left: 13px;
 }
 
@@ -1700,4 +1714,11 @@ html, body {
 
 .hoc-orders-templates-document-panel-hidden {
 	display: none;
+}
+
+.hoc-order-date-input {
+	border-radius: 7px;
+	width: 300px;
+	margin-bottom: 10px;
+	padding-left: 10px;
 }

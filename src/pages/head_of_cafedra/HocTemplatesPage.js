@@ -1,14 +1,18 @@
 import React, { useEffect, useState } from 'react';
+import { Modal } from 'react-bootstrap';
 import axios from 'axios';
 import { useAuthContext } from '../../auth/AuthContext';
 import { apiURL } from '../../Config';
-import templateImage from '../../images/icons/template.png';
 import $ from 'jquery';
+
+import templateImage from '../../images/icons/template.png';
 
 export default function HocTemplatesPage() {
     const { authTokens } = useAuthContext();
     const [fetchedData, setFetchedData] = useState(false);
     const [templates, setTemplates] = useState([]);
+
+    const [show, setShow] = useState(false);
 
     useEffect(() => {
         showTeplates(templates);
@@ -28,7 +32,7 @@ export default function HocTemplatesPage() {
                 'Authorization': 'Bearer ' + authTokens.accessToken 
             },
           }).then((response) => {
-            console.log(response);
+            //console.log(response);
             setTemplates(response.data);
           }).catch(result => {
             console.log(result.data);
@@ -45,7 +49,7 @@ export default function HocTemplatesPage() {
             documentFile.id = 'hoc-order-template-doc-' + i;
 
             var templateName = document.createElement('div');
-            templateName.className = 'hoc-order-template-name light-background';
+            templateName.className = 'dark-background hoc-order-template-name';
             templateName.id = 'hoc-order-template-name';
 
             var templateNameText = document.createElement('p');
@@ -90,6 +94,36 @@ export default function HocTemplatesPage() {
                     console.log('switch error');
             }
         }
+    }
+
+    function createTemplate(file, templateType) {
+        //console.log(file);
+        var formData = new FormData();
+        switch (templateType) {
+            case 'Шаблон задания на НИР':
+                formData.append('documentFormType', 'Научно-исследовательская работа');
+                formData.append('documentFormKind', 'Задание');
+                formData.append('documentFormDescription', 'Образец задания на НИР для автозаполнения');
+                formData.append('documentFormViewRights', 'Все пользователи');
+                formData.append('file', file);
+                break;
+            default:
+                console.log('Неопознанный тип шаблона');
+        }
+        axios({
+            url: apiURL + '/scientific_advisor/document/upload',
+            method: 'POST',
+            data: formData,
+            headers: {
+                'Content-Type': 'multipart/form-data',
+                'Authorization': 'Bearer ' + authTokens.accessToken
+            },
+        }).then((response) => {
+            //console.log(response);
+            window.location.reload();
+        }).catch(result => {
+            console.log(result);
+        });
     }
 
     $(function () {
@@ -164,28 +198,33 @@ export default function HocTemplatesPage() {
                 console.log(result.data);
             });
         });
+    
+        $('#create-template-button').off().on('click', function () {
+            $('#template-file-input').trigger('click');
+        });
+
     });
 
     return(
         <div className='orders-templates-panel'>
             <div className='hoc-templates-orders-buttons-panel' id='hoc-templates-buttons-panel'>
-                <button type='submit' className='size-22 light orders-templates-button' id='button-1'>
+                <button type='button' className='size-22 light orders-templates-button orders-templates-button-selected' id='button-1'>
                     Научно-исследовательская работа
                 </button>
 
-                <button type='submit' className='size-22 light orders-templates-button' id='button-2'>
+                <button type='button' className='size-22 light orders-templates-button ' id='button-2'>
                     ПпППУиОПД
                 </button>
 
-                <button type='submit' className='size-22 light orders-templates-button' id='button-3'>
+                <button type='button' className='size-22 light orders-templates-button' id='button-3'>
                     Преддипломная практика
                 </button>
 
-                <button type='submit' className='size-22 light orders-templates-button' id='button-4'>
+                <button type='button' className='size-22 light orders-templates-button' id='button-4'>
                     Защита ВКР
                 </button>
 
-                <button type='button' className='size-22 light orders-templates-upload-button' id='upload-button'>
+                <button type='button' onClick={(e) => { setShow(true); }} className='size-22 light orders-templates-upload-button' id='upload-button'>
                     Загрузить шаблон
                 </button>
             </div>
@@ -196,6 +235,32 @@ export default function HocTemplatesPage() {
                 <div className='hoc-orders-templates-document-panel-hidden' id='hoc-templates-document-panel3'></div>
                 <div className='hoc-orders-templates-document-panel-hidden' id='hoc-templates-document-panel4'></div>
             </div>
+            <Modal centered show={show} onHide={(e) => { setShow(false); }} className='dark'>
+                <Modal.Header className='light-background sca-examples-modal1-header' closeButton>
+                    <Modal.Title className='size-30'>
+                        <p style={{ height: '50px', marginBottom: '0px', marginLeft: '200px' }}>Загрузить шаблон</p>
+                    </Modal.Title>
+                </Modal.Header>
+                <Modal.Body className='light-background sca-examples-modal1-body'>
+                    <select id='dropdown-tamplate-type' defaultValue='' className='dark size-24 sca-examples-dropdown' onChange={(e) => {
+                        if ($('#dropdown-tamplate-type :selected').val() !== '') {
+                            document.getElementById('create-template-button').disabled = false;
+                        }
+                    }}>
+                        <option value='' disabled hidden>Выберите тип шаблона</option>
+                        <option value='Шаблон задания на НИР'>Шаблон задания на НИР</option>
+                    </select>
+                    <button type='button' id='create-template-button' disabled className='size-24 dark-background light sca-modal-button' style={{ marginLeft: '130px' }}>
+                        Выбрать файл и<br/>загрузить шаблон на сервер
+                    </button>
+                    <input id='template-file-input' type='file' style={{ display: 'none' }} onChange={(e) => {
+                        if (e.target.files.length !== 0) {
+                            document.getElementById('create-template-button').disabled = true;
+                            createTemplate(e.target.files[0], $('#dropdown-template-type :selected').val());
+                        }
+                    }} ></input>
+                </Modal.Body>
+            </Modal>
         </div>
     );
 }

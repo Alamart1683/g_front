@@ -55,7 +55,7 @@ export default function HocStudentAssociationPage() {
 
     // Заполнение выпадающего менб науч руков
     function fillScaDropdown(scaArray) {
-        console.log(scaArray);
+        //console.log(scaArray);
         for (var i = 0; i < scaArray.length; i++) {
             var sca = scaArray[i];
             var scaRecord = document.createElement('p');
