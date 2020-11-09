@@ -208,6 +208,7 @@ export default function HocTemplatesPage() {
 
     return(
         <div className='orders-templates-panel'>
+            <div class='clearfix'>
             <div className='hoc-templates-orders-buttons-panel' id='hoc-templates-buttons-panel'>
                 <button type='button' className='size-22 light orders-templates-button orders-templates-button-selected' id='button-1'>
                     Научно-исследовательская работа
@@ -235,6 +236,7 @@ export default function HocTemplatesPage() {
                 <div className='hoc-orders-templates-document-panel-hidden' id='hoc-templates-document-panel2'></div>
                 <div className='hoc-orders-templates-document-panel-hidden' id='hoc-templates-document-panel3'></div>
                 <div className='hoc-orders-templates-document-panel-hidden' id='hoc-templates-document-panel4'></div>
+            </div>
             </div>
             <Modal centered show={show} onHide={(e) => { setShow(false); }} className='dark'>
                 <Modal.Header className='light-background sca-examples-modal1-header' closeButton>

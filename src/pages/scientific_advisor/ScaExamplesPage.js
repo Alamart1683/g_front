@@ -244,6 +244,7 @@ export default function ScaExamplesPage() {
 
     return (
         <div className='sca-examples-div'>
+            <div class='clearfix'>
             <div className='sca-examples-menu-div light-background'>
                 <button type='button' onClick={(e) => { setShowCreate(true); }} className='light size-24 dark-background sca-examples-button'>
                     Загрузить файл<br />образца на сайт
@@ -254,6 +255,7 @@ export default function ScaExamplesPage() {
             </div>
             <div id='examples-div' className='sca-examples-files-div light-background'>
 
+            </div>
             </div>
 
             <Modal centered show={showCreate} onEnter={(e) => { fillAreaData(); }} onHide={(e) => { setShowCreate(false); }} className='dark'>

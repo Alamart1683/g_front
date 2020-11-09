@@ -85,7 +85,7 @@ export default function HocOrdersPage() {
             orderStartDate.className = 'hoc-order-template-name-text light size-20';
             orderStartDate.innerText = 'Дата начала: ' + order.startDate;
             orderStartDate.style.marginBottom = '0px';
-            
+
             var orderEndDate = document.createElement('p');
             orderEndDate.className = 'hoc-order-template-name-text light size-20';
             orderEndDate.innerText = 'Дата конца: ' + order.endDate;
@@ -106,7 +106,7 @@ export default function HocOrdersPage() {
             orderDelete.style.height = '120px'
             orderDelete.style.position = 'relative';
             orderDelete.style.top = '-60px';
-            
+
             orderName.appendChild(orderNameImage);
 
             orderTitles.appendChild(orderNameText);
@@ -181,15 +181,15 @@ export default function HocOrdersPage() {
     }
 
     function checkIfCanUpload() {
-        var date1 = new Date( $('#order-date').val() );
+        var date1 = new Date($('#order-date').val());
         var valid1 = !isNaN(date1.valueOf());
 
-        var date2 = new Date( $('#order-start-date').val() );
+        var date2 = new Date($('#order-start-date').val());
         var valid2 = !isNaN(date2.valueOf());
 
-        var date3 = new Date( $('#order-end-date').val() );
+        var date3 = new Date($('#order-end-date').val());
         var valid3 = !isNaN(date3.valueOf());
-        
+
         if ($('#dropdown-order-type :selected').val() !== '' &&
             $('#dropdown-order-speciality :selected').val() !== '' &&
             $('#order-num').val() !== '' &&
@@ -273,44 +273,45 @@ export default function HocOrdersPage() {
                 console.log(result.data);
             });
         });
-    
+
         $('#create-order-button').off().on('click', function () {
             $('#order-file-input').trigger('click');
         });
-    
+
     });
 
-    return(
+    return (
         <div className='orders-templates-panel'>
-            <div className='hoc-templates-orders-buttons-panel' id='hoc-orders-buttons-panel'>
-                <button type='button' className='size-22 light orders-templates-button orders-templates-button-selected' id='button-1'>
-                    Научно-исследовательская работа
+            <div class='clearfix'>
+                <div className='hoc-templates-orders-buttons-panel' id='hoc-orders-buttons-panel'>
+                    <button type='button' className='size-22 light orders-templates-button orders-templates-button-selected' id='button-1'>
+                        Научно-исследовательская работа
                 </button>
 
-                <button type='button' className='size-22 light orders-templates-button' id='button-2'>
-                    ПпППУиОПД
+                    <button type='button' className='size-22 light orders-templates-button' id='button-2'>
+                        ПпППУиОПД
                 </button>
 
-                <button type='button' className='size-22 light orders-templates-button' id='button-3'>
-                    Преддипломная практика
+                    <button type='button' className='size-22 light orders-templates-button' id='button-3'>
+                        Преддипломная практика
                 </button>
 
-                <button type='button' className='size-22 light orders-templates-button' id='button-4'>
-                    Защита ВКР
+                    <button type='button' className='size-22 light orders-templates-button' id='button-4'>
+                        Защита ВКР
                 </button>
 
-                <button type='button' onClick={(e) => { setShow(true); }} className='size-22 light orders-templates-upload-button' id='upload-button'>
-                    Загрузить приказ
+                    <button type='button' onClick={(e) => { setShow(true); }} className='size-22 light orders-templates-upload-button' id='upload-button'>
+                        Загрузить приказ
                 </button>
+                </div>
+
+                <div className='hoc-orders-templates-document-panel-common'>
+                    <div className='hoc-orders-templates-document-panel' id='hoc-orders-document-panel1'></div>
+                    <div className='hoc-orders-templates-document-panel-hidden' id='hoc-orders-document-panel2'></div>
+                    <div className='hoc-orders-templates-document-panel-hidden' id='hoc-orders-document-panel3'></div>
+                    <div className='hoc-orders-templates-document-panel-hidden' id='hoc-orders-document-panel4'></div>
+                </div>
             </div>
-
-            <div className='hoc-orders-templates-document-panel-common'>
-                <div className='hoc-orders-templates-document-panel' id='hoc-orders-document-panel1'></div>
-                <div className='hoc-orders-templates-document-panel-hidden' id='hoc-orders-document-panel2'></div>
-                <div className='hoc-orders-templates-document-panel-hidden' id='hoc-orders-document-panel3'></div>
-                <div className='hoc-orders-templates-document-panel-hidden' id='hoc-orders-document-panel4'></div>
-            </div>
-            
             <Modal centered show={show} onHide={(e) => { setShow(false); }} className='dark'>
                 <Modal.Header className='light-background sca-examples-modal1-header' closeButton>
                     <Modal.Title className='size-30'>
@@ -318,50 +319,50 @@ export default function HocOrdersPage() {
                     </Modal.Title>
                 </Modal.Header>
                 <Modal.Body className='light-background sca-examples-modal1-body'>
-                    <select id='dropdown-order-type' defaultValue='' className='dark size-24 sca-examples-dropdown' onChange={(e) => {checkIfCanUpload(); }}>
+                    <select id='dropdown-order-type' defaultValue='' className='dark size-24 sca-examples-dropdown' onChange={(e) => { checkIfCanUpload(); }}>
                         <option value='' disabled hidden>Выберите тип приказа</option>
                         <option value='Приказ об организации НИР'>Приказ об организации НИР</option>
                     </select>
 
-                    <div className='info-row' style={{marginTop:'5px'}}>
+                    <div className='info-row' style={{ marginTop: '5px' }}>
                         <div className='info-column'>
-                            <label htmlFor='order-date' style={{marginLeft: '15px'}} className='dark size-24'>Дата выхода приказа:</label>
-                            <input id='order-date' type='date' min='2019-01-01' max='2050-01-01' style={{width: '300px'}} className='dark size-24 hoc-order-date-input' onChange={(e) => {checkIfCanUpload(); }}></input>
-                            <input id='order-num' type='text' maxLength='100' className='dark size-24 sca-examples-dropdown' style={{width: '300px'}} placeholder='Введите номер приказа' onChange={(e) => {checkIfCanUpload(); }}></input>
-                            <select id='dropdown-order-speciality' defaultValue='' style={{width: '300px'}} className='dark size-24 sca-examples-dropdown' onChange={(e) => {checkIfCanUpload(); }}>
+                            <label htmlFor='order-date' style={{ marginLeft: '15px' }} className='dark size-24'>Дата выхода приказа:</label>
+                            <input id='order-date' type='date' min='2019-01-01' max='2050-01-01' style={{ width: '300px' }} className='dark size-24 hoc-order-date-input' onChange={(e) => { checkIfCanUpload(); }}></input>
+                            <input id='order-num' type='text' maxLength='100' className='dark size-24 sca-examples-dropdown' style={{ width: '300px' }} placeholder='Введите номер приказа' onChange={(e) => { checkIfCanUpload(); }}></input>
+                            <select id='dropdown-order-speciality' defaultValue='' style={{ width: '300px' }} className='dark size-24 sca-examples-dropdown' onChange={(e) => { checkIfCanUpload(); }}>
                                 <option value='' disabled hidden>Выберите направление</option>
                                 <option value='09.03.04'>09.03.04</option>
                             </select>
                         </div>
                         <div className='info-column'>
 
-                            <label htmlFor='order-start-date' style={{marginLeft: '45px'}} className='dark size-24'>Дата начала:</label>
-                            <input id='order-start-date' type='date' min='2019-01-01' max='2050-01-01' style={{marginLeft: '30px'}} className='dark size-24 hoc-order-date-input' onChange={(e) => {checkIfCanUpload(); }}></input>
+                            <label htmlFor='order-start-date' style={{ marginLeft: '45px' }} className='dark size-24'>Дата начала:</label>
+                            <input id='order-start-date' type='date' min='2019-01-01' max='2050-01-01' style={{ marginLeft: '30px' }} className='dark size-24 hoc-order-date-input' onChange={(e) => { checkIfCanUpload(); }}></input>
 
-                            <label htmlFor='order-end-date'style={{marginLeft: '45px'}} className='dark size-24'>Дата конца:</label>
-                            <input id='order-end-date' type='date' min='2019-01-01' max='2050-01-01' style={{marginLeft: '30px'}} className='dark size-24 hoc-order-date-input' onChange={(e) => {checkIfCanUpload(); }}></input>
+                            <label htmlFor='order-end-date' style={{ marginLeft: '45px' }} className='dark size-24'>Дата конца:</label>
+                            <input id='order-end-date' type='date' min='2019-01-01' max='2050-01-01' style={{ marginLeft: '30px' }} className='dark size-24 hoc-order-date-input' onChange={(e) => { checkIfCanUpload(); }}></input>
                         </div>
                     </div>
-                
+
                     <button type='button' id='create-order-button' disabled className='size-24 dark-background light sca-modal-button' style={{ marginLeft: '130px' }}>
-                        Выбрать файл и<br/>загрузить шаблон на сервер
+                        Выбрать файл и<br />загрузить шаблон на сервер
                     </button>
                     <input id='order-file-input' type='file' style={{ display: 'none' }} onChange={(e) => {
                         if (e.target.files.length !== 0) {
                             document.getElementById('create-order-button').disabled = true;
-                            uploadOrder(e.target.files[0], 
-                                        $('#dropdown-order-type :selected').val(), 
-                                        $('#dropdown-order-speciality :selected').val(),
-                                        $('#order-num').val(),
-                                        $('#order-date').val(),
-                                        $('#order-start-date').val(),
-                                        $('#order-end-date').val());
+                            uploadOrder(e.target.files[0],
+                                $('#dropdown-order-type :selected').val(),
+                                $('#dropdown-order-speciality :selected').val(),
+                                $('#order-num').val(),
+                                $('#order-date').val(),
+                                $('#order-start-date').val(),
+                                $('#order-end-date').val());
                         }
                     }} ></input>
                 </Modal.Body>
             </Modal>
 
-            
+
         </div>
     );
 }

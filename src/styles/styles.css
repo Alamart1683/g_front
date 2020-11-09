@@ -17,6 +17,12 @@ html, body {
 	clear: both;
 }
 
+.clearfix::after { 
+	content: ""; /* Генерируем пустой элемент */
+	clear: both; /* Отменяем обтекание*/
+	display: block; /* Блочный элемент */
+  }
+
 .centered {
 	text-align: center;
 }
@@ -979,7 +985,7 @@ html, body {
 /* Для просмотра шаблонов и приказов*/
 .templatesPanel {
 	width: 1478px;
-	height: 758px;
+	min-height: 758px;
 	margin-left: auto;
 	margin-right: auto;
 	margin-top: 20px;
@@ -987,7 +993,7 @@ html, body {
 
 .ordersPanel {
 	width: 1478px;
-	height: 758px;
+	min-height: 758px;
 	margin-left: auto;
 	margin-right: auto;
 	margin-top: 20px;
@@ -1583,7 +1589,6 @@ html, body {
 
 .orders-templates-panel {
 	width: 1506px;
-	height: 660px;
 	margin-left: auto;
 	margin-right: auto;
 	margin-top: 34px;
