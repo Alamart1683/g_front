@@ -13,6 +13,10 @@ html, body {
     background-color: #F1F4FB;
 }
 
+.clearfix {
+	clear: both;
+}
+
 .centered {
 	text-align: center;
 }

@@ -98,6 +98,7 @@ export default function HocTemplatesPage() {
 
     function createTemplate(file, templateType) {
         //console.log(file);
+        //console.log(templateType);
         var formData = new FormData();
         switch (templateType) {
             case 'Шаблон задания на НИР':
@@ -242,8 +243,8 @@ export default function HocTemplatesPage() {
                     </Modal.Title>
                 </Modal.Header>
                 <Modal.Body className='light-background sca-examples-modal1-body'>
-                    <select id='dropdown-tamplate-type' defaultValue='' className='dark size-24 sca-examples-dropdown' onChange={(e) => {
-                        if ($('#dropdown-tamplate-type :selected').val() !== '') {
+                    <select id='dropdown-template-type' defaultValue='' className='dark size-24 sca-examples-dropdown' onChange={(e) => {
+                        if ($('#dropdown-template-type :selected').val() !== '') {
                             document.getElementById('create-template-button').disabled = false;
                         }
                     }}>

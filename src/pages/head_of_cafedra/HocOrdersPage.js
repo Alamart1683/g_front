@@ -310,6 +310,7 @@ export default function HocOrdersPage() {
                 <div className='hoc-orders-templates-document-panel-hidden' id='hoc-orders-document-panel3'></div>
                 <div className='hoc-orders-templates-document-panel-hidden' id='hoc-orders-document-panel4'></div>
             </div>
+            
             <Modal centered show={show} onHide={(e) => { setShow(false); }} className='dark'>
                 <Modal.Header className='light-background sca-examples-modal1-header' closeButton>
                     <Modal.Title className='size-30'>
@@ -359,6 +360,8 @@ export default function HocOrdersPage() {
                     }} ></input>
                 </Modal.Body>
             </Modal>
+
+            
         </div>
     );
 }
