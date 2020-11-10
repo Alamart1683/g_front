@@ -103,7 +103,7 @@ export default function HocTemplatesPage() {
         switch (templateType) {
             case 'Шаблон задания на НИР':
                 formData.append('documentFormType', 'Научно-исследовательская работа');
-                formData.append('documentFormKind', 'Задание');
+                formData.append('documentFormKind', 'Шаблон');
                 formData.append('documentFormDescription', 'Образец задания на НИР для автозаполнения');
                 formData.append('documentFormViewRights', 'Все пользователи');
                 formData.append('file', file);
