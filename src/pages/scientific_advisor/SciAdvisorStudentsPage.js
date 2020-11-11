@@ -58,7 +58,7 @@ export default function SciAdvisorStudentsPage() {
             var studentFio = document.createElement('th');
 
             var popover = document.createElement('a');
-            popover.href='#';
+            popover.href='javascript:void(0);';
             popover.className = 'student-popover dark size-24';
             $(popover).attr('data-toggle', 'popover');
             $(popover).attr('title', 'Данные студента:');
