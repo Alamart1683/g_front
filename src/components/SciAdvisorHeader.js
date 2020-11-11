@@ -13,7 +13,8 @@ import exitImage from '../images/icons/exit.png';
 
 export default function SciAdvisorHeader() {
 
-    const { setAuthTokens } = useAuthContext();
+    const { authTokens, setAuthTokens } = useAuthContext();
+    console.log(authTokens);
 
     function logOut() {
         setAuthTokens(null);
@@ -58,12 +59,22 @@ export default function SciAdvisorHeader() {
                         Шаблоны
                     </button>
                 </Nav.Link>
+                { authTokens.userRole === 'scientific_advisor' ? (
                 <Nav.Link as={Link} to='#'>
                     <button type='button' onClick={() => { logOut() }} className='student-navbar-button dark-background light size-30'>
                         <Image src={exitImage} thumbnail className='student-navbar-image dark-background'/>
                         Выйти
                     </button>
                 </Nav.Link>
+                ) : null }
+                { authTokens.userRole === 'head_of_cathedra' ? (
+                <Nav.Link as={Link} to='/hoc/association'>
+                    <button type='button'className='student-navbar-button dark-background light size-30'>
+                        <Image src={exitImage} thumbnail className='student-navbar-image dark-background'/>
+                        Вернуться
+                    </button>
+                </Nav.Link>
+                ) : null }
             </Navbar>
         </div>
     );

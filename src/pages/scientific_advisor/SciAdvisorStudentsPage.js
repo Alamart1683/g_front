@@ -58,7 +58,8 @@ export default function SciAdvisorStudentsPage() {
             var studentFio = document.createElement('th');
 
             var popover = document.createElement('a');
-            popover.href='javascript:void(0);';
+            popover.href='#';
+            popover.onclick = 'return false;';
             popover.className = 'student-popover dark size-24';
             $(popover).attr('data-toggle', 'popover');
             $(popover).attr('title', 'Данные студента:');
@@ -337,6 +338,10 @@ export default function SciAdvisorStudentsPage() {
         });
 
         $('[data-toggle="popover"]').popover();
+
+        $(".student-popover").on('click', function(e) {
+            e.preventDefault();
+        });
 
         $('body').on('click', function (e) {
             $('[data-toggle=popover]').each(function () {
