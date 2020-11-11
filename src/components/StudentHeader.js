@@ -12,6 +12,7 @@ import templateImage from '../images/icons/template.png';
 import exitImage from '../images/icons/exit.png';
 import iconMyProject from '../images/icons/myproject.png';
 import iconExamples from '../images/icons/samples.png';
+import iconTasks from '../images/icons/tasks.png';
 
 export default function StudentHeader() {
     const { authTokens, setAuthTokens  } = useAuthContext();
@@ -54,7 +55,7 @@ export default function StudentHeader() {
                 </Nav.Link>
                 <Nav.Link as={Link} to='/stu/tasks'>
                     <button type='button' className='student-navbar-button dark-background light size-30'>
-                        <Image src={iconMyProject} thumbnail className='student-navbar-image dark-background'/>
+                        <Image src={iconTasks} thumbnail className='student-navbar-image dark-background'/>
                         Задания
                     </button>
                 </Nav.Link>

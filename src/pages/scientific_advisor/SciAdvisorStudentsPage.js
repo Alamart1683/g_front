@@ -5,7 +5,6 @@ import axios from 'axios';
 import { useAuthContext } from '../../auth/AuthContext';
 import { apiURL } from '../../Config';
 import $ from 'jquery';
-//import Popper from 'popper.js';
 import 'bootstrap/dist/js/bootstrap.bundle.min';
 
 export default function SciAdvisorStudentsPage() {

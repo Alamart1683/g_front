@@ -70,10 +70,6 @@ export default function LoginPage() {
     });
   }
 
-  if (isLoggedIn) {
-    return <Redirect to="/" />;
-  }
-
   return(
     <div>
 
@@ -106,7 +102,7 @@ export default function LoginPage() {
           </Form.Group>
 
         </Form>
-
+        { isLoggedIn ? (<Redirect push to='/'/>) : null }
      </div>
    );
 

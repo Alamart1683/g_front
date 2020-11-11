@@ -14,7 +14,6 @@ import exitImage from '../images/icons/exit.png';
 export default function SciAdvisorHeader() {
 
     const { authTokens, setAuthTokens } = useAuthContext();
-    console.log(authTokens);
 
     function logOut() {
         setAuthTokens(null);

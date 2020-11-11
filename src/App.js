@@ -36,6 +36,12 @@ import HocOrdersPage from './pages/head_of_cafedra/HocOrdersPage';
 import HocTemplatesPage from './pages/head_of_cafedra/HocTemplatesPage';
 import HocStudentAssociationPage from './pages/head_of_cafedra/HocStudentAssociationPage';
 
+import AdminHeader from './components/AdminHeader';
+import AdminAssociationPage from './pages/admin/AdminAssociationPage';
+import AdminOrdersPage from './pages/admin/AdminOrdersPage';
+import AdminTemplatesPage from './pages/admin/AdminTemplatesPage';
+import AdminRegistrationPage from './pages/admin/AdminRegistrationPage';
+
 export default function App() {
 
   const existingTokens = JSON.parse(localStorage.getItem("tokens"));
@@ -49,13 +55,14 @@ export default function App() {
   return (
       <AuthContext.Provider value={{ authTokens, setAuthTokens: setTokens }}>
         
-        <div className="wrapper">
+        <div className='wrapper'>
 
           <Route path='/guest' component={GuestHeader} />
           <AuthRoute path='/stu' component={StudentHeader} />
           <AuthRoute path='/sca' component={SciAdvisorHeader} />
           <AuthRoute path='/sca-stu' component={ScaStuViewHeader} />
           <AuthRoute path='/hoc' component={HocHeader} />
+          <AuthRoute path='/admin' component={AdminHeader} />
 
           <Switch>
             <Route exact path='/' component={StartPage} />
@@ -81,10 +88,15 @@ export default function App() {
             <AuthRoute exact path='/hoc/templates' component={HocTemplatesPage} />
             <AuthRoute exact path='/hoc/association' component={HocStudentAssociationPage} />
 
+            <AuthRoute exact path='/admin/association' component={AdminAssociationPage} />
+            <AuthRoute exact path='/admin/orders' component={AdminOrdersPage} />
+            <AuthRoute exact path='/admin/templates' component={AdminTemplatesPage} />
+            <AuthRoute exact path='/admin/registration' component={AdminRegistrationPage} />
+
             <Route path='*' component={NoMatch} />
           </Switch>
 
-        <div className="push"></div>
+        <div className='push'></div>
         </div>
 
         <Route path='/' component={Footer} />
