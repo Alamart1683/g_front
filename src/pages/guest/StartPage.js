@@ -23,7 +23,9 @@ export default function StartPage() {
       return <Redirect to='/sca/students'/>;
     case 'head_of_cathedra':
       return <Redirect to='/hoc/association' />;
-      case 'root':
+    case 'root':
+      return <Redirect to='/admin/association' />;
+    case 'admin':
       return <Redirect to='/admin/association' />;
     default:
       setAuthTokens(null);

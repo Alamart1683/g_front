@@ -44,64 +44,64 @@ import AdminRegistrationPage from './pages/admin/AdminRegistrationPage';
 
 export default function App() {
 
-  const existingTokens = JSON.parse(localStorage.getItem("tokens"));
+  const existingTokens = JSON.parse(localStorage.getItem('tokens'));
   const [authTokens, setAuthTokens] = useState(existingTokens);
-  
+
   const setTokens = (data) => {
-    localStorage.setItem("tokens", JSON.stringify(data));
+    localStorage.setItem('tokens', JSON.stringify(data));
     setAuthTokens(data);
   }
 
   return (
-      <AuthContext.Provider value={{ authTokens, setAuthTokens: setTokens }}>
-        
-        <div className='wrapper'>
+    <AuthContext.Provider value={{ authTokens, setAuthTokens: setTokens }}>
 
-          <Route path='/guest' component={GuestHeader} />
-          <AuthRoute path='/stu' component={StudentHeader} />
-          <AuthRoute path='/sca' component={SciAdvisorHeader} />
-          <AuthRoute path='/sca-stu' component={ScaStuViewHeader} />
-          <AuthRoute path='/hoc' component={HocHeader} />
-          <AuthRoute path='/admin' component={AdminHeader} />
+      <div className='wrapper'>
 
-          <Switch>
-            <Route exact path='/' component={StartPage} />
-            <Route exact path='/guest/login' component={LoginPage} />
-            <Route exact path='/guest/registration' component={RegisterPage} />
-            <Route exact path='/guest/forgotten_password' component={ForgottenPasswordPage} />
-            
-            <AuthRoute exact path='/stu/info' component={StudentInfoPage} />
-            <AuthRoute exact path='/stu/tasks' component={StudentTasksPage} />
-            <AuthRoute exact path='/stu/orders' component={OrdersPage} />
-            <AuthRoute exact path='/stu/templates' component={TemplatesPage} />
-            <AuthRoute exact path='/stu/examples' component={StudentExamplesPage} />
+        <Route path='/guest' component={GuestHeader} />
+        <AuthRoute path='/stu' component={StudentHeader} />
+        <AuthRoute path='/sca' component={SciAdvisorHeader} />
+        <AuthRoute path='/sca-stu' component={ScaStuViewHeader} />
+        <AuthRoute path='/hoc' component={HocHeader} />
+        <AuthRoute path='/admin' component={AdminHeader} />
 
-            <AuthRoute exact path='/sca/students' component={SciAdvisorStudentsPage} />
-            <AuthRoute exact path='/sca/stu-docs' component={SciAdvisorStudentsDocsPage} />
-            <AuthRoute exact path='/sca-stu/view' component={ScaStuViewPage} />
-            <AuthRoute exact path='/sca/orders' component={OrdersPage} />
-            <AuthRoute exact path='/sca/templates' component={TemplatesPage} />
-            <AuthRoute exact path='/sca/projects' component={ScaProjectsPage} />
-            <AuthRoute exact path='/sca/examples' component={ScaExamplesPage} />
+        <Switch>
+          <Route exact path='/' component={StartPage} />
+          <Route exact path='/guest/login' component={LoginPage} />
+          <Route exact path='/guest/registration' component={RegisterPage} />
+          <Route exact path='/guest/forgotten_password' component={ForgottenPasswordPage} />
 
-            <AuthRoute exact path='/hoc/orders' component={HocOrdersPage} />
-            <AuthRoute exact path='/hoc/templates' component={HocTemplatesPage} />
-            <AuthRoute exact path='/hoc/association' component={HocStudentAssociationPage} />
+          <AuthRoute exact path='/stu/info' component={StudentInfoPage} />
+          <AuthRoute exact path='/stu/tasks' component={StudentTasksPage} />
+          <AuthRoute exact path='/stu/orders' component={OrdersPage} />
+          <AuthRoute exact path='/stu/templates' component={TemplatesPage} />
+          <AuthRoute exact path='/stu/examples' component={StudentExamplesPage} />
 
-            <AuthRoute exact path='/admin/association' component={AdminAssociationPage} />
-            <AuthRoute exact path='/admin/orders' component={AdminOrdersPage} />
-            <AuthRoute exact path='/admin/templates' component={AdminTemplatesPage} />
-            <AuthRoute exact path='/admin/registration' component={AdminRegistrationPage} />
+          <AuthRoute exact path='/sca/students' component={SciAdvisorStudentsPage} />
+          <AuthRoute exact path='/sca/stu-docs' component={SciAdvisorStudentsDocsPage} />
+          <AuthRoute exact path='/sca-stu/view' component={ScaStuViewPage} />
+          <AuthRoute exact path='/sca/orders' component={OrdersPage} />
+          <AuthRoute exact path='/sca/templates' component={TemplatesPage} />
+          <AuthRoute exact path='/sca/projects' component={ScaProjectsPage} />
+          <AuthRoute exact path='/sca/examples' component={ScaExamplesPage} />
 
-            <Route path='*' component={NoMatch} />
-          </Switch>
+          <AuthRoute exact path='/hoc/orders' component={HocOrdersPage} />
+          <AuthRoute exact path='/hoc/templates' component={HocTemplatesPage} />
+          <AuthRoute exact path='/hoc/association' component={HocStudentAssociationPage} />
+
+          <AuthRoute exact path='/admin/association' component={AdminAssociationPage} />
+          <AuthRoute exact path='/admin/orders' component={AdminOrdersPage} />
+          <AuthRoute exact path='/admin/templates' component={AdminTemplatesPage} />
+          <AuthRoute exact path='/admin/registration' component={AdminRegistrationPage} />
+
+          <Route path='*' component={NoMatch} />
+        </Switch>
 
         <div className='push'></div>
-        </div>
+      </div>
 
-        <Route path='/' component={Footer} />
+      <Route path='/' component={Footer} />
 
-      </AuthContext.Provider>
+    </AuthContext.Provider>
   );
 
 }
