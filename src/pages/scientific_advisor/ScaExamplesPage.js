@@ -244,7 +244,7 @@ export default function ScaExamplesPage() {
 
     return (
         <div className='sca-examples-div'>
-            <div class='clearfix'>
+            <div className='clearfix'>
             <div className='sca-examples-menu-div light-background'>
                 <button type='button' onClick={(e) => { setShowCreate(true); }} className='light size-24 dark-background sca-examples-button'>
                     Загрузить файл<br />образца на сайт

@@ -11,7 +11,7 @@ import iconNR from '../images/icons/NR.png';
 
 export default function AdminHeader() {
 
-    const { authTokens, setAuthTokens } = useAuthContext();
+    const { setAuthTokens } = useAuthContext();
 
     function logOut() {
         setAuthTokens(null);
@@ -23,7 +23,7 @@ export default function AdminHeader() {
                 <Nav.Link as={Link} to='/admin/association'>
                     <button type='button' className='student-navbar-button dark-background light size-30'>
                         <Image src={iconStudents} thumbnail className='student-navbar-image dark-background'/>
-                        Студенты и<br/>научные руководители
+                        Студенты и<br/>Научные Руководители
                     </button>
                 </Nav.Link>
                 <Nav.Link as={Link} to='/admin/orders'>
@@ -41,7 +41,7 @@ export default function AdminHeader() {
                 <Nav.Link as={Link} to='/admin/registration'>
                     <button type='button' className='student-navbar-button dark-background light size-30'>
                         <Image src={iconNR} thumbnail className='student-navbar-image dark-background'/>
-                        Регистрация<br/>пользователей
+                        Регистрация<br/>Пользователей
                     </button>
                 </Nav.Link>
                 <Nav.Link as={Link} to='#'>

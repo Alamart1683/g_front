@@ -10,7 +10,7 @@ import iconInfo from '../images/icons/info.png';
 import orderImage from '../images/icons/order.png';
 import templateImage from '../images/icons/template.png';
 import exitImage from '../images/icons/exit.png';
-import iconMyProject from '../images/icons/myproject.png';
+//import iconMyProject from '../images/icons/myproject.png';
 import iconExamples from '../images/icons/samples.png';
 import iconTasks from '../images/icons/tasks.png';
 

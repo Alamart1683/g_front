@@ -252,7 +252,6 @@ export default function AdminAssociationPage() {
         })
     }
 
-    // TODO
     // Выставление ассоциаций студентам из файла
     function setAssociations(assocFile) {
         document.getElementById('assoc-button').disabled = true;

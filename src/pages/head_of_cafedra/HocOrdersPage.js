@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { Modal } from 'react-bootstrap';
 import axios from 'axios';
 import { useAuthContext } from '../../auth/AuthContext';
 import { apiURL } from '../../Config';
@@ -11,8 +10,6 @@ export default function HocOrdersPage() {
     const { authTokens } = useAuthContext();
     const [fetchedData, setFetchedData] = useState(false);
     const [orders, setOrders] = useState([]);
-
-    const [show, setShow] = useState(false);
 
     useEffect(() => {
         showOrders(orders);
@@ -57,24 +54,28 @@ export default function HocOrdersPage() {
             orderNameImage.className = 'hoc-order-template-name-image';
             orderNameImage.src = orderImage;
             orderNameImage.style.position = 'relative';
-            orderNameImage.style.top = '-60px';
+            orderNameImage.style.top = '-80px';
 
             var orderTitles = document.createElement('div');
             orderTitles.className = 'hoc-order-titles-div';
 
             var orderNameText = document.createElement('p');
-            orderNameText.className = 'hoc-order-template-name-text light size-22';
+            orderNameText.className = 'hoc-order-template-name-text light size-20';
             orderNameText.innerText = order.documentName;
+            orderNameText.style.maxWidth = '350px';
+            orderNameText.style.marginBottom = '0px';
 
             var orderNum = document.createElement('p');
-            orderNum.className = 'hoc-order-template-name-text light size-22';
+            orderNum.className = 'hoc-order-template-name-text light size-20';
             orderNum.innerText = 'Номер: ' + order.number;
             orderNum.style.display = 'inline-block';
+            orderNum.style.marginBottom = '0px';
 
             var orderSpeciality = document.createElement('p');
             orderSpeciality.className = 'hoc-order-template-name-text light size-20';
             orderSpeciality.innerText = 'Направление: ' + order.speciality;
             orderSpeciality.style.display = 'block';
+            orderSpeciality.style.marginBottom = '0px';
 
             var orderDate = document.createElement('p');
             orderDate.className = 'hoc-order-template-name-text light size-20';
@@ -91,21 +92,28 @@ export default function HocOrdersPage() {
             orderEndDate.innerText = 'Дата конца: ' + order.endDate;
             orderEndDate.style.marginBottom = '0px';
 
+            // TODO
+            var orderStatus = document.createElement('p');
+            orderStatus.className = 'hoc-order-template-name-text light size-20';
+            orderStatus.innerText = 'Статус: Не одобрено';
+            orderStatus.style.display = 'block';
+            orderStatus.style.marginTop = '-6px';
+
             var orderDownload = document.createElement('button');
             orderDownload.className = 'hoc-order-template-download-button light size-22';
             orderDownload.id = 'hoc-order-download-button';
             orderDownload.innerText = "Сохранить";
             orderDownload.style.height = '120px'
             orderDownload.style.position = 'relative';
-            orderDownload.style.top = '-60px';
+            orderDownload.style.top = '-76px';
 
-            var orderDelete = document.createElement('button');
-            orderDelete.className = 'hoc-order-template-delete-button light size-22';
-            orderDelete.id = 'hoc-order-delete-button';
-            orderDelete.innerText = "Удалить";
-            orderDelete.style.height = '120px'
-            orderDelete.style.position = 'relative';
-            orderDelete.style.top = '-60px';
+            var orderConfirm = document.createElement('button');
+            orderConfirm.className = 'hoc-order-template-delete-button light size-22 hoc-order-template-confirm-button';
+            orderConfirm.id = 'hoc-order-delete-button';
+            orderConfirm.innerText = 'Удалить';
+            orderConfirm.style.height = '120px'
+            orderConfirm.style.position = 'relative';
+            orderConfirm.style.top = '-76px';
 
             orderName.appendChild(orderNameImage);
 
@@ -118,8 +126,8 @@ export default function HocOrdersPage() {
             orderName.appendChild(orderTitles);
 
             orderFile.appendChild(orderName);
+            orderFile.appendChild(orderConfirm);
             orderFile.appendChild(orderDownload);
-            orderFile.appendChild(orderDelete);
 
             switch (order.documentType) {
                 case 'Научно-исследовательская работа':
@@ -138,66 +146,6 @@ export default function HocOrdersPage() {
                     console.log('switchError');
             }
 
-        }
-    }
-
-    function uploadOrder(file, orderType, orderSpeciality, orderNum, orderDate, orderStartDate, orderEndDate) {
-        // формат дат в JavaScript yyyy-mm-dd
-        orderDate = orderDate.split('-')[2] + '.' + orderDate.split('-')[1] + '.' + orderDate.split('-')[0];
-        orderStartDate = orderStartDate.split('-')[2] + '.' + orderStartDate.split('-')[1] + '.' + orderStartDate.split('-')[0];
-        orderEndDate = orderEndDate.split('-')[2] + '.' + orderEndDate.split('-')[1] + '.' + orderEndDate.split('-')[0];
-
-        var formData = new FormData();
-        switch (orderType) {
-            case 'Приказ об организации НИР':
-                formData.append('documentFormType', 'Научно-исследовательская работа');
-                formData.append('documentFormKind', 'Приказ');
-                formData.append('documentFormDescription', 'Приказ о выходе на НИР');
-                formData.append('documentFormViewRights', 'Все пользователи');
-                formData.append('number', orderNum);
-                formData.append('orderDate', orderDate);
-                formData.append('startDate', orderStartDate);
-                formData.append('endDate', orderEndDate);
-                formData.append('speciality', orderSpeciality);
-                formData.append('file', file);
-                break;
-            default:
-                console.log('Неопознанный тип приказа');
-        }
-        axios({
-            url: apiURL + '/head_of_cathedra/document/order/upload',
-            method: 'POST',
-            data: formData,
-            headers: {
-                'Content-Type': 'multipart/form-data',
-                'Authorization': 'Bearer ' + authTokens.accessToken
-            },
-        }).then((response) => {
-            //console.log(response);
-            window.location.reload();
-        }).catch(result => {
-            console.log(result);
-        });
-    }
-
-    function checkIfCanUpload() {
-        var date1 = new Date($('#order-date').val());
-        var valid1 = !isNaN(date1.valueOf());
-
-        var date2 = new Date($('#order-start-date').val());
-        var valid2 = !isNaN(date2.valueOf());
-
-        var date3 = new Date($('#order-end-date').val());
-        var valid3 = !isNaN(date3.valueOf());
-
-        if ($('#dropdown-order-type :selected').val() !== '' &&
-            $('#dropdown-order-speciality :selected').val() !== '' &&
-            $('#order-num').val() !== '' &&
-            valid1 && valid2 && valid3) {
-            document.getElementById('create-order-button').disabled = false;
-        }
-        else {
-            document.getElementById('create-order-button').disabled = true;
         }
     }
 
@@ -254,23 +202,25 @@ export default function HocOrdersPage() {
             });
         });
 
-        // Удалить приказ
-        $('.hoc-order-template-delete-button').off().on('click', function () {
-            var systemDocumentId = $(this).parent().attr('id');
-            var arrayId = systemDocumentId.split('-')[4];
+        // TODO
+        // Одобрить приказ
+        $('.hoc-order-template-confirm-button').off().on('click', function (event) {
+            // example id = confirm-button-2
+            var arrayID = $(this).attr('id').split('-')[2];
             axios({
-                url: apiURL + '/scientific_advisor/document/delete/',
-                method: 'DELETE',
+                url: apiURL + '/head_of_cathedra/only/approve/template',
+                method: 'POST',
                 params: {
-                    documentName: orders[arrayId].documentName,
+                    'documentID': orders[arrayID].documentName,
                 },
                 headers: {
                     'Authorization': 'Bearer ' + authTokens.accessToken
                 },
             }).then((response) => {
+                console.log(response);
                 window.location.reload(true);
             }).catch(result => {
-                console.log(result.data);
+                console.log(result);
             });
         });
 
@@ -282,8 +232,8 @@ export default function HocOrdersPage() {
 
     return (
         <div className='orders-templates-panel'>
-            <div class='clearfix'>
-                <div className='hoc-templates-orders-buttons-panel' id='hoc-orders-buttons-panel'>
+            <div className='clearfix'>
+                <div className='hoc-templates-orders-buttons-panel' style={{height:'400px'}} id='hoc-orders-buttons-panel'>
                     <button type='button' className='size-22 light orders-templates-button orders-templates-button-selected' id='button-1'>
                         Научно-исследовательская работа
                 </button>
@@ -299,10 +249,6 @@ export default function HocOrdersPage() {
                     <button type='button' className='size-22 light orders-templates-button' id='button-4'>
                         Защита ВКР
                 </button>
-
-                    <button type='button' onClick={(e) => { setShow(true); }} className='size-22 light orders-templates-upload-button' id='upload-button'>
-                        Загрузить приказ
-                </button>
                 </div>
 
                 <div className='hoc-orders-templates-document-panel-common'>
@@ -312,57 +258,6 @@ export default function HocOrdersPage() {
                     <div className='hoc-orders-templates-document-panel-hidden' id='hoc-orders-document-panel4'></div>
                 </div>
             </div>
-            <Modal centered show={show} onHide={(e) => { setShow(false); }} className='dark'>
-                <Modal.Header className='light-background sca-examples-modal1-header' closeButton>
-                    <Modal.Title className='size-30'>
-                        <p style={{ height: '50px', marginBottom: '0px', marginLeft: '200px' }}>Загрузить приказ</p>
-                    </Modal.Title>
-                </Modal.Header>
-                <Modal.Body className='light-background sca-examples-modal1-body'>
-                    <select id='dropdown-order-type' defaultValue='' className='dark size-24 sca-examples-dropdown' onChange={(e) => { checkIfCanUpload(); }}>
-                        <option value='' disabled hidden>Выберите тип приказа</option>
-                        <option value='Приказ об организации НИР'>Приказ об организации НИР</option>
-                    </select>
-
-                    <div className='info-row' style={{ marginTop: '5px' }}>
-                        <div className='info-column'>
-                            <label htmlFor='order-date' style={{ marginLeft: '15px' }} className='dark size-24'>Дата выхода приказа:</label>
-                            <input id='order-date' type='date' min='2019-01-01' max='2050-01-01' style={{ width: '300px' }} className='dark size-24 hoc-order-date-input' onChange={(e) => { checkIfCanUpload(); }}></input>
-                            <input id='order-num' type='text' maxLength='100' className='dark size-24 sca-examples-dropdown' style={{ width: '300px' }} placeholder='Введите номер приказа' onChange={(e) => { checkIfCanUpload(); }}></input>
-                            <select id='dropdown-order-speciality' defaultValue='' style={{ width: '300px' }} className='dark size-24 sca-examples-dropdown' onChange={(e) => { checkIfCanUpload(); }}>
-                                <option value='' disabled hidden>Выберите направление</option>
-                                <option value='09.03.04'>09.03.04</option>
-                            </select>
-                        </div>
-                        <div className='info-column'>
-
-                            <label htmlFor='order-start-date' style={{ marginLeft: '45px' }} className='dark size-24'>Дата начала:</label>
-                            <input id='order-start-date' type='date' min='2019-01-01' max='2050-01-01' style={{ marginLeft: '30px' }} className='dark size-24 hoc-order-date-input' onChange={(e) => { checkIfCanUpload(); }}></input>
-
-                            <label htmlFor='order-end-date' style={{ marginLeft: '45px' }} className='dark size-24'>Дата конца:</label>
-                            <input id='order-end-date' type='date' min='2019-01-01' max='2050-01-01' style={{ marginLeft: '30px' }} className='dark size-24 hoc-order-date-input' onChange={(e) => { checkIfCanUpload(); }}></input>
-                        </div>
-                    </div>
-
-                    <button type='button' id='create-order-button' disabled className='size-24 dark-background light sca-modal-button' style={{ marginLeft: '130px' }}>
-                        Выбрать файл и<br />загрузить шаблон на сервер
-                    </button>
-                    <input id='order-file-input' type='file' style={{ display: 'none' }} onChange={(e) => {
-                        if (e.target.files.length !== 0) {
-                            document.getElementById('create-order-button').disabled = true;
-                            uploadOrder(e.target.files[0],
-                                $('#dropdown-order-type :selected').val(),
-                                $('#dropdown-order-speciality :selected').val(),
-                                $('#order-num').val(),
-                                $('#order-date').val(),
-                                $('#order-start-date').val(),
-                                $('#order-end-date').val());
-                        }
-                    }} ></input>
-                </Modal.Body>
-            </Modal>
-
-
         </div>
     );
 }

@@ -1016,6 +1016,10 @@ html, body {
 	background: #618FCA;
 }
 
+.contentButton:disabled {
+	background-color:  #859dbb;
+}
+
 .contentPanel {
 	width: 1480px;
 	height: 660px;
@@ -1678,7 +1682,6 @@ html, body {
 	white-space: nowrap;
 	overflow: hidden;
   	text-overflow: ellipsis;
-
 }
 
 .hoc-order-template-download-button {
@@ -1712,6 +1715,8 @@ html, body {
 .hoc-order-template-name-text {
 	display:inline-block;
 	margin-left: 20px;
+	overflow: hidden;
+  	text-overflow: ellipsis;
 }
 
 .hoc-order-template-doc {
@@ -1730,4 +1735,40 @@ html, body {
 	width: 300px;
 	margin-bottom: 10px;
 	padding-left: 10px;
+}
+
+.admin-registration-label {
+	margin-left: 60px;
+	margin-bottom: 5px;
+}
+
+.admin-registration-input {
+	border-radius: 7px;
+	margin-left: 50px;
+	width: 600px;
+	height: 40px;
+	margin-bottom: 20px;
+	padding-left: 10px;
+}
+
+.admin-registration-select {
+	border-radius: 7px;
+	margin-left: 50px;
+	width: 600px;
+	height: 40px;
+	margin-bottom: 20px;
+	padding-left: 10px;
+}
+
+.admin-registration-button {
+	border-radius: 7px;
+	padding: 4px 4px;
+}
+
+.admin-registration-button:hover {
+	background-color: #618FCA;
+}
+
+.admin-registration-button:disabled {
+	background-color:  #859dbb;
 }
