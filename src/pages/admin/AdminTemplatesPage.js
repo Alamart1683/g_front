@@ -51,6 +51,7 @@ export default function AdminTemplatesPage() {
             var templateName = document.createElement('div');
             templateName.className = 'dark-background hoc-order-template-name';
             templateName.id = 'hoc-order-template-name';
+            templateName.style.top = '-5px';
 
             var templateNameText = document.createElement('p');
             templateNameText.className = 'hoc-order-template-name-text light size-22'
@@ -60,8 +61,18 @@ export default function AdminTemplatesPage() {
             templateNameImage.className='hoc-order-template-name-image'
             templateNameImage.src=templateImage;
 
+            var templateStatus = document.createElement('p');
+            templateStatus.className = 'hoc-order-template-name-text light size-20';
+            if (template.approved) {
+                templateStatus.innerText = 'Статус: Одобрено';
+            }
+            else {
+                templateStatus.innerText = 'Статус: Не одобрено';
+            }
+
             templateName.appendChild(templateNameImage);
             templateName.appendChild(templateNameText);
+            templateName.appendChild(templateStatus);
 
             var templateDownload = document.createElement('button');
             templateDownload.className = 'hoc-order-template-download-button light size-22';
@@ -118,8 +129,8 @@ export default function AdminTemplatesPage() {
                 'Authorization': 'Bearer ' + authTokens.accessToken
             },
         }).then((response) => {
-            console.log(response);
-            //window.location.reload();
+            //console.log(response);
+            window.location.reload();
         }).catch(result => {
             console.log(result);
         });

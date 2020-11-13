@@ -92,13 +92,6 @@ export default function HocOrdersPage() {
             orderEndDate.innerText = 'Дата конца: ' + order.endDate;
             orderEndDate.style.marginBottom = '0px';
 
-            // TODO
-            var orderStatus = document.createElement('p');
-            orderStatus.className = 'hoc-order-template-name-text light size-20';
-            orderStatus.innerText = 'Статус: Не одобрено';
-            orderStatus.style.display = 'block';
-            orderStatus.style.marginTop = '-6px';
-
             var orderDownload = document.createElement('button');
             orderDownload.className = 'hoc-order-template-download-button light size-22';
             orderDownload.id = 'hoc-order-download-button';
@@ -109,11 +102,23 @@ export default function HocOrdersPage() {
 
             var orderConfirm = document.createElement('button');
             orderConfirm.className = 'hoc-order-template-delete-button light size-22 hoc-order-template-confirm-button';
-            orderConfirm.id = 'hoc-order-delete-button';
-            orderConfirm.innerText = 'Удалить';
+            orderConfirm.id = 'confirm-button-' + i;
+            orderConfirm.innerText = 'Одобрить';
             orderConfirm.style.height = '120px'
             orderConfirm.style.position = 'relative';
             orderConfirm.style.top = '-76px';
+
+            var orderStatus = document.createElement('p');
+            orderStatus.className = 'hoc-order-template-name-text light size-20';
+            if (order.approved) {
+                orderStatus.innerText = 'Статус: Одобрено';
+                orderConfirm.disabled = true;
+            }
+            else {
+                orderStatus.innerText = 'Статус: Не одобрено';
+            }
+            orderStatus.style.display = 'block';
+            orderStatus.style.marginTop = '-6px';
 
             orderName.appendChild(orderNameImage);
 
@@ -123,6 +128,7 @@ export default function HocOrdersPage() {
             orderTitles.appendChild(orderDate);
             orderTitles.appendChild(orderStartDate);
             orderTitles.appendChild(orderEndDate);
+            orderTitles.appendChild(orderStatus);
             orderName.appendChild(orderTitles);
 
             orderFile.appendChild(orderName);
@@ -202,22 +208,21 @@ export default function HocOrdersPage() {
             });
         });
 
-        // TODO
         // Одобрить приказ
         $('.hoc-order-template-confirm-button').off().on('click', function (event) {
             // example id = confirm-button-2
             var arrayID = $(this).attr('id').split('-')[2];
             axios({
-                url: apiURL + '/head_of_cathedra/only/approve/template',
+                url: apiURL + '/head_of_cathedra/only/approve/order',
                 method: 'POST',
                 params: {
-                    'documentID': orders[arrayID].documentName,
+                    'documentID': orders[arrayID].documentVersions[0].systemDocumentID,
                 },
                 headers: {
                     'Authorization': 'Bearer ' + authTokens.accessToken
                 },
             }).then((response) => {
-                console.log(response);
+                //console.log(response);
                 window.location.reload(true);
             }).catch(result => {
                 console.log(result);

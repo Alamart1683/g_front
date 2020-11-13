@@ -1,13 +1,40 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useAuthContext } from '../../auth/AuthContext';
-//import axios from 'axios';
-//import { apiURL } from '../../Config';
+import axios from 'axios';
+import { apiURL } from '../../Config';
 import $ from 'jquery';
 
 //import orderImage from '../../images/icons/order.png';
 
 export default function AdminRegistrationPage() {
     const { authTokens } = useAuthContext();
+    const [fetchedData, setFetchedData] = useState(false);
+
+    const [ groups, setGroups] = useState([]);
+
+    useEffect(() => {
+        //showOrders(orders);
+    }, [groups]);
+
+    if (!fetchedData) {
+        setFetchedData(true);
+        getGroups();
+    }
+
+    function getGroups() {
+        axios({
+            url: apiURL + '/student_group/all',
+            method: 'GET',
+            headers: {
+                'Authorization': 'Bearer ' + authTokens.accessToken
+            },
+        }).then((response) => {
+            console.log(response.data);
+            setGroups(response.data);
+        }).catch(result => {
+            console.log(result.data);
+        });
+    }
 
     function checkIfCanRegisterStudent() {
         if ($('#student-mail').val() !== '' &&
@@ -24,16 +51,59 @@ export default function AdminRegistrationPage() {
         }
     }
 
-    // TODO
     function registerStudent() {
-        //console.log('register student');
         var email = $('#student-mail').val();
         var name = $('#student-name').val();
         var surname = $('#student-surname').val();
         var secondName = $('#student-second-name').val();
         var phone = $('#student-phone').val();
-        var speciality = $('#student-speciality :selected').val();
         var group = $('#student-group :selected').val();
+        axios({
+            url: apiURL + '/admin/registration/scientific_advisor',
+            method: 'POST',
+            params: {
+                'cathedra': 'МОСИТ',
+                'student_group': group,
+                'email': email,
+                'name': name,
+                'surname': surname,
+                'second_name': secondName,
+                'phone': phone,
+                'mailSendingAccepted': true,
+                'student_type': 'Бакалавр',
+            },
+            headers: {
+                'Authorization': 'Bearer ' + authTokens.accessToken
+            },
+        }).then((response) => {
+            //console.log(response);
+            window.location.reload(true);
+        }).catch(result => {
+            console.log(result);
+        });
+    }
+
+    function registerStudentsFromFile(file) {
+        document.getElementById('register-students-from-file-button').disabled = true;
+        var formData = new FormData();
+        formData.append('cathedra', 'МОСИТ');
+        formData.append('type', 'Бакалавр');
+        formData.append('studentData', file);
+        axios({
+            url: apiURL + '/admin/registration/students/automatic',
+            method: 'POST',
+            data: formData,
+            headers: {
+                'Content-Type': 'multipart/form-data',
+                'Authorization': 'Bearer ' + authTokens.accessToken
+            },
+        }).then((response) => {
+            window.location.reload();
+            //console.log(response);
+        }).catch(result => {
+            console.log(result.data);
+            document.getElementById('register-students-from-file-button').disabled = false;
+        });
     }
 
     function checkIfCanRegisterSca() {
@@ -49,7 +119,6 @@ export default function AdminRegistrationPage() {
         }
     }
 
-    // TODO
     function registerSca() {
         //console.log('register sca');
         var email = $('#sca-mail').val();
@@ -57,6 +126,28 @@ export default function AdminRegistrationPage() {
         var surname = $('#sca-surname').val();
         var secondName = $('#sca-second-name').val();
         var phone = $('#sca-phone').val();
+        axios({
+            url: apiURL + '/admin/registration/scientific_advisor',
+            method: 'POST',
+            params: {
+                'cathedra': 'МОСИТ',
+                'email': email,
+                'name': name,
+                'surname': surname,
+                'second_name': secondName,
+                'phone': phone,
+                'mailSendingAccepted': true,
+                'places': 10,
+            },
+            headers: {
+                'Authorization': 'Bearer ' + authTokens.accessToken
+            },
+        }).then((response) => {
+            //console.log(response);
+            window.location.reload(true);
+        }).catch(result => {
+            console.log(result);
+        });
     }
 
     function checkIfCanRegisterHoc() {
@@ -72,7 +163,6 @@ export default function AdminRegistrationPage() {
         }
     }
 
-    // TODO
     function registerHoc() {
         //console.log('register hoc');
         var email = $('#hoc-mail').val();
@@ -80,6 +170,28 @@ export default function AdminRegistrationPage() {
         var surname = $('#hoc-surname').val();
         var secondName = $('#hoc-second-name').val();
         var phone = $('#hoc-phone').val();
+        axios({
+            url: apiURL + '/admin/registration/head_of_cathedra',
+            method: 'POST',
+            params: {
+                'cathedra': 'МОСИТ',
+                'email': email,
+                'name': name,
+                'surname': surname,
+                'second_name': secondName,
+                'phone': phone,
+                'mailSendingAccepted': true,
+                'places': 10,
+            },
+            headers: {
+                'Authorization': 'Bearer ' + authTokens.accessToken
+            },
+        }).then((response) => {
+            //console.log(response);
+            window.location.reload(true);
+        }).catch(result => {
+            console.log(result);
+        });
     }
 
     function checkIfCanRegisterAdmin() {
@@ -95,7 +207,6 @@ export default function AdminRegistrationPage() {
         }
     }
 
-    // TODO
     function registerAdmin() {
         //console.log('register admin');
         var email = $('#admin-mail').val();
@@ -103,6 +214,26 @@ export default function AdminRegistrationPage() {
         var surname = $('#admin-surname').val();
         var secondName = $('#admin-second-name').val();
         var phone = $('#admin-phone').val();
+        axios({
+            url: apiURL + '/admin/registration/head_of_cathedra',
+            method: 'POST',
+            params: {
+                'email': email,
+                'name': name,
+                'surname': surname,
+                'second_name': secondName,
+                'phone': phone,
+                'mailSendingAccepted': true,
+            },
+            headers: {
+                'Authorization': 'Bearer ' + authTokens.accessToken
+            },
+        }).then((response) => {
+            //console.log(response);
+            window.location.reload(true);
+        }).catch(result => {
+            console.log(result);
+        });
     }
 
     $(function () {
@@ -142,6 +273,10 @@ export default function AdminRegistrationPage() {
             registerStudent();
         });
 
+        $('#register-students-from-file-button').off().on('click', function() {
+            $('#student-file-input').trigger('click');
+        });
+
         $('#register-sca-button').off().on('click', function() {
             registerSca();
         });
@@ -171,39 +306,64 @@ export default function AdminRegistrationPage() {
                         <p className='admin-registration-label dark size-24'>Почта:</p>
                         <input maxLength='50' onChange={(e) => { checkIfCanRegisterStudent(); }} id='student-mail' type='text' placeholder='Введите почту' className='admin-registration-input dark size-24'></input>
 
-                        <p className='admin-registration-label dark size-24'>Имя:</p>
-                        <input maxLength='50' onChange={(e) => { checkIfCanRegisterStudent(); }} id='student-name' type='text' placeholder='Введите имя' className='admin-registration-input dark size-24'></input>
-
                         <p className='admin-registration-label dark size-24'>Фамилия:</p>
                         <input maxLength='50' onChange={(e) => { checkIfCanRegisterStudent(); }} id='student-surname' type='text' placeholder='Введите фамилию' className='admin-registration-input dark size-24'></input>
 
+                        <p className='admin-registration-label dark size-24'>Имя:</p>
+                        <input maxLength='50' onChange={(e) => { checkIfCanRegisterStudent(); }} id='student-name' type='text' placeholder='Введите имя' className='admin-registration-input dark size-24'></input>
+
                         <p className='admin-registration-label dark size-24'>Отчество:</p>
                         <input maxLength='50' onChange={(e) => { checkIfCanRegisterStudent(); }} id='student-second-name' type='text' placeholder='Введите отчество' className='admin-registration-input dark size-24'></input>
+                    
                     </div>
                     <div className='info-column'>
                         <p className='admin-registration-label dark size-24'>Телефон:</p>
                         <input maxLength='12' onChange={(e) => { checkIfCanRegisterStudent(); }} id='student-phone' type='text' placeholder='Введите телефон' className='admin-registration-input dark size-24'></input>
 
                         <p className='admin-registration-label dark size-24'>Направление:</p>
-                        <select id='student-speciality' defaultValue='' onChange={(e) => { checkIfCanRegisterStudent(); }} className='admin-registration-select dark size-24'>
+                        <select id='student-speciality' defaultValue='' onChange={(e) => { 
+                            var speciality = $('#student-speciality :selected').val();
+                            $('#student-group option').remove();
+                            var defOption = document.createElement('option');
+                            defOption.value = '';
+                            defOption.innerText = 'Выберите группу';
+                            defOption.disabled = true;
+                            defOption.hidden = true;
+                            document.getElementById('student-group').appendChild(defOption);
+                            document.getElementById('student-group').value = '';
+                            checkIfCanRegisterStudent();
+                            for (var i = 0; i < groups.length; i++) {
+                                var option = document.createElement('option');
+                                option.value = groups[i].studentGroup;
+                                option.innerText = groups[i].studentGroup;
+                                if (speciality === '09.03.04' && groups[i].studentGroup.includes('ИКБО')) {
+                                   document.getElementById('student-group').appendChild(option);
+                                }
+                                if (speciality === '09.03.01' && groups[i].studentGroup.includes('ИВБО')) {
+                                    document.getElementById('student-group').appendChild(option);
+                                }
+                            }
+                            document.getElementById('student-group').disabled = false;
+                        }} className='admin-registration-select dark size-24'>
                             <option value='' disabled hidden>Выберите направление</option>
-                            <option value='09.03.04'>09.03.01</option>
+                            <option value='09.03.01'>09.03.01</option>
                             <option value='09.03.04'>09.03.04</option>
                         </select>
 
                         <p className='admin-registration-label dark size-24'>Группа:</p>
-                        <select id='student-group' defaultValue='' onChange={(e) => { checkIfCanRegisterStudent(); }} className='admin-registration-select dark size-24'>
+                        <select disabled id='student-group' defaultValue='' onChange={(e) => { checkIfCanRegisterStudent(); }} className='admin-registration-select dark size-24'>
                             <option value='' disabled hidden>Выберите группу</option>
-                            <option value='ИКБО-06-17'>ИКБО-06-17</option>
-                            <option value='ИКБО-12-17'>ИКБО-12-17</option>
-                            <option value='ИКБО-07-17'>ИКБО-07-17</option>
-                            <option value='ИКБО-11-17'>ИКБО-11-17</option>
                         </select>
 
                         <button id='register-student-button' disabled className='admin-registration-button light size-30 dark-background' style={{ marginLeft: '50px', marginTop: '30px', width: '600px' }}>Зарегистрировать студента</button>
                     </div>
                 </div>
-                <button className='admin-registration-button light size-30 dark-background' style={{ marginLeft: '400px', marginTop: '30px', width: '600px' }}>Зарегистрировать студентов<br />из файла</button>
+                <button id='register-students-from-file-button' className='admin-registration-button light size-30 dark-background' style={{ marginLeft: '400px', marginTop: '30px', width: '600px' }}>Зарегистрировать студентов<br />из файла</button>
+                <input id='student-file-input' type='file' style={{ display: 'none' }} onChange={(e) => {
+                        if (e.target.files.length !== 0) {
+                            registerStudentsFromFile(e.target.files[0]);
+                        }
+                    }} ></input>
             </div>
             <div id="orderContentPanel2" className="contentPanel contentPanel-hidden">
                 <div className='info-row' style={{ paddingTop: '20px' }}>
@@ -216,14 +376,16 @@ export default function AdminRegistrationPage() {
 
                     </div>
                     <div className='info-column'>
-                        <p className='admin-registration-label dark size-24'>Имя:</p>
-                        <input maxLength='50' onChange={(e) => { checkIfCanRegisterSca(); }} id='sca-name' type='text' placeholder='Введите имя' className='admin-registration-input dark size-24'></input>
 
                         <p className='admin-registration-label dark size-24'>Фамилия:</p>
                         <input maxLength='50' onChange={(e) => { checkIfCanRegisterSca(); }} id='sca-surname' type='text' placeholder='Введите фамилию' className='admin-registration-input dark size-24'></input>
 
+                        <p className='admin-registration-label dark size-24'>Имя:</p>
+                        <input maxLength='50' onChange={(e) => { checkIfCanRegisterSca(); }} id='sca-name' type='text' placeholder='Введите имя' className='admin-registration-input dark size-24'></input>
+
                         <p className='admin-registration-label dark size-24'>Отчество:</p>
                         <input maxLength='50' onChange={(e) => { checkIfCanRegisterSca(); }} id='sca-second-name' type='text' placeholder='Введите отчество' className='admin-registration-input dark size-24'></input>
+
                     </div>
                 </div>
                 <button id='register-sca-button' disabled className='admin-registration-button light size-30 dark-background' style={{ marginLeft: '400px', marginTop: '30px', width: '600px' }}>Зарегистрировать<br />Научного Руководителя</button>
@@ -239,11 +401,12 @@ export default function AdminRegistrationPage() {
                         
                     </div>
                     <div className='info-column'>
-                        <p className='admin-registration-label dark size-24'>Имя:</p>
-                        <input maxLength='50' onChange={(e) => { checkIfCanRegisterHoc(); }} id='hoc-name' type='text' placeholder='Введите имя' className='admin-registration-input dark size-24'></input>
 
                         <p className='admin-registration-label dark size-24'>Фамилия:</p>
                         <input maxLength='50' onChange={(e) => { checkIfCanRegisterHoc(); }} id='hoc-surname' type='text' placeholder='Введите фамилию' className='admin-registration-input dark size-24'></input>
+
+                        <p className='admin-registration-label dark size-24'>Имя:</p>
+                        <input maxLength='50' onChange={(e) => { checkIfCanRegisterHoc(); }} id='hoc-name' type='text' placeholder='Введите имя' className='admin-registration-input dark size-24'></input>
 
                         <p className='admin-registration-label dark size-24'>Отчество:</p>
                         <input maxLength='50' onChange={(e) => { checkIfCanRegisterHoc(); }} id='hoc-second-name' type='text' placeholder='Введите отчество' className='admin-registration-input dark size-24'></input>
@@ -263,11 +426,12 @@ export default function AdminRegistrationPage() {
 
                     </div>
                     <div className='info-column'>
-                        <p className='admin-registration-label dark size-24'>Имя:</p>
-                        <input maxLength='50' onChange={(e) => { checkIfCanRegisterAdmin(); }} id='admin-name' type='text' placeholder='Введите имя' className='admin-registration-input dark size-24'></input>
 
                         <p className='admin-registration-label dark size-24'>Фамилия:</p>
                         <input maxLength='50' onChange={(e) => { checkIfCanRegisterAdmin(); }} id='admin-surname' type='text' placeholder='Введите фамилию' className='admin-registration-input dark size-24'></input>
+
+                        <p className='admin-registration-label dark size-24'>Имя:</p>
+                        <input maxLength='50' onChange={(e) => { checkIfCanRegisterAdmin(); }} id='admin-name' type='text' placeholder='Введите имя' className='admin-registration-input dark size-24'></input>
 
                         <p className='admin-registration-label dark size-24'>Отчество:</p>
                         <input maxLength='50' onChange={(e) => { checkIfCanRegisterAdmin(); }} id='admin-second-name' type='text' placeholder='Введите отчество' className='admin-registration-input dark size-24'></input>

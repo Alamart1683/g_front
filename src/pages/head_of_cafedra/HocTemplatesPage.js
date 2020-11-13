@@ -48,6 +48,7 @@ export default function HocTemplatesPage() {
             var templateName = document.createElement('div');
             templateName.className = 'dark-background hoc-order-template-name';
             templateName.id = 'hoc-order-template-name';
+            templateName.style.top = '-5px';
 
             var templateNameText = document.createElement('p');
             templateNameText.className = 'hoc-order-template-name-text light size-22'
@@ -57,22 +58,33 @@ export default function HocTemplatesPage() {
             templateNameImage.className='hoc-order-template-name-image'
             templateNameImage.src=templateImage;
 
-            templateName.appendChild(templateNameImage);
-            templateName.appendChild(templateNameText);
-
             var templateDownload = document.createElement('button');
             templateDownload.className = 'hoc-order-template-download-button light size-22';
             templateDownload.id = 'hoc-template-download-button';
             templateDownload.innerText = "Сохранить"
 
-            var templateDelete = document.createElement('button');
-            templateDelete.className = 'hoc-order-template-delete-button light size-22';
-            templateDelete.id = 'hoc-template-delete-button';
-            templateDelete.innerText = "Удалить";
+            var templateConfirm = document.createElement('button');
+            templateConfirm.className = 'hoc-order-template-delete-button light size-22';
+            templateConfirm.id = 'confirm-button-' + i;
+            templateConfirm.innerText = 'Одобрить';
+
+            var templateStatus = document.createElement('p');
+            templateStatus.className = 'hoc-order-template-name-text light size-20';
+            if (template.approved) {
+                templateStatus.innerText = 'Статус: Одобрено';
+                templateConfirm.disabled = true;
+            }
+            else {
+                templateStatus.innerText = 'Статус: Не одобрено';
+            }
+
+            templateName.appendChild(templateNameImage);
+            templateName.appendChild(templateNameText);
+            templateName.appendChild(templateStatus);
 
             documentFile.appendChild(templateName);
+            documentFile.appendChild(templateConfirm);
             documentFile.appendChild(templateDownload);
-            documentFile.appendChild(templateDelete);
 
             switch (template.documentType) {
                 case 'Научно-исследовательская работа':
@@ -146,6 +158,26 @@ export default function HocTemplatesPage() {
             });
         });
 
+        // Одобрить шаблон
+        $('.hoc-order-template-confirm-button').off().on('click', function (event) {
+            // example id = confirm-button-2
+            var arrayID = $(this).attr('id').split('-')[2];
+            axios({
+                url: apiURL + '/head_of_cathedra/only/approve/template',
+                method: 'POST',
+                params: {
+                    'documentID': templates[arrayID].documentVersions[0].systemDocumentID,
+                },
+                headers: {
+                    'Authorization': 'Bearer ' + authTokens.accessToken
+                },
+            }).then((response) => {
+                //console.log(response);
+                window.location.reload(true);
+            }).catch(result => {
+                console.log(result);
+            });
+        });
     });
 
     return(

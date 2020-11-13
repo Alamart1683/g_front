@@ -1485,14 +1485,6 @@ html, body {
 	border-radius: 7px;
 }
 
-.hoc-table-row {
-	cursor: pointer;
-}
-
-.hoc-table-row-selected {
-	background-color: #618FCA !important;
-}
-
 .hoc-table-search {
 	margin-top: 10px;
 	margin-left: 10px;
@@ -1706,6 +1698,10 @@ html, body {
 
 .hoc-order-template-delete-button:hover {
 	background-color: #618FCA;
+}
+
+.hoc-order-template-delete-button:disabled {
+	background-color:  #859dbb;
 }
 
 .hoc-order-template-name-image {

@@ -32,7 +32,7 @@ export default function AdminOrdersPage() {
                 'Authorization': 'Bearer ' + authTokens.accessToken
             },
         }).then((response) => {
-            console.log(response.data);
+            //console.log(response.data);
             setOrders(response.data);
         }).catch(result => {
             console.log(result.data);
@@ -95,10 +95,14 @@ export default function AdminOrdersPage() {
             orderEndDate.innerText = 'Дата конца: ' + order.endDate;
             orderEndDate.style.marginBottom = '0px';
 
-            // TODO
             var orderStatus = document.createElement('p');
             orderStatus.className = 'hoc-order-template-name-text light size-20';
-            orderStatus.innerText = 'Статус: Не одобрено';
+            if (order.approved) {
+                orderStatus.innerText = 'Статус: Одобрено';
+            }
+            else {
+                orderStatus.innerText = 'Статус: Не одобрено';
+            }
             orderStatus.style.display = 'block';
             orderStatus.style.marginTop = '-6px';
 
