@@ -670,7 +670,7 @@ export default function StudentTasksPage() {
                         console.log('tabError');
                 }
             }}>
-                <Tab eventKey='info1' title={<Image id='image1' src={infoBlock11} thumbnail className='info-form-image' />} className='info-form-tabs'>
+                <Tab eventKey='info1' title={<Image id='image1' src={infoBlock11} thumbnail className='info-form-image' style={{borderTopRightRadius:'0px',borderBottomRightRadius:'0px'}} />} className='info-form-tabs'>
 
                     <div className='dark info-task-block'>
                         <p className='size-24 info-text-block-title'>НАУЧНО-ИССЛЕДОВАТЕЛЬСКАЯ РАБОТА</p>
@@ -789,7 +789,7 @@ export default function StudentTasksPage() {
                         </Tab>
                     </Tabs>
                 </Tab>
-                <Tab eventKey='info2' title={<Image id='image2' src={infoBlock2} thumbnail className='info-form-image' />}>
+                <Tab eventKey='info2' title={<Image id='image2' src={infoBlock2} thumbnail className='info-form-image' style={{borderTopLeftRadius:'0px', borderTopRightRadius:'0px',borderBottomRightRadius:'0px',borderBottomLeftRadius:'0px'}}/>}>
                     <div className='dark info-task-block'>
                         <p className='size-24 info-text-block-title'>ПРАКТИКА ПО ПОЛУЧЕНИЮ ПРОФЕССИОНАЛЬНЫХ УМЕНИЙ И ОПЫТА ПРОФЕССИОНАЛЬНОЙ ДЕЯТЕЛЬНОСТИ</p>
                         <div>
@@ -814,7 +814,7 @@ export default function StudentTasksPage() {
                     </div>
                     <div className='info-break-div'>&nbsp;</div>
                 </Tab>
-                <Tab eventKey='info3' title={<Image id='image3' src={infoBlock3} thumbnail className='info-form-image' />}>
+                <Tab eventKey='info3' title={<Image id='image3' src={infoBlock3} thumbnail className='info-form-image' style={{borderTopLeftRadius:'0px', borderTopRightRadius:'0px',borderBottomRightRadius:'0px',borderBottomLeftRadius:'0px'}}/>}>
                     <div className='dark info-task-block'>
                         <p className='size-24 info-text-block-title'>ПРЕДДИПЛОМНАЯ ПРАКТИКА</p>
                         <div>
@@ -839,7 +839,7 @@ export default function StudentTasksPage() {
                     </div>
                     <div className='info-break-div'>&nbsp;</div>
                 </Tab>
-                <Tab eventKey='info4' title={<Image id='image4' src={infoBlock4} thumbnail className='info-form-image' />}>
+                <Tab eventKey='info4' title={<Image id='image4' src={infoBlock4} thumbnail className='info-form-image' style={{borderTopLeftRadius:'0px',borderBottomLeftRadius:'0px'}}/>}>
                     <div className='dark info-task-block'>
                         <p className='size-24 info-text-block-title'>ПОДГОТОВКА И ЗАЩИТА ВКР</p>
                         <div>
