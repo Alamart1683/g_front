@@ -64,7 +64,7 @@ export default function HocTemplatesPage() {
             templateDownload.innerText = "Сохранить"
 
             var templateConfirm = document.createElement('button');
-            templateConfirm.className = 'hoc-order-template-delete-button light size-22';
+            templateConfirm.className = 'hoc-order-template-delete-button light size-22 hoc-order-template-confirm-button';
             templateConfirm.id = 'confirm-button-' + i;
             templateConfirm.innerText = 'Одобрить';
 
