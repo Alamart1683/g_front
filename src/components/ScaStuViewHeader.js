@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Navbar, Nav } from 'react-bootstrap';
+import { Navbar, Nav, Image } from 'react-bootstrap';
 //import { useAuthContext } from '../auth/AuthContext';
 import { Redirect } from 'react-router-dom';
+
+import exitImage from '../images/icons/exit.png';
 
 export default function ScaStuHeader() {
     //const { authTokens } = useAuthContext();
@@ -21,9 +23,6 @@ export default function ScaStuHeader() {
         }
     }
 
-    //console.log(studentName);
-    //console.log(sessionStorage.getItem('viewedStudentId'));
-
     return(
         <div>
             <Navbar className='light-background light student-nav'>
@@ -34,6 +33,7 @@ export default function ScaStuHeader() {
                 </Nav.Link>
                 <Nav.Link as={Link} to='/sca/students'>
                     <button type='button' className='student-navbar-button dark-background light size-30'>
+                        <Image src={exitImage} thumbnail className='student-navbar-image dark-background' />
                         Вернуться
                     </button>
                 </Nav.Link>

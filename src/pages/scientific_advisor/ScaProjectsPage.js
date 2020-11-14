@@ -214,7 +214,8 @@ export default function ScaProjectsPage() {
 
                             dropdownContent.appendChild(studentRecord);
                         }
-
+                        dropdownContent.style.maxHeight = '400px';
+                        dropdownContent.style.overflowX = 'scroll';
 
                         if (projectData[j].occupiedStudents.length === 0) {
                             var deleteButtonLast = document.createElement('button');

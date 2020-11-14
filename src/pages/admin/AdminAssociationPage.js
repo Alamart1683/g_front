@@ -120,6 +120,14 @@ export default function AdminAssociationPage() {
                 studentFio.innerText = student.studentFio;
                 studentFio.className = 'student-fio';
 
+                var studentStatus = document.createElement('th');
+                if (student.studentIsConfirmed) {
+                    studentStatus.innerText = 'Подтвержден';
+                }
+                else {
+                    studentStatus.innerText = 'Не подтвержден';
+                }
+
                 var assignDiv = document.createElement('div');
                 assignDiv.className = 'add-student-dropdown-div';
 
@@ -138,6 +146,8 @@ export default function AdminAssociationPage() {
                         assignContent.appendChild(scaRecord);
                     }
                 }
+                assignContent.style.maxHeight = '400px';
+                assignContent.style.overflowX = 'scroll';
 
                 var assignButton = document.createElement('button');
                 assignButton.type = 'button';
@@ -152,6 +162,7 @@ export default function AdminAssociationPage() {
                 studentRow.appendChild(studentSpeciality);
                 studentRow.appendChild(studentGroup);
                 studentRow.appendChild(studentScaFio);
+                studentRow.appendChild(studentStatus);
 
                 assignDiv.appendChild(assignButton);
                 assignDiv.appendChild(assignContent);
@@ -171,7 +182,7 @@ export default function AdminAssociationPage() {
                 'Authorization': 'Bearer ' + authTokens.accessToken
             },
         }).then((response) => {
-            console.log(response);
+            //console.log(response);
             setScaData(response.data);
         }).catch(result => {
             console.log(result.data);
@@ -352,9 +363,10 @@ export default function AdminAssociationPage() {
                             <th>#</th>
                             <th>ФИО Студента</th>
                             <th>Направление</th>
-                            <th>Группа</th>
-                            <th>ФИО Научного Руководителя</th>
-                            <th></th>
+                            <th style={{minWidth:'135px'}}>Группа</th>
+                            <th>ФИО Научного Руководителя</th>                            
+                            <th>Статус</th>
+                            <th style={{minWidth:'190px'}}></th>
                         </tr>
                     </thead>
                     <tbody id='hoc-table-body'>

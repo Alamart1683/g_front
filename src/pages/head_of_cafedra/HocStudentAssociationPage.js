@@ -56,7 +56,7 @@ export default function HocStudentAssociationPage() {
                 'Authorization': 'Bearer ' + authTokens.accessToken 
             },
           }).then((response) => {
-            //console.log(response);
+            console.log(response);
             setStudentData(response.data);
           }).catch(result => {
             console.log(result.data);
@@ -93,11 +93,20 @@ export default function HocStudentAssociationPage() {
             studentFio.innerText = student.studentFio;
             studentFio.className = 'student-fio';
 
+            var studentStatus = document.createElement('th');
+            if (student.studentIsConfirmed) {
+                studentStatus.innerText = 'Подтвержден';
+            }
+            else {
+                studentStatus.innerText = 'Не подтвержден';
+            }
+
             studentRow.appendChild(studentNum);
             studentRow.appendChild(studentFio);
             studentRow.appendChild(studentSpeciality);
             studentRow.appendChild(studentGroup);
             studentRow.appendChild(studentScaFio);
+            studentRow.appendChild(studentStatus);
 
             document.getElementById('hoc-table-body').appendChild(studentRow);
         }
@@ -166,6 +175,30 @@ export default function HocStudentAssociationPage() {
         $('.hoc-table-row:visible').each(function (index) {
             $(this).find('.row-num')[0].innerText = index + 1;
         })
+
+        // TODO
+        $('#confirm-button').off().on('click', function() {
+            for (var i = 0; i < studentData.length; i++) {
+                if (!studentData[i].studentIsConfirmed) {
+                    axios({
+                        url: apiURL + '/head_of_cathedra_only/confirm/student',
+                        method: 'POST',
+                        params: {
+                            'studentID': true,
+                        },
+                        headers: {
+                            'Authorization': 'Bearer ' + authTokens.accessToken
+                        },
+                    }).then((response) => {
+                        //console.log(response);
+                        window.location.reload(true);
+                    }).catch(result => {
+                        console.log(result);
+                    });
+                }
+            }
+            
+        });
     }
 
     return(
@@ -188,6 +221,9 @@ export default function HocStudentAssociationPage() {
                         <option value=''>Все</option>
                     </select>
                 </div>
+                <button type='button' id='confirm-button' className='dark-background light size-24 hoc-assoc-after-select hoc-assoc-button' style={{ marginLeft: '404px' }}>
+                    Подтвердить ассоциации студентов<br />и научных руководителей
+                </button>
             </div>
             <div>
                 <Table striped bordered hover>
@@ -198,6 +234,7 @@ export default function HocStudentAssociationPage() {
                             <th>Направление</th>
                             <th>Группа</th>
                             <th>ФИО Научного Руководителя</th>
+                            <th>Статус</th>
                         </tr>
                     </thead>
                     <tbody id='hoc-table-body'>

@@ -199,6 +199,10 @@ html, body {
 	background-color: #618FCA;
 }
 
+.student-navbar-button-selected, .student-navbar-button-selected .student-navbar-image {
+	background-color: #618FCA !important;
+}
+
 .student-navbar-name {
 	padding-left: 5px;
 	padding-right: 5px;

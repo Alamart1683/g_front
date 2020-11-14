@@ -106,6 +106,28 @@ export default function AdminRegistrationPage() {
         });
     }
 
+    function registerScaFromFile(file) {
+        document.getElementById('register-sca-from-file-button').disabled = true;
+        var formData = new FormData();
+        formData.append('cathedra', 'МОСИТ');
+        formData.append('studentData', file);
+        axios({
+            url: apiURL + '/admin/registration/advisors/automatic',
+            method: 'POST',
+            data: formData,
+            headers: {
+                'Content-Type': 'multipart/form-data',
+                'Authorization': 'Bearer ' + authTokens.accessToken
+            },
+        }).then((response) => {
+            window.location.reload();
+            //console.log(response);
+        }).catch(result => {
+            console.log(result.data);
+            document.getElementById('register-sca-from-file-button').disabled = false;
+        });
+    }
+
     function checkIfCanRegisterSca() {
         if ($('#sca-mail').val() !== '' &&
             $('#sca-name').val() !== '' &&
@@ -277,6 +299,10 @@ export default function AdminRegistrationPage() {
             $('#student-file-input').trigger('click');
         });
 
+        $('#register-sca-from-file-button').off().on('click', function() {
+            $('#sca-file-input').trigger('click');
+        });
+
         $('#register-sca-button').off().on('click', function() {
             registerSca();
         });
@@ -305,18 +331,7 @@ export default function AdminRegistrationPage() {
                     <div className='info-column'>
                         <p className='admin-registration-label dark size-24'>Почта:</p>
                         <input maxLength='50' onChange={(e) => { checkIfCanRegisterStudent(); }} id='student-mail' type='text' placeholder='Введите почту' className='admin-registration-input dark size-24'></input>
-
-                        <p className='admin-registration-label dark size-24'>Фамилия:</p>
-                        <input maxLength='50' onChange={(e) => { checkIfCanRegisterStudent(); }} id='student-surname' type='text' placeholder='Введите фамилию' className='admin-registration-input dark size-24'></input>
-
-                        <p className='admin-registration-label dark size-24'>Имя:</p>
-                        <input maxLength='50' onChange={(e) => { checkIfCanRegisterStudent(); }} id='student-name' type='text' placeholder='Введите имя' className='admin-registration-input dark size-24'></input>
-
-                        <p className='admin-registration-label dark size-24'>Отчество:</p>
-                        <input maxLength='50' onChange={(e) => { checkIfCanRegisterStudent(); }} id='student-second-name' type='text' placeholder='Введите отчество' className='admin-registration-input dark size-24'></input>
-                    
-                    </div>
-                    <div className='info-column'>
+                        
                         <p className='admin-registration-label dark size-24'>Телефон:</p>
                         <input maxLength='12' onChange={(e) => { checkIfCanRegisterStudent(); }} id='student-phone' type='text' placeholder='Введите телефон' className='admin-registration-input dark size-24'></input>
 
@@ -354,10 +369,24 @@ export default function AdminRegistrationPage() {
                         <select disabled id='student-group' defaultValue='' onChange={(e) => { checkIfCanRegisterStudent(); }} className='admin-registration-select dark size-24'>
                             <option value='' disabled hidden>Выберите группу</option>
                         </select>
+                        
+                    </div>
+                    <div className='info-column'>
+                        
 
-                        <button id='register-student-button' disabled className='admin-registration-button light size-30 dark-background' style={{ marginLeft: '50px', marginTop: '30px', width: '600px' }}>Зарегистрировать студента</button>
+                        <p className='admin-registration-label dark size-24'>Фамилия:</p>
+                        <input maxLength='50' onChange={(e) => { checkIfCanRegisterStudent(); }} id='student-surname' type='text' placeholder='Введите фамилию' className='admin-registration-input dark size-24'></input>
+
+                        <p className='admin-registration-label dark size-24'>Имя:</p>
+                        <input maxLength='50' onChange={(e) => { checkIfCanRegisterStudent(); }} id='student-name' type='text' placeholder='Введите имя' className='admin-registration-input dark size-24'></input>
+
+                        <p className='admin-registration-label dark size-24'>Отчество:</p>
+                        <input maxLength='50' onChange={(e) => { checkIfCanRegisterStudent(); }} id='student-second-name' type='text' placeholder='Введите отчество' className='admin-registration-input dark size-24'></input>
+                                            
                     </div>
                 </div>
+                <button id='register-student-button' disabled className='admin-registration-button light size-30 dark-background' style={{ marginLeft: '400px', marginTop: '30px', width: '600px' }}>Зарегистрировать студента</button>
+
                 <button id='register-students-from-file-button' className='admin-registration-button light size-30 dark-background' style={{ marginLeft: '400px', marginTop: '30px', width: '600px' }}>Зарегистрировать студентов<br />из файла</button>
                 <input id='student-file-input' type='file' style={{ display: 'none' }} onChange={(e) => {
                         if (e.target.files.length !== 0) {
@@ -389,6 +418,13 @@ export default function AdminRegistrationPage() {
                     </div>
                 </div>
                 <button id='register-sca-button' disabled className='admin-registration-button light size-30 dark-background' style={{ marginLeft: '400px', marginTop: '30px', width: '600px' }}>Зарегистрировать<br />Научного Руководителя</button>
+
+                <button id='register-sca-from-file-button' className='admin-registration-button light size-30 dark-background' style={{ marginLeft: '400px', marginTop: '30px', width: '600px' }}>Зарегистрировать<br />Научных Руководителей из файла</button>
+                <input id='sca-file-input' type='file' style={{ display: 'none' }} onChange={(e) => {
+                        if (e.target.files.length !== 0) {
+                            registerScaFromFile(e.target.files[0]);
+                        }
+                    }} ></input>
             </div>
             <div id="orderContentPanel3" className="contentPanel contentPanel-hidden">
                 <div className='info-row' style={{ paddingTop: '20px' }}>
