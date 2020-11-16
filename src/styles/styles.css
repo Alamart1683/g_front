@@ -784,6 +784,10 @@ html, body {
 	border-width: 0;
 }
 
+.nir-copy-button:hover {
+	background: #618FCA;
+}
+
 .sci-advisor-students-form {
 	margin-top: 34px;
 	margin-left: auto;

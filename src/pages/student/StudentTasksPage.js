@@ -42,6 +42,9 @@ export default function StudentTasksPage() {
     const [nirVersions, setNirVersions] = useState([]);
     const [nirOtchetVersions, setNirOtchetVersions] = useState([]);
 
+    // Отчет по НИР
+    const [detailedDescription, setDetailedDescription] = useState('');
+    const [conclusion, setConclusion] = useState('');
 
     if (!fetchedData) {
         setFetchedData(true);
@@ -188,7 +191,7 @@ export default function StudentTasksPage() {
                 taskArea.value = item.additionalTask;
 
                 var copyButton = document.createElement('button');
-                copyButton.className = 'light dark-background size-21 nir-copy-button';
+                copyButton.className = 'light dark-background size-21 nir-copy-button nir-copy';
                 copyButton.innerText = 'Перенести значения в меню';
                 copyButton.type = 'button';
 
@@ -240,7 +243,7 @@ export default function StudentTasksPage() {
             },
         }).then((response) => {
             setNirOtchetVersions(response.data);
-            //console.log(response.data);
+            console.log(response.data);
         }).catch(result => {
             console.log(result.data);
         });
@@ -269,6 +272,9 @@ export default function StudentTasksPage() {
                 versionStatus.className = 'light size-24 nir-header-text';
                 versionStatus.innerText = 'Статус: ' + item.status;
 
+                var clickableArea = document.createElement('div');
+                clickableArea.className = 'nir-version-clickable';
+
                 // Кнопка отправить науч руку
                 var sendButton = document.createElement('button');
                 sendButton.className = 'dark size-24 nir-version-header-button nir-otchet-send-button';
@@ -293,16 +299,63 @@ export default function StudentTasksPage() {
                     deleteButton.disabled = true;
                 }
 
-                var titlesArea = document.createElement('div');
-                titlesArea.className = 'nir-version-titles';
+                var nirVersionContent = document.createElement('div');
+                nirVersionContent.className = 'nir-version-content light-background';
 
-                titlesArea.appendChild(versionName);
-                titlesArea.appendChild(versionStatus);
-                nirVersionHeader.appendChild(titlesArea);
+                var detailedLabel = document.createElement('p');
+                detailedLabel.className = 'dark size-21 nir-text-label';
+                detailedLabel.innerText = 'Подробное содержание:';
+
+                // Детальное содержание
+                var detailedArea = document.createElement('textarea');
+                detailedArea.className = 'dark size-18 nir-text-area'
+                detailedArea.disabled = true;
+                detailedArea.value = item.detailedContent;
+
+                var conclusionLabel = document.createElement('p');
+                conclusionLabel.className = 'dark size-21 nir-text-label';
+                conclusionLabel.innerText = 'Заключение научного руководителя:';
+
+                // Заключение
+                var conclusionArea = document.createElement('textarea');
+                conclusionArea.className = 'dark size-18 nir-text-area'
+                conclusionArea.disabled = true;
+                conclusionArea.value = item.advisorConclusion;
+
+                // Кнопка перенести в меню
+                var copyButton = document.createElement('button');
+                copyButton.className = 'light dark-background size-21 nir-copy-button nir-otchet-copy';
+                copyButton.id = 'nir-otchet-copy-' + i;
+                copyButton.innerText = 'Перенести значения в меню';
+                copyButton.type = 'button';
+                copyButton.style.marginBottom = '10px';
+                copyButton.style.marginTop = '10px';
+                copyButton.style.marginLeft = '500px';
+
+                var rowDiv = document.createElement('div');
+                rowDiv.className = 'info-row';
+                var columnDiv1 = document.createElement('div');
+                columnDiv1.className = 'info-column';
+                var columnDiv2 = document.createElement('div');
+                columnDiv2.className = 'info-column';
+
+                clickableArea.appendChild(versionName);
+                clickableArea.appendChild(versionStatus);
+                nirVersionHeader.appendChild(clickableArea);
                 nirVersionHeader.appendChild(sendButton);
                 nirVersionHeader.appendChild(downloadButton);
                 nirVersionHeader.appendChild(deleteButton);
                 nirVersion.appendChild(nirVersionHeader);
+
+                columnDiv1.appendChild(detailedLabel);
+                columnDiv1.appendChild(detailedArea);
+                columnDiv2.appendChild(conclusionLabel);
+                columnDiv2.appendChild(conclusionArea);
+                rowDiv.appendChild(columnDiv1);
+                rowDiv.appendChild(columnDiv2);
+                nirVersionContent.appendChild(rowDiv);
+                nirVersionContent.appendChild(copyButton);
+                nirVersion.appendChild(nirVersionContent);
 
                 document.getElementById('student-nir-otchet-version-div').appendChild(nirVersion);
             }
@@ -326,7 +379,7 @@ export default function StudentTasksPage() {
                 'Authorization': 'Bearer ' + authTokens.accessToken
             },
         }).then((response) => {
-            console.log(response.data);
+            //console.log(response.data);
             setExamples(response.data);
         }).catch(result => {
             console.log(result.data);
@@ -364,7 +417,7 @@ export default function StudentTasksPage() {
             titleDiv.appendChild(exampleName);
             exampleDiv.appendChild(titleDiv);
             exampleDiv.appendChild(exampleDownload);
-            
+
             switch (example.documentType) {
                 case 'Научно-исследовательская работа':
                     document.getElementById("example-panel-1").appendChild(exampleDiv);
@@ -382,6 +435,31 @@ export default function StudentTasksPage() {
                     console.log('switchError');
             }
         }
+    }
+
+    function makeNirOtchet(file) {
+        var formData = new FormData();
+        formData.append('documentFormType', 'Научно-исследовательская работа');
+        formData.append('documentFormKind', 'Отчёт');
+        formData.append('documentFormDescription', 'Пример отчёта');
+        formData.append('documentFormViewRights', 'Я и мой научный руководитель');
+        formData.append('detailedContent', detailedDescription);
+        formData.append('advisorConclusion', conclusion);
+        formData.append('file', file);
+        axios({
+            url: apiURL + '/student/document/report/upload',
+            method: 'POST',
+            data: formData,
+            headers: {
+                'Content-Type': 'multipart/form-data',
+                'Authorization': 'Bearer ' + authTokens.accessToken
+            },
+        }).then((response) => {
+            console.log(response);
+            //window.location.reload();
+        }).catch(result => {
+            console.log(result);
+        });
     }
 
     $(function () {
@@ -456,17 +534,24 @@ export default function StudentTasksPage() {
             });
         });
 
-        // Функция кнопки "перенести в меню"
-        $('.nir-copy-button').off().on('click', function (event) {
+        // Функция кнопки "перенести в меню" для задания НИР
+        $('.nir-copy').off().on('click', function (event) {
             var versionId = $(this).parent().parent().parent().parent().attr('id');
             var arrayID = versionId.split('-')[2];
 
-            console.log(nirVersions);
             setStudentTheme(nirVersions[arrayID].theme);
             setToExplore(nirVersions[arrayID].toExplore);
             setToCreate(nirVersions[arrayID].toCreate);
             setToFamiliarize(nirVersions[arrayID].toFamiliarize);
             setAdditionalTask(nirVersions[arrayID].additionalTask);
+        });
+
+        // Функция кнопки "перенести в меню" для отчета НИР
+        $('.nir-otchet-copy').off().on('click', function (event) {
+            var id = $(this).attr('id').split('-')[3];
+
+            setDetailedDescription(nirOtchetVersions[id].detailedContent);
+            setConclusion(nirOtchetVersions[id].advisorConclusion);
         });
 
         // Создание новой версии задания НИР
@@ -504,44 +589,7 @@ export default function StudentTasksPage() {
 
         // Создать версию отчёта
         $('#make-nir-otchet-button').off().on('click', function (event) {
-            var taskApproval = checkTaskApproval();
-            if (taskApproval) {
-                setNirTaskApproval(true);
-                if (fileNirOtchet != null) {
-                    document.getElementById('errorNirMessage').style.visibility = 'hidden';
-                    var formData = new FormData();
-                    formData.append('documentFormType', 'Научно-исследовательская работа');
-                    formData.append('documentFormKind', 'Отчёт');
-                    formData.append('documentFormDescription', 'Пример отчёта');
-                    formData.append('documentFormViewRights', 'Я и мой научный руководитель');
-                    formData.append('file', fileNirOtchet);
-                    axios({
-                        url: apiURL + '/student/document/report/upload',
-                        method: 'POST',
-                        data: formData,
-                        headers: {
-                            'Content-Type': 'multipart/form-data',
-                            'Authorization': 'Bearer ' + authTokens.accessToken
-                        },
-                    }).then((response) => {
-                        //console.log(response);
-                        document.getElementById('errorNirMessage').style.visibility = 'visible';
-                        document.getElementById('errorNirMessage').innerHTML = 'Отчет загружен!';
-                        window.location.reload();
-                    }).catch(result => {
-                        document.getElementById('errorNirMessage').style.visibility = 'visible';
-                        document.getElementById('errorNirMessage').innerHTML = 'При загрузке произошла ошибка!';
-                    });
-                }
-                else {
-                    document.getElementById('errorNirMessage').innerHTML = 'Не выбран файл!';
-                    document.getElementById('errorNirMessage').style.visibility = 'visible';
-                }
-            }
-            else {
-                setNirTaskApproval(false);
-                document.getElementById('errorNirMessage').style.visibility = 'hidden';
-            }
+            $('#nir-otchet-file-input').trigger('click');
         });
 
         // Отправить отчёт науч руку
@@ -618,7 +666,7 @@ export default function StudentTasksPage() {
         });
 
         // Скачать пример
-        $('.student-example-download').off().on('click', function() {
+        $('.student-example-download').off().on('click', function () {
             var arrayId = $(this).attr('id').split('-')[2];
             axios({
                 url: apiURL + '/document/download/',
@@ -670,7 +718,7 @@ export default function StudentTasksPage() {
                         console.log('tabError');
                 }
             }}>
-                <Tab eventKey='info1' title={<Image id='image1' src={infoBlock11} thumbnail className='info-form-image' style={{borderTopRightRadius:'0px',borderBottomRightRadius:'0px'}} />} className='info-form-tabs'>
+                <Tab eventKey='info1' title={<Image id='image1' src={infoBlock11} thumbnail className='info-form-image' style={{ borderTopRightRadius: '0px', borderBottomRightRadius: '0px' }} />} className='info-form-tabs'>
 
                     <div className='dark info-task-block'>
                         <p className='size-24 info-text-block-title'>НАУЧНО-ИССЛЕДОВАТЕЛЬСКАЯ РАБОТА</p>
@@ -688,7 +736,7 @@ export default function StudentTasksPage() {
                                     </Accordion.Toggle>
                                     <Accordion.Collapse eventKey="acc0">
                                         <Card.Body id='example-panel-1'>
-                                            
+
                                         </Card.Body>
                                     </Accordion.Collapse>
                                 </Card>
@@ -753,43 +801,49 @@ export default function StudentTasksPage() {
                             <div id='student-nir-otchet-version-div' className='student-nir-task-version-div light-background'></div>
 
                             <div className='info-sub-tab-div'>
-                                <div className='centered'>
-                                    <input type="file" name="file" id="fileNir" accept='.docx' className="info-input-file-hidden"
-                                        onChange={e => {
-                                            if (e.target.files.length !== 0) {
-                                                if (e.target.files[0].type === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document') {
-                                                    fileNirOtchet = e.target.files[0];
-                                                    document.getElementById('fileNirName').innerHTML = 'Файл выбран';
-                                                    document.getElementById('make-nir-otchet-button').disabled = false;
-                                                }
-                                                else {
-                                                    fileNirOtchet = null;
-                                                    document.getElementById('fileNirName').innerHTML = 'Ошибка загрузки файла!';
-                                                    document.getElementById('make-nir-otchet-button').disabled = true;
-                                                }
+
+                                <div className='info-row'>
+                                    <div className='info-column'>
+                                        <Form.Label column className="size-21 dark info-input-label">Детальное содержание:</Form.Label>
+                                        <textarea id='nir-otchet-description' maxLength='1024' value={detailedDescription} onChange={(e) => { setDetailedDescription(e.target.value); 
+                                            if ($('#nir-otchet-description').val() === '' || $('#nir-otchet-conclusion').val() === '') {
+                                                document.getElementById('make-nir-otchet-button').disabled = true;
                                             }
-                                        }}
-                                    />
-                                    <label htmlFor="fileNir" className='size-30 dark-background light info-file-label1'>
-                                        <Image src={iconInfo} thumbnail className='dark-background thumbnail-icon' />
-                                        <p id='fileNirName' style={{ display: 'inline-block' }}>Выбрать файл с содержанием отчета</p>
-                                    </label>
-                                    <button type='button' id='make-nir-otchet-button' disabled className='size-30 light dark-background info-button-inline-block'>
-                                        <Image src={iconProject} thumbnail className='dark-background thumbnail-icon' />
+                                            else {
+                                                document.getElementById('make-nir-otchet-button').disabled = false;
+                                            }
+                                            }} className='dark size-24 info-input-area' />
+                                    </div>
+
+                                    <div className='info-column'>
+                                        <Form.Label column className="size-21 dark info-input-label">Заключение научного руководителя:</Form.Label>
+                                        <textarea id='nir-otchet-conclusion' maxLength='2048' value={conclusion} onChange={(e) => { 
+                                            setConclusion(e.target.value); 
+                                            if ($('#nir-otchet-description').val() === '' || $('#nir-otchet-conclusion').val() === '') {
+                                                document.getElementById('make-nir-otchet-button').disabled = true;
+                                            }
+                                            else {
+                                                document.getElementById('make-nir-otchet-button').disabled = false;
+                                            }
+                                            }} className='dark size-24 info-input-area' />
+                                    </div>
+                                </div>
+
+                                <button type='button' disabled id='make-nir-otchet-button' className='size-30 light dark-background info-button-inline-block' style={{marginLeft:'425px',marginTop:'20px'}}>
+                                    <Image src={iconProject} thumbnail className='dark-background thumbnail-icon' />
                                         Сформировать и загрузить версию отчета
-                                    </button>
-                                    <p id='errorNirMessage' className='size-24 dark' style={{ visibility: 'hidden' }}>errorNir</p>
-                                </div>
-
-                                <div>
-                                    {!nirTaskApproval ? (<p className='dark size-24 nir-approval-message'>Нет одобренного задания!</p>) : null}
-                                </div>
-
+                                </button>
+                                <input id='nir-otchet-file-input' type='file' style={{ display: 'none' }} onChange={(e) => {
+                                    console.log(e.target.files);
+                                    if (e.target.files.length !== 0) {
+                                        makeNirOtchet(e.target.files[0]);
+                                    }
+                                }} ></input>
                             </div>
                         </Tab>
                     </Tabs>
                 </Tab>
-                <Tab eventKey='info2' title={<Image id='image2' src={infoBlock2} thumbnail className='info-form-image' style={{borderTopLeftRadius:'0px', borderTopRightRadius:'0px',borderBottomRightRadius:'0px',borderBottomLeftRadius:'0px'}}/>}>
+                <Tab eventKey='info2' title={<Image id='image2' src={infoBlock2} thumbnail className='info-form-image' style={{ borderTopLeftRadius: '0px', borderTopRightRadius: '0px', borderBottomRightRadius: '0px', borderBottomLeftRadius: '0px' }} />}>
                     <div className='dark info-task-block'>
                         <p className='size-24 info-text-block-title'>ПРАКТИКА ПО ПОЛУЧЕНИЮ ПРОФЕССИОНАЛЬНЫХ УМЕНИЙ И ОПЫТА ПРОФЕССИОНАЛЬНОЙ ДЕЯТЕЛЬНОСТИ</p>
                         <div>
@@ -805,7 +859,7 @@ export default function StudentTasksPage() {
                                     </Accordion.Toggle>
                                     <Accordion.Collapse eventKey="acc1">
                                         <Card.Body id='example-panel-2'>
-                                            
+
                                         </Card.Body>
                                     </Accordion.Collapse>
                                 </Card>
@@ -814,7 +868,7 @@ export default function StudentTasksPage() {
                     </div>
                     <div className='info-break-div'>&nbsp;</div>
                 </Tab>
-                <Tab eventKey='info3' title={<Image id='image3' src={infoBlock3} thumbnail className='info-form-image' style={{borderTopLeftRadius:'0px', borderTopRightRadius:'0px',borderBottomRightRadius:'0px',borderBottomLeftRadius:'0px'}}/>}>
+                <Tab eventKey='info3' title={<Image id='image3' src={infoBlock3} thumbnail className='info-form-image' style={{ borderTopLeftRadius: '0px', borderTopRightRadius: '0px', borderBottomRightRadius: '0px', borderBottomLeftRadius: '0px' }} />}>
                     <div className='dark info-task-block'>
                         <p className='size-24 info-text-block-title'>ПРЕДДИПЛОМНАЯ ПРАКТИКА</p>
                         <div>
@@ -830,7 +884,7 @@ export default function StudentTasksPage() {
                                     </Accordion.Toggle>
                                     <Accordion.Collapse eventKey="acc2">
                                         <Card.Body id='example-panel-3'>
-                                            
+
                                         </Card.Body>
                                     </Accordion.Collapse>
                                 </Card>
@@ -839,7 +893,7 @@ export default function StudentTasksPage() {
                     </div>
                     <div className='info-break-div'>&nbsp;</div>
                 </Tab>
-                <Tab eventKey='info4' title={<Image id='image4' src={infoBlock4} thumbnail className='info-form-image' style={{borderTopLeftRadius:'0px',borderBottomLeftRadius:'0px'}}/>}>
+                <Tab eventKey='info4' title={<Image id='image4' src={infoBlock4} thumbnail className='info-form-image' style={{ borderTopLeftRadius: '0px', borderBottomLeftRadius: '0px' }} />}>
                     <div className='dark info-task-block'>
                         <p className='size-24 info-text-block-title'>ПОДГОТОВКА И ЗАЩИТА ВКР</p>
                         <div>
@@ -855,7 +909,7 @@ export default function StudentTasksPage() {
                                     </Accordion.Toggle>
                                     <Accordion.Collapse eventKey="acc3">
                                         <Card.Body id='example-panel-4'>
-                                            
+
                                         </Card.Body>
                                     </Accordion.Collapse>
                                 </Card>
