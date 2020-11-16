@@ -7,7 +7,6 @@ import $ from 'jquery';
 
 import iconDocument from '../../images/icons/documents.png';
 import iconProject from '../../images/icons/myproject.png';
-import iconInfo from '../../images/icons/info.png';
 
 export default function ScaStuViewPage() {
 
@@ -25,8 +24,6 @@ export default function ScaStuViewPage() {
     const [additionalTask, setAdditionalTask] = useState('');
 
     // Загруженное содержание НИР
-    var fileNirOtchet;
-    const [nirTaskApproval, setNirTaskApproval] = useState(true);
     const [nirVersions, setNirVersions] = useState([]);
     const [nirOtchetVersions, setNirOtchetVersions] = useState([]);
 
@@ -437,15 +434,6 @@ export default function ScaStuViewPage() {
         });
     }
 
-    function checkTaskApproval() {
-        for (var i = 0; i < nirVersions.length; i++) {
-            if (nirVersions[i].status === 'Одобрено') {
-                return true;
-            }
-        }
-        return false;
-    }
-
     // Заполнение таблицы студентов
     function showStudent(item, i) {
         //console.log(item);
@@ -854,8 +842,7 @@ export default function ScaStuViewPage() {
                 },
             }).then((response) => {
                 if (response.data === 'Вы не можете добавлять версии заданию студенту, пока он его не сгенерирует') {
-                    console.log('Вы не можете добавлять версии заданию студенту, пока он его не сгенерирует');
-
+                    console.log(response.data);
                 }
                 else {
                     window.location.reload();

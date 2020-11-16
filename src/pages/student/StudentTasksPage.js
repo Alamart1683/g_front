@@ -16,7 +16,6 @@ import infoBlock44 from '../../images/infographics blocks/block4.png';
 
 import iconDocument from '../../images/icons/documents.png';
 import iconProject from '../../images/icons/myproject.png';
-import iconInfo from '../../images/icons/info.png';
 import iconExample from '../../images/icons/samples.png';
 
 export default function StudentTasksPage() {
@@ -37,8 +36,6 @@ export default function StudentTasksPage() {
     const [additionalTask, setAdditionalTask] = useState('');
 
     // Загруженное содержание НИР
-    var fileNirOtchet;
-    const [nirTaskApproval, setNirTaskApproval] = useState(true);
     const [nirVersions, setNirVersions] = useState([]);
     const [nirOtchetVersions, setNirOtchetVersions] = useState([]);
 
