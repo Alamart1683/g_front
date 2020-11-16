@@ -362,15 +362,6 @@ export default function StudentTasksPage() {
         }
     }
 
-    function checkTaskApproval() {
-        for (var i = 0; i < nirVersions.length; i++) {
-            if (nirVersions[i].status === 'Одобрено') {
-                return true;
-            }
-        }
-        return false;
-    }
-
     function getExamples() {
         axios({
             url: apiURL + '/document/view/templates/student',
@@ -455,8 +446,8 @@ export default function StudentTasksPage() {
                 'Authorization': 'Bearer ' + authTokens.accessToken
             },
         }).then((response) => {
-            console.log(response);
-            //window.location.reload();
+            //console.log(response);
+            window.location.reload();
         }).catch(result => {
             console.log(result);
         });

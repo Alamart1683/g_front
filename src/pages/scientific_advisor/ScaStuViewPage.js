@@ -30,6 +30,10 @@ export default function ScaStuViewPage() {
     const [nirVersions, setNirVersions] = useState([]);
     const [nirOtchetVersions, setNirOtchetVersions] = useState([]);
 
+    // Отчет по НИР
+    const [detailedDescription, setDetailedDescription] = useState('');
+    const [conclusion, setConclusion] = useState('');
+
     if (!fetchedData) {
         setFetchedData(true);
         getStudentNirVersions();
@@ -189,7 +193,7 @@ export default function ScaStuViewPage() {
                 taskArea.value = item.additionalTask;
 
                 var copyButton = document.createElement('button');
-                copyButton.className = 'light dark-background size-21 nir-copy-button';
+                copyButton.className = 'light dark-background size-21 nir-copy-button nir-copy';
                 copyButton.innerText = 'Перенести значения в меню';
                 copyButton.type = 'button';
 
@@ -337,12 +341,52 @@ export default function ScaStuViewPage() {
                     deleteButton.disabled = true;
                 }
 
-                var titlesArea = document.createElement('div');
-                titlesArea.className = 'nir-version-titles';
+                var clickableArea = document.createElement('div');
+                clickableArea.className = 'nir-version-clickable';
 
-                titlesArea.appendChild(versionName);
-                titlesArea.appendChild(versionStatus);
-                nirVersionHeader.appendChild(titlesArea);
+                var nirVersionContent = document.createElement('div');
+                nirVersionContent.className = 'nir-version-content light-background';
+
+                var detailedLabel = document.createElement('p');
+                detailedLabel.className = 'dark size-21 nir-text-label';
+                detailedLabel.innerText = 'Подробное содержание:';
+
+                // Детальное содержание
+                var detailedArea = document.createElement('textarea');
+                detailedArea.className = 'dark size-18 nir-text-area'
+                detailedArea.disabled = true;
+                detailedArea.value = item.detailedContent;
+
+                var conclusionLabel = document.createElement('p');
+                conclusionLabel.className = 'dark size-21 nir-text-label';
+                conclusionLabel.innerText = 'Заключение научного руководителя:';
+
+                // Заключение
+                var conclusionArea = document.createElement('textarea');
+                conclusionArea.className = 'dark size-18 nir-text-area'
+                conclusionArea.disabled = true;
+                conclusionArea.value = item.advisorConclusion;
+
+                // Кнопка перенести в меню
+                var copyButton = document.createElement('button');
+                copyButton.className = 'light dark-background size-21 nir-copy-button nir-otchet-copy';
+                copyButton.id = 'nir-otchet-copy-' + i;
+                copyButton.innerText = 'Перенести значения в меню';
+                copyButton.type = 'button';
+                copyButton.style.marginBottom = '10px';
+                copyButton.style.marginTop = '10px';
+                copyButton.style.marginLeft = '500px';
+
+                var rowDiv = document.createElement('div');
+                rowDiv.className = 'info-row';
+                var columnDiv1 = document.createElement('div');
+                columnDiv1.className = 'info-column';
+                var columnDiv2 = document.createElement('div');
+                columnDiv2.className = 'info-column';
+
+                clickableArea.appendChild(versionName);
+                clickableArea.appendChild(versionStatus);
+                nirVersionHeader.appendChild(clickableArea);
 
                 dropdownDiv.appendChild(sendButton);
                 dropdownContent.appendChild(statusOdobreno);
@@ -353,6 +397,16 @@ export default function ScaStuViewPage() {
                 nirVersionHeader.appendChild(downloadButton);
                 nirVersionHeader.appendChild(deleteButton);
                 nirVersion.appendChild(nirVersionHeader);
+
+                columnDiv1.appendChild(detailedLabel);
+                columnDiv1.appendChild(detailedArea);
+                columnDiv2.appendChild(conclusionLabel);
+                columnDiv2.appendChild(conclusionArea);
+                rowDiv.appendChild(columnDiv1);
+                rowDiv.appendChild(columnDiv2);
+                nirVersionContent.appendChild(rowDiv);
+                nirVersionContent.appendChild(copyButton);
+                nirVersion.appendChild(nirVersionContent);
 
                 document.getElementById('student-nir-otchet-version-div').appendChild(nirVersion);
             }
@@ -397,265 +451,296 @@ export default function ScaStuViewPage() {
         //console.log(item);
 
         var student = document.createElement('tr');
-            student.id = 'student' + i;
-            student.className = 'size-20 dark'
+        student.id = 'student' + i;
+        student.className = 'size-20 dark'
 
-            // Имя студента
-            var studentFio = document.createElement('th');
+        // Имя студента
+        var studentFio = document.createElement('th');
 
-            var popover = document.createElement('a');
-            popover.href='#';
-            popover.className = 'student-popover dark size-24';
-            $(popover).attr('data-toggle', 'popover');
-            $(popover).attr('title', 'Данные студента:');
-            $(popover).attr('data-html', 'true');
-            $(popover).attr('data-content', "Имя: " + item.fio + 
-                                            "<br /> Группа: " + item.group + 
-                                            "<br /> Телефон: " + item.phone +
-                                            "<br /> Почта: " + item.email);
-            popover.innerText = item.fio.split(' ')[0] + 
-                                '. ' + 
-                                item.fio.split(' ')[1].charAt(0)  + 
-                                '. ' + 
-                                item.fio.split(' ')[2].charAt(0) + 
-                                '.';
+        var popover = document.createElement('a');
+        popover.href = '#';
+        popover.className = 'student-popover dark size-24';
+        $(popover).attr('data-toggle', 'popover');
+        $(popover).attr('title', 'Данные студента:');
+        $(popover).attr('data-html', 'true');
+        $(popover).attr('data-content', "Имя: " + item.fio +
+            "<br /> Группа: " + item.group +
+            "<br /> Телефон: " + item.phone +
+            "<br /> Почта: " + item.email);
+        popover.innerText = item.fio.split(' ')[0] +
+            '. ' +
+            item.fio.split(' ')[1].charAt(0) +
+            '. ' +
+            item.fio.split(' ')[2].charAt(0) +
+            '.';
 
-            // Проект студента
-            var studentProject = document.createElement('th');
-            studentProject.innerText = item.projectArea + '\n' + item.projectName;
+        // Проект студента
+        var studentProject = document.createElement('th');
+        studentProject.innerText = item.projectArea + '\n' + item.projectName;
 
-            // НИР
-            var studentNir = document.createElement('th');
-            
-            var nirTaskCheckbox = document.createElement('input');
-            nirTaskCheckbox.type = 'checkbox';
-            nirTaskCheckbox.className = 'sci-table-checkbox';
-            nirTaskCheckbox.disabled = true;
-            if (item.studentDocumentsStatusView.nirTaskStatus) {
-                nirTaskCheckbox.checked = true;
+        // НИР
+        var studentNir = document.createElement('th');
+
+        var nirTaskCheckbox = document.createElement('input');
+        nirTaskCheckbox.type = 'checkbox';
+        nirTaskCheckbox.className = 'sci-table-checkbox';
+        nirTaskCheckbox.disabled = true;
+        if (item.studentDocumentsStatusView.nirTaskStatus) {
+            nirTaskCheckbox.checked = true;
+        }
+        var nirTaskStatus = document.createElement('label');
+        nirTaskStatus.htmlFor = nirTaskCheckbox;
+        nirTaskStatus.innerText = 'Задание на НИР';
+
+        var nirTaskDiv = document.createElement('div');
+        nirTaskDiv.style.minWidth = '170px';
+
+        var nirReportCheckbox = document.createElement('input');
+        nirReportCheckbox.type = 'checkbox';
+        nirReportCheckbox.className = 'sci-table-checkbox';
+        nirReportCheckbox.disabled = true;
+        if (item.studentDocumentsStatusView.nirReportStatus) {
+            nirReportCheckbox.checked = true;
+        }
+        var nirReportStatus = document.createElement('label');
+        nirReportStatus.htmlFor = nirReportCheckbox;
+        nirReportStatus.innerText = 'Отчет по НИР';
+
+        var nirReportDiv = document.createElement('div');
+
+        // ППП...
+        var studentLongPP = document.createElement('th');
+
+        var longPPTaskCheckbox = document.createElement('input');
+        longPPTaskCheckbox.type = 'checkbox';
+        longPPTaskCheckbox.className = 'sci-table-checkbox';
+        longPPTaskCheckbox.disabled = true;
+        if (item.studentDocumentsStatusView.ppppuipdTaskStatus) {
+            longPPTaskCheckbox.checked = true;
+        }
+        var longPPTaskStatus = document.createElement('label');
+        longPPTaskStatus.htmlFor = longPPTaskCheckbox;
+        longPPTaskStatus.innerText = 'Задание по ПпППУиОПД';
+
+        var longPPTaskDiv = document.createElement('div');
+
+        var longPPReportCheckbox = document.createElement('input');
+        longPPReportCheckbox.type = 'checkbox';
+        longPPReportCheckbox.className = 'sci-table-checkbox';
+        longPPReportCheckbox.disabled = true;
+        if (item.studentDocumentsStatusView.longPPReportStatus) {
+            longPPReportCheckbox.checked = true;
+        }
+        var longPPReportStatus = document.createElement('label');
+        longPPReportStatus.htmlFor = longPPReportCheckbox;
+        longPPReportStatus.innerText = 'Отчет по ПпППУиОПД';
+
+        var longPPReportDiv = document.createElement('div');
+
+        // ПП
+        var studentPP = document.createElement('th');
+
+        var ppTaskCheckbox = document.createElement('input');
+        ppTaskCheckbox.type = 'checkbox';
+        ppTaskCheckbox.className = 'sci-table-checkbox';
+        ppTaskCheckbox.disabled = true;
+        if (item.studentDocumentsStatusView.ppppuipdTaskStatus) {
+            ppTaskCheckbox.checked = true;
+        }
+        var ppTaskStatus = document.createElement('label');
+        ppTaskStatus.htmlFor = ppTaskCheckbox;
+        ppTaskStatus.innerText = 'Задание по ПП';
+
+        var ppTaskDiv = document.createElement('div');
+
+        var ppReportCheckbox = document.createElement('input');
+        ppReportCheckbox.type = 'checkbox';
+        ppReportCheckbox.className = 'sci-table-checkbox';
+        ppReportCheckbox.disabled = true;
+        if (item.studentDocumentsStatusView.ppReportStatus) {
+            ppReportCheckbox.checked = true;
+        }
+        var ppReportStatus = document.createElement('label');
+        ppReportStatus.htmlFor = ppReportCheckbox;
+        ppReportStatus.innerText = 'Отчет по ПП:';
+
+        var ppReportDiv = document.createElement('div');
+
+        // ВКР
+        var studentVkr = document.createElement('th');
+
+        var vkrAdvisorFeedbackCheckbox = document.createElement('input');
+        vkrAdvisorFeedbackCheckbox.type = 'checkbox';
+        vkrAdvisorFeedbackCheckbox.className = 'sci-table-checkbox';
+        vkrAdvisorFeedbackCheckbox.disabled = true;
+        if (item.studentDocumentsStatusView.vkrAdvisorFeedback) {
+            vkrAdvisorFeedbackCheckbox.checked = true;
+        }
+        var vkrAdvisorFeedbackStatus = document.createElement('label');
+        vkrAdvisorFeedbackStatus.htmlFor = vkrAdvisorFeedbackCheckbox;
+        vkrAdvisorFeedbackStatus.innerText = 'Отзыв руководителя:';
+
+        var vkrAdvisorFeedbackDiv = document.createElement('div');
+        vkrAdvisorFeedbackDiv.style.minWidth = '220px';
+
+        var vkrAllowanceCheckbox = document.createElement('input');
+        vkrAllowanceCheckbox.type = 'checkbox';
+        vkrAllowanceCheckbox.className = 'sci-table-checkbox';
+        vkrAllowanceCheckbox.disabled = true;
+        if (item.studentDocumentsStatusView.vkrAllowance) {
+            vkrAllowanceCheckbox.checked = true;
+        }
+        var vkrAllowanceStatus = document.createElement('label');
+        vkrAllowanceStatus.htmlFor = vkrAllowanceCheckbox;
+        vkrAllowanceStatus.innerText = 'Допуск к ВКР:';
+
+        var vkrAllowanceStatusDiv = document.createElement('div');
+
+        var vkrTaskCheckbox = document.createElement('input');
+        vkrTaskCheckbox.type = 'checkbox';
+        vkrTaskCheckbox.className = 'sci-table-checkbox';
+        vkrTaskCheckbox.disabled = true;
+        if (item.studentDocumentsStatusView.vkrTask) {
+            vkrTaskCheckbox.checked = true;
+        }
+        var vkrTaskStatus = document.createElement('label');
+        vkrTaskStatus.htmlFor = vkrTaskCheckbox;
+        vkrTaskStatus.innerText = 'Задание ВКР:';
+
+        var vkrTaskDiv = document.createElement('div');
+
+        var vkrRPZCheckbox = document.createElement('input');
+        vkrRPZCheckbox.type = 'checkbox';
+        vkrRPZCheckbox.className = 'sci-table-checkbox';
+        vkrRPZCheckbox.disabled = true;
+        if (item.studentDocumentsStatusView.vkrRPZ) {
+            vkrRPZCheckbox.checked = true;
+        }
+        var vkrRPZStatus = document.createElement('label');
+        vkrRPZStatus.htmlFor = vkrRPZCheckbox;
+        vkrRPZStatus.innerText = 'РПЗ:';
+
+        var vkrRPZDiv = document.createElement('div');
+
+        var vkrAntiplagiatCheckbox = document.createElement('input');
+        vkrAntiplagiatCheckbox.type = 'checkbox';
+        vkrAntiplagiatCheckbox.className = 'sci-table-checkbox';
+        vkrAntiplagiatCheckbox.disabled = true;
+        if (item.studentDocumentsStatusView.vkrAntiplagiat) {
+            vkrAntiplagiatCheckbox.checked = true;
+        }
+        var vkrAntiplagiatStatus = document.createElement('label');
+        vkrAntiplagiatStatus.htmlFor = vkrAntiplagiatCheckbox;
+        vkrAntiplagiatStatus.innerText = 'Антиплагиат:';
+
+        var vkrAntiplagiatDiv = document.createElement('div');
+
+        var vkrPresentationCheckbox = document.createElement('input');
+        vkrPresentationCheckbox.type = 'checkbox';
+        vkrPresentationCheckbox.className = 'sci-table-checkbox';
+        vkrPresentationCheckbox.disabled = true;
+        if (item.studentDocumentsStatusView.vkrPresentation) {
+            vkrPresentationCheckbox.checked = true;
+        }
+        var vkrPresentationStatus = document.createElement('label');
+        vkrPresentationStatus.htmlFor = vkrPresentationCheckbox;
+        vkrPresentationStatus.innerText = 'Презентация:';
+
+        var vkrPresentationDiv = document.createElement('div');
+
+        studentFio.appendChild(popover);
+        student.appendChild(studentFio);
+
+        student.appendChild(studentProject);
+
+        nirTaskDiv.appendChild(nirTaskStatus);
+        nirTaskDiv.appendChild(nirTaskCheckbox);
+        studentNir.appendChild(nirTaskDiv);
+
+        nirReportDiv.appendChild(nirReportStatus);
+        nirReportDiv.appendChild(nirReportCheckbox);
+        studentNir.appendChild(nirReportDiv);
+
+        student.appendChild(studentNir);
+
+        longPPTaskDiv.appendChild(longPPTaskStatus);
+        longPPTaskDiv.appendChild(longPPTaskCheckbox);
+        studentLongPP.appendChild(longPPTaskDiv);
+
+        longPPReportDiv.appendChild(longPPReportStatus);
+        longPPReportDiv.appendChild(longPPReportCheckbox);
+        studentLongPP.appendChild(longPPReportDiv);
+
+        student.appendChild(studentLongPP);
+
+        ppTaskDiv.appendChild(ppTaskStatus);
+        ppTaskDiv.appendChild(ppTaskCheckbox);
+        studentPP.appendChild(ppTaskDiv);
+
+        ppReportDiv.appendChild(ppReportStatus);
+        ppReportDiv.appendChild(ppReportCheckbox);
+        studentPP.appendChild(ppReportDiv);
+
+        student.appendChild(studentPP);
+
+        vkrAdvisorFeedbackDiv.appendChild(vkrAdvisorFeedbackStatus);
+        vkrAdvisorFeedbackDiv.appendChild(vkrAdvisorFeedbackCheckbox);
+        studentVkr.appendChild(vkrAdvisorFeedbackDiv);
+
+        vkrAllowanceStatusDiv.appendChild(vkrAllowanceStatus);
+        vkrAllowanceStatusDiv.appendChild(vkrAllowanceCheckbox);
+        studentVkr.appendChild(vkrAllowanceStatusDiv);
+
+        vkrTaskDiv.appendChild(vkrTaskStatus);
+        vkrTaskDiv.appendChild(vkrTaskCheckbox);
+        studentVkr.appendChild(vkrTaskDiv);
+
+        vkrRPZDiv.appendChild(vkrRPZStatus);
+        vkrRPZDiv.appendChild(vkrRPZCheckbox);
+        studentVkr.appendChild(vkrRPZDiv);
+
+        vkrAntiplagiatDiv.appendChild(vkrAntiplagiatStatus);
+        vkrAntiplagiatDiv.appendChild(vkrAntiplagiatCheckbox);
+        studentVkr.appendChild(vkrAntiplagiatDiv);
+
+        vkrPresentationDiv.appendChild(vkrPresentationStatus);
+        vkrPresentationDiv.appendChild(vkrPresentationCheckbox);
+        studentVkr.appendChild(vkrPresentationDiv);
+
+        student.appendChild(studentVkr);
+
+        document.getElementById('student-table-body').appendChild(student);
+    }
+
+    function makeNirOtchet(file) {
+        var formData = new FormData();
+        formData.append('documentFormType', 'Научно-исследовательская работа');
+        formData.append('documentFormKind', 'Отчёт');
+        formData.append('documentFormDescription', 'Пример отчёта');
+        formData.append('documentFormViewRights', 'Я и мой научный руководитель');
+        formData.append('detailedContent', detailedDescription);
+        formData.append('advisorConclusion', conclusion);
+        formData.append('file', file);
+        formData.append('studentID', sessionStorage.getItem('viewedStudentId'));
+        axios({
+            url: apiURL + '/scientific_advisor/document/report/upload/version',
+            method: 'POST',
+            data: formData,
+            headers: {
+                'Content-Type': 'multipart/form-data',
+                'Authorization': 'Bearer ' + authTokens.accessToken
+            },
+        }).then((response) => {
+            if (response.data === 'Вы не можете загрузить версию отчёта студента пока он его не загрузит') {
+                console.log(response);
             }
-            var nirTaskStatus = document.createElement('label');
-            nirTaskStatus.htmlFor = nirTaskCheckbox;
-            nirTaskStatus.innerText = 'Задание на НИР';
-
-            var nirTaskDiv = document.createElement('div');
-            nirTaskDiv.style.minWidth = '170px';
-
-            var nirReportCheckbox = document.createElement('input');
-            nirReportCheckbox.type = 'checkbox';
-            nirReportCheckbox.className = 'sci-table-checkbox';
-            nirReportCheckbox.disabled = true;
-            if (item.studentDocumentsStatusView.nirReportStatus) {
-                nirReportCheckbox.checked = true;
+            else {
+                console.log(response);
+                window.location.reload();
             }
-            var nirReportStatus = document.createElement('label');
-            nirReportStatus.htmlFor = nirReportCheckbox;
-            nirReportStatus.innerText = 'Отчет по НИР';
-
-            var nirReportDiv = document.createElement('div');
-
-            // ППП...
-            var studentLongPP = document.createElement('th');
-
-            var longPPTaskCheckbox = document.createElement('input');
-            longPPTaskCheckbox.type = 'checkbox';
-            longPPTaskCheckbox.className = 'sci-table-checkbox';
-            longPPTaskCheckbox.disabled = true;
-            if (item.studentDocumentsStatusView.ppppuipdTaskStatus) {
-                longPPTaskCheckbox.checked = true;
-            }
-            var longPPTaskStatus = document.createElement('label');
-            longPPTaskStatus.htmlFor = longPPTaskCheckbox;
-            longPPTaskStatus.innerText = 'Задание по ПпППУиОПД';
-
-            var longPPTaskDiv = document.createElement('div');
-
-            var longPPReportCheckbox = document.createElement('input');
-            longPPReportCheckbox.type = 'checkbox';
-            longPPReportCheckbox.className = 'sci-table-checkbox';
-            longPPReportCheckbox.disabled = true;
-            if (item.studentDocumentsStatusView.longPPReportStatus) {
-                longPPReportCheckbox.checked = true;
-            }
-            var longPPReportStatus = document.createElement('label');
-            longPPReportStatus.htmlFor = longPPReportCheckbox;
-            longPPReportStatus.innerText = 'Отчет по ПпППУиОПД';
-
-            var longPPReportDiv = document.createElement('div');
-
-            // ПП
-            var studentPP = document.createElement('th');
-
-            var ppTaskCheckbox = document.createElement('input');
-            ppTaskCheckbox.type = 'checkbox';
-            ppTaskCheckbox.className = 'sci-table-checkbox';
-            ppTaskCheckbox.disabled = true;
-            if (item.studentDocumentsStatusView.ppppuipdTaskStatus) {
-                ppTaskCheckbox.checked = true;
-            }
-            var ppTaskStatus = document.createElement('label');
-            ppTaskStatus.htmlFor = ppTaskCheckbox;
-            ppTaskStatus.innerText = 'Задание по ПП';
-
-            var ppTaskDiv = document.createElement('div');
-
-            var ppReportCheckbox = document.createElement('input');
-            ppReportCheckbox.type = 'checkbox';
-            ppReportCheckbox.className = 'sci-table-checkbox';
-            ppReportCheckbox.disabled = true;
-            if (item.studentDocumentsStatusView.ppReportStatus) {
-                ppReportCheckbox.checked = true;
-            }
-            var ppReportStatus = document.createElement('label');
-            ppReportStatus.htmlFor = ppReportCheckbox;
-            ppReportStatus.innerText = 'Отчет по ПП:';
-            
-            var ppReportDiv = document.createElement('div');
-
-            // ВКР
-            var studentVkr = document.createElement('th');
-
-            var vkrAdvisorFeedbackCheckbox = document.createElement('input');
-            vkrAdvisorFeedbackCheckbox.type = 'checkbox';
-            vkrAdvisorFeedbackCheckbox.className = 'sci-table-checkbox';
-            vkrAdvisorFeedbackCheckbox.disabled = true;
-            if (item.studentDocumentsStatusView.vkrAdvisorFeedback) {
-                vkrAdvisorFeedbackCheckbox.checked = true;
-            }
-            var vkrAdvisorFeedbackStatus = document.createElement('label');
-            vkrAdvisorFeedbackStatus.htmlFor = vkrAdvisorFeedbackCheckbox;
-            vkrAdvisorFeedbackStatus.innerText = 'Отзыв руководителя:';
-
-            var vkrAdvisorFeedbackDiv = document.createElement('div');
-            vkrAdvisorFeedbackDiv.style.minWidth = '220px';
-
-            var vkrAllowanceCheckbox = document.createElement('input');
-            vkrAllowanceCheckbox.type = 'checkbox';
-            vkrAllowanceCheckbox.className = 'sci-table-checkbox';
-            vkrAllowanceCheckbox.disabled = true;
-            if (item.studentDocumentsStatusView.vkrAllowance) {
-                vkrAllowanceCheckbox.checked = true;
-            }
-            var vkrAllowanceStatus = document.createElement('label');
-            vkrAllowanceStatus.htmlFor = vkrAllowanceCheckbox;
-            vkrAllowanceStatus.innerText = 'Допуск к ВКР:';
-
-            var vkrAllowanceStatusDiv = document.createElement('div');
-
-            var vkrTaskCheckbox = document.createElement('input');
-            vkrTaskCheckbox.type = 'checkbox';
-            vkrTaskCheckbox.className = 'sci-table-checkbox';
-            vkrTaskCheckbox.disabled = true;
-            if (item.studentDocumentsStatusView.vkrTask) {
-                vkrTaskCheckbox.checked = true;
-            }
-            var vkrTaskStatus = document.createElement('label');
-            vkrTaskStatus.htmlFor = vkrTaskCheckbox;
-            vkrTaskStatus.innerText = 'Задание ВКР:';
-
-            var vkrTaskDiv = document.createElement('div');
-
-            var vkrRPZCheckbox = document.createElement('input');
-            vkrRPZCheckbox.type = 'checkbox';
-            vkrRPZCheckbox.className = 'sci-table-checkbox';
-            vkrRPZCheckbox.disabled = true;
-            if (item.studentDocumentsStatusView.vkrRPZ) {
-                vkrRPZCheckbox.checked = true;
-            }
-            var vkrRPZStatus = document.createElement('label');
-            vkrRPZStatus.htmlFor = vkrRPZCheckbox;
-            vkrRPZStatus.innerText = 'РПЗ:';
-
-            var vkrRPZDiv = document.createElement('div');
-
-            var vkrAntiplagiatCheckbox = document.createElement('input');
-            vkrAntiplagiatCheckbox.type = 'checkbox';
-            vkrAntiplagiatCheckbox.className = 'sci-table-checkbox';
-            vkrAntiplagiatCheckbox.disabled = true;
-            if (item.studentDocumentsStatusView.vkrAntiplagiat) {
-                vkrAntiplagiatCheckbox.checked = true;
-            }
-            var vkrAntiplagiatStatus = document.createElement('label');
-            vkrAntiplagiatStatus.htmlFor = vkrAntiplagiatCheckbox;
-            vkrAntiplagiatStatus.innerText = 'Антиплагиат:';
-
-            var vkrAntiplagiatDiv = document.createElement('div');
-
-            var vkrPresentationCheckbox = document.createElement('input');
-            vkrPresentationCheckbox.type = 'checkbox';
-            vkrPresentationCheckbox.className = 'sci-table-checkbox';
-            vkrPresentationCheckbox.disabled = true;
-            if (item.studentDocumentsStatusView.vkrPresentation) {
-                vkrPresentationCheckbox.checked = true;
-            }
-            var vkrPresentationStatus = document.createElement('label');
-            vkrPresentationStatus.htmlFor = vkrPresentationCheckbox;
-            vkrPresentationStatus.innerText = 'Презентация:';
-
-            var vkrPresentationDiv = document.createElement('div');
-
-            studentFio.appendChild(popover);
-            student.appendChild(studentFio);
-
-            student.appendChild(studentProject);
-
-            nirTaskDiv.appendChild(nirTaskStatus);
-            nirTaskDiv.appendChild(nirTaskCheckbox);
-            studentNir.appendChild(nirTaskDiv);
-
-            nirReportDiv.appendChild(nirReportStatus);
-            nirReportDiv.appendChild(nirReportCheckbox);
-            studentNir.appendChild(nirReportDiv);
-
-            student.appendChild(studentNir);
-
-            longPPTaskDiv.appendChild(longPPTaskStatus);
-            longPPTaskDiv.appendChild(longPPTaskCheckbox);
-            studentLongPP.appendChild(longPPTaskDiv);
-
-            longPPReportDiv.appendChild(longPPReportStatus);
-            longPPReportDiv.appendChild(longPPReportCheckbox);
-            studentLongPP.appendChild(longPPReportDiv);
-
-            student.appendChild(studentLongPP);
-
-            ppTaskDiv.appendChild(ppTaskStatus);
-            ppTaskDiv.appendChild(ppTaskCheckbox);
-            studentPP.appendChild(ppTaskDiv);
-
-            ppReportDiv.appendChild(ppReportStatus);
-            ppReportDiv.appendChild(ppReportCheckbox);
-            studentPP.appendChild(ppReportDiv);
-
-            student.appendChild(studentPP);
-
-            vkrAdvisorFeedbackDiv.appendChild(vkrAdvisorFeedbackStatus);
-            vkrAdvisorFeedbackDiv.appendChild(vkrAdvisorFeedbackCheckbox);
-            studentVkr.appendChild(vkrAdvisorFeedbackDiv);
-
-            vkrAllowanceStatusDiv.appendChild(vkrAllowanceStatus);
-            vkrAllowanceStatusDiv.appendChild(vkrAllowanceCheckbox);
-            studentVkr.appendChild(vkrAllowanceStatusDiv);
-
-            vkrTaskDiv.appendChild(vkrTaskStatus);
-            vkrTaskDiv.appendChild(vkrTaskCheckbox);
-            studentVkr.appendChild(vkrTaskDiv);
-
-            vkrRPZDiv.appendChild(vkrRPZStatus);
-            vkrRPZDiv.appendChild(vkrRPZCheckbox);
-            studentVkr.appendChild(vkrRPZDiv);
-
-            vkrAntiplagiatDiv.appendChild(vkrAntiplagiatStatus);
-            vkrAntiplagiatDiv.appendChild(vkrAntiplagiatCheckbox);
-            studentVkr.appendChild(vkrAntiplagiatDiv);
-
-            vkrPresentationDiv.appendChild(vkrPresentationStatus);
-            vkrPresentationDiv.appendChild(vkrPresentationCheckbox);
-            studentVkr.appendChild(vkrPresentationDiv);
-
-            student.appendChild(studentVkr);
-
-            document.getElementById('student-table-body').appendChild(student);
+        }).catch(result => {
+            console.log(result);
+        });
     }
 
     $(function () {
@@ -728,17 +813,24 @@ export default function ScaStuViewPage() {
             });
         });
 
-        // Функция кнопки "перенести в меню"
-        $('.nir-copy-button').off().on('click', function (event) {
+        // Функция кнопки "перенести в меню" для задания НИР
+        $('.nir-copy').off().on('click', function (event) {
             var versionId = $(this).parent().parent().parent().parent().attr('id');
             var arrayID = versionId.split('-')[2];
 
-            //console.log(nirVersions);
             setStudentTheme(nirVersions[arrayID].theme);
             setToExplore(nirVersions[arrayID].toExplore);
             setToCreate(nirVersions[arrayID].toCreate);
             setToFamiliarize(nirVersions[arrayID].toFamiliarize);
             setAdditionalTask(nirVersions[arrayID].additionalTask);
+        });
+
+        // Функция кнопки "перенести в меню" для отчета НИР
+        $('.nir-otchet-copy').off().on('click', function (event) {
+            var id = $(this).attr('id').split('-')[3];
+
+            setDetailedDescription(nirOtchetVersions[id].detailedContent);
+            setConclusion(nirOtchetVersions[id].advisorConclusion);
         });
 
         // TODO empty upload catch
@@ -797,49 +889,7 @@ export default function ScaStuViewPage() {
         // TODO empty upload catch
         // Создание науч руком версии отчета НИР
         $('#make-nir-otchet-button').off().on('click', function (event) {
-            var taskApproval = checkTaskApproval();
-            if (taskApproval) {
-                setNirTaskApproval(true);
-                if (fileNirOtchet != null) {
-                    document.getElementById('errorNirMessage').style.visibility = 'hidden';
-                    var formData = new FormData();
-                    formData.append('documentFormType', 'Научно-исследовательская работа');
-                    formData.append('documentFormKind', 'Отчёт');
-                    formData.append('documentFormDescription', 'Пример отчёта');
-                    formData.append('documentFormViewRights', 'Я и мой научный руководитель');
-                    formData.append('file', fileNirOtchet);
-                    formData.append('studentID', sessionStorage.getItem('viewedStudentId'));
-                    axios({
-                        url: apiURL + '/scientific_advisor/document/report/upload/version',
-                        method: 'POST',
-                        data: formData,
-                        headers: {
-                            'Content-Type': 'multipart/form-data',
-                            'Authorization': 'Bearer ' + authTokens.accessToken
-                        },
-                    }).then((response) => {
-                        if (response.data === 'Вы не можете загрузить версию отчёта студента пока он его не загрузит') {
-                            console.log(response);
-                        }
-                        else {
-                            document.getElementById('errorNirMessage').style.visibility = 'visible';
-                            document.getElementById('errorNirMessage').innerHTML = 'Отчет загружен!';
-                            window.location.reload();
-                        }
-                    }).catch(result => {
-                        document.getElementById('errorNirMessage').style.visibility = 'visible';
-                        document.getElementById('errorNirMessage').innerHTML = 'При загрузке произошла ошибка!';
-                    });
-                }
-                else {
-                    document.getElementById('errorNirMessage').innerHTML = 'Не выбран файл!';
-                    document.getElementById('errorNirMessage').style.visibility = 'visible';
-                }
-            }
-            else {
-                setNirTaskApproval(false);
-                document.getElementById('errorNirMessage').style.visibility = 'hidden';
-            }
+            $('#nir-otchet-file-input').trigger('click');
         });
 
         // Удаление версии отчёта
@@ -937,7 +987,7 @@ export default function ScaStuViewPage() {
                     }
                 }}>
                     <Tab eventKey='info1' title={<p id='header-1' className='light-background light size-30 sca-tab-header sca-tab-header-active' style={{ lineHeight: '45px' }}>Научно-исследовательская работа</p>} className='info-form-tabs'>
-                        
+
                         <Tabs defaultActiveKey='none' onSelect={() => { setTimeout(function () { window.scrollTo(0, 2000); }, 1); }} className='info-form-subtab light-background container-fluid'>
                             <Tab eventKey='info11' title={
                                 <p className='size-30 light dark-background info-form-subtab-title'>
@@ -994,37 +1044,44 @@ export default function ScaStuViewPage() {
                                 <div id='student-nir-otchet-version-div' className='student-nir-task-version-div light-background'></div>
 
                                 <div className='info-sub-tab-div'>
-                                    <div className='centered'>
-                                        <input type="file" name="file" id="fileNir" accept='.docx' className="info-input-file-hidden"
-                                            onChange={e => {
-                                                if (e.target.files.length !== 0) {
-                                                    if (e.target.files[0].type === 'application/vnd.openxmlformats-officedocument.wordprocessingml.document') {
-                                                        fileNirOtchet = e.target.files[0];
-                                                        document.getElementById('fileNirName').innerHTML = 'Файл выбран';
-                                                        document.getElementById('make-nir-otchet-button').disabled = false;
-                                                    }
-                                                    else {
-                                                        fileNirOtchet = null;
-                                                        document.getElementById('fileNirName').innerHTML = 'Ошибка загрузки файла!';
-                                                        document.getElementById('make-nir-otchet-button').disabled = true;
-                                                    }
+                                    <div className='info-row'>
+                                        <div className='info-column'>
+                                            <Form.Label column className="size-21 dark info-input-label">Детальное содержание:</Form.Label>
+                                            <textarea id='nir-otchet-description' maxLength='1024' value={detailedDescription} onChange={(e) => {
+                                                setDetailedDescription(e.target.value);
+                                                if ($('#nir-otchet-description').val() === '' || $('#nir-otchet-conclusion').val() === '') {
+                                                    document.getElementById('make-nir-otchet-button').disabled = true;
                                                 }
-                                            }}
-                                        />
-                                        <label htmlFor="fileNir" className='size-30 dark-background light info-file-label1'>
-                                            <Image src={iconInfo} thumbnail className='dark-background thumbnail-icon' />
-                                            <p id='fileNirName' style={{ display: 'inline-block' }}>Выбрать файл с содержанием отчета</p>
-                                        </label>
-                                        <button type='button' id='make-nir-otchet-button' disabled className='size-30 light dark-background info-button-inline-block'>
-                                            <Image src={iconProject} thumbnail className='dark-background thumbnail-icon' />
-                                            Сформировать и загрузить версию отчета
-                                        </button>
-                                        <p id='errorNirMessage' className='size-24 dark' style={{ visibility: 'hidden' }}>errorNir</p>
+                                                else {
+                                                    document.getElementById('make-nir-otchet-button').disabled = false;
+                                                }
+                                            }} className='dark size-24 info-input-area' />
+                                        </div>
+
+                                        <div className='info-column'>
+                                            <Form.Label column className="size-21 dark info-input-label">Заключение научного руководителя:</Form.Label>
+                                            <textarea id='nir-otchet-conclusion' maxLength='2048' value={conclusion} onChange={(e) => {
+                                                setConclusion(e.target.value);
+                                                if ($('#nir-otchet-description').val() === '' || $('#nir-otchet-conclusion').val() === '') {
+                                                    document.getElementById('make-nir-otchet-button').disabled = true;
+                                                }
+                                                else {
+                                                    document.getElementById('make-nir-otchet-button').disabled = false;
+                                                }
+                                            }} className='dark size-24 info-input-area' />
+                                        </div>
                                     </div>
 
-                                    <div>
-                                        {!nirTaskApproval ? (<p className='dark size-24 nir-approval-message'>Нет одобренного задания!</p>) : null}
-                                    </div>
+                                    <button type='button' disabled id='make-nir-otchet-button' className='size-30 light dark-background info-button-inline-block' style={{ marginLeft: '425px', marginTop: '20px' }}>
+                                        <Image src={iconProject} thumbnail className='dark-background thumbnail-icon' />
+                                        Сформировать и загрузить версию отчета
+                                </button>
+                                    <input id='nir-otchet-file-input' type='file' style={{ display: 'none' }} onChange={(e) => {
+                                        console.log(e.target.files);
+                                        if (e.target.files.length !== 0) {
+                                            makeNirOtchet(e.target.files[0]);
+                                        }
+                                    }} ></input>
 
                                 </div>
                             </Tab>
