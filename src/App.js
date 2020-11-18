@@ -73,7 +73,6 @@ export default function App() {
           <AuthRoute exact path='/stu/info' component={StudentInfoPage} />
           <AuthRoute exact path='/stu/tasks' component={StudentTasksPage} />
           <AuthRoute exact path='/stu/orders' component={OrdersPage} />
-          <AuthRoute exact path='/stu/templates' component={TemplatesPage} />
           <AuthRoute exact path='/stu/examples' component={StudentExamplesPage} />
 
           <AuthRoute exact path='/sca/students' component={SciAdvisorStudentsPage} />

@@ -17,24 +17,43 @@ export default function ScaStuViewPage() {
     const [studentData, setStudentData] = useState([]);
 
     // Задание на НИР
+    const [nirVersions, setNirVersions] = useState([]);
     const [studentTheme, setStudentTheme] = useState('');
     const [toExplore, setToExplore] = useState('');
     const [toCreate, setToCreate] = useState('');
     const [toFamiliarize, setToFamiliarize] = useState('');
     const [additionalTask, setAdditionalTask] = useState('');
 
-    // Загруженное содержание НИР
-    const [nirVersions, setNirVersions] = useState([]);
-    const [nirOtchetVersions, setNirOtchetVersions] = useState([]);
-
     // Отчет по НИР
+    const [nirOtchetVersions, setNirOtchetVersions] = useState([]);
     const [detailedDescription, setDetailedDescription] = useState('');
     const [conclusion, setConclusion] = useState('');
 
+    // Версии заданий по ПП...
+    const [longPPData, setLongPPData] = useState([]);
+
+    // Отчет по ПП...
+    const [longPPOtchetVersions, setLongPPOtchetVersions] = useState([]);
+    const [detailedDescriptionLongPP, setDetailedDescriptionLongPP] = useState('');
+    const [conclusionLongPP, setConclusionLongPP] = useState('');
+
+    // Версии заданий по ПП
+    const [PPData, setPPData] = useState([]);
+
+    // Отчет по ПП
+    const [PPOtchetVersions, setPPOtchetVersions] = useState([]);
+    const [detailedDescriptionPP, setDetailedDescriptionPP] = useState('');
+    const [conclusionPP, setConclusionPP] = useState('');
+
     if (!fetchedData) {
         setFetchedData(true);
-        getStudentNirVersions();
-        getNirOtchetVersions();
+        getStudentTaskVersions('Научно-исследовательская работа');
+        getOtchetVersions('Научно-исследовательская работа');
+        getStudentTaskVersions('Практика по получению знаний и умений');
+        getOtchetVersions('Практика по получению знаний и умений');
+        getStudentTaskVersions('Преддипломная практика');
+        getOtchetVersions('Преддипломная практика');
+
         setStudentData(JSON.parse(sessionStorage.getItem('student')));
     }
 
@@ -47,392 +66,12 @@ export default function ScaStuViewPage() {
     }, [nirOtchetVersions]);
 
     useEffect(() => {
+        showStudentLongPPVersions(longPPData);
+    }, [longPPData]);
+
+    useEffect(() => {
         showStudent(studentData, 0);
     }, [studentData]);
-
-    // Получение заданий НИР для студента
-    function getStudentNirVersions() {
-        axios({
-            url: apiURL + '/scientific_advisor/document/task/view',
-            method: 'GET',
-            params: {
-                'taskType': 'Научно-исследовательская работа',
-                'studentID': sessionStorage.getItem('viewedStudentId'),
-            },
-            headers: {
-                'Authorization': 'Bearer ' + authTokens.accessToken
-            },
-        }).then((response) => {
-            //console.log(response);
-            setNirVersions(response.data);
-
-        }).catch(result => {
-            console.log(result.data);
-        });
-    }
-
-    function showStudentNirVersions(nirVersionArray) {
-        if (nirVersionArray.length > 0) {
-            for (var i = 0; i < nirVersionArray.length; i++) {
-                var item = nirVersionArray[i];
-
-                var nirVersion = document.createElement('div');
-                nirVersion.className = 'nir-version light-background';
-                nirVersion.id = 'nir-version-' + i;
-
-                var nirVersionHeader = document.createElement('div');
-                nirVersionHeader.className = 'nir-version-header dark-background';
-
-                // Имя версии
-                var versionName = document.createElement('p');
-                versionName.className = 'light size-24 nir-header-text';
-                versionName.innerText = 'Версия: ' + item.versionEditionDate;
-
-                // Статус версии
-                var versionStatus = document.createElement('p');
-                versionStatus.className = 'light size-24 nir-header-text';
-                versionStatus.innerText = 'Статус: ' + item.status;
-
-                // Кнопка отправить студенту
-                var sendButton = document.createElement('button');
-                sendButton.className = 'dark size-24 nir-version-header-button nir-version-send-button';
-                sendButton.innerText = 'Отправить студенту:';
-                sendButton.type = 'button';
-                // Запретить отсылку, если версия отправлена
-                if (item.status === 'Одобрено' || item.status === 'Замечания') {
-                    sendButton.disabled = true;
-                }
-
-                var dropdownDiv = document.createElement('div');
-                dropdownDiv.className = 'sci-advisor-status-dropdown-div';
-
-                var dropdownContent = document.createElement('div');
-                dropdownContent.className = 'sci-advisor-status-dropdown-content';
-
-                var statusOdobreno = document.createElement('p');
-                statusOdobreno.className = 'dark size-18 nir-status-odobreno';
-                statusOdobreno.innerText = 'Одобрено';
-
-                var statusZamechaniya = document.createElement('p');
-                statusZamechaniya.className = 'dark size-18 nir-status-zamechaniya';
-                statusZamechaniya.innerText = 'Замечания';
-
-                // Кнопка скачать документ
-                var downloadButton = document.createElement('button');
-                downloadButton.className = 'dark size-24 nir-version-header-button nir-version-download-button';
-                downloadButton.innerText = 'Сохранить документ';
-                downloadButton.type = 'button';
-
-                // Кнопка удалить
-                var deleteButton = document.createElement('button');
-                deleteButton.className = 'dark size-24 nir-version-header-button nir-version-delete-button';
-                deleteButton.innerText = 'Удалить версию';
-                deleteButton.type = 'button';
-                // Запретить удаление, если версия отправлена
-                if (item.status !== 'Не отправлено' && item.status !== 'Замечания') {
-                    deleteButton.disabled = true;
-                }
-
-                var clickableArea = document.createElement('div');
-                clickableArea.className = 'nir-version-clickable';
-
-                var nirVersionContent = document.createElement('div');
-                nirVersionContent.className = 'nir-version-content light-background';
-
-                var themeLabel = document.createElement('p');
-                themeLabel.className = 'dark size-21 nir-text-label';
-                themeLabel.innerText = 'Тема НИР:';
-
-                // Тема нир
-                var themeArea = document.createElement('textarea');
-                themeArea.className = 'dark size-18 nir-text-area'
-                themeArea.disabled = true;
-                themeArea.value = item.theme;
-
-                var exploreLabel = document.createElement('p');
-                exploreLabel.className = 'dark size-21 nir-text-label';
-                exploreLabel.innerText = 'Изучить:';
-
-                // Изучить
-                var exploreArea = document.createElement('textarea');
-                exploreArea.className = 'dark size-18 nir-text-area'
-                exploreArea.disabled = true;
-                exploreArea.value = item.toExplore;
-
-                var createLabel = document.createElement('p');
-                createLabel.className = 'dark size-21 nir-text-label';
-                createLabel.innerText = 'Выполнить:';
-
-                // Выполнить
-                var createArea = document.createElement('textarea');
-                createArea.className = 'dark size-18 nir-text-area'
-                createArea.disabled = true;
-                createArea.value = item.toCreate;
-
-                var familiarizeLabel = document.createElement('p');
-                familiarizeLabel.className = 'dark size-21 nir-text-label2';
-                familiarizeLabel.innerText = 'Ознакомиться:';
-
-                // Ознакомиться
-                var familiarizeArea = document.createElement('textarea');
-                familiarizeArea.className = 'dark size-18 nir-text-area2'
-                familiarizeArea.disabled = true;
-                familiarizeArea.value = item.toFamiliarize;
-
-                var taskLabel = document.createElement('p');
-                taskLabel.className = 'dark size-21 nir-text-label2';
-                taskLabel.innerText = 'Дополнительное задание:';
-
-                // Доп задание
-                var taskArea = document.createElement('textarea');
-                taskArea.className = 'dark size-18 nir-text-area2'
-                taskArea.disabled = true;
-                taskArea.value = item.additionalTask;
-
-                var copyButton = document.createElement('button');
-                copyButton.className = 'light dark-background size-21 nir-copy-button nir-copy';
-                copyButton.innerText = 'Перенести значения в меню';
-                copyButton.type = 'button';
-
-                var rowDiv = document.createElement('div');
-                rowDiv.className = 'info-row';
-                var columnDiv1 = document.createElement('div');
-                columnDiv1.className = 'info-column';
-                var columnDiv2 = document.createElement('div');
-                columnDiv2.className = 'info-column';
-
-                clickableArea.appendChild(versionName);
-                clickableArea.appendChild(versionStatus);
-                nirVersionHeader.appendChild(clickableArea);
-
-                dropdownDiv.appendChild(sendButton);
-                dropdownContent.appendChild(statusOdobreno);
-                dropdownContent.appendChild(statusZamechaniya);
-                dropdownDiv.appendChild(dropdownContent);
-                nirVersionHeader.appendChild(dropdownDiv);
-
-                nirVersionHeader.appendChild(downloadButton);
-                nirVersionHeader.appendChild(deleteButton);
-                nirVersion.appendChild(nirVersionHeader);
-                columnDiv1.appendChild(themeLabel);
-                columnDiv1.appendChild(themeArea);
-                columnDiv1.appendChild(exploreLabel);
-                columnDiv1.appendChild(exploreArea);
-                columnDiv1.appendChild(createLabel);
-                columnDiv1.appendChild(createArea);
-                columnDiv2.appendChild(familiarizeLabel);
-                columnDiv2.appendChild(familiarizeArea);
-                columnDiv2.appendChild(taskLabel);
-                columnDiv2.appendChild(taskArea);
-                columnDiv2.appendChild(copyButton);
-                rowDiv.appendChild(columnDiv1);
-                rowDiv.appendChild(columnDiv2);
-                nirVersionContent.appendChild(rowDiv);
-                nirVersion.appendChild(nirVersionContent);
-                document.getElementById('student-nir-task-version-div').appendChild(nirVersion);
-            }
-        }
-    }
-
-    // Отправить студенту задание со статусом
-    function gradeNirTask(arrayId, status) {
-        axios({
-            url: apiURL + '/scientific_advisor/document/management/task/nir/check',
-            method: 'POST',
-            params: {
-                'versionID': nirVersions[arrayId].systemVersionID,
-                'newStatus': status,
-            },
-            headers: {
-                'Authorization': 'Bearer ' + authTokens.accessToken
-            },
-        }).then((response) => {
-
-            window.location.reload(true);
-
-        }).catch(result => {
-            console.log(result.data);
-        });
-    }
-
-    // Получение версий отчетов
-    function getNirOtchetVersions() {
-        axios({
-            url: apiURL + '/scientific_advisor/document/report/view',
-            method: 'GET',
-            params: {
-                'taskType': 'Научно-исследовательская работа',
-                'studentID': sessionStorage.getItem('viewedStudentId'),
-            },
-            headers: {
-                'Authorization': 'Bearer ' + authTokens.accessToken
-            },
-        }).then((response) => {
-
-            setNirOtchetVersions(response.data);
-            //console.log(response.data);
-
-        }).catch(result => {
-            console.log(result.data);
-        });
-    }
-
-    // Показать версии отчётов
-    function showNirOtchetVersions(nirOtchetVersionArray) {
-        if (nirOtchetVersionArray.length > 0) {
-            for (var i = 0; i < nirOtchetVersionArray.length; i++) {
-                var item = nirOtchetVersionArray[i];
-
-                var nirVersion = document.createElement('div');
-                nirVersion.className = 'nir-version light-background';
-                nirVersion.id = 'nir-otchet-version-' + i;
-
-                var nirVersionHeader = document.createElement('div');
-                nirVersionHeader.className = 'nir-version-header dark-background';
-
-                // Имя версии
-                var versionName = document.createElement('p');
-                versionName.className = 'light size-24 nir-header-text';
-                versionName.innerText = 'Версия: ' + item.versionEditionDate;
-
-                // Статус версии
-                var versionStatus = document.createElement('p');
-                versionStatus.className = 'light size-24 nir-header-text';
-                versionStatus.innerText = 'Статус: ' + item.status;
-
-                // Кнопка отправить науч руку
-                var sendButton = document.createElement('button');
-                sendButton.className = 'dark size-24 nir-version-header-button nir-version-send-button';
-                sendButton.innerText = 'Отправить студенту:';
-                sendButton.type = 'button';
-                if (item.status === 'Одобрено' || item.status === 'Замечания') {
-                    sendButton.disabled = true;
-                }
-
-                var dropdownDiv = document.createElement('div');
-                dropdownDiv.className = 'sci-advisor-status-dropdown-div';
-
-                var dropdownContent = document.createElement('div');
-                dropdownContent.className = 'sci-advisor-status-dropdown-content';
-
-                var statusOdobreno = document.createElement('p');
-                statusOdobreno.className = 'dark size-18 nir-otchet-status-odobreno';
-                statusOdobreno.innerText = 'Одобрено';
-
-                var statusZamechaniya = document.createElement('p');
-                statusZamechaniya.className = 'dark size-18 nir-otchet-status-zamechaniya';
-                statusZamechaniya.innerText = 'Замечания';
-
-                // Кнопка скачать отчёт
-                var downloadButton = document.createElement('button');
-                downloadButton.className = 'dark size-24 nir-version-header-button nir-otchet-download-button';
-                downloadButton.innerText = 'Сохранить документ';
-                downloadButton.type = 'button';
-
-                // Кнопка удалить
-                var deleteButton = document.createElement('button');
-                deleteButton.className = 'dark size-24 nir-version-header-button nir-otchet-delete-button';
-                deleteButton.innerText = 'Удалить версию';
-                deleteButton.type = 'button';
-                if (item.status !== 'Не отправлено' && item.status !== 'Замечания') {
-                    deleteButton.disabled = true;
-                }
-
-                var clickableArea = document.createElement('div');
-                clickableArea.className = 'nir-version-clickable';
-
-                var nirVersionContent = document.createElement('div');
-                nirVersionContent.className = 'nir-version-content light-background';
-
-                var detailedLabel = document.createElement('p');
-                detailedLabel.className = 'dark size-21 nir-text-label';
-                detailedLabel.innerText = 'Подробное содержание:';
-
-                // Детальное содержание
-                var detailedArea = document.createElement('textarea');
-                detailedArea.className = 'dark size-18 nir-text-area'
-                detailedArea.disabled = true;
-                detailedArea.value = item.detailedContent;
-
-                var conclusionLabel = document.createElement('p');
-                conclusionLabel.className = 'dark size-21 nir-text-label';
-                conclusionLabel.innerText = 'Заключение научного руководителя:';
-
-                // Заключение
-                var conclusionArea = document.createElement('textarea');
-                conclusionArea.className = 'dark size-18 nir-text-area'
-                conclusionArea.disabled = true;
-                conclusionArea.value = item.advisorConclusion;
-
-                // Кнопка перенести в меню
-                var copyButton = document.createElement('button');
-                copyButton.className = 'light dark-background size-21 nir-copy-button nir-otchet-copy';
-                copyButton.id = 'nir-otchet-copy-' + i;
-                copyButton.innerText = 'Перенести значения в меню';
-                copyButton.type = 'button';
-                copyButton.style.marginBottom = '10px';
-                copyButton.style.marginTop = '10px';
-                copyButton.style.marginLeft = '500px';
-
-                var rowDiv = document.createElement('div');
-                rowDiv.className = 'info-row';
-                var columnDiv1 = document.createElement('div');
-                columnDiv1.className = 'info-column';
-                var columnDiv2 = document.createElement('div');
-                columnDiv2.className = 'info-column';
-
-                clickableArea.appendChild(versionName);
-                clickableArea.appendChild(versionStatus);
-                nirVersionHeader.appendChild(clickableArea);
-
-                dropdownDiv.appendChild(sendButton);
-                dropdownContent.appendChild(statusOdobreno);
-                dropdownContent.appendChild(statusZamechaniya);
-                dropdownDiv.appendChild(dropdownContent);
-                nirVersionHeader.appendChild(dropdownDiv);
-
-                nirVersionHeader.appendChild(downloadButton);
-                nirVersionHeader.appendChild(deleteButton);
-                nirVersion.appendChild(nirVersionHeader);
-
-                columnDiv1.appendChild(detailedLabel);
-                columnDiv1.appendChild(detailedArea);
-                columnDiv2.appendChild(conclusionLabel);
-                columnDiv2.appendChild(conclusionArea);
-                rowDiv.appendChild(columnDiv1);
-                rowDiv.appendChild(columnDiv2);
-                nirVersionContent.appendChild(rowDiv);
-                nirVersionContent.appendChild(copyButton);
-                nirVersion.appendChild(nirVersionContent);
-
-                document.getElementById('student-nir-otchet-version-div').appendChild(nirVersion);
-            }
-        }
-    }
-
-    // Отправить студенту отчёт со статусом
-    function gradeNirOtchet(arrayId, status) {
-        //console.log(nirVersions[arrayId]);
-        //console.log(status);
-        //console.log(nirOtchetVersions[arrayId].systemVersionID);
-        axios({
-            url: apiURL + '/scientific_advisor/document/management/report/nir/check',
-            method: 'POST',
-            params: {
-                'versionID': nirOtchetVersions[arrayId].systemVersionID,
-                'newStatus': status,
-            },
-            headers: {
-                'Authorization': 'Bearer ' + authTokens.accessToken
-            },
-        }).then((response) => {
-
-            window.location.reload(true);
-
-        }).catch(result => {
-            console.log(result.data);
-        });
-    }
 
     // Заполнение таблицы студентов
     function showStudent(item, i) {
@@ -700,6 +339,583 @@ export default function ScaStuViewPage() {
         document.getElementById('student-table-body').appendChild(student);
     }
 
+    // Получение заданий НИР для студента
+    function getStudentTaskVersions(type) {
+        axios({
+            url: apiURL + '/scientific_advisor/document/task/view',
+            method: 'GET',
+            params: {
+                'taskType': type,
+                'studentID': sessionStorage.getItem('viewedStudentId'),
+            },
+            headers: {
+                'Authorization': 'Bearer ' + authTokens.accessToken
+            },
+        }).then((response) => {
+            switch (type) {
+                case 'Научно-исследовательская работа':
+                    //console.log(response.data);
+                    setNirVersions(response.data);
+                    break;
+                case 'Практика по получению знаний и умений':
+                    //console.log(response.data);
+                    setLongPPData(response.data);
+                    break;
+                case 'Преддипломная практика':
+                    //console.log(response.data);
+                    setPPData(response.data);
+                    break;
+                default:
+                    console.log(response);
+            }
+        }).catch(result => {
+            console.log(result.data);
+        });
+    }
+
+    // Получение версий отчетов
+    function getOtchetVersions(type) {
+        axios({
+            url: apiURL + '/scientific_advisor/document/report/view',
+            method: 'GET',
+            params: {
+                'taskType': 'Научно-исследовательская работа',
+                'studentID': sessionStorage.getItem('viewedStudentId'),
+            },
+            headers: {
+                'Authorization': 'Bearer ' + authTokens.accessToken
+            },
+        }).then((response) => {
+            switch (type) {
+                case 'Научно-исследовательская работа':
+                    //console.log(response);
+                    setNirOtchetVersions(response.data);
+                    break;
+                case 'Практика по получению знаний и умений':
+                    //console.log(response);
+                    setLongPPOtchetVersions(response.data);
+                    break;
+                case 'Преддипломная практика':
+                    //console.log(response);
+                    setPPOtchetVersions(response.data);
+                    break;
+                default:
+                    console.log(response);
+            }
+        }).catch(result => {
+            console.log(result.data);
+        });
+    }
+
+    function showStudentNirVersions(nirVersionArray) {
+        if (nirVersionArray.length > 0) {
+            for (var i = 0; i < nirVersionArray.length; i++) {
+                var item = nirVersionArray[i];
+
+                var nirVersion = document.createElement('div');
+                nirVersion.className = 'nir-version light-background';
+                nirVersion.id = 'nir-version-' + i;
+
+                var nirVersionHeader = document.createElement('div');
+                nirVersionHeader.className = 'nir-version-header dark-background';
+
+                // Имя версии
+                var versionName = document.createElement('p');
+                versionName.className = 'light size-24 nir-header-text';
+                versionName.innerText = 'Версия: ' + item.versionEditionDate;
+
+                // Статус версии
+                var versionStatus = document.createElement('p');
+                versionStatus.className = 'light size-24 nir-header-text';
+                versionStatus.innerText = 'Статус: ' + item.status;
+
+                // Кнопка отправить студенту
+                var sendButton = document.createElement('button');
+                sendButton.className = 'dark size-24 nir-version-header-button nir-version-send-button';
+                sendButton.innerText = 'Отправить студенту:';
+                sendButton.type = 'button';
+                // Запретить отсылку, если версия отправлена
+                if (item.status === 'Одобрено' || item.status === 'Замечания') {
+                    sendButton.disabled = true;
+                }
+
+                var dropdownDiv = document.createElement('div');
+                dropdownDiv.className = 'sci-advisor-status-dropdown-div';
+
+                var dropdownContent = document.createElement('div');
+                dropdownContent.className = 'sci-advisor-status-dropdown-content';
+
+                var statusOdobreno = document.createElement('p');
+                statusOdobreno.className = 'dark size-18 nir-status-odobreno';
+                statusOdobreno.innerText = 'Одобрено';
+
+                var statusZamechaniya = document.createElement('p');
+                statusZamechaniya.className = 'dark size-18 nir-status-zamechaniya';
+                statusZamechaniya.innerText = 'Замечания';
+
+                // Кнопка скачать документ
+                var downloadButton = document.createElement('button');
+                downloadButton.className = 'dark size-24 nir-version-header-button nir-version-download-button';
+                downloadButton.innerText = 'Сохранить документ';
+                downloadButton.type = 'button';
+
+                // Кнопка удалить
+                var deleteButton = document.createElement('button');
+                deleteButton.className = 'dark size-24 nir-version-header-button nir-version-delete-button';
+                deleteButton.innerText = 'Удалить версию';
+                deleteButton.type = 'button';
+                // Запретить удаление, если версия отправлена
+                if (item.status !== 'Не отправлено' && item.status !== 'Замечания') {
+                    deleteButton.disabled = true;
+                }
+
+                var clickableArea = document.createElement('div');
+                clickableArea.className = 'nir-version-clickable';
+
+                var nirVersionContent = document.createElement('div');
+                nirVersionContent.className = 'nir-version-content light-background';
+
+                var themeLabel = document.createElement('p');
+                themeLabel.className = 'dark size-21 nir-text-label';
+                themeLabel.innerText = 'Тема НИР:';
+
+                // Тема нир
+                var themeArea = document.createElement('textarea');
+                themeArea.className = 'dark size-18 nir-text-area'
+                themeArea.disabled = true;
+                themeArea.value = item.theme;
+
+                var exploreLabel = document.createElement('p');
+                exploreLabel.className = 'dark size-21 nir-text-label';
+                exploreLabel.innerText = 'Изучить:';
+
+                // Изучить
+                var exploreArea = document.createElement('textarea');
+                exploreArea.className = 'dark size-18 nir-text-area'
+                exploreArea.disabled = true;
+                exploreArea.value = item.toExplore;
+
+                var createLabel = document.createElement('p');
+                createLabel.className = 'dark size-21 nir-text-label';
+                createLabel.innerText = 'Выполнить:';
+
+                // Выполнить
+                var createArea = document.createElement('textarea');
+                createArea.className = 'dark size-18 nir-text-area'
+                createArea.disabled = true;
+                createArea.value = item.toCreate;
+
+                var familiarizeLabel = document.createElement('p');
+                familiarizeLabel.className = 'dark size-21 nir-text-label2';
+                familiarizeLabel.innerText = 'Ознакомиться:';
+
+                // Ознакомиться
+                var familiarizeArea = document.createElement('textarea');
+                familiarizeArea.className = 'dark size-18 nir-text-area2'
+                familiarizeArea.disabled = true;
+                familiarizeArea.value = item.toFamiliarize;
+
+                var taskLabel = document.createElement('p');
+                taskLabel.className = 'dark size-21 nir-text-label2';
+                taskLabel.innerText = 'Дополнительное задание:';
+
+                // Доп задание
+                var taskArea = document.createElement('textarea');
+                taskArea.className = 'dark size-18 nir-text-area2'
+                taskArea.disabled = true;
+                taskArea.value = item.additionalTask;
+
+                var copyButton = document.createElement('button');
+                copyButton.className = 'light dark-background size-21 nir-copy-button nir-copy';
+                copyButton.innerText = 'Перенести значения в меню';
+                copyButton.type = 'button';
+
+                var rowDiv = document.createElement('div');
+                rowDiv.className = 'info-row';
+                var columnDiv1 = document.createElement('div');
+                columnDiv1.className = 'info-column';
+                var columnDiv2 = document.createElement('div');
+                columnDiv2.className = 'info-column';
+
+                clickableArea.appendChild(versionName);
+                clickableArea.appendChild(versionStatus);
+                nirVersionHeader.appendChild(clickableArea);
+
+                dropdownDiv.appendChild(sendButton);
+                dropdownContent.appendChild(statusOdobreno);
+                dropdownContent.appendChild(statusZamechaniya);
+                dropdownDiv.appendChild(dropdownContent);
+                nirVersionHeader.appendChild(dropdownDiv);
+
+                nirVersionHeader.appendChild(downloadButton);
+                nirVersionHeader.appendChild(deleteButton);
+                nirVersion.appendChild(nirVersionHeader);
+                columnDiv1.appendChild(themeLabel);
+                columnDiv1.appendChild(themeArea);
+                columnDiv1.appendChild(exploreLabel);
+                columnDiv1.appendChild(exploreArea);
+                columnDiv1.appendChild(createLabel);
+                columnDiv1.appendChild(createArea);
+                columnDiv2.appendChild(familiarizeLabel);
+                columnDiv2.appendChild(familiarizeArea);
+                columnDiv2.appendChild(taskLabel);
+                columnDiv2.appendChild(taskArea);
+                columnDiv2.appendChild(copyButton);
+                rowDiv.appendChild(columnDiv1);
+                rowDiv.appendChild(columnDiv2);
+                nirVersionContent.appendChild(rowDiv);
+                nirVersion.appendChild(nirVersionContent);
+                document.getElementById('student-nir-task-version-div').appendChild(nirVersion);
+            }
+        }
+    }
+
+    function showStudentLongPPVersions(nirVersionArray) {
+        if (nirVersionArray.length > 0) {
+            for (var i = 0; i < nirVersionArray.length; i++) {
+                var item = nirVersionArray[i];
+
+                var nirVersion = document.createElement('div');
+                nirVersion.className = 'nir-version light-background';
+                nirVersion.id = 'long-pp-version-' + i;
+
+                var nirVersionHeader = document.createElement('div');
+                nirVersionHeader.className = 'nir-version-header dark-background';
+
+                // Имя версии
+                var versionName = document.createElement('p');
+                versionName.className = 'light size-24 nir-header-text';
+                versionName.innerText = 'Версия: ' + item.versionEditionDate;
+
+                // Статус версии
+                var versionStatus = document.createElement('p');
+                versionStatus.className = 'light size-24 nir-header-text';
+                versionStatus.innerText = 'Статус: ' + item.status;
+
+                // Кнопка отправить студенту
+                var sendButton = document.createElement('button');
+                sendButton.className = 'dark size-24 nir-version-header-button nir-version-send-button';
+                sendButton.innerText = 'Отправить студенту:';
+                sendButton.type = 'button';
+                // Запретить отсылку, если версия отправлена
+                if (item.status === 'Одобрено' || item.status === 'Замечания') {
+                    sendButton.disabled = true;
+                }
+
+                var dropdownDiv = document.createElement('div');
+                dropdownDiv.className = 'sci-advisor-status-dropdown-div';
+
+                var dropdownContent = document.createElement('div');
+                dropdownContent.className = 'sci-advisor-status-dropdown-content';
+
+                var statusOdobreno = document.createElement('p');
+                statusOdobreno.className = 'dark size-18 long-pp-status-odobreno';
+                statusOdobreno.innerText = 'Одобрено';
+
+                var statusZamechaniya = document.createElement('p');
+                statusZamechaniya.className = 'dark size-18 long-pp-status-zamechaniya';
+                statusZamechaniya.innerText = 'Замечания';
+
+                // Кнопка скачать документ
+                var downloadButton = document.createElement('button');
+                downloadButton.className = 'dark size-24 nir-version-header-button long-pp-version-download-button';
+                downloadButton.innerText = 'Сохранить документ';
+                downloadButton.type = 'button';
+
+                // Кнопка удалить
+                var deleteButton = document.createElement('button');
+                deleteButton.className = 'dark size-24 nir-version-header-button long-pp-version-delete-button';
+                deleteButton.innerText = 'Удалить версию';
+                deleteButton.type = 'button';
+                // Запретить удаление, если версия отправлена
+                if (item.status !== 'Не отправлено' && item.status !== 'Замечания') {
+                    deleteButton.disabled = true;
+                }
+
+                var clickableArea = document.createElement('div');
+                clickableArea.className = 'nir-version-clickable';
+
+                var nirVersionContent = document.createElement('div');
+                nirVersionContent.className = 'nir-version-content light-background';
+
+                var themeLabel = document.createElement('p');
+                themeLabel.className = 'dark size-21 nir-text-label';
+                themeLabel.innerText = 'Тема НИР:';
+
+                // Тема нир
+                var themeArea = document.createElement('textarea');
+                themeArea.className = 'dark size-18 nir-text-area'
+                themeArea.disabled = true;
+                themeArea.value = item.theme;
+
+                var exploreLabel = document.createElement('p');
+                exploreLabel.className = 'dark size-21 nir-text-label';
+                exploreLabel.innerText = 'Изучить:';
+
+                // Изучить
+                var exploreArea = document.createElement('textarea');
+                exploreArea.className = 'dark size-18 nir-text-area'
+                exploreArea.disabled = true;
+                exploreArea.value = item.toExplore;
+
+                var createLabel = document.createElement('p');
+                createLabel.className = 'dark size-21 nir-text-label';
+                createLabel.innerText = 'Выполнить:';
+
+                // Выполнить
+                var createArea = document.createElement('textarea');
+                createArea.className = 'dark size-18 nir-text-area'
+                createArea.disabled = true;
+                createArea.value = item.toCreate;
+
+                var familiarizeLabel = document.createElement('p');
+                familiarizeLabel.className = 'dark size-21 nir-text-label2';
+                familiarizeLabel.innerText = 'Ознакомиться:';
+
+                // Ознакомиться
+                var familiarizeArea = document.createElement('textarea');
+                familiarizeArea.className = 'dark size-18 nir-text-area2'
+                familiarizeArea.disabled = true;
+                familiarizeArea.value = item.toFamiliarize;
+
+                var taskLabel = document.createElement('p');
+                taskLabel.className = 'dark size-21 nir-text-label2';
+                taskLabel.innerText = 'Дополнительное задание:';
+
+                // Доп задание
+                var taskArea = document.createElement('textarea');
+                taskArea.className = 'dark size-18 nir-text-area2'
+                taskArea.disabled = true;
+                taskArea.value = item.additionalTask;
+
+                var copyButton = document.createElement('button');
+                copyButton.className = 'light dark-background size-21 nir-copy-button long-pp-copy';
+                copyButton.innerText = 'Перенести значения в меню';
+                copyButton.type = 'button';
+
+                var rowDiv = document.createElement('div');
+                rowDiv.className = 'info-row';
+                var columnDiv1 = document.createElement('div');
+                columnDiv1.className = 'info-column';
+                var columnDiv2 = document.createElement('div');
+                columnDiv2.className = 'info-column';
+
+                clickableArea.appendChild(versionName);
+                clickableArea.appendChild(versionStatus);
+                nirVersionHeader.appendChild(clickableArea);
+
+                dropdownDiv.appendChild(sendButton);
+                dropdownContent.appendChild(statusOdobreno);
+                dropdownContent.appendChild(statusZamechaniya);
+                dropdownDiv.appendChild(dropdownContent);
+                nirVersionHeader.appendChild(dropdownDiv);
+
+                nirVersionHeader.appendChild(downloadButton);
+                nirVersionHeader.appendChild(deleteButton);
+                nirVersion.appendChild(nirVersionHeader);
+                columnDiv1.appendChild(themeLabel);
+                columnDiv1.appendChild(themeArea);
+                columnDiv1.appendChild(exploreLabel);
+                columnDiv1.appendChild(exploreArea);
+                columnDiv1.appendChild(createLabel);
+                columnDiv1.appendChild(createArea);
+                columnDiv2.appendChild(familiarizeLabel);
+                columnDiv2.appendChild(familiarizeArea);
+                columnDiv2.appendChild(taskLabel);
+                columnDiv2.appendChild(taskArea);
+                columnDiv2.appendChild(copyButton);
+                rowDiv.appendChild(columnDiv1);
+                rowDiv.appendChild(columnDiv2);
+                nirVersionContent.appendChild(rowDiv);
+                nirVersion.appendChild(nirVersionContent);
+                document.getElementById('student-long-pp-task-version-div').appendChild(nirVersion);
+            }
+        }
+    }
+
+    // Показать версии отчётов
+    function showNirOtchetVersions(nirOtchetVersionArray) {
+        if (nirOtchetVersionArray.length > 0) {
+            for (var i = 0; i < nirOtchetVersionArray.length; i++) {
+                var item = nirOtchetVersionArray[i];
+
+                var nirVersion = document.createElement('div');
+                nirVersion.className = 'nir-version light-background';
+                nirVersion.id = 'nir-otchet-version-' + i;
+
+                var nirVersionHeader = document.createElement('div');
+                nirVersionHeader.className = 'nir-version-header dark-background';
+
+                // Имя версии
+                var versionName = document.createElement('p');
+                versionName.className = 'light size-24 nir-header-text';
+                versionName.innerText = 'Версия: ' + item.versionEditionDate;
+
+                // Статус версии
+                var versionStatus = document.createElement('p');
+                versionStatus.className = 'light size-24 nir-header-text';
+                versionStatus.innerText = 'Статус: ' + item.status;
+
+                // Кнопка отправить науч руку
+                var sendButton = document.createElement('button');
+                sendButton.className = 'dark size-24 nir-version-header-button nir-version-send-button';
+                sendButton.innerText = 'Отправить студенту:';
+                sendButton.type = 'button';
+                if (item.status === 'Одобрено' || item.status === 'Замечания') {
+                    sendButton.disabled = true;
+                }
+
+                var dropdownDiv = document.createElement('div');
+                dropdownDiv.className = 'sci-advisor-status-dropdown-div';
+
+                var dropdownContent = document.createElement('div');
+                dropdownContent.className = 'sci-advisor-status-dropdown-content';
+
+                var statusOdobreno = document.createElement('p');
+                statusOdobreno.className = 'dark size-18 nir-otchet-status-odobreno';
+                statusOdobreno.innerText = 'Одобрено';
+
+                var statusZamechaniya = document.createElement('p');
+                statusZamechaniya.className = 'dark size-18 nir-otchet-status-zamechaniya';
+                statusZamechaniya.innerText = 'Замечания';
+
+                // Кнопка скачать отчёт
+                var downloadButton = document.createElement('button');
+                downloadButton.className = 'dark size-24 nir-version-header-button nir-otchet-download-button';
+                downloadButton.innerText = 'Сохранить документ';
+                downloadButton.type = 'button';
+
+                // Кнопка удалить
+                var deleteButton = document.createElement('button');
+                deleteButton.className = 'dark size-24 nir-version-header-button nir-otchet-delete-button';
+                deleteButton.innerText = 'Удалить версию';
+                deleteButton.type = 'button';
+                if (item.status !== 'Не отправлено' && item.status !== 'Замечания') {
+                    deleteButton.disabled = true;
+                }
+
+                var clickableArea = document.createElement('div');
+                clickableArea.className = 'nir-version-clickable';
+
+                var nirVersionContent = document.createElement('div');
+                nirVersionContent.className = 'nir-version-content light-background';
+
+                var detailedLabel = document.createElement('p');
+                detailedLabel.className = 'dark size-21 nir-text-label';
+                detailedLabel.innerText = 'Подробное содержание:';
+
+                // Детальное содержание
+                var detailedArea = document.createElement('textarea');
+                detailedArea.className = 'dark size-18 nir-text-area'
+                detailedArea.disabled = true;
+                detailedArea.value = item.detailedContent;
+
+                var conclusionLabel = document.createElement('p');
+                conclusionLabel.className = 'dark size-21 nir-text-label';
+                conclusionLabel.innerText = 'Заключение научного руководителя:';
+
+                // Заключение
+                var conclusionArea = document.createElement('textarea');
+                conclusionArea.className = 'dark size-18 nir-text-area'
+                conclusionArea.disabled = true;
+                conclusionArea.value = item.advisorConclusion;
+
+                // Кнопка перенести в меню
+                var copyButton = document.createElement('button');
+                copyButton.className = 'light dark-background size-21 nir-copy-button nir-otchet-copy';
+                copyButton.id = 'nir-otchet-copy-' + i;
+                copyButton.innerText = 'Перенести значения в меню';
+                copyButton.type = 'button';
+                copyButton.style.marginBottom = '10px';
+                copyButton.style.marginTop = '10px';
+                copyButton.style.marginLeft = '500px';
+
+                var rowDiv = document.createElement('div');
+                rowDiv.className = 'info-row';
+                var columnDiv1 = document.createElement('div');
+                columnDiv1.className = 'info-column';
+                var columnDiv2 = document.createElement('div');
+                columnDiv2.className = 'info-column';
+
+                clickableArea.appendChild(versionName);
+                clickableArea.appendChild(versionStatus);
+                nirVersionHeader.appendChild(clickableArea);
+
+                dropdownDiv.appendChild(sendButton);
+                dropdownContent.appendChild(statusOdobreno);
+                dropdownContent.appendChild(statusZamechaniya);
+                dropdownDiv.appendChild(dropdownContent);
+                nirVersionHeader.appendChild(dropdownDiv);
+
+                nirVersionHeader.appendChild(downloadButton);
+                nirVersionHeader.appendChild(deleteButton);
+                nirVersion.appendChild(nirVersionHeader);
+
+                columnDiv1.appendChild(detailedLabel);
+                columnDiv1.appendChild(detailedArea);
+                columnDiv2.appendChild(conclusionLabel);
+                columnDiv2.appendChild(conclusionArea);
+                rowDiv.appendChild(columnDiv1);
+                rowDiv.appendChild(columnDiv2);
+                nirVersionContent.appendChild(rowDiv);
+                nirVersionContent.appendChild(copyButton);
+                nirVersion.appendChild(nirVersionContent);
+
+                document.getElementById('student-nir-otchet-version-div').appendChild(nirVersion);
+            }
+        }
+    }
+
+    function makeTaskVersion(type) {
+        var formData = new FormData();
+        formData.append('taskType', type);
+        formData.append('studentTheme', studentTheme);
+        formData.append('toExplore', toExplore);
+        formData.append('toCreate', toCreate);
+        formData.append('toFamiliarize', toFamiliarize);
+        formData.append('additionalTask', additionalTask);
+        formData.append('studentID', sessionStorage.getItem('viewedStudentId'));
+        axios({
+            url: apiURL + '/scientific_advisor/document/management/task/nir/update',
+            method: 'POST',
+            data: formData,
+            headers: {
+                'Authorization': 'Bearer ' + authTokens.accessToken
+            },
+        }).then((response) => {
+            if (response.data === 'Вы не можете добавлять версии заданию студенту, пока он его не сгенерирует') {
+                console.log(response.data);
+            }
+            else {
+                window.location.reload();
+            }
+            //console.log(response);
+        }).catch(result => {
+            console.log(result);
+        });
+    }
+
+    // Отправить студенту задание со статусом
+    function gradeTask(array, arrayId, status) {
+        axios({
+            url: apiURL + '/scientific_advisor/document/management/task/nir/check',
+            method: 'POST',
+            params: {
+                'versionID': array[arrayId].systemVersionID,
+                'newStatus': status,
+            },
+            headers: {
+                'Authorization': 'Bearer ' + authTokens.accessToken
+            },
+        }).then((response) => {
+            //console.log(response)
+            window.location.reload(true);
+        }).catch(result => {
+            console.log(result.data);
+        });
+    }
+
+    
     function makeNirOtchet(file) {
         var formData = new FormData();
         formData.append('documentFormType', 'Научно-исследовательская работа');
@@ -731,30 +947,93 @@ export default function ScaStuViewPage() {
         });
     }
 
-    $(function () {
+    function makeOtchetVersion(file, type) {
+        var formData = new FormData();
+        formData.append('documentFormType', type);
+        formData.append('documentFormKind', 'Отчёт');
+        formData.append('documentFormDescription', 'Пример отчёта');
+        formData.append('documentFormViewRights', 'Я и мой научный руководитель');
+        formData.append('detailedContent', detailedDescription);
+        formData.append('advisorConclusion', conclusion);
+        formData.append('file', file);
+        formData.append('studentID', sessionStorage.getItem('viewedStudentId'));
+        axios({
+            url: apiURL + '/scientific_advisor/document/report/upload/version',
+            method: 'POST',
+            data: formData,
+            headers: {
+                'Content-Type': 'multipart/form-data',
+                'Authorization': 'Bearer ' + authTokens.accessToken
+            },
+        }).then((response) => {
+            if (response.data === 'Вы не можете загрузить версию отчёта студента пока он его не загрузит') {
+                console.log(response);
+            }
+            else {
+                console.log(response);
+                window.location.reload();
+            }
+        }).catch(result => {
+            console.log(result);
+        });
+    }
 
-        // Оценка задания НИР
-        $('.nir-version-send-button').off().on('click', function (event) {
-            $(this).parent().find('.sci-advisor-status-dropdown-content').toggle();
-            //console.log('show');
+    // Отправить студенту отчёт со статусом
+    function gradeOtchet(array, arrayId, status) {
+        axios({
+            url: apiURL + '/scientific_advisor/document/management/report/nir/check',
+            method: 'POST',
+            params: {
+                'versionID': array[arrayId].systemVersionID,
+                'newStatus': status,
+            },
+            headers: {
+                'Authorization': 'Bearer ' + authTokens.accessToken
+            },
+        }).then((response) => {
+            //console.log(response);
+            window.location.reload(true);
+        }).catch(result => {
+            console.log(result.data);
+        });
+    }
+
+    $(function () {
+        // Показ полей версии
+        $(document).off().on('click', '.nir-version-clickable', function () {
+            $(this).parent().parent().find('.nir-version-content').toggle();
         });
 
+        // Показать поля для оценки
+        $('.nir-version-send-button').off().on('click', function () {
+            $(this).parent().find('.sci-advisor-status-dropdown-content').toggle();
+        });
+
+        // Создание новой версии задания НИР
+        $('#make-nir-task-button').off().on('click', function () {
+            makeTaskVersion('Научно-исследовательская работа');
+        });
+
+        // Оценка задания НИР - одобрено
         $('.nir-status-odobreno').off().on('click', function (event) {
             var versionId = $(this).parent().parent().parent().parent().attr('id');
             var arrayID = versionId.split('-')[2];
-            gradeNirTask(arrayID, 'Одобрено');
+            gradeTask(nirVersions, arrayID, 'Одобрено');
         });
 
+        // Оценка задания НИР - замечания
         $('.nir-status-zamechaniya').off().on('click', function (event) {
             var versionId = $(this).parent().parent().parent().parent().attr('id');
             var arrayID = versionId.split('-')[2];
-            gradeNirTask(arrayID, 'Замечания');
+            gradeTask(nirVersions, arrayID, 'Замечания');
         });
 
-        // Скачать версию задания
+        // Скачать версию задания НИР
         $('.nir-version-download-button').off().on('click', function (event) {
             var versionId = $(this).parent().parent().attr('id');
             var arrayID = versionId.split('-')[2];
+            console.log(nirVersions[arrayID]);
+            console.log(nirVersions[arrayID].systemVersionID);
             axios({
                 url: apiURL + '/document/download/version',
                 method: 'GET',
@@ -777,7 +1056,7 @@ export default function ScaStuViewPage() {
             });
         });
 
-        // Удалить версию задания
+        // Удалить версию задания НИР
         $('.nir-version-delete-button').off().on('click', function (event) {
             console.log('delete');
             var versionId = $(this).parent().parent().attr('id');
@@ -801,82 +1080,23 @@ export default function ScaStuViewPage() {
             });
         });
 
-        // Функция кнопки "перенести в меню" для задания НИР
-        $('.nir-copy').off().on('click', function (event) {
-            var versionId = $(this).parent().parent().parent().parent().attr('id');
-            var arrayID = versionId.split('-')[2];
-
-            setStudentTheme(nirVersions[arrayID].theme);
-            setToExplore(nirVersions[arrayID].toExplore);
-            setToCreate(nirVersions[arrayID].toCreate);
-            setToFamiliarize(nirVersions[arrayID].toFamiliarize);
-            setAdditionalTask(nirVersions[arrayID].additionalTask);
-        });
-
-        // Функция кнопки "перенести в меню" для отчета НИР
-        $('.nir-otchet-copy').off().on('click', function (event) {
-            var id = $(this).attr('id').split('-')[3];
-
-            setDetailedDescription(nirOtchetVersions[id].detailedContent);
-            setConclusion(nirOtchetVersions[id].advisorConclusion);
-        });
-
-        // TODO empty upload catch
-        // Создание новой версии задания НИР
-        $('#send-nir-task-button').off().on('click', function (event) {
-            console.log('made');
-            var formData = new FormData();
-            formData.append('taskType', 'Научно-исследовательская работа');
-            formData.append('studentTheme', studentTheme);
-            formData.append('toExplore', toExplore);
-            formData.append('toCreate', toCreate);
-            formData.append('toFamiliarize', toFamiliarize);
-            formData.append('additionalTask', additionalTask);
-            formData.append('studentID', sessionStorage.getItem('viewedStudentId'));
-            axios({
-                url: apiURL + '/scientific_advisor/document/management/task/nir/update',
-                method: 'POST',
-                data: formData,
-                headers: {
-                    'Authorization': 'Bearer ' + authTokens.accessToken
-                },
-            }).then((response) => {
-                if (response.data === 'Вы не можете добавлять версии заданию студенту, пока он его не сгенерирует') {
-                    console.log(response.data);
-                }
-                else {
-                    window.location.reload();
-                }
-                console.log(response);
-
-            }).catch(result => {
-                console.log(result.data);
-            });
-        });
-
-        // Показ полей версии задания
-        $(document).on('click', '.nir-version-clickable', function (event) {
-            $(this).parent().parent().find('.nir-version-content').toggle();
-            event.stopImmediatePropagation();
-        });
-
-        // Оценка отчёта НИР
-        $('.nir-otchet-status-odobreno').off().on('click', function (event) {
-            var versionId = $(this).parent().parent().parent().parent().attr('id');
-            var arrayID = versionId.split('-')[3];
-            gradeNirOtchet(arrayID, 'Одобрено');
-        });
-
-        $('.nir-otchet-status-zamechaniya').off().on('click', function (event) {
-            var versionId = $(this).parent().parent().parent().parent().attr('id');
-            var arrayID = versionId.split('-')[3];
-            gradeNirOtchet(arrayID, 'Замечания');
-        });
-
-        // TODO empty upload catch
         // Создание науч руком версии отчета НИР
         $('#make-nir-otchet-button').off().on('click', function (event) {
             $('#nir-otchet-file-input').trigger('click');
+        });
+
+        // Оценка отчёта НИР - одобрено
+        $('.nir-otchet-status-odobreno').off().on('click', function (event) {
+            var versionId = $(this).parent().parent().parent().parent().attr('id');
+            var arrayID = versionId.split('-')[3];
+            gradeOtchet(nirOtchetVersions, arrayID, 'Одобрено');
+        });
+
+        // Оценка отчёта НИР - замечания
+        $('.nir-otchet-status-zamechaniya').off().on('click', function (event) {
+            var versionId = $(this).parent().parent().parent().parent().attr('id');
+            var arrayID = versionId.split('-')[3];
+            gradeOtchet(nirOtchetVersions, arrayID, 'Замечания');
         });
 
         // Удаление версии отчёта
@@ -931,6 +1151,109 @@ export default function ScaStuViewPage() {
                 console.log(result.data);
             });
         });
+
+        // Создание новой версии задания ПП...
+        $('#make-long-pp-task-button').off().on('click', function () {
+            makeTaskVersion('Практика по получению знаний и умений');
+        });
+
+        // Оценка задания ПП... - одобрено
+        $('.long-pp-status-odobreno').off().on('click', function (event) {
+            var versionId = $(this).parent().parent().parent().parent().attr('id');
+            var arrayID = versionId.split('-')[3];
+            gradeTask(longPPData, arrayID, 'Одобрено');
+        });
+
+        // Оценка задания ПП... - замечания
+        $('.long-pp-status-zamechaniya').off().on('click', function (event) {
+            var versionId = $(this).parent().parent().parent().parent().attr('id');
+            var arrayID = versionId.split('-')[3];
+            gradeTask(longPPData, arrayID, 'Замечания');
+        });
+
+        // Скачать версию задания ПП...
+        $('.long-pp-version-download-button').off().on('click', function (event) {
+            var versionId = $(this).parent().parent().attr('id');
+            var arrayID = versionId.split('-')[3];
+            console.log(longPPData[arrayID]);
+            axios({
+                url: apiURL + '/document/download/version',
+                method: 'GET',
+                responseType: 'blob',
+                params: {
+                    versionID: longPPData[arrayID].systemVersionID,
+                },
+                headers: {
+                    'Authorization': 'Bearer ' + authTokens.accessToken
+                },
+            }).then((response) => {
+                const url = window.URL.createObjectURL(new Blob([response.data]));
+                const link = document.createElement('a');
+                link.href = url;
+                link.setAttribute('download', 'Задание на ПпППУиОПД.docx');
+                document.body.appendChild(link);
+                link.click();
+            }).catch(result => {
+                console.log(result.data);
+            });
+        });
+
+        // Удалить версию задания ПП...
+        $('.long-pp-version-delete-button').off().on('click', function (event) {
+            console.log('delete');
+            var versionId = $(this).parent().parent().attr('id');
+            var arrayID = versionId.split('-')[3];
+            console.log(arrayID);
+            axios({
+                url: apiURL + '/scientific_advisor/document/task/version/delete',
+                method: 'DELETE',
+                params: {
+                    versionID: longPPData[arrayID].systemVersionID,
+                    'studentID': sessionStorage.getItem('viewedStudentId'),
+                },
+                headers: {
+                    'Authorization': 'Bearer ' + authTokens.accessToken
+                },
+            }).then((response) => {
+                //console.log(response);
+                window.location.reload(true);
+            }).catch(result => {
+                console.log(result.data);
+            });
+        });
+
+        // Функция кнопки "перенести в меню" для задания НИР
+        $('.nir-copy').off().on('click', function (event) {
+            var versionId = $(this).parent().parent().parent().parent().attr('id');
+            var arrayID = versionId.split('-')[2];
+
+            setStudentTheme(nirVersions[arrayID].theme);
+            setToExplore(nirVersions[arrayID].toExplore);
+            setToCreate(nirVersions[arrayID].toCreate);
+            setToFamiliarize(nirVersions[arrayID].toFamiliarize);
+            setAdditionalTask(nirVersions[arrayID].additionalTask);
+        });
+
+        // Функция кнопки "перенести в меню" для отчета НИР
+        $('.nir-otchet-copy').off().on('click', function (event) {
+            var id = $(this).attr('id').split('-')[3];
+
+            setDetailedDescription(nirOtchetVersions[id].detailedContent);
+            setConclusion(nirOtchetVersions[id].advisorConclusion);
+        });
+
+        // Функция кнопки "перенести в меню" для задания ПП...
+        $('.long-pp-copy').off().on('click', function (event) {
+            var versionId = $(this).parent().parent().parent().parent().attr('id');
+            var arrayID = versionId.split('-')[3];
+
+            setStudentTheme(longPPData[arrayID].theme);
+            setToExplore(longPPData[arrayID].toExplore);
+            setToCreate(longPPData[arrayID].toCreate);
+            setToFamiliarize(longPPData[arrayID].toFamiliarize);
+            setAdditionalTask(longPPData[arrayID].additionalTask);
+        });
+
 
     });
 
@@ -1009,7 +1332,7 @@ export default function ScaStuViewPage() {
                                             <Form.Label column className="size-21 dark info-input-label">Дополнительное задание:</Form.Label>
                                             <textarea maxLength='2048' value={additionalTask} onChange={(e) => { setAdditionalTask(e.target.value); }} className='dark size-24 info-input-area' />
 
-                                            <button type='button' id='send-nir-task-button' className='size-30 light dark-background info-button-1'>
+                                            <button type='button' id='make-nir-task-button' className='size-30 light dark-background info-button-1'>
                                                 <Image src={iconDocument} thumbnail className='dark-background thumbnail-icon' />
                                                 Создать новую версию<br />задания на НИР
                                             </button>
@@ -1076,6 +1399,104 @@ export default function ScaStuViewPage() {
                     </Tab>
                     <Tab eventKey='info2' title={<p id='header-2' className='light-background light size-30 sca-tab-header' style={{ marginLeft: '14px' }}>ПпППУиОПД</p>}>
 
+                    <Tabs defaultActiveKey='none' onSelect={() => { setTimeout(function () { window.scrollTo(0, 2000); }, 1); }} className='info-form-subtab light-background container-fluid'>
+                        <Tab eventKey='info21' title={
+                            <p className='size-30 light dark-background info-form-subtab-title'>
+                                <Image src={iconDocument} thumbnail className='dark-background info-form-subtab-icon icon-small' />
+                                Задание на ПпППУиОПД
+                            </p>
+                        }>
+                            <div className='info-sub-tab-div'>
+
+                                <div className='info-break-div' style={{ marginBottom: '20px' }}>&nbsp;</div>
+
+                                <p className='size-30 dark info-sub-tab-title'>Задание на ПпППУиОПД</p>
+
+                                <div id='student-long-pp-task-version-div' className='student-nir-task-version-div light-background'></div>
+
+                                <div className='info-row'>
+                                    <div className='info-column'>
+                                        <Form.Label column className="size-21 dark info-input-label">Тема:</Form.Label>
+                                        <textarea maxLength='1024' value={studentTheme} onChange={(e) => { setStudentTheme(e.target.value); }} className='dark size-24 info-input-area' />
+
+                                        <Form.Label column className="size-21 dark info-input-label">Изучить:</Form.Label>
+                                        <textarea maxLength='2048' value={toExplore} onChange={(e) => { setToExplore(e.target.value); }} className='dark size-24 info-input-area' />
+
+                                        <Form.Label column className="size-21 dark info-input-label">Практически выполнить:</Form.Label>
+                                        <textarea maxLength='2048' value={toCreate} onChange={(e) => { setToCreate(e.target.value); }} className='dark size-24 info-input-area' />
+                                    </div>
+
+                                    <div className='info-column'>
+                                        <Form.Label column className="size-21 dark info-input-label">Ознакомиться:</Form.Label>
+                                        <textarea maxLength='2048' value={toFamiliarize} onChange={(e) => { setToFamiliarize(e.target.value); }} className='dark size-24 info-input-area' />
+
+                                        <Form.Label column className="size-21 dark info-input-label">Дополнительное задание:</Form.Label>
+                                        <textarea maxLength='2048' value={additionalTask} onChange={(e) => { setAdditionalTask(e.target.value); }} className='dark size-24 info-input-area' />
+
+                                        <button type='button' id='make-long-pp-task-button' className='size-30 light dark-background info-button-1' style={{ height: '100px' }}>
+                                            <Image src={iconDocument} thumbnail className='dark-background thumbnail-icon' style={{ position: 'relative', top: '-25px' }} />
+                                            <div style={{ display: 'inline-block' }}><p style={{ marginBottom: '0px' }}>Создать новую версию<br />задания на ПпППУиОПД</p></div>
+                                        </button>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </Tab>
+                        <Tab eventKey='info22' title={
+                            <p className='size-30 light dark-background info-form-subtab-title' style={{ marginLeft: '626px' }}>
+                                <Image src={iconDocument} thumbnail className='dark-background info-form-subtab-icon icon-small' />
+                                Отчет о<br />прохождении ПпППУиОПД
+                            </p>
+                        }>
+                            <div className='info-break-div' style={{ marginBottom: '20px' }}>&nbsp;</div>
+
+                            <p className='size-30 dark info-sub-tab-title'>Отчет о прохождении ПпППУиОПД</p>
+
+                            <div id='student-nir-otchet-version-div' className='student-nir-task-version-div light-background'></div>
+
+                            <div className='info-sub-tab-div'>
+
+                                <div className='info-row'>
+                                    <div className='info-column'>
+                                        <Form.Label column className='size-21 dark info-input-label'>Детальное содержание:</Form.Label>
+                                        <textarea id='long-pp-otchet-description' maxLength='1024' value={detailedDescriptionLongPP} onChange={(e) => {
+                                            setDetailedDescriptionLongPP(e.target.value);
+                                            if ($('#long-pp-otchet-description').val() === '' || $('#long-pp-otchet-conclusion').val() === '') {
+                                                document.getElementById('make-long-pp-otchet-button').disabled = true;
+                                            }
+                                            else {
+                                                document.getElementById('make-long-pp-otchet-button').disabled = false;
+                                            }
+                                        }} className='dark size-24 info-input-area' />
+                                    </div>
+
+                                    <div className='info-column'>
+                                        <Form.Label column className='size-21 dark info-input-label'>Заключение научного руководителя:</Form.Label>
+                                        <textarea id='long-pp-otchet-conclusion' maxLength='2048' value={conclusionLongPP} onChange={(e) => {
+                                            setConclusionLongPP(e.target.value);
+                                            if ($('#long-pp-otchet-description').val() === '' || $('#long-pp-otchet-conclusion').val() === '') {
+                                                document.getElementById('make-long-pp-otchet-button').disabled = true;
+                                            }
+                                            else {
+                                                document.getElementById('make-long-pp-otchet-button').disabled = false;
+                                            }
+                                        }} className='dark size-24 info-input-area' />
+                                    </div>
+                                </div>
+
+                                <button type='button' disabled id='make-long-pp-otchet-button' className='size-30 light dark-background info-button-inline-block' style={{ marginLeft: '425px', marginTop: '20px' }}>
+                                    <Image src={iconProject} thumbnail className='dark-background thumbnail-icon' />
+                                        Сформировать и загрузить версию отчета
+                                </button>
+                                <input id='long-pp-otchet-file-input' type='file' style={{ display: 'none' }} onChange={(e) => {
+                                    console.log(e.target.files);
+                                    if (e.target.files.length !== 0) {
+                                        makeOtchetVersion(e.target.files[0], 'Практика по получению знаний и умений');
+                                    }
+                                }} ></input>
+                            </div>
+                        </Tab>
+                    </Tabs>
                     </Tab>
                     <Tab eventKey='info3' title={<p id='header-3' className='light-background light size-30 sca-tab-header' style={{ marginLeft: '14px' }}>Преддипломная практика</p>}>
 
