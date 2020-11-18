@@ -59,9 +59,6 @@ export default function StudentHeader() {
             case ('/stu/examples'):
                 document.getElementById('button-examples').classList.add('student-navbar-button-selected');
                 break;
-            case ('/stu/templates'):
-                document.getElementById('button-templates').classList.add('student-navbar-button-selected');
-                break;
             default:
                 console.log('url error');
         };
@@ -92,12 +89,6 @@ export default function StudentHeader() {
                     <button id='button-orders' type='button' className='student-navbar-button dark-background light size-30'>
                         <Image src={orderImage} thumbnail className='student-navbar-image dark-background' />
                         Приказы
-                    </button>
-                </Nav.Link>
-                <Nav.Link as={Link} to='/stu/templates'>
-                    <button id='button-templates' type='button' className='student-navbar-button dark-background light size-30'>
-                        <Image src={templateImage} thumbnail className='student-navbar-image dark-background' />
-                        Шаблоны
                     </button>
                 </Nav.Link>
                 <Nav.Link>
