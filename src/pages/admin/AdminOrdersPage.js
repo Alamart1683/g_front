@@ -178,6 +178,42 @@ export default function AdminOrdersPage() {
                 formData.append('speciality', orderSpeciality);
                 formData.append('file', file);
                 break;
+            case 'Приказ об организации ПпППУиОПД':
+                formData.append('documentFormType', 'Практика по получению знаний и умений');
+                formData.append('documentFormKind', 'Приказ');
+                formData.append('documentFormDescription', 'Приказ о выходе на НИР');
+                formData.append('documentFormViewRights', 'Все пользователи');
+                formData.append('number', orderNum);
+                formData.append('orderDate', orderDate);
+                formData.append('startDate', orderStartDate);
+                formData.append('endDate', orderEndDate);
+                formData.append('speciality', orderSpeciality);
+                formData.append('file', file);
+                break;
+            case 'Приказ об организации ПП':
+                formData.append('documentFormType', 'Преддипломная практика');
+                formData.append('documentFormKind', 'Приказ');
+                formData.append('documentFormDescription', 'Приказ о выходе на НИР');
+                formData.append('documentFormViewRights', 'Все пользователи');
+                formData.append('number', orderNum);
+                formData.append('orderDate', orderDate);
+                formData.append('startDate', orderStartDate);
+                formData.append('endDate', orderEndDate);
+                formData.append('speciality', orderSpeciality);
+                formData.append('file', file);
+                break;
+            case 'Приказ об организации ВКР':
+                formData.append('documentFormType', 'ВКР');
+                formData.append('documentFormKind', 'Приказ');
+                formData.append('documentFormDescription', 'Приказ о выходе на НИР');
+                formData.append('documentFormViewRights', 'Все пользователи');
+                formData.append('number', orderNum);
+                formData.append('orderDate', orderDate);
+                formData.append('startDate', orderStartDate);
+                formData.append('endDate', orderEndDate);
+                formData.append('speciality', orderSpeciality);
+                formData.append('file', file);
+                break;
             default:
                 console.log('Неопознанный тип приказа');
         }
@@ -339,6 +375,9 @@ export default function AdminOrdersPage() {
                     <select id='dropdown-order-type' defaultValue='' className='dark size-24 sca-examples-dropdown' onChange={(e) => { checkIfCanUpload(); }}>
                         <option value='' disabled hidden>Выберите тип приказа</option>
                         <option value='Приказ об организации НИР'>Приказ об организации НИР</option>
+                        <option value='Приказ об организации ПпППУиОПД'>Приказ об организации ПпППУиОПД</option>
+                        <option value='Приказ об организации ПП'>Приказ об организации ПП</option>
+                        <option value='Приказ об организации ВКР'>Приказ об организации ВКР</option>
                     </select>
 
                     <div className='info-row' style={{ marginTop: '5px' }}>
@@ -348,6 +387,7 @@ export default function AdminOrdersPage() {
                             <input id='order-num' type='text' maxLength='100' className='dark size-24 sca-examples-dropdown' style={{ width: '300px' }} placeholder='Введите номер приказа' onChange={(e) => { checkIfCanUpload(); }}></input>
                             <select id='dropdown-order-speciality' defaultValue='' style={{ width: '300px' }} className='dark size-24 sca-examples-dropdown' onChange={(e) => { checkIfCanUpload(); }}>
                                 <option value='' disabled hidden>Выберите направление</option>
+                                <option value='09.03.01'>09.03.01</option>
                                 <option value='09.03.04'>09.03.04</option>
                             </select>
                         </div>

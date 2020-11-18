@@ -12,7 +12,7 @@ export default function AdminTemplatesPage() {
     const [fetchedData, setFetchedData] = useState(false);
     const [templates, setTemplates] = useState([]);
 
-    const [show, setShow] = useState(false); 
+    const [show, setShow] = useState(false);
 
     useEffect(() => {
         showTemplates(templates);
@@ -28,13 +28,13 @@ export default function AdminTemplatesPage() {
         axios({
             url: apiURL + '/document/view/templates',
             method: 'GET',
-            headers: { 
-                'Authorization': 'Bearer ' + authTokens.accessToken 
+            headers: {
+                'Authorization': 'Bearer ' + authTokens.accessToken
             },
-          }).then((response) => {
+        }).then((response) => {
             console.log(response);
             setTemplates(response.data);
-          }).catch(result => {
+        }).catch(result => {
             console.log(result.data);
         });
     }
@@ -55,11 +55,11 @@ export default function AdminTemplatesPage() {
 
             var templateNameText = document.createElement('p');
             templateNameText.className = 'hoc-order-template-name-text light size-22'
-            templateNameText.innerText=template.documentName;
+            templateNameText.innerText = template.documentName;
 
             var templateNameImage = document.createElement('img');
-            templateNameImage.className='hoc-order-template-name-image'
-            templateNameImage.src=templateImage;
+            templateNameImage.className = 'hoc-order-template-name-image'
+            templateNameImage.src = templateImage;
 
             var templateStatus = document.createElement('p');
             templateStatus.className = 'hoc-order-template-name-text light size-20';
@@ -114,6 +114,27 @@ export default function AdminTemplatesPage() {
                 formData.append('documentFormType', 'Научно-исследовательская работа');
                 formData.append('documentFormKind', 'Шаблон');
                 formData.append('documentFormDescription', 'Образец задания на НИР для автозаполнения');
+                formData.append('documentFormViewRights', 'Все пользователи');
+                formData.append('file', file);
+                break;
+            case 'Шаблон задания на ПпППУиОПД':
+                formData.append('documentFormType', 'Практика по получению знаний и умений');
+                formData.append('documentFormKind', 'Шаблон');
+                formData.append('documentFormDescription', 'Образец задания на ПпППУиОПД для автозаполнения');
+                formData.append('documentFormViewRights', 'Все пользователи');
+                formData.append('file', file);
+                break;
+            case 'Шаблон задания на ПП':
+                formData.append('documentFormType', 'Преддипломная практика');
+                formData.append('documentFormKind', 'Шаблон');
+                formData.append('documentFormDescription', 'Образец задания на ПП для автозаполнения');
+                formData.append('documentFormViewRights', 'Все пользователи');
+                formData.append('file', file);
+                break;
+            case 'Шаблон задания на ВКР':
+                formData.append('documentFormType', 'ВКР');
+                formData.append('documentFormKind', 'Шаблон');
+                formData.append('documentFormDescription', 'Образец задания на ВКР для автозаполнения');
                 formData.append('documentFormViewRights', 'Все пользователи');
                 formData.append('file', file);
                 break;
@@ -208,44 +229,44 @@ export default function AdminTemplatesPage() {
                 console.log(result.data);
             });
         });
-    
+
         $('#create-template-button').off().on('click', function () {
             $('#template-file-input').trigger('click');
         });
 
     });
 
-    return(
+    return (
         <div className='orders-templates-panel'>
             <div className='clearfix'>
-            <div className='hoc-templates-orders-buttons-panel' id='hoc-templates-buttons-panel'>
-                <button type='button' className='size-22 light orders-templates-button orders-templates-button-selected' id='button-1'>
-                    Научно-исследовательская работа
+                <div className='hoc-templates-orders-buttons-panel' id='hoc-templates-buttons-panel'>
+                    <button type='button' className='size-22 light orders-templates-button orders-templates-button-selected' id='button-1'>
+                        Научно-исследовательская работа
                 </button>
 
-                <button type='button' className='size-22 light orders-templates-button ' id='button-2'>
-                    ПпППУиОПД
+                    <button type='button' className='size-22 light orders-templates-button ' id='button-2'>
+                        ПпППУиОПД
                 </button>
 
-                <button type='button' className='size-22 light orders-templates-button' id='button-3'>
-                    Преддипломная практика
+                    <button type='button' className='size-22 light orders-templates-button' id='button-3'>
+                        Преддипломная практика
                 </button>
 
-                <button type='button' className='size-22 light orders-templates-button' id='button-4'>
-                    Защита ВКР
+                    <button type='button' className='size-22 light orders-templates-button' id='button-4'>
+                        Защита ВКР
                 </button>
 
-                <button type='button' onClick={(e) => { setShow(true); }} className='size-22 light orders-templates-upload-button' id='upload-button'>
-                    Загрузить шаблон
+                    <button type='button' onClick={(e) => { setShow(true); }} className='size-22 light orders-templates-upload-button' id='upload-button'>
+                        Загрузить шаблон
                 </button>
-            </div>
+                </div>
 
-            <div className='hoc-orders-templates-document-panel-common'> 
-                <div className='hoc-orders-templates-document-panel' id='hoc-templates-document-panel1'></div>
-                <div className='hoc-orders-templates-document-panel hoc-orders-templates-document-panel-hidden' id='hoc-templates-document-panel2'></div>
-                <div className='hoc-orders-templates-document-panel hoc-orders-templates-document-panel-hidden' id='hoc-templates-document-panel3'></div>
-                <div className='hoc-orders-templates-document-panel hoc-orders-templates-document-panel-hidden' id='hoc-templates-document-panel4'></div>
-            </div>
+                <div className='hoc-orders-templates-document-panel-common'>
+                    <div className='hoc-orders-templates-document-panel' id='hoc-templates-document-panel1'></div>
+                    <div className='hoc-orders-templates-document-panel hoc-orders-templates-document-panel-hidden' id='hoc-templates-document-panel2'></div>
+                    <div className='hoc-orders-templates-document-panel hoc-orders-templates-document-panel-hidden' id='hoc-templates-document-panel3'></div>
+                    <div className='hoc-orders-templates-document-panel hoc-orders-templates-document-panel-hidden' id='hoc-templates-document-panel4'></div>
+                </div>
             </div>
             <Modal centered show={show} onHide={(e) => { setShow(false); }} className='dark'>
                 <Modal.Header className='light-background sca-examples-modal1-header' closeButton>
@@ -261,9 +282,12 @@ export default function AdminTemplatesPage() {
                     }}>
                         <option value='' disabled hidden>Выберите тип шаблона</option>
                         <option value='Шаблон задания на НИР'>Шаблон задания на НИР</option>
+                        <option value='Шаблон задания на ПпППУиОПД'>Шаблон задания на ПпППУиОПД</option>
+                        <option value='Шаблон задания на ПП'>Шаблон задания на ПП</option>
+                        <option value='Шаблон задания на ВКР'>Шаблон задания на ВКР</option>
                     </select>
                     <button type='button' id='create-template-button' disabled className='size-24 dark-background light sca-modal-button' style={{ marginLeft: '130px' }}>
-                        Выбрать файл и<br/>загрузить шаблон на сервер
+                        Выбрать файл и<br />загрузить шаблон на сервер
                     </button>
                     <input id='template-file-input' type='file' style={{ display: 'none' }} onChange={(e) => {
                         if (e.target.files.length !== 0) {
