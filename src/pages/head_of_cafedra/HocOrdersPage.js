@@ -98,7 +98,7 @@ export default function HocOrdersPage() {
             orderDownload.innerText = "Сохранить";
             orderDownload.style.height = '120px'
             orderDownload.style.position = 'relative';
-            orderDownload.style.top = '-76px';
+            orderDownload.style.top = '-62px';
 
             var orderConfirm = document.createElement('button');
             orderConfirm.className = 'hoc-order-template-delete-button light size-22 hoc-order-template-confirm-button';
@@ -106,7 +106,7 @@ export default function HocOrdersPage() {
             orderConfirm.innerText = 'Одобрить';
             orderConfirm.style.height = '120px'
             orderConfirm.style.position = 'relative';
-            orderConfirm.style.top = '-76px';
+            orderConfirm.style.top = '-62px';
 
             var orderStatus = document.createElement('p');
             orderStatus.className = 'hoc-order-template-name-text light size-20';
@@ -119,6 +119,7 @@ export default function HocOrdersPage() {
             }
             orderStatus.style.display = 'block';
             orderStatus.style.marginTop = '-6px';
+            orderStatus.style.marginBottom = '0px';
 
             orderName.appendChild(orderNameImage);
 
@@ -258,9 +259,9 @@ export default function HocOrdersPage() {
 
                 <div className='hoc-orders-templates-document-panel-common'>
                     <div className='hoc-orders-templates-document-panel' id='hoc-orders-document-panel1'></div>
-                    <div className='hoc-orders-templates-document-panel-hidden' id='hoc-orders-document-panel2'></div>
-                    <div className='hoc-orders-templates-document-panel-hidden' id='hoc-orders-document-panel3'></div>
-                    <div className='hoc-orders-templates-document-panel-hidden' id='hoc-orders-document-panel4'></div>
+                    <div className='hoc-orders-templates-document-panel hoc-orders-templates-document-panel-hidden' id='hoc-orders-document-panel2'></div>
+                    <div className='hoc-orders-templates-document-panel hoc-orders-templates-document-panel-hidden' id='hoc-orders-document-panel3'></div>
+                    <div className='hoc-orders-templates-document-panel hoc-orders-templates-document-panel-hidden' id='hoc-orders-document-panel4'></div>
                 </div>
             </div>
         </div>

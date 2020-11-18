@@ -111,6 +111,7 @@ export default function AdminAssociationPage() {
                 var studentGroup = document.createElement('th');
                 studentGroup.className = 'row-group';
                 studentGroup.innerText = student.studentGroup;
+                studentGroup.style.minWidth = '140px';
 
                 var studentScaFio = document.createElement('th');
                 studentScaFio.innerText = student.advisorFio;

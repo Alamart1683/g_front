@@ -57,7 +57,7 @@ export default function AdminOrdersPage() {
             orderNameImage.className = 'hoc-order-template-name-image';
             orderNameImage.src = orderImage;
             orderNameImage.style.position = 'relative';
-            orderNameImage.style.top = '-80px';
+            orderNameImage.style.top = '-65px';
 
             var orderTitles = document.createElement('div');
             orderTitles.className = 'hoc-order-titles-div';
@@ -105,6 +105,7 @@ export default function AdminOrdersPage() {
             }
             orderStatus.style.display = 'block';
             orderStatus.style.marginTop = '-6px';
+            orderStatus.style.marginBottom = '0px';
 
             var orderDownload = document.createElement('button');
             orderDownload.className = 'hoc-order-template-download-button light size-22';
@@ -112,7 +113,7 @@ export default function AdminOrdersPage() {
             orderDownload.innerText = "Сохранить";
             orderDownload.style.height = '120px'
             orderDownload.style.position = 'relative';
-            orderDownload.style.top = '-76px';
+            orderDownload.style.top = '-62px';
 
             var orderDelete = document.createElement('button');
             orderDelete.className = 'hoc-order-template-delete-button light size-22';
@@ -120,7 +121,7 @@ export default function AdminOrdersPage() {
             orderDelete.innerText = "Удалить";
             orderDelete.style.height = '120px'
             orderDelete.style.position = 'relative';
-            orderDelete.style.top = '-76px';
+            orderDelete.style.top = '-62px';
 
             orderName.appendChild(orderNameImage);
 
@@ -323,9 +324,9 @@ export default function AdminOrdersPage() {
 
                 <div className='hoc-orders-templates-document-panel-common'>
                     <div className='hoc-orders-templates-document-panel' id='hoc-orders-document-panel1'></div>
-                    <div className='hoc-orders-templates-document-panel-hidden' id='hoc-orders-document-panel2'></div>
-                    <div className='hoc-orders-templates-document-panel-hidden' id='hoc-orders-document-panel3'></div>
-                    <div className='hoc-orders-templates-document-panel-hidden' id='hoc-orders-document-panel4'></div>
+                    <div className='hoc-orders-templates-document-panel hoc-orders-templates-document-panel-hidden' id='hoc-orders-document-panel2'></div>
+                    <div className='hoc-orders-templates-document-panel hoc-orders-templates-document-panel-hidden' id='hoc-orders-document-panel3'></div>
+                    <div className='hoc-orders-templates-document-panel hoc-orders-templates-document-panel-hidden' id='hoc-orders-document-panel4'></div>
                 </div>
             </div>
             <Modal centered show={show} onHide={(e) => { setShow(false); }} className='dark'>

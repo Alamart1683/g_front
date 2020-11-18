@@ -242,9 +242,9 @@ export default function AdminTemplatesPage() {
 
             <div className='hoc-orders-templates-document-panel-common'> 
                 <div className='hoc-orders-templates-document-panel' id='hoc-templates-document-panel1'></div>
-                <div className='hoc-orders-templates-document-panel-hidden' id='hoc-templates-document-panel2'></div>
-                <div className='hoc-orders-templates-document-panel-hidden' id='hoc-templates-document-panel3'></div>
-                <div className='hoc-orders-templates-document-panel-hidden' id='hoc-templates-document-panel4'></div>
+                <div className='hoc-orders-templates-document-panel hoc-orders-templates-document-panel-hidden' id='hoc-templates-document-panel2'></div>
+                <div className='hoc-orders-templates-document-panel hoc-orders-templates-document-panel-hidden' id='hoc-templates-document-panel3'></div>
+                <div className='hoc-orders-templates-document-panel hoc-orders-templates-document-panel-hidden' id='hoc-templates-document-panel4'></div>
             </div>
             </div>
             <Modal centered show={show} onHide={(e) => { setShow(false); }} className='dark'>
