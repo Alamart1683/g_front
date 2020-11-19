@@ -76,8 +76,20 @@ export default function StudentTasksPage() {
     }, [longPPData]);
 
     useEffect(() => {
+        showPPVersions(PPData);
+    }, [PPData]);
+
+    useEffect(() => {
         showNirOtchetVersions(nirOtchetVersions);
     }, [nirOtchetVersions]);
+
+    useEffect(() => {
+        showLongPPOtchetVersions(longPPOtchetVersions);
+    }, [longPPOtchetVersions]);
+
+    useEffect(() => {
+        showPPOtchetVersions(PPOtchetVersions);
+    }, [PPOtchetVersions]);
 
     useEffect(() => {
         showExamples(examples);
@@ -134,7 +146,6 @@ export default function StudentTasksPage() {
                     setNirOtchetVersions(response.data);
                     break;
                 case 'Практика по получению знаний и умений':
-                    //console.log(response);
                     setLongPPOtchetVersions(response.data);
                     break;
                 case 'Преддипломная практика':
@@ -433,6 +444,148 @@ export default function StudentTasksPage() {
         }
     }
 
+    // Вывод версий задания ПП
+    function showPPVersions(longPPVersionArray) {
+        for (var i = 0; i < longPPVersionArray.length; i++) {
+            var item = longPPVersionArray[i];
+
+            var longPPVersion = document.createElement('div');
+            longPPVersion.className = 'nir-version light-background';
+            longPPVersion.id = 'pp-version-' + i;
+
+            var longPPVersionHeader = document.createElement('div');
+            longPPVersionHeader.className = 'nir-version-header dark-background';
+
+            // Имя версии
+            var versionName = document.createElement('p');
+            versionName.className = 'light size-24 nir-header-text';
+            versionName.innerText = 'Версия: ' + item.versionEditionDate;
+
+            // Статус версии
+            var versionStatus = document.createElement('p');
+            versionStatus.className = 'light size-24 nir-header-text';
+            versionStatus.innerText = 'Статус: ' + item.status;
+
+            // Кнопка отправить науч руку
+            var sendButton = document.createElement('button');
+            sendButton.className = 'dark size-24 nir-version-header-button pp-version-send-button';
+            sendButton.innerText = 'Отправить науч. руку';
+            sendButton.type = 'button';
+            // Запретить отсылку, если версия отправлена
+            if (item.status !== 'Не отправлено') {
+                sendButton.disabled = true;
+            }
+
+            // Кнопка скачать документ
+            var downloadButton = document.createElement('button');
+            downloadButton.className = 'dark size-24 nir-version-header-button pp-version-download-button';
+            downloadButton.innerText = 'Сохранить документ';
+            downloadButton.type = 'button';
+
+            // Кнопка удалить
+            var deleteButton = document.createElement('button');
+            deleteButton.className = 'dark size-24 nir-version-header-button pp-version-delete-button';
+            deleteButton.innerText = 'Удалить версию';
+            deleteButton.type = 'button';
+            // Запретить удаление, если версия отправлена
+            if (item.status !== 'Не отправлено' && item.status !== 'Замечания') {
+                deleteButton.disabled = true;
+            }
+
+            var clickableArea = document.createElement('div');
+            clickableArea.className = 'nir-version-clickable';
+
+            var longPPVersionContent = document.createElement('div');
+            longPPVersionContent.className = 'nir-version-content light-background';
+
+            var themeLabel = document.createElement('p');
+            themeLabel.className = 'dark size-21 nir-text-label';
+            themeLabel.innerText = 'Тема:';
+
+            // Тема нир
+            var themeArea = document.createElement('textarea');
+            themeArea.className = 'dark size-18 nir-text-area'
+            themeArea.disabled = true;
+            themeArea.value = item.theme;
+
+            var exploreLabel = document.createElement('p');
+            exploreLabel.className = 'dark size-21 nir-text-label';
+            exploreLabel.innerText = 'Изучить:';
+
+            // Изучить
+            var exploreArea = document.createElement('textarea');
+            exploreArea.className = 'dark size-18 nir-text-area'
+            exploreArea.disabled = true;
+            exploreArea.value = item.toExplore;
+
+            var createLabel = document.createElement('p');
+            createLabel.className = 'dark size-21 nir-text-label';
+            createLabel.innerText = 'Выполнить:';
+
+            // Выполнить
+            var createArea = document.createElement('textarea');
+            createArea.className = 'dark size-18 nir-text-area'
+            createArea.disabled = true;
+            createArea.value = item.toCreate;
+
+            var familiarizeLabel = document.createElement('p');
+            familiarizeLabel.className = 'dark size-21 nir-text-label2';
+            familiarizeLabel.innerText = 'Ознакомиться:';
+
+            // Ознакомиться
+            var familiarizeArea = document.createElement('textarea');
+            familiarizeArea.className = 'dark size-18 nir-text-area2'
+            familiarizeArea.disabled = true;
+            familiarizeArea.value = item.toFamiliarize;
+
+            var taskLabel = document.createElement('p');
+            taskLabel.className = 'dark size-21 nir-text-label2';
+            taskLabel.innerText = 'Дополнительное задание:';
+
+            // Доп задание
+            var taskArea = document.createElement('textarea');
+            taskArea.className = 'dark size-18 nir-text-area2'
+            taskArea.disabled = true;
+            taskArea.value = item.additionalTask;
+
+            var copyButton = document.createElement('button');
+            copyButton.className = 'light dark-background size-21 nir-copy-button pp-copy';
+            copyButton.innerText = 'Перенести значения в меню';
+            copyButton.type = 'button';
+
+            var rowDiv = document.createElement('div');
+            rowDiv.className = 'info-row';
+            var columnDiv1 = document.createElement('div');
+            columnDiv1.className = 'info-column';
+            var columnDiv2 = document.createElement('div');
+            columnDiv2.className = 'info-column';
+
+            clickableArea.appendChild(versionName);
+            clickableArea.appendChild(versionStatus);
+            longPPVersionHeader.appendChild(clickableArea);
+            longPPVersionHeader.appendChild(sendButton);
+            longPPVersionHeader.appendChild(downloadButton);
+            longPPVersionHeader.appendChild(deleteButton);
+            longPPVersion.appendChild(longPPVersionHeader);
+            columnDiv1.appendChild(themeLabel);
+            columnDiv1.appendChild(themeArea);
+            columnDiv1.appendChild(exploreLabel);
+            columnDiv1.appendChild(exploreArea);
+            columnDiv1.appendChild(createLabel);
+            columnDiv1.appendChild(createArea);
+            columnDiv2.appendChild(familiarizeLabel);
+            columnDiv2.appendChild(familiarizeArea);
+            columnDiv2.appendChild(taskLabel);
+            columnDiv2.appendChild(taskArea);
+            columnDiv2.appendChild(copyButton);
+            rowDiv.appendChild(columnDiv1);
+            rowDiv.appendChild(columnDiv2);
+            longPPVersionContent.appendChild(rowDiv);
+            longPPVersion.appendChild(longPPVersionContent);
+            document.getElementById('student-pp-task-version-div').appendChild(longPPVersion);
+        }
+    }
+
     // Вывод на экран версий отчетов НИР
     function showNirOtchetVersions(nirOtchetVersionArray) {
         if (nirOtchetVersionArray.length > 0) {
@@ -546,6 +699,232 @@ export default function StudentTasksPage() {
         }
     }
 
+    // Вывод на экран версий отчетов ПП...
+    function showLongPPOtchetVersions(nirOtchetVersionArray) {
+        if (nirOtchetVersionArray.length > 0) {
+            for (var i = 0; i < nirOtchetVersionArray.length; i++) {
+                var item = nirOtchetVersionArray[i];
+
+                var nirVersion = document.createElement('div');
+                nirVersion.className = 'nir-version light-background';
+                nirVersion.id = 'long-pp-otchet-version-' + i;
+
+                var nirVersionHeader = document.createElement('div');
+                nirVersionHeader.className = 'nir-version-header dark-background';
+
+                // Имя версии
+                var versionName = document.createElement('p');
+                versionName.className = 'light size-24 nir-header-text';
+                versionName.innerText = 'Версия: ' + item.versionEditionDate;
+
+                // Статус версии
+                var versionStatus = document.createElement('p');
+                versionStatus.className = 'light size-24 nir-header-text';
+                versionStatus.innerText = 'Статус: ' + item.status;
+
+                var clickableArea = document.createElement('div');
+                clickableArea.className = 'nir-version-clickable';
+
+                // Кнопка отправить науч руку
+                var sendButton = document.createElement('button');
+                sendButton.className = 'dark size-24 nir-version-header-button long-pp-otchet-send-button';
+                sendButton.innerText = 'Отправить науч. руку';
+                sendButton.type = 'button';
+                if (item.status !== 'Не отправлено') {
+                    sendButton.disabled = true;
+                }
+
+                // Кнопка скачать отчёт
+                var downloadButton = document.createElement('button');
+                downloadButton.className = 'dark size-24 nir-version-header-button long-pp-otchet-download-button';
+                downloadButton.innerText = 'Сохранить документ';
+                downloadButton.type = 'button';
+
+                // Кнопка удалить
+                var deleteButton = document.createElement('button');
+                deleteButton.className = 'dark size-24 nir-version-header-button long-pp-otchet-delete-button';
+                deleteButton.innerText = 'Удалить версию';
+                deleteButton.type = 'button';
+                if (item.status !== 'Не отправлено' && item.status !== 'Замечания') {
+                    deleteButton.disabled = true;
+                }
+
+                var nirVersionContent = document.createElement('div');
+                nirVersionContent.className = 'nir-version-content light-background';
+
+                var detailedLabel = document.createElement('p');
+                detailedLabel.className = 'dark size-21 nir-text-label';
+                detailedLabel.innerText = 'Подробное содержание:';
+
+                // Детальное содержание
+                var detailedArea = document.createElement('textarea');
+                detailedArea.className = 'dark size-18 nir-text-area'
+                detailedArea.disabled = true;
+                detailedArea.value = item.detailedContent;
+
+                var conclusionLabel = document.createElement('p');
+                conclusionLabel.className = 'dark size-21 nir-text-label';
+                conclusionLabel.innerText = 'Заключение научного руководителя:';
+
+                // Заключение
+                var conclusionArea = document.createElement('textarea');
+                conclusionArea.className = 'dark size-18 nir-text-area'
+                conclusionArea.disabled = true;
+                conclusionArea.value = item.advisorConclusion;
+
+                // Кнопка перенести в меню
+                var copyButton = document.createElement('button');
+                copyButton.className = 'light dark-background size-21 nir-copy-button long-pp-otchet-copy';
+                copyButton.id = 'long-pp-otchet-copy-' + i;
+                copyButton.innerText = 'Перенести значения в меню';
+                copyButton.type = 'button';
+                copyButton.style.marginBottom = '10px';
+                copyButton.style.marginTop = '10px';
+                copyButton.style.marginLeft = '500px';
+
+                var rowDiv = document.createElement('div');
+                rowDiv.className = 'info-row';
+                var columnDiv1 = document.createElement('div');
+                columnDiv1.className = 'info-column';
+                var columnDiv2 = document.createElement('div');
+                columnDiv2.className = 'info-column';
+
+                clickableArea.appendChild(versionName);
+                clickableArea.appendChild(versionStatus);
+                nirVersionHeader.appendChild(clickableArea);
+                nirVersionHeader.appendChild(sendButton);
+                nirVersionHeader.appendChild(downloadButton);
+                nirVersionHeader.appendChild(deleteButton);
+                nirVersion.appendChild(nirVersionHeader);
+
+                columnDiv1.appendChild(detailedLabel);
+                columnDiv1.appendChild(detailedArea);
+                columnDiv2.appendChild(conclusionLabel);
+                columnDiv2.appendChild(conclusionArea);
+                rowDiv.appendChild(columnDiv1);
+                rowDiv.appendChild(columnDiv2);
+                nirVersionContent.appendChild(rowDiv);
+                nirVersionContent.appendChild(copyButton);
+                nirVersion.appendChild(nirVersionContent);
+
+                document.getElementById('student-long-pp-otchet-version-div').appendChild(nirVersion);
+            }
+        }
+    }
+
+    // Вывод на экран версий отчетов ПП
+    function showPPOtchetVersions(nirOtchetVersionArray) {
+        if (nirOtchetVersionArray.length > 0) {
+            for (var i = 0; i < nirOtchetVersionArray.length; i++) {
+                var item = nirOtchetVersionArray[i];
+
+                var nirVersion = document.createElement('div');
+                nirVersion.className = 'nir-version light-background';
+                nirVersion.id = 'pp-otchet-version-' + i;
+
+                var nirVersionHeader = document.createElement('div');
+                nirVersionHeader.className = 'nir-version-header dark-background';
+
+                // Имя версии
+                var versionName = document.createElement('p');
+                versionName.className = 'light size-24 nir-header-text';
+                versionName.innerText = 'Версия: ' + item.versionEditionDate;
+
+                // Статус версии
+                var versionStatus = document.createElement('p');
+                versionStatus.className = 'light size-24 nir-header-text';
+                versionStatus.innerText = 'Статус: ' + item.status;
+
+                var clickableArea = document.createElement('div');
+                clickableArea.className = 'nir-version-clickable';
+
+                // Кнопка отправить науч руку
+                var sendButton = document.createElement('button');
+                sendButton.className = 'dark size-24 nir-version-header-button pp-otchet-send-button';
+                sendButton.innerText = 'Отправить науч. руку';
+                sendButton.type = 'button';
+                if (item.status !== 'Не отправлено') {
+                    sendButton.disabled = true;
+                }
+
+                // Кнопка скачать отчёт
+                var downloadButton = document.createElement('button');
+                downloadButton.className = 'dark size-24 nir-version-header-button pp-otchet-download-button';
+                downloadButton.innerText = 'Сохранить документ';
+                downloadButton.type = 'button';
+
+                // Кнопка удалить
+                var deleteButton = document.createElement('button');
+                deleteButton.className = 'dark size-24 nir-version-header-button pp-otchet-delete-button';
+                deleteButton.innerText = 'Удалить версию';
+                deleteButton.type = 'button';
+                if (item.status !== 'Не отправлено' && item.status !== 'Замечания') {
+                    deleteButton.disabled = true;
+                }
+
+                var nirVersionContent = document.createElement('div');
+                nirVersionContent.className = 'nir-version-content light-background';
+
+                var detailedLabel = document.createElement('p');
+                detailedLabel.className = 'dark size-21 nir-text-label';
+                detailedLabel.innerText = 'Подробное содержание:';
+
+                // Детальное содержание
+                var detailedArea = document.createElement('textarea');
+                detailedArea.className = 'dark size-18 nir-text-area'
+                detailedArea.disabled = true;
+                detailedArea.value = item.detailedContent;
+
+                var conclusionLabel = document.createElement('p');
+                conclusionLabel.className = 'dark size-21 nir-text-label';
+                conclusionLabel.innerText = 'Заключение научного руководителя:';
+
+                // Заключение
+                var conclusionArea = document.createElement('textarea');
+                conclusionArea.className = 'dark size-18 nir-text-area'
+                conclusionArea.disabled = true;
+                conclusionArea.value = item.advisorConclusion;
+
+                // Кнопка перенести в меню
+                var copyButton = document.createElement('button');
+                copyButton.className = 'light dark-background size-21 nir-copy-button pp-otchet-copy';
+                copyButton.id = 'pp-otchet-copy-' + i;
+                copyButton.innerText = 'Перенести значения в меню';
+                copyButton.type = 'button';
+                copyButton.style.marginBottom = '10px';
+                copyButton.style.marginTop = '10px';
+                copyButton.style.marginLeft = '500px';
+
+                var rowDiv = document.createElement('div');
+                rowDiv.className = 'info-row';
+                var columnDiv1 = document.createElement('div');
+                columnDiv1.className = 'info-column';
+                var columnDiv2 = document.createElement('div');
+                columnDiv2.className = 'info-column';
+
+                clickableArea.appendChild(versionName);
+                clickableArea.appendChild(versionStatus);
+                nirVersionHeader.appendChild(clickableArea);
+                nirVersionHeader.appendChild(sendButton);
+                nirVersionHeader.appendChild(downloadButton);
+                nirVersionHeader.appendChild(deleteButton);
+                nirVersion.appendChild(nirVersionHeader);
+
+                columnDiv1.appendChild(detailedLabel);
+                columnDiv1.appendChild(detailedArea);
+                columnDiv2.appendChild(conclusionLabel);
+                columnDiv2.appendChild(conclusionArea);
+                rowDiv.appendChild(columnDiv1);
+                rowDiv.appendChild(columnDiv2);
+                nirVersionContent.appendChild(rowDiv);
+                nirVersionContent.appendChild(copyButton);
+                nirVersion.appendChild(nirVersionContent);
+
+                document.getElementById('student-pp-otchet-version-div').appendChild(nirVersion);
+            }
+        }
+    }
+
     function getExamples() {
         axios({
             url: apiURL + '/document/view/templates/student',
@@ -642,8 +1021,22 @@ export default function StudentTasksPage() {
         formData.append('documentFormKind', 'Отчёт');
         formData.append('documentFormDescription', 'Пример отчёта');
         formData.append('documentFormViewRights', 'Я и мой научный руководитель');
-        formData.append('detailedContent', detailedDescription);
-        formData.append('advisorConclusion', conclusion);
+        switch (type) {
+            case 'Научно-исследовательская работа':
+                formData.append('detailedContent', detailedDescription);
+                formData.append('advisorConclusion', conclusion);
+                break;
+            case 'Практика по получению знаний и умений':
+                formData.append('detailedContent', detailedDescriptionLongPP);
+                formData.append('advisorConclusion', conclusionLongPP);
+                break;
+            case 'Преддипломная практика':
+                formData.append('detailedContent', detailedDescriptionPP);
+                formData.append('advisorConclusion', conclusionPP);
+                break;
+            default:
+                console.log('Неопознанный тип отчета')
+        }
         formData.append('file', file);
         axios({
             url: apiURL + '/student/document/report/upload',
@@ -654,8 +1047,8 @@ export default function StudentTasksPage() {
                 'Authorization': 'Bearer ' + authTokens.accessToken
             },
         }).then((response) => {
-            console.log(response);
-            //window.location.reload();
+            //console.log(response);
+            window.location.reload();
         }).catch(result => {
             console.log(result);
         });
@@ -664,9 +1057,8 @@ export default function StudentTasksPage() {
     $(function () {
 
         // Показ полей версии
-        $(document).on('click', '.nir-version-clickable', function (event) {
+        $(document).off().on('click', '.nir-version-clickable', function (event) {
             $(this).parent().parent().find('.nir-version-content').toggle();
-            event.stopImmediatePropagation();
         });
 
         // Скачать пример
@@ -792,8 +1184,8 @@ export default function StudentTasksPage() {
                     'Authorization': 'Bearer ' + authTokens.accessToken
                 },
             }).then((response) => {
-                console.log(response);
-                //window.location.reload(true);
+                //console.log(response);
+                window.location.reload(true);
             }).catch(result => {
                 console.log(result.data);
             });
@@ -837,6 +1229,82 @@ export default function StudentTasksPage() {
                 method: 'DELETE',
                 params: {
                     versionID: longPPData[arrayID].systemVersionID,
+                },
+                headers: {
+                    'Authorization': 'Bearer ' + authTokens.accessToken
+                },
+            }).then((response) => {
+                window.location.reload(true);
+            }).catch(result => {
+                console.log(result.data);
+            });
+        });
+
+        // Создание новой версии задания ПП
+        $('#make-pp-task-button').off().on('click', function () {
+            makeTaskVersion('Преддипломная практика');
+        });
+
+        // Послать версию задания НИР науч руку
+        $('.pp-version-send-button').off().on('click', function () {
+            //console.log('sent');
+            var versionId = $(this).parent().parent().attr('id');
+            var arrayID = versionId.split('-')[2];
+            console.log(arrayID);
+            axios({
+                url: apiURL + '/student/document/management/task/nir/send',
+                method: 'POST',
+                params: {
+                    'newStatus': 'Рассматривается',
+                    'versionID': PPData[arrayID].systemVersionID,
+                },
+                headers: {
+                    'Authorization': 'Bearer ' + authTokens.accessToken
+                },
+            }).then((response) => {
+                window.location.reload(true);
+            }).catch(result => {
+                console.log(result.data);
+            });
+        });
+
+        // Скачать версию задания НИР
+        $('.pp-version-download-button').off().on('click', function () {
+            var versionId = $(this).parent().parent().attr('id');
+            var arrayID = versionId.split('-')[2];
+            axios({
+                url: apiURL + '/document/download/version',
+                method: 'GET',
+                responseType: 'blob',
+                params: {
+                    versionID: PPData[arrayID].systemVersionID,
+                },
+                headers: {
+                    'Authorization': 'Bearer ' + authTokens.accessToken
+                },
+            }).then((response) => {
+                const url = window.URL.createObjectURL(new Blob([response.data]));
+                const link = document.createElement('a');
+                link.href = url;
+                link.setAttribute('download', 'Задание на ПП.docx');
+                document.body.appendChild(link);
+                link.click();
+
+            }).catch(result => {
+                console.log(result.data);
+            });
+        });
+
+        // Удалить версию задания НИР
+        $('.pp-version-delete-button').off().on('click', function () {
+            var versionId = $(this).parent().parent().attr('id');
+            var arrayID = versionId.split('-')[2];
+            console.log(arrayID);
+            axios({
+                url: apiURL + '/student/document/task/version/delete',
+                method: 'DELETE',
+                params: {
+                    versionID: PPData[arrayID].systemVersionID,
                 },
                 headers: {
                     'Authorization': 'Bearer ' + authTokens.accessToken
@@ -927,12 +1395,161 @@ export default function StudentTasksPage() {
         });
 
         // Создать версию отчёта по ПП...
-        $('#make-long-pp-otchet-button').off().on('click', function() {
+        $('#make-long-pp-otchet-button').off().on('click', function () {
             $('#long-pp-otchet-file-input').trigger('click');
         });
 
-        // TODO
-        
+        // Отправить отчёт ПП... науч руку
+        $('.long-pp-otchet-send-button').off().on('click', function () {
+            var versionId = $(this).parent().parent().attr('id');
+            var arrayID = versionId.split('-')[4];
+            axios({
+                url: apiURL + '/student/document/management/report/nir/send',
+                method: 'POST',
+                params: {
+                    'newStatus': 'Рассматривается',
+                    'versionID': longPPOtchetVersions[arrayID].systemVersionID,
+                },
+                headers: {
+                    'Authorization': 'Bearer ' + authTokens.accessToken
+                },
+            }).then((response) => {
+                //console.log(response);
+                window.location.reload(true);
+            }).catch(result => {
+                console.log(result);
+            });
+        });
+
+        // Скачать отчёт ПП...
+        $('.long-pp-otchet-download-button').off().on('click', function () {
+            var versionId = $(this).parent().parent().attr('id');
+            console.log($(this).parent().parent());
+            var arrayID = versionId.split('-')[4];
+
+            axios({
+                url: apiURL + '/student/document/download/report',
+                method: 'GET',
+                responseType: 'blob',
+                params: {
+                    'type': 'Научно-исследовательская работа',
+                    'reportVersion': longPPOtchetVersions[arrayID].systemVersionID,
+                },
+                headers: {
+                    'Authorization': 'Bearer ' + authTokens.accessToken
+                },
+            }).then((response) => {
+                const url = window.URL.createObjectURL(new Blob([response.data]));
+                const link = document.createElement('a');
+                link.href = url;
+                link.setAttribute('download', 'Отчёт по ПпППУиОПД.docx');
+                document.body.appendChild(link);
+                link.click();
+
+            }).catch(result => {
+                console.log(result.data);
+            });
+        });
+
+        // Удалить отчёт ПП...
+        $('.long-pp-otchet-delete-button').off().on('click', function () {
+            console.log('delete otchet');
+            var versionId = $(this).parent().parent().attr('id');
+            var arrayID = versionId.split('-')[4];
+            axios({
+                url: apiURL + '/student/document/report/version/delete',
+                method: 'DELETE',
+                params: {
+                    versionID: longPPOtchetVersions[arrayID].systemVersionID,
+                },
+                headers: {
+                    'Authorization': 'Bearer ' + authTokens.accessToken
+                },
+            }).then((response) => {
+                window.location.reload(true);
+            }).catch(result => {
+                console.log(result.data);
+            });
+        });
+
+        // Создать версию отчёта по ПП
+        $('#make-pp-otchet-button').off().on('click', function () {
+            $('#pp-otchet-file-input').trigger('click');
+        });
+
+        // Отправить отчёт ПП науч руку
+        $('.pp-otchet-send-button').off().on('click', function () {
+            var versionId = $(this).parent().parent().attr('id');
+            var arrayID = versionId.split('-')[3];
+            axios({
+                url: apiURL + '/student/document/management/report/nir/send',
+                method: 'POST',
+                params: {
+                    'newStatus': 'Рассматривается',
+                    'versionID': PPOtchetVersions[arrayID].systemVersionID,
+                },
+                headers: {
+                    'Authorization': 'Bearer ' + authTokens.accessToken
+                },
+            }).then((response) => {
+                //console.log(response);
+                window.location.reload(true);
+            }).catch(result => {
+                console.log(result);
+            });
+        });
+
+        // Скачать отчёт ПП
+        $('.pp-otchet-download-button').off().on('click', function () {
+            var versionId = $(this).parent().parent().attr('id');
+            console.log($(this).parent().parent());
+            var arrayID = versionId.split('-')[3];
+
+            axios({
+                url: apiURL + '/student/document/download/report',
+                method: 'GET',
+                responseType: 'blob',
+                params: {
+                    'type': 'Научно-исследовательская работа',
+                    'reportVersion': PPOtchetVersions[arrayID].systemVersionID,
+                },
+                headers: {
+                    'Authorization': 'Bearer ' + authTokens.accessToken
+                },
+            }).then((response) => {
+                const url = window.URL.createObjectURL(new Blob([response.data]));
+                const link = document.createElement('a');
+                link.href = url;
+                link.setAttribute('download', 'Отчёт по ПП.docx');
+                document.body.appendChild(link);
+                link.click();
+
+            }).catch(result => {
+                console.log(result.data);
+            });
+        });
+
+        // Удалить отчёт ПП
+        $('.pp-otchet-delete-button').off().on('click', function () {
+            console.log('delete otchet');
+            var versionId = $(this).parent().parent().attr('id');
+            var arrayID = versionId.split('-')[3];
+            axios({
+                url: apiURL + '/student/document/report/version/delete',
+                method: 'DELETE',
+                params: {
+                    versionID: PPOtchetVersions[arrayID].systemVersionID,
+                },
+                headers: {
+                    'Authorization': 'Bearer ' + authTokens.accessToken
+                },
+            }).then((response) => {
+                window.location.reload(true);
+            }).catch(result => {
+                console.log(result);
+            });
+        });
+
         // Функция кнопки "перенести в меню" для задания НИР
         $('.nir-copy').off().on('click', function () {
             var versionId = $(this).parent().parent().parent().parent().attr('id');
@@ -945,7 +1562,7 @@ export default function StudentTasksPage() {
             setAdditionalTask(nirVersions[arrayID].additionalTask);
         });
 
-        // Функция кнопки "перенести в меню" для задания НИР
+        // Функция кнопки "перенести в меню" для задания ПП...
         $('.long-pp-copy').off().on('click', function () {
             var versionId = $(this).parent().parent().parent().parent().attr('id');
             var arrayID = versionId.split('-')[3];
@@ -957,6 +1574,18 @@ export default function StudentTasksPage() {
             setAdditionalTask(longPPData[arrayID].additionalTask);
         });
 
+        // Функция кнопки "перенести в меню" для задания ПП...
+        $('.pp-copy').off().on('click', function () {
+            var versionId = $(this).parent().parent().parent().parent().attr('id');
+            var arrayID = versionId.split('-')[2];
+
+            setStudentTheme(PPData[arrayID].theme);
+            setToExplore(PPData[arrayID].toExplore);
+            setToCreate(PPData[arrayID].toCreate);
+            setToFamiliarize(PPData[arrayID].toFamiliarize);
+            setAdditionalTask(PPData[arrayID].additionalTask);
+        });
+
         // Функция кнопки "перенести в меню" для отчета НИР
         $('.nir-otchet-copy').off().on('click', function () {
             var id = $(this).attr('id').split('-')[3];
@@ -964,7 +1593,23 @@ export default function StudentTasksPage() {
             setDetailedDescription(nirOtchetVersions[id].detailedContent);
             setConclusion(nirOtchetVersions[id].advisorConclusion);
         });
-        
+
+        // Функция кнопки "перенести в меню" для отчета ПП...
+        $('.long-pp-otchet-copy').off().on('click', function () {
+            var id = $(this).attr('id').split('-')[4];
+
+            setDetailedDescriptionLongPP(longPPOtchetVersions[id].detailedContent);
+            setConclusionLongPP(longPPOtchetVersions[id].advisorConclusion);
+        });
+
+        // Функция кнопки "перенести в меню" для отчета ПП
+        $('.pp-otchet-copy').off().on('click', function () {
+            var id = $(this).attr('id').split('-')[3];
+
+            setDetailedDescriptionPP(PPOtchetVersions[id].detailedContent);
+            setConclusionPP(PPOtchetVersions[id].advisorConclusion);
+        });
+
     });
 
     return (
@@ -1016,8 +1661,8 @@ export default function StudentTasksPage() {
                             </Accordion>
                         </div>
                     </div>
-
                     <div className='info-break-div'>&nbsp;</div>
+
                     <Tabs defaultActiveKey='none' onSelect={() => { setTimeout(function () { window.scrollTo(0, 2000); }, 1); }} className='info-form-subtab light-background container-fluid'>
                         <Tab eventKey='info11' title={
                             <p className='size-30 light dark-background info-form-subtab-title'>
@@ -1195,7 +1840,7 @@ export default function StudentTasksPage() {
 
                             <p className='size-30 dark info-sub-tab-title'>Отчет о прохождении ПпППУиОПД</p>
 
-                            <div id='student-nir-otchet-version-div' className='student-nir-task-version-div light-background'></div>
+                            <div id='student-long-pp-otchet-version-div' className='student-nir-task-version-div light-background'></div>
 
                             <div className='info-sub-tab-div'>
 
@@ -1265,6 +1910,105 @@ export default function StudentTasksPage() {
                         </div>
                     </div>
                     <div className='info-break-div'>&nbsp;</div>
+
+                    <Tabs defaultActiveKey='none' onSelect={() => { setTimeout(function () { window.scrollTo(0, 2000); }, 1); }} className='info-form-subtab light-background container-fluid'>
+                        <Tab eventKey='info21' title={
+                            <p className='size-30 light dark-background info-form-subtab-title'>
+                                <Image src={iconDocument} thumbnail className='dark-background info-form-subtab-icon icon-small' />
+                                Задание на ПП
+                            </p>
+                        }>
+                            <div className='info-sub-tab-div'>
+
+                                <div className='info-break-div' style={{ marginBottom: '20px' }}>&nbsp;</div>
+
+                                <p className='size-30 dark info-sub-tab-title'>Задание на ПП</p>
+
+                                <div id='student-pp-task-version-div' className='student-nir-task-version-div light-background'></div>
+
+                                <div className='info-row'>
+                                    <div className='info-column'>
+                                        <Form.Label column className="size-21 dark info-input-label">Тема:</Form.Label>
+                                        <textarea maxLength='1024' value={studentTheme} onChange={(e) => { setStudentTheme(e.target.value); }} className='dark size-24 info-input-area' />
+
+                                        <Form.Label column className="size-21 dark info-input-label">Изучить:</Form.Label>
+                                        <textarea maxLength='2048' value={toExplore} onChange={(e) => { setToExplore(e.target.value); }} className='dark size-24 info-input-area' />
+
+                                        <Form.Label column className="size-21 dark info-input-label">Практически выполнить:</Form.Label>
+                                        <textarea maxLength='2048' value={toCreate} onChange={(e) => { setToCreate(e.target.value); }} className='dark size-24 info-input-area' />
+                                    </div>
+
+                                    <div className='info-column'>
+                                        <Form.Label column className="size-21 dark info-input-label">Ознакомиться:</Form.Label>
+                                        <textarea maxLength='2048' value={toFamiliarize} onChange={(e) => { setToFamiliarize(e.target.value); }} className='dark size-24 info-input-area' />
+
+                                        <Form.Label column className="size-21 dark info-input-label">Дополнительное задание:</Form.Label>
+                                        <textarea maxLength='2048' value={additionalTask} onChange={(e) => { setAdditionalTask(e.target.value); }} className='dark size-24 info-input-area' />
+
+                                        <button type='button' id='make-pp-task-button' className='size-30 light dark-background info-button-1' style={{ height: '100px' }}>
+                                            <Image src={iconDocument} thumbnail className='dark-background thumbnail-icon' style={{ position: 'relative', top: '-25px' }} />
+                                            <div style={{ display: 'inline-block' }}><p style={{ marginBottom: '0px' }}>Создать новую версию<br />задания на ПП</p></div>
+                                        </button>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </Tab>
+                        <Tab eventKey='info22' title={
+                            <p className='size-30 light dark-background info-form-subtab-title' style={{ marginLeft: '880px' }}>
+                                <Image src={iconDocument} thumbnail className='dark-background info-form-subtab-icon icon-small' />
+                                Отчет о<br />прохождении ПП
+                            </p>
+                        }>
+                            <div className='info-break-div' style={{ marginBottom: '20px' }}>&nbsp;</div>
+
+                            <p className='size-30 dark info-sub-tab-title'>Отчет о прохождении ПП</p>
+
+                            <div id='student-pp-otchet-version-div' className='student-nir-task-version-div light-background'></div>
+
+                            <div className='info-sub-tab-div'>
+
+                                <div className='info-row'>
+                                    <div className='info-column'>
+                                        <Form.Label column className='size-21 dark info-input-label'>Детальное содержание:</Form.Label>
+                                        <textarea id='pp-otchet-description' maxLength='1024' value={detailedDescriptionPP} onChange={(e) => {
+                                            setDetailedDescriptionPP(e.target.value);
+                                            if ($('#pp-otchet-description').val() === '' || $('#pp-otchet-conclusion').val() === '') {
+                                                document.getElementById('make-pp-otchet-button').disabled = true;
+                                            }
+                                            else {
+                                                document.getElementById('make-pp-otchet-button').disabled = false;
+                                            }
+                                        }} className='dark size-24 info-input-area' />
+                                    </div>
+
+                                    <div className='info-column'>
+                                        <Form.Label column className='size-21 dark info-input-label'>Заключение научного руководителя:</Form.Label>
+                                        <textarea id='pp-otchet-conclusion' maxLength='2048' value={conclusionPP} onChange={(e) => {
+                                            setConclusionPP(e.target.value);
+                                            if ($('#pp-otchet-description').val() === '' || $('#pp-otchet-conclusion').val() === '') {
+                                                document.getElementById('make-pp-otchet-button').disabled = true;
+                                            }
+                                            else {
+                                                document.getElementById('make-pp-otchet-button').disabled = false;
+                                            }
+                                        }} className='dark size-24 info-input-area' />
+                                    </div>
+                                </div>
+
+                                <button type='button' disabled id='make-pp-otchet-button' className='size-30 light dark-background info-button-inline-block' style={{ marginLeft: '425px', marginTop: '20px' }}>
+                                    <Image src={iconProject} thumbnail className='dark-background thumbnail-icon' />
+                                        Сформировать и загрузить версию отчета
+                                </button>
+                                <input id='pp-otchet-file-input' type='file' style={{ display: 'none' }} onChange={(e) => {
+                                    console.log(e.target.files);
+                                    if (e.target.files.length !== 0) {
+                                        makeOtchetVersion(e.target.files[0], 'Преддипломная практика');
+                                    }
+                                }} ></input>
+                            </div>
+                        </Tab>
+                    </Tabs>
                 </Tab>
                 <Tab eventKey='info4' title={<Image id='image4' src={infoBlock4} thumbnail className='info-form-image' style={{ borderTopLeftRadius: '0px', borderBottomLeftRadius: '0px' }} />}>
                     <div className='dark info-task-block'>

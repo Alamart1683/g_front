@@ -25,7 +25,6 @@ export default function SciAdvisorStudentsDocsPage() {
     }
 
     function getStudentDocs() {
-        //console.log('getfiles');
         axios({
             url: apiURL + '/scientific_advisor/document/view/students',
             method: 'GET',
@@ -34,8 +33,7 @@ export default function SciAdvisorStudentsDocsPage() {
             },
         }).then((response) => {
             setDocumentData(response.data);
-            console.log(response.data);
-
+            //console.log(response.data);
         }).catch(result => {
             console.log(result.data);
         });
@@ -43,6 +41,7 @@ export default function SciAdvisorStudentsDocsPage() {
 
     // TODO handle new file type
     function showFiles(documentArray) {
+        console.log(documentArray);
         for (var i = 0; i < documentArray.length; i++) {
             var documentItem;
 
@@ -74,12 +73,12 @@ export default function SciAdvisorStudentsDocsPage() {
                             documentName = 'Задание по ПпППУиОПД';
                             documentItem = documentArray[i].taskVersions;
                             break;
-                        case 'Отчет':
+                        case 'Отчёт':
                             documentName = 'Отчет по ПпППУиОПД';
                             documentItem = documentArray[i].reportVersions;
                             break;
                         default:
-                            documentName = 'Неопознанный документ по практике по получению знаний и умений';
+                            documentName = 'Неопознанный документ по ПпППУиОПД';
                     }
                     break;
                 case 'Преддипломная практика':
@@ -88,12 +87,12 @@ export default function SciAdvisorStudentsDocsPage() {
                             documentName = 'Задание по преддипломной практике';
                             documentItem = documentArray[i].taskVersions;
                             break;
-                        case 'Отчет':
+                        case 'Отчёт':
                             documentName = 'Отчет по преддипломной практике';
                             documentItem = documentArray[i].reportVersions;
                             break;
                         default:
-                            documentName = 'Неопознанный документ по преддипломной практике';
+                            documentName = 'Неопознанный документ по ПП';
                     }
                     break;
                 case 'ВКР':
@@ -111,10 +110,10 @@ export default function SciAdvisorStudentsDocsPage() {
                 //console.log(documentVersion);
 
                 var versionDiv = document.createElement('div');
-                versionDiv.className = 'sca-scu-version-div ' + 
-                                        documentType.replace(/\s+/g, '-').toLowerCase() + 
-                                        ' ' + 
-                                        documentKind.replace(/\s+/g, '-').toLowerCase();
+                versionDiv.className = 'sca-scu-version-div ' +
+                    documentType.replace(/\s+/g, '-').toLowerCase() +
+                    ' ' +
+                    documentKind.replace(/\s+/g, '-').toLowerCase();
                 versionDiv.id = 'version-' + i + '-' + j;
 
                 var titlesDiv = document.createElement('div');
@@ -182,7 +181,7 @@ export default function SciAdvisorStudentsDocsPage() {
                 deleteButton.innerText = 'Удалить\nверсию';
                 deleteButton.type = 'button';
                 // Запретить удаление, если версия отправлена
-                if (documentVersion.status !== 'Не отправлено' && documentVersion.status !== 'Замечания' && documentVersion.status !== 'Рассматривается') {
+                if (documentVersion.status !== 'Не отправлено' && documentVersion.status !== 'Замечания') {
                     deleteButton.disabled = true;
                 }
 
@@ -235,8 +234,7 @@ export default function SciAdvisorStudentsDocsPage() {
         }
     }
 
-    function downloadNirTask(versionId) {
-        console.log('download nir task');
+    function downloadTask(versionId, type) {
         axios({
             url: apiURL + '/document/download/version',
             method: 'GET',
@@ -251,7 +249,19 @@ export default function SciAdvisorStudentsDocsPage() {
             const url = window.URL.createObjectURL(new Blob([response.data]));
             const link = document.createElement('a');
             link.href = url;
-            link.setAttribute('download', 'Задание на НИР.docx');
+            switch (type) {
+                case 'Научно-исследовательская работа':
+                    link.setAttribute('download', 'Задание на НИР.docx');
+                    break;
+                case 'Практика по получению знаний и умений':
+                    link.setAttribute('download', 'Задание на ПпППУиОПД.docx');
+                    break;
+                case 'Преддипломная практика':
+                    link.setAttribute('download', 'Задание на ПП.docx');
+                    break;
+                default:
+                    link.setAttribute('download', 'Неопознанный документ.docx');
+            }
             document.body.appendChild(link);
             link.click();
         }).catch(result => {
@@ -259,7 +269,7 @@ export default function SciAdvisorStudentsDocsPage() {
         });
     }
 
-    function downloadNirReport(versionId, studentId) {
+    function downloadReport(versionId, studentId, type) {
         console.log('download nir report');
         axios({
             url: apiURL + '/scientific_advisor/document/download/report',
@@ -277,7 +287,19 @@ export default function SciAdvisorStudentsDocsPage() {
             const url = window.URL.createObjectURL(new Blob([response.data]));
             const link = document.createElement('a');
             link.href = url;
-            link.setAttribute('download', 'Отчёт по НИР.docx');
+            switch (type) {
+                case 'Научно-исследовательская работа':
+                    link.setAttribute('download', 'Отчёт по НИР.docx');
+                    break;
+                case 'Практика по получению знаний и умений':
+                    link.setAttribute('download', 'Отчёт по ПпППУиОПД.docx');
+                    break;
+                case 'Преддипломная практика':
+                    link.setAttribute('download', 'Отчёт по ПП.docx');
+                    break;
+                default:
+                    link.setAttribute('download', 'Неопознанный документ.docx');
+            }
             document.body.appendChild(link);
             link.click();
 
@@ -286,7 +308,7 @@ export default function SciAdvisorStudentsDocsPage() {
         });
     }
 
-    function deleteNirTask(studentId, versionId) {
+    function deleteTask(studentId, versionId) {
         console.log('delete nir task');
         axios({
             url: apiURL + '/scientific_advisor/document/task/version/delete',
@@ -306,7 +328,7 @@ export default function SciAdvisorStudentsDocsPage() {
         });
     }
 
-    function deleteNirReport(studentId, versionId) {
+    function deleteReport(studentId, versionId) {
         console.log('delete nir report');
         axios({
             url: apiURL + '/scientific_advisor/document/report/version/delete',
@@ -319,14 +341,14 @@ export default function SciAdvisorStudentsDocsPage() {
                 'Authorization': 'Bearer ' + authTokens.accessToken
             },
         }).then((response) => {
+            //console.log(response);
             window.location.reload(true);
         }).catch(result => {
             console.log(result.data);
         });
     }
 
-    function gradeNirTask(versionId, status) {
-        console.log('grade nir task' + status);
+    function gradeTask(versionId, status) {
         axios({
             url: apiURL + '/scientific_advisor/document/management/task/nir/check',
             method: 'POST',
@@ -346,8 +368,7 @@ export default function SciAdvisorStudentsDocsPage() {
         });
     }
 
-    function gradeNirReport(versionId, status) {
-        console.log('grade nir report' + status);
+    function gradeReport(versionId, status) {
         axios({
             url: apiURL + '/scientific_advisor/document/management/report/nir/check',
             method: 'POST',
@@ -382,7 +403,7 @@ export default function SciAdvisorStudentsDocsPage() {
                     case 'Отчёт':
                         return documentData[arrayId1].reportVersions[arrayId2].systemVersionID;
                     default:
-                        console.log('getting version id error');
+                        console.log('getting nir version id error');
                         return -1;
                 }
             case 'Практика по получению знаний и умений':
@@ -392,7 +413,7 @@ export default function SciAdvisorStudentsDocsPage() {
                     case 'Отчёт':
                         return documentData[arrayId1].reportVersions[arrayId2].systemVersionID;
                     default:
-                        console.log('getting version id error');
+                        console.log('getting ppoid version id error');
                         return -1;
                 }
             case 'Преддипломная практика':
@@ -402,18 +423,18 @@ export default function SciAdvisorStudentsDocsPage() {
                     case 'Отчёт':
                         return documentData[arrayId1].reportVersions[arrayId2].systemVersionID;
                     default:
-                        console.log('getting version id error');
+                        console.log('getting pp version id error');
                         return -1;
                 }
             case 'ВКР':
                 switch (documentKind) {
                     default:
-                        console.log('getting version id error');
+                        console.log('getting vkr version id error');
                         return -1;
                 }
             default:
                 console.log('getting version id error');
-                        return -1;
+                return -1;
         }
     }
 
@@ -430,38 +451,12 @@ export default function SciAdvisorStudentsDocsPage() {
             var arrayID1 = documentId.split('-')[1];
             var arrayID2 = documentId.split('-')[2];
             var versionId = getVersionId(arrayID1, arrayID2);
-            switch (documentData[arrayID1].documentType) {
-                case 'Научно-исследовательская работа':
-                    switch (documentData[arrayID1].documentKind) {
-                        case 'Задание':
-                            //TODO
-                            gradeNirTask(versionId, 'Одобрено');
-                            break;
-                        case 'Отчёт':
-                            //TODO
-                            gradeNirReport(versionId, 'Одобрено');
-                            break;
-                        default:
-                            console.log('deleteError');
-                    }
+            switch (documentData[arrayID1].documentKind) {
+                case 'Задание':
+                    gradeTask(versionId, 'Одобрено');
                     break;
-                case 'Практика по получению знаний и умений':
-                    switch (documentData[arrayID1].documentKind) {
-                        default:
-                            console.log('deleteError');
-                    }
-                    break;
-                case 'Преддипломная практика':
-                    switch (documentData[arrayID1].documentKind) {
-                        default:
-                            console.log('deleteError');
-                    }
-                    break;
-                case 'ВКР':
-                    switch (documentData[arrayID1].documentKind) {
-                        default:
-                            console.log('deleteError');
-                    }
+                case 'Отчёт':
+                    gradeReport(versionId, 'Одобрено');
                     break;
                 default:
                     console.log('deleteError');
@@ -475,40 +470,17 @@ export default function SciAdvisorStudentsDocsPage() {
             var arrayID1 = documentId.split('-')[1];
             var arrayID2 = documentId.split('-')[2];
             var versionId = getVersionId(arrayID1, arrayID2);
-            switch (documentData[arrayID1].documentType) {
-                case 'Научно-исследовательская работа':
-                    switch (documentData[arrayID1].documentKind) {
-                        case 'Задание':
-                            gradeNirTask(versionId, 'Замечания');
-                            break;
-                        case 'Отчёт':
-                            gradeNirReport(versionId, 'Замечания');
-                            break;
-                        default:
-                            console.log('deleteError');
-                    }
+            switch (documentData[arrayID1].documentKind) {
+                case 'Задание':
+                    gradeTask(versionId, 'Замечания');
                     break;
-                case 'Практика по получению знаний и умений':
-                    switch (documentData[arrayID1].documentKind) {
-                        default:
-                            console.log('deleteError');
-                    }
-                    break;
-                case 'Преддипломная практика':
-                    switch (documentData[arrayID1].documentKind) {
-                        default:
-                            console.log('deleteError');
-                    }
-                    break;
-                case 'ВКР':
-                    switch (documentData[arrayID1].documentKind) {
-                        default:
-                            console.log('deleteError');
-                    }
+                case 'Отчёт':
+                    gradeReport(versionId, 'Замечания');
                     break;
                 default:
                     console.log('deleteError');
             }
+
         });
 
         // TODO handle new document types
@@ -518,41 +490,18 @@ export default function SciAdvisorStudentsDocsPage() {
             var arrayID1 = documentId.split('-')[1];
             var arrayID2 = documentId.split('-')[2];
             var versionId = getVersionId(arrayID1, arrayID2);
-            var studentId = documentData[arrayID1].systemCreatorID
-            switch (documentData[arrayID1].documentType) {
-                case 'Научно-исследовательская работа':
-                    switch (documentData[arrayID1].documentKind) {
-                        case 'Задание':
-                            deleteNirTask(studentId, versionId);
-                            break;
-                        case 'Отчёт':
-                            deleteNirReport(studentId, versionId);
-                            break;
-                        default:
-                            console.log('deleteError');
-                    }
+            var studentId = documentData[arrayID1].systemCreatorID;
+            switch (documentData[arrayID1].documentKind) {
+                case 'Задание':
+                    deleteTask(studentId, versionId);
                     break;
-                case 'Практика по получению знаний и умений':
-                    switch (documentData[arrayID1].documentKind) {
-                        default:
-                            console.log('deleteError');
-                    }
-                    break;
-                case 'Преддипломная практика':
-                    switch (documentData[arrayID1].documentKind) {
-                        default:
-                            console.log('deleteError');
-                    }
-                    break;
-                case 'ВКР':
-                    switch (documentData[arrayID1].documentKind) {
-                        default:
-                            console.log('deleteError');
-                    }
+                case 'Отчёт':
+                    deleteReport(studentId, versionId);
                     break;
                 default:
                     console.log('deleteError');
             }
+
         });
 
         // TODO handle new document types
@@ -568,11 +517,11 @@ export default function SciAdvisorStudentsDocsPage() {
                     switch (documentData[arrayID1].documentKind) {
                         case 'Задание':
                             //console.log(versionId);
-                            downloadNirTask(versionId);
+                            downloadTask(versionId, 'Научно-исследовательская работа');
                             break;
                         case 'Отчёт':
                             //console.log(versionId);
-                            downloadNirReport(versionId, studentId);
+                            downloadReport(versionId, studentId, 'Научно-исследовательская работа');
                             break;
                         default:
                             console.log('downloadError');
@@ -580,12 +529,28 @@ export default function SciAdvisorStudentsDocsPage() {
                     break;
                 case 'Практика по получению знаний и умений':
                     switch (documentData[arrayID1].documentKind) {
+                        case 'Задание':
+                            //console.log(versionId);
+                            downloadTask(versionId, 'Практика по получению знаний и умений');
+                            break;
+                        case 'Отчёт':
+                            //console.log(versionId);
+                            downloadReport(versionId, studentId, 'Практика по получению знаний и умений');
+                            break;
                         default:
                             console.log('downloadError');
                     }
                     break;
                 case 'Преддипломная практика':
                     switch (documentData[arrayID1].documentKind) {
+                        case 'Задание':
+                            //console.log(versionId);
+                            downloadTask(versionId, 'Преддипломная практика');
+                            break;
+                        case 'Отчёт':
+                            //console.log(versionId);
+                            downloadReport(versionId, studentId, 'Преддипломная практика');
+                            break;
                         default:
                             console.log('downloadError');
                     }
@@ -601,19 +566,19 @@ export default function SciAdvisorStudentsDocsPage() {
             }
         });
 
-        $('#checkNir').off().on('click', function(event) {
+        $('#checkNir').off().on('click', function (event) {
             $('.научно-исследовательская-работа').toggleClass('filter-nir');
         });
 
-        $('#checkLongPP').off().on('click', function(event) {
+        $('#checkLongPP').off().on('click', function (event) {
             $('.практика-по-получению-знаний-и-умений').toggleClass('filter-long-pp');
         });
 
-        $('#checkPP').off().on('click', function(event) {
+        $('#checkPP').off().on('click', function (event) {
             $('.преддипломная-практика').toggleClass('filter-pp');
         });
 
-        $('#checkVkr').off().on('click', function(event) {
+        $('#checkVkr').off().on('click', function (event) {
             $('.вкр').toggleClass('filter-vkr');
         });
     });
