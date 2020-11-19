@@ -397,6 +397,10 @@ export default function SciAdvisorStudentsDocsPage() {
                 }
             case 'Преддипломная практика':
                 switch (documentKind) {
+                    case 'Задание':
+                        return documentData[arrayId1].taskVersions[arrayId2].systemVersionID;
+                    case 'Отчёт':
+                        return documentData[arrayId1].reportVersions[arrayId2].systemVersionID;
                     default:
                         console.log('getting version id error');
                         return -1;

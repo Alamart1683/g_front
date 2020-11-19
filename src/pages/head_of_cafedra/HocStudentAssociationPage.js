@@ -94,6 +94,7 @@ export default function HocStudentAssociationPage() {
             studentFio.className = 'student-fio';
 
             var studentStatus = document.createElement('th');
+            studentStatus.className = 'student-status';
             if (student.studentIsConfirmed) {
                 studentStatus.innerText = 'Подтвержден';
             }
@@ -106,6 +107,9 @@ export default function HocStudentAssociationPage() {
             confirmButton.className = 'hoc-confirm-student-button';
             confirmButton.innerText = 'Подтвердить';
             confirmButton.id = 'confirm-student-' +i;
+            if (student.studentIsConfirmed || student.advisorFio === 'Не назначен') {
+                confirmButton.disabled = true;
+            }
 
             studentRow.appendChild(studentNum);
             studentRow.appendChild(studentFio);
@@ -187,10 +191,10 @@ export default function HocStudentAssociationPage() {
     $(function () {
         $('#confirm-button').off().on('click', function() {
             for (var i = 0; i < studentData.length; i++) {
-                if (!studentData[i].studentIsConfirmed) {
+                if (!studentData[i].studentIsConfirmed && studentData[i].advisorFio !== 'Не назначен') {
                     console.log(studentData[i]);
                     axios({
-                        url: apiURL + '/head_of_cathedra_only/confirm/student',
+                        url: apiURL + '/head_of_cathedra/only/confirm/student',
                         method: 'POST',
                         params: {
                             'studentID': studentData[i].systemStudentID,
@@ -211,8 +215,10 @@ export default function HocStudentAssociationPage() {
 
         $('.hoc-confirm-student-button').off().on('click', function() {
             var stidentId = $(this).attr('id').split('-')[2];
+            //console.log(studentData[stidentId]);
+            //console.log($(this).parent().find('.sca-fio'));
             axios({
-                url: apiURL + '/head_of_cathedra_only/confirm/student',
+                url: apiURL + '/head_of_cathedra/only/confirm/student',
                 method: 'POST',
                 params: {
                     'studentID': studentData[stidentId].systemStudentID,
@@ -221,8 +227,9 @@ export default function HocStudentAssociationPage() {
                     'Authorization': 'Bearer ' + authTokens.accessToken
                 },
             }).then((response) => {
-                //console.log(response);
-                window.location.reload(true);
+                $(this).parent().find('.student-status')[0].innerText = 'Подтвержден';
+                studentData[stidentId].studentIsConfirmed = true;
+                //window.location.reload(true);
             }).catch(result => {
                 console.log(result);
             });
