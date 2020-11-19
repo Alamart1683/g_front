@@ -71,10 +71,12 @@ export default function SciAdvisorStudentsDocsPage() {
                 case 'Практика по получению знаний и умений':
                     switch (documentKind) {
                         case 'Задание':
-                            documentName = 'Задание по практике по получению знаний и умений';
+                            documentName = 'Задание по ПпППУиОПД';
+                            documentItem = documentArray[i].taskVersions;
                             break;
                         case 'Отчет':
-                            documentName = 'Отчет по практике по получению знаний и умений';
+                            documentName = 'Отчет по ПпППУиОПД';
+                            documentItem = documentArray[i].reportVersions;
                             break;
                         default:
                             documentName = 'Неопознанный документ по практике по получению знаний и умений';
@@ -82,6 +84,14 @@ export default function SciAdvisorStudentsDocsPage() {
                     break;
                 case 'Преддипломная практика':
                     switch (documentKind) {
+                        case 'Задание':
+                            documentName = 'Задание по преддипломной практике';
+                            documentItem = documentArray[i].taskVersions;
+                            break;
+                        case 'Отчет':
+                            documentName = 'Отчет по преддипломной практике';
+                            documentItem = documentArray[i].reportVersions;
+                            break;
                         default:
                             documentName = 'Неопознанный документ по преддипломной практике';
                     }

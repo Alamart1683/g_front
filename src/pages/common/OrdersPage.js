@@ -52,6 +52,11 @@ export default function OrdersPage() {
             var orderNameText = document.createElement('p');
             orderNameText.className = 'order-name-text light size-24';
             orderNameText.innerText = order.documentName;
+            orderNameText.style.maxHeight = '36px';
+            orderNameText.style.maxWidth = '1050px';
+            orderNameText.style.overflow = 'hidden';
+            orderNameText.style.textOverflow = 'ellipsis';
+            orderNameText.style.whiteSpace = 'nowrap';
 
             var orderNameImage = document.createElement('img');
             orderNameImage.className = 'order-name-image'
@@ -64,6 +69,8 @@ export default function OrdersPage() {
             orderDownload.className = 'order-doc-download light size-24';
             orderDownload.id = 'order-doc-download';
             orderDownload.innerText = "Сохранить приказ";
+            orderDownload.style.position = 'relative';
+            orderDownload.style.top = '1px';
 
             orderFile.appendChild(orderName);
             orderFile.appendChild(orderDownload);

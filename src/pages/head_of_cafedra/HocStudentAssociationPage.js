@@ -101,12 +101,19 @@ export default function HocStudentAssociationPage() {
                 studentStatus.innerText = 'Не подтвержден';
             }
 
+            var confirmButton = document.createElement('button');
+            confirmButton.type = 'button';
+            confirmButton.className = 'hoc-confirm-student-button';
+            confirmButton.innerText = 'Подтвердить';
+            confirmButton.id = 'confirm-student-' +i;
+
             studentRow.appendChild(studentNum);
             studentRow.appendChild(studentFio);
             studentRow.appendChild(studentSpeciality);
             studentRow.appendChild(studentGroup);
             studentRow.appendChild(studentScaFio);
             studentRow.appendChild(studentStatus);
+            studentRow.appendChild(confirmButton);
 
             document.getElementById('hoc-table-body').appendChild(studentRow);
         }
@@ -175,31 +182,52 @@ export default function HocStudentAssociationPage() {
         $('.hoc-table-row:visible').each(function (index) {
             $(this).find('.row-num')[0].innerText = index + 1;
         })
+    }
 
-        // TODO
+    $(function () {
         $('#confirm-button').off().on('click', function() {
             for (var i = 0; i < studentData.length; i++) {
                 if (!studentData[i].studentIsConfirmed) {
+                    console.log(studentData[i]);
                     axios({
                         url: apiURL + '/head_of_cathedra_only/confirm/student',
                         method: 'POST',
                         params: {
-                            'studentID': true,
+                            'studentID': studentData[i].systemStudentID,
                         },
                         headers: {
                             'Authorization': 'Bearer ' + authTokens.accessToken
                         },
                     }).then((response) => {
                         //console.log(response);
-                        window.location.reload(true);
+                        
                     }).catch(result => {
                         console.log(result);
                     });
                 }
             }
-            
+            window.location.reload(true);
         });
-    }
+
+        $('.hoc-confirm-student-button').off().on('click', function() {
+            var stidentId = $(this).attr('id').split('-')[2];
+            axios({
+                url: apiURL + '/head_of_cathedra_only/confirm/student',
+                method: 'POST',
+                params: {
+                    'studentID': studentData[stidentId].systemStudentID,
+                },
+                headers: {
+                    'Authorization': 'Bearer ' + authTokens.accessToken
+                },
+            }).then((response) => {
+                //console.log(response);
+                window.location.reload(true);
+            }).catch(result => {
+                console.log(result);
+            });
+        })
+    });
 
     return(
         <div className='hoc-assoc-div'>
@@ -235,6 +263,7 @@ export default function HocStudentAssociationPage() {
                             <th>Группа</th>
                             <th>ФИО Научного Руководителя</th>
                             <th>Статус</th>
+                            <th></th>
                         </tr>
                     </thead>
                     <tbody id='hoc-table-body'>

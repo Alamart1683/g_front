@@ -32,7 +32,7 @@ export default function AdminRegistrationPage() {
             console.log(response.data);
             setGroups(response.data);
         }).catch(result => {
-            console.log(result.data);
+            console.log(result);
         });
     }
 

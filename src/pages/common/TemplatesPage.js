@@ -51,6 +51,11 @@ export default function TemplatesPage() {
             var templateNameText = document.createElement('p');
             templateNameText.className = 'template-name-text light size-24'
             templateNameText.innerText=template.documentName;
+            templateNameText.style.maxHeight = '36px';
+            templateNameText.style.maxWidth = '1050px';
+            templateNameText.style.overflow = 'hidden';
+            templateNameText.style.textOverflow = 'ellipsis';
+            templateNameText.style.whiteSpace = 'nowrap';
 
             var templateNameImage = document.createElement('img');
             templateNameImage.className='template-name-image'
@@ -62,7 +67,9 @@ export default function TemplatesPage() {
             var templateDownload = document.createElement('button');
             templateDownload.className = 'template-doc-download light size-24';
             templateDownload.id = 'template-doc-download';
-            templateDownload.innerText = "Сохранить шаблон задания"
+            templateDownload.innerText = "Сохранить шаблон задания";
+            templateDownload.style.position = 'relative';
+            templateDownload.style.top = '-17px';
 
             documentFile.appendChild(templateName);
             documentFile.appendChild(templateDownload);

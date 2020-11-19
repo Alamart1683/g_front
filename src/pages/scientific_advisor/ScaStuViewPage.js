@@ -155,7 +155,7 @@ export default function ScaStuViewPage() {
         longPPReportCheckbox.type = 'checkbox';
         longPPReportCheckbox.className = 'sci-table-checkbox';
         longPPReportCheckbox.disabled = true;
-        if (item.studentDocumentsStatusView.longPPReportStatus) {
+        if (item.studentDocumentsStatusView.ppppuipdReportStatus) {
             longPPReportCheckbox.checked = true;
         }
         var longPPReportStatus = document.createElement('label');
@@ -171,7 +171,7 @@ export default function ScaStuViewPage() {
         ppTaskCheckbox.type = 'checkbox';
         ppTaskCheckbox.className = 'sci-table-checkbox';
         ppTaskCheckbox.disabled = true;
-        if (item.studentDocumentsStatusView.ppppuipdTaskStatus) {
+        if (item.studentDocumentsStatusView.ppTaskStatus) {
             ppTaskCheckbox.checked = true;
         }
         var ppTaskStatus = document.createElement('label');

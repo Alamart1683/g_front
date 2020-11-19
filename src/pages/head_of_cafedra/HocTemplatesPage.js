@@ -53,6 +53,11 @@ export default function HocTemplatesPage() {
             var templateNameText = document.createElement('p');
             templateNameText.className = 'hoc-order-template-name-text light size-22'
             templateNameText.innerText=template.documentName;
+            templateNameText.style.maxHeight = '30px';
+            templateNameText.style.maxWidth = '450px';
+            templateNameText.style.overflow = 'hidden';
+            templateNameText.style.textOverflow = 'ellipsis';
+            templateNameText.style.whiteSpace = 'nowrap';
 
             var templateNameImage = document.createElement('img');
             templateNameImage.className='hoc-order-template-name-image'
@@ -69,7 +74,7 @@ export default function HocTemplatesPage() {
             templateConfirm.innerText = 'Одобрить';
 
             var templateStatus = document.createElement('p');
-            templateStatus.className = 'hoc-order-template-name-text light size-20';
+            templateStatus.className = 'hoc-order-template-name-text light size-22';
             if (template.approved) {
                 templateStatus.innerText = 'Статус: Одобрено';
                 templateConfirm.disabled = true;
