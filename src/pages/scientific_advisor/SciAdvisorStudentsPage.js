@@ -77,6 +77,9 @@ export default function SciAdvisorStudentsPage() {
             // Проект студента
             var studentProject = document.createElement('th');
             studentProject.innerText = item.projectArea + '\n' + item.projectName;
+            studentProject.style.overflow = 'hidden';
+            studentProject.style.textOverflow = 'ellipsis';
+            studentProject.style.maxWidth = '300px';
 
             // НИР
             var studentNir = document.createElement('th');

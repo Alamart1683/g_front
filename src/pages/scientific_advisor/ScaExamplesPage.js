@@ -19,10 +19,6 @@ export default function ScaExamplesPage() {
         showExamples(examples);
     }, [examples]);
 
-    useEffect(() => {
-        //fillAreaData();
-    }, [projectAreaData]);
-
     if (!fetchedData) {
         setFetchedData(true);
         getProjectAreaData()
@@ -37,7 +33,7 @@ export default function ScaExamplesPage() {
                 'Authorization': 'Bearer ' + authTokens.accessToken
             },
         }).then((response) => {
-            //console.log(response.data);
+            console.log(response.data);
             setExamples(response.data);
         }).catch(result => {
             console.log(result.data);
@@ -47,10 +43,13 @@ export default function ScaExamplesPage() {
     function showExamples(examplesArray) {
         for (var i = 0; i < examplesArray.length; i++) {
             var example = examplesArray[i];
-            console.log(example);
+            //console.log(example);
 
             var exampleDiv = document.createElement('div');
             exampleDiv.className = 'sca-example-file-div';
+
+            var clickableDiv = document.createElement('div');
+            clickableDiv.className = 'sca-example-file-clickable light size-22 dark-background';
 
             var iconImage = document.createElement('img');
             iconImage.className = 'sca-example-image';
@@ -61,22 +60,26 @@ export default function ScaExamplesPage() {
 
             var exampleName = document.createElement('p');
             exampleName.innerText = example.documentName;
+            exampleName.style.maxWidth = '540px';
+            exampleName.style.overflow = 'hidden';
+            exampleName.style.textOverflow = 'ellipsis';
+            exampleName.style.display = 'inline-block';
 
             var examplePermissions = document.createElement('p');
-            if (example.area === 'Не назначена') {
-                examplePermissions.innerText = 'Доступ: для всех моих студентов';
+            if (example.area === 'Программа проектов не назначена') {
+                examplePermissions.innerText = 'Доступ: Для всех моих студентов';
             }
             else {
                 examplePermissions.innerText = 'Доступ: ' + example.area;
+                if (example.project != null) {
+                    examplePermissions.innerText += ' - ' + example.project;
+                }
             }
-            
-            //examplePermissions.innerText = ' ';
-            examplePermissions.style.display = 'inline-block';
-            examplePermissions.style.marginLeft = '15px';
+            examplePermissions.style.position = 'relative';
+            examplePermissions.style.top = '-27px';
 
             var exampleType = document.createElement('p');
             exampleType.innerText = 'Тип: ' + example.documentType;
-            exampleType.style.display = 'inline-block';
             switch (example.documentType) {
                 case 'Научно-исследовательская работа':
                     exampleType.innerText = 'Тип: НИР';
@@ -94,9 +97,11 @@ export default function ScaExamplesPage() {
                     exampleType.innerText = 'Тип: Неопознанный';
                     break;
             }
-
-            var clickableDiv = document.createElement('div');
-            clickableDiv.className = 'sca-example-file-clickable light size-24 dark-background';
+            exampleType.style.width = '180px';
+            exampleType.style.display = 'inline-block';
+            exampleType.style.marginLeft = '15px';
+            exampleType.style.position = 'relative';
+            exampleType.style.top = '-26px';
 
             var downloadButton = document.createElement('button');
             downloadButton.id = 'download-button-' + i;
@@ -245,17 +250,17 @@ export default function ScaExamplesPage() {
     return (
         <div className='sca-examples-div'>
             <div className='clearfix'>
-            <div className='sca-examples-menu-div light-background'>
-                <button type='button' onClick={(e) => { setShowCreate(true); }} className='light size-24 dark-background sca-examples-button'>
-                    Загрузить файл<br />образца на сайт
-                </button>
-                <button type='button' id='change-permissions-button' disabled className='light size-24 dark-background sca-examples-button'>
-                    Изменить права<br />доступа к образцу
-                </button>
-            </div>
-            <div id='examples-div' className='sca-examples-files-div light-background'>
+                <div className='sca-examples-menu-div light-background'>
+                    <button type='button' onClick={(e) => { setShowCreate(true); }} className='light size-24 dark-background sca-examples-button'>
+                        Загрузить файл<br />образца на сайт
+                    </button>
+                    <button type='button' id='change-permissions-button' disabled className='light size-24 dark-background sca-examples-button'>
+                        Изменить права<br />доступа к образцу
+                    </button>
+                </div>
+                <div id='examples-div' className='sca-examples-files-div light-background'>
 
-            </div>
+                </div>
             </div>
 
             <Modal centered show={showCreate} onEnter={(e) => { fillAreaData(); }} onHide={(e) => { setShowCreate(false); }} className='dark'>

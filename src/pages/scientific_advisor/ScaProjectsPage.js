@@ -138,10 +138,12 @@ export default function ScaProjectsPage() {
                             var rowArea = document.createElement('th');
                             rowArea.innerText = projectAreaName;
                             rowArea.id = 'area-' + i + '-' + j + '-' + k;
+                            rowArea.className = 'sca-projects-name-cell';
 
                             var rowProject = document.createElement('th');
                             rowProject.innerText = projectData[j].projectName;
                             rowProject.id = 'project-' + i + '-' + j + '-' + k;
+                            rowProject.className = 'sca-projects-name-cell';
 
                             var rowStudentName = document.createElement('th');
                             rowStudentName.innerText = student.fio.split(' ')[0] +
@@ -182,10 +184,12 @@ export default function ScaProjectsPage() {
                         var rowAreaLast = document.createElement('th');
                         rowAreaLast.innerText = projectAreaName;
                         rowAreaLast.id = 'area-' + i + '-' + j + '-' + projectData[j].occupiedStudents.length;
+                        rowAreaLast.className = 'sca-projects-name-cell';
 
                         var rowProjectLast = document.createElement('th');
                         rowProjectLast.innerText = projectData[j].projectName;
                         rowProjectLast.id = 'project-' + i + '-' + j + '-' + projectData[j].occupiedStudents.length;
+                        rowProjectLast.className = 'sca-projects-name-cell';
 
                         var rowAddLast = document.createElement('th');
 
@@ -258,6 +262,7 @@ export default function ScaProjectsPage() {
                     var rowAreaEmpty = document.createElement('th');
                     rowAreaEmpty.innerText = projectAreaName;
                     rowAreaEmpty.id = 'area-' + i + '-' + 0 + '-' + 0;
+                    rowAreaEmpty.className = 'sca-projects-name-cell';
 
                     var rowDeleteEmpty = document.createElement('th');
 
@@ -426,13 +431,13 @@ export default function ScaProjectsPage() {
     return (
         <div className='student-document-form'>
             <div className='sca-projects-table-div'>
-                <Table striped bordered hover>
+                <Table striped bordered hover style={{width:'950px'}}>
                     <thead className='size-24 dark'>
                         <tr>
                             <th >#</th>
                             <th >Программа проектов</th>
-                            <th>Проект</th>
-                            <th>Студент</th>
+                            <th >Проект</th>
+                            <th >Студент</th>
                             <th style={{width:'180px'}}></th>
                         </tr>
                     </thead>

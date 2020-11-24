@@ -1782,3 +1782,9 @@ html, body {
 	margin: auto;
 	margin-top: 10px;
 }
+
+.sca-projects-name-cell {
+	max-width: 200px;
+	overflow: hidden;
+  	text-overflow: ellipsis;
+}
