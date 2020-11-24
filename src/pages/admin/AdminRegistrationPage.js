@@ -59,7 +59,7 @@ export default function AdminRegistrationPage() {
         var phone = $('#student-phone').val();
         var group = $('#student-group :selected').val();
         axios({
-            url: apiURL + '/admin/registration/scientific_advisor',
+            url: apiURL + '/admin/registration/student',
             method: 'POST',
             params: {
                 'cathedra': 'МОСИТ',
@@ -237,7 +237,7 @@ export default function AdminRegistrationPage() {
         var secondName = $('#admin-second-name').val();
         var phone = $('#admin-phone').val();
         axios({
-            url: apiURL + '/admin/registration/head_of_cathedra',
+            url: apiURL + '/admin/registration/admin',
             method: 'POST',
             params: {
                 'email': email,

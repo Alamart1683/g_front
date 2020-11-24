@@ -37,65 +37,6 @@ export default function OrdersPage() {
     }
 
     // Заполнение таблицы приказов
-    function showOrders(ordersArray) {
-        for (var i = 0; i < ordersArray.length; i++) {
-            var order = ordersArray[i];
-
-            var orderFile = document.createElement('div')
-            orderFile.className = 'order-doc';
-            orderFile.id = 'order-doc-' + i;
-
-            var orderName = document.createElement('div');
-            orderName.className = 'order-name light-background';
-            orderName.id = 'order-doc-name';
-
-            var orderNameText = document.createElement('p');
-            orderNameText.className = 'order-name-text light size-24';
-            orderNameText.innerText = order.documentName;
-            orderNameText.style.maxHeight = '36px';
-            orderNameText.style.maxWidth = '1050px';
-            orderNameText.style.overflow = 'hidden';
-            orderNameText.style.textOverflow = 'ellipsis';
-            orderNameText.style.whiteSpace = 'nowrap';
-
-            var orderNameImage = document.createElement('img');
-            orderNameImage.className = 'order-name-image'
-            orderNameImage.src = orderImage;
-
-            orderName.appendChild(orderNameImage);
-            orderName.appendChild(orderNameText);
-
-            var orderDownload = document.createElement('button');
-            orderDownload.className = 'order-doc-download light size-24';
-            orderDownload.id = 'order-doc-download';
-            orderDownload.innerText = "Сохранить приказ";
-            orderDownload.style.position = 'relative';
-            orderDownload.style.top = '1px';
-
-            orderFile.appendChild(orderName);
-            orderFile.appendChild(orderDownload);
-
-            switch (order.documentType) {
-                case 'Научно-исследовательская работа':
-                    document.getElementById("orderContentPanel1").appendChild(orderFile);
-                    break;
-                case 'Практика по получению знаний и умений':
-                    document.getElementById("orderContentPanel2").appendChild(orderFile);
-                    break;
-                case 'Преддипломная практика':
-                    document.getElementById("orderContentPanel3").appendChild(orderFile);
-                    break;
-                case 'ВКР':
-                    document.getElementById("orderContentPanel4").appendChild(orderFile);
-                    break;
-                default:
-                    console.log('switchError');
-            }
-
-        }
-    }
-
-    // Заполнение таблицы приказов
     function showOrdersFancy(ordersArray) {
         for (var i = 0; i < ordersArray.length; i++) {
             var order = ordersArray[i];
