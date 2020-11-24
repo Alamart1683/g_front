@@ -255,6 +255,7 @@ export default function SciAdvisorStudentsPage() {
             studentButton.style.minWidth = '100px';
             studentButton.className = 'student-table-button';
             studentButton.innerText = 'Перейти к студенту';
+            studentButton.id = 'student-table-button-' + i;
 
             student.appendChild(studentNum);
             studentFio.appendChild(popover);
@@ -326,10 +327,8 @@ export default function SciAdvisorStudentsPage() {
 
     $(function() {
 
-        $('.student-table-button').off().on('click', function(event) {
-            var studentId = $(this).parent().parent().attr('id');
-            var arrayId = studentId.substr(studentId.length - 1);
-            //console.log(students[arrayId]);
+        $('.student-table-button').off().on('click', function() {
+            var arrayId = $(this).attr('id').split('-')[3];
             sessionStorage.setItem('viewedStudentId', students[arrayId].systemStudentID);
             sessionStorage.setItem('viewedStudentName', students[arrayId].fio);
             sessionStorage.setItem('student', JSON.stringify(students[arrayId]));
