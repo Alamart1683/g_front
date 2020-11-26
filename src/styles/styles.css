@@ -891,11 +891,6 @@ html, body {
 	color: #3A5985;
 }
 
-.sci-table-checkbox {
-	transform: scale(1.5);
-	margin-left: 10px;
-}
-
 /* Отступ снизу, размер футера */
 .wrapper {
 	min-height: 100vh;
@@ -1787,4 +1782,13 @@ html, body {
 	max-width: 200px;
 	overflow: hidden;
   	text-overflow: ellipsis;
+}
+
+.sci-table-checkbox {
+	transform: scale(2.0);
+	margin-left: 10px;
+}
+
+.sci-table-checkbox:hover {
+	
 }

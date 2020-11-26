@@ -60,11 +60,11 @@ export default function ScaStuViewPage() {
     useEffect(() => {
         showStudentNirVersions(nirVersions);
     }, [nirVersions]);
-    
+
     useEffect(() => {
         showStudentLongPPVersions(longPPData);
     }, [longPPData]);
-    
+
     useEffect(() => {
         showStudentPPVersions(PPData);
     }, [PPData]);
@@ -76,7 +76,7 @@ export default function ScaStuViewPage() {
     useEffect(() => {
         showLongPPOtchetVersions(longPPOtchetVersions);
     }, [longPPOtchetVersions]);
-    
+
     useEffect(() => {
         showPPOtchetVersions(PPOtchetVersions);
     }, [PPOtchetVersions]);
@@ -91,13 +91,17 @@ export default function ScaStuViewPage() {
 
         var student = document.createElement('tr');
         student.id = 'student' + i;
-        student.className = 'size-20 dark'
+        student.className = 'size-20 dark';
+
+        var studentNum = document.createElement('th');
+        studentNum.innerText = i + 1;
 
         // Имя студента
         var studentFio = document.createElement('th');
 
         var popover = document.createElement('a');
         popover.href = '#';
+        popover.onclick = 'return false;';
         popover.className = 'student-popover dark size-24';
         $(popover).attr('data-toggle', 'popover');
         $(popover).attr('title', 'Данные студента:');
@@ -115,7 +119,7 @@ export default function ScaStuViewPage() {
 
         // Проект студента
         var studentProject = document.createElement('th');
-        studentProject.innerText = item.projectArea + '\n' + item.projectName;        
+        studentProject.innerText = item.projectArea + '\n' + item.projectName;
         studentProject.style.overflow = 'hidden';
         studentProject.style.textOverflow = 'ellipsis';
         studentProject.style.maxWidth = '300px';
@@ -126,27 +130,26 @@ export default function ScaStuViewPage() {
         var nirTaskCheckbox = document.createElement('input');
         nirTaskCheckbox.type = 'checkbox';
         nirTaskCheckbox.className = 'sci-table-checkbox';
-        nirTaskCheckbox.disabled = true;
         if (item.studentDocumentsStatusView.nirTaskStatus) {
             nirTaskCheckbox.checked = true;
         }
         var nirTaskStatus = document.createElement('label');
         nirTaskStatus.htmlFor = nirTaskCheckbox;
-        nirTaskStatus.innerText = 'Задание на НИР';
+        nirTaskStatus.innerText = 'Задание на НИР:';
+        nirTaskStatus.style.width = '148px';
 
         var nirTaskDiv = document.createElement('div');
-        nirTaskDiv.style.minWidth = '170px';
 
         var nirReportCheckbox = document.createElement('input');
         nirReportCheckbox.type = 'checkbox';
         nirReportCheckbox.className = 'sci-table-checkbox';
-        nirReportCheckbox.disabled = true;
         if (item.studentDocumentsStatusView.nirReportStatus) {
             nirReportCheckbox.checked = true;
         }
         var nirReportStatus = document.createElement('label');
         nirReportStatus.htmlFor = nirReportCheckbox;
-        nirReportStatus.innerText = 'Отчет по НИР';
+        nirReportStatus.innerText = 'Отчет по НИР:';
+        nirReportStatus.style.width = '148px';
 
         var nirReportDiv = document.createElement('div');
 
@@ -156,26 +159,26 @@ export default function ScaStuViewPage() {
         var longPPTaskCheckbox = document.createElement('input');
         longPPTaskCheckbox.type = 'checkbox';
         longPPTaskCheckbox.className = 'sci-table-checkbox';
-        longPPTaskCheckbox.disabled = true;
         if (item.studentDocumentsStatusView.ppppuipdTaskStatus) {
             longPPTaskCheckbox.checked = true;
         }
         var longPPTaskStatus = document.createElement('label');
         longPPTaskStatus.htmlFor = longPPTaskCheckbox;
-        longPPTaskStatus.innerText = 'Задание по ПпППУиОПД';
+        longPPTaskStatus.innerText = 'Задание по ПпППУиОПД:';
+        longPPTaskStatus.style.width = '223px';
 
         var longPPTaskDiv = document.createElement('div');
 
         var longPPReportCheckbox = document.createElement('input');
         longPPReportCheckbox.type = 'checkbox';
         longPPReportCheckbox.className = 'sci-table-checkbox';
-        longPPReportCheckbox.disabled = true;
         if (item.studentDocumentsStatusView.ppppuipdReportStatus) {
             longPPReportCheckbox.checked = true;
         }
         var longPPReportStatus = document.createElement('label');
         longPPReportStatus.htmlFor = longPPReportCheckbox;
-        longPPReportStatus.innerText = 'Отчет по ПпППУиОПД';
+        longPPReportStatus.innerText = 'Отчет по ПпППУиОПД:';
+        longPPReportStatus.style.width = '223px';
 
         var longPPReportDiv = document.createElement('div');
 
@@ -185,26 +188,26 @@ export default function ScaStuViewPage() {
         var ppTaskCheckbox = document.createElement('input');
         ppTaskCheckbox.type = 'checkbox';
         ppTaskCheckbox.className = 'sci-table-checkbox';
-        ppTaskCheckbox.disabled = true;
         if (item.studentDocumentsStatusView.ppTaskStatus) {
             ppTaskCheckbox.checked = true;
         }
         var ppTaskStatus = document.createElement('label');
         ppTaskStatus.htmlFor = ppTaskCheckbox;
-        ppTaskStatus.innerText = 'Задание по ПП';
+        ppTaskStatus.innerText = 'Задание по ПП:';
+        ppTaskStatus.style.width = '138px';
 
         var ppTaskDiv = document.createElement('div');
 
         var ppReportCheckbox = document.createElement('input');
         ppReportCheckbox.type = 'checkbox';
         ppReportCheckbox.className = 'sci-table-checkbox';
-        ppReportCheckbox.disabled = true;
         if (item.studentDocumentsStatusView.ppReportStatus) {
             ppReportCheckbox.checked = true;
         }
         var ppReportStatus = document.createElement('label');
         ppReportStatus.htmlFor = ppReportCheckbox;
         ppReportStatus.innerText = 'Отчет по ПП:';
+        ppReportStatus.style.width = '138px';
 
         var ppReportDiv = document.createElement('div');
 
@@ -214,82 +217,91 @@ export default function ScaStuViewPage() {
         var vkrAdvisorFeedbackCheckbox = document.createElement('input');
         vkrAdvisorFeedbackCheckbox.type = 'checkbox';
         vkrAdvisorFeedbackCheckbox.className = 'sci-table-checkbox';
-        vkrAdvisorFeedbackCheckbox.disabled = true;
         if (item.studentDocumentsStatusView.vkrAdvisorFeedback) {
             vkrAdvisorFeedbackCheckbox.checked = true;
         }
         var vkrAdvisorFeedbackStatus = document.createElement('label');
         vkrAdvisorFeedbackStatus.htmlFor = vkrAdvisorFeedbackCheckbox;
         vkrAdvisorFeedbackStatus.innerText = 'Отзыв руководителя:';
+        vkrAdvisorFeedbackStatus.style.width = '188px';
 
         var vkrAdvisorFeedbackDiv = document.createElement('div');
-        vkrAdvisorFeedbackDiv.style.minWidth = '220px';
 
         var vkrAllowanceCheckbox = document.createElement('input');
         vkrAllowanceCheckbox.type = 'checkbox';
         vkrAllowanceCheckbox.className = 'sci-table-checkbox';
-        vkrAllowanceCheckbox.disabled = true;
         if (item.studentDocumentsStatusView.vkrAllowance) {
             vkrAllowanceCheckbox.checked = true;
         }
         var vkrAllowanceStatus = document.createElement('label');
         vkrAllowanceStatus.htmlFor = vkrAllowanceCheckbox;
         vkrAllowanceStatus.innerText = 'Допуск к ВКР:';
+        vkrAllowanceStatus.style.width = '188px';
 
         var vkrAllowanceStatusDiv = document.createElement('div');
 
         var vkrTaskCheckbox = document.createElement('input');
         vkrTaskCheckbox.type = 'checkbox';
         vkrTaskCheckbox.className = 'sci-table-checkbox';
-        vkrTaskCheckbox.disabled = true;
+        //vkrTaskCheckbox.disabled = true;
         if (item.studentDocumentsStatusView.vkrTask) {
             vkrTaskCheckbox.checked = true;
         }
         var vkrTaskStatus = document.createElement('label');
         vkrTaskStatus.htmlFor = vkrTaskCheckbox;
         vkrTaskStatus.innerText = 'Задание ВКР:';
+        vkrTaskStatus.style.width = '188px';
 
         var vkrTaskDiv = document.createElement('div');
 
         var vkrRPZCheckbox = document.createElement('input');
         vkrRPZCheckbox.type = 'checkbox';
         vkrRPZCheckbox.className = 'sci-table-checkbox';
-        vkrRPZCheckbox.disabled = true;
+        //vkrRPZCheckbox.disabled = true;
         if (item.studentDocumentsStatusView.vkrRPZ) {
             vkrRPZCheckbox.checked = true;
         }
         var vkrRPZStatus = document.createElement('label');
         vkrRPZStatus.htmlFor = vkrRPZCheckbox;
         vkrRPZStatus.innerText = 'РПЗ:';
+        vkrRPZStatus.style.width = '188px';
 
         var vkrRPZDiv = document.createElement('div');
 
         var vkrAntiplagiatCheckbox = document.createElement('input');
         vkrAntiplagiatCheckbox.type = 'checkbox';
         vkrAntiplagiatCheckbox.className = 'sci-table-checkbox';
-        vkrAntiplagiatCheckbox.disabled = true;
         if (item.studentDocumentsStatusView.vkrAntiplagiat) {
             vkrAntiplagiatCheckbox.checked = true;
         }
         var vkrAntiplagiatStatus = document.createElement('label');
         vkrAntiplagiatStatus.htmlFor = vkrAntiplagiatCheckbox;
         vkrAntiplagiatStatus.innerText = 'Антиплагиат:';
+        vkrAntiplagiatStatus.style.width = '188px';
 
         var vkrAntiplagiatDiv = document.createElement('div');
 
         var vkrPresentationCheckbox = document.createElement('input');
         vkrPresentationCheckbox.type = 'checkbox';
         vkrPresentationCheckbox.className = 'sci-table-checkbox';
-        vkrPresentationCheckbox.disabled = true;
         if (item.studentDocumentsStatusView.vkrPresentation) {
             vkrPresentationCheckbox.checked = true;
         }
         var vkrPresentationStatus = document.createElement('label');
         vkrPresentationStatus.htmlFor = vkrPresentationCheckbox;
         vkrPresentationStatus.innerText = 'Презентация:';
+        vkrPresentationStatus.style.width = '188px';
 
         var vkrPresentationDiv = document.createElement('div');
 
+        var studentButtonTh = document.createElement('th');
+        var studentButton = document.createElement('button');
+        studentButton.style.minWidth = '100px';
+        studentButton.className = 'student-table-button';
+        studentButton.innerText = 'Перейти к студенту';
+        studentButton.id = 'student-table-button-' + i;
+
+        student.appendChild(studentNum);
         studentFio.appendChild(popover);
         student.appendChild(studentFio);
 
@@ -1914,8 +1926,8 @@ export default function ScaStuViewPage() {
             setAdditionalTask(longPPData[arrayID].additionalTask);
         });
 
-         // Функция кнопки "перенести в меню" для задания ПП
-         $('.pp-copy').off().on('click', function () {
+        // Функция кнопки "перенести в меню" для задания ПП
+        $('.pp-copy').off().on('click', function () {
             var versionId = $(this).parent().parent().parent().parent().attr('id');
             var arrayID = versionId.split('-')[2];
 
@@ -1958,12 +1970,13 @@ export default function ScaStuViewPage() {
                 <Table striped bordered hover>
                     <thead className='size-24 dark'>
                         <tr>
+                        <th>#</th>
                             <th>ФИО</th>
                             <th>Проект</th>
-                            <th>НИР</th>
-                            <th>ПпППУиОПД</th>
-                            <th>ПП</th>
-                            <th>ВКР</th>
+                            <th style={{minWidth:'203px'}}>НИР</th>
+                            <th style={{minWidth:'278px'}}>ПпППУиОПД</th>
+                            <th style={{minWidth:'193px'}}>ПП</th>
+                            <th style={{minWidth:'243px'}}>ВКР</th>
                         </tr>
                     </thead>
                     <tbody id='student-table-body' className='size-24 dark'>
