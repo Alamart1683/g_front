@@ -294,13 +294,6 @@ export default function ScaStuViewPage() {
 
         var vkrPresentationDiv = document.createElement('div');
 
-        var studentButtonTh = document.createElement('th');
-        var studentButton = document.createElement('button');
-        studentButton.style.minWidth = '100px';
-        studentButton.className = 'student-table-button';
-        studentButton.innerText = 'Перейти к студенту';
-        studentButton.id = 'student-table-button-' + i;
-
         student.appendChild(studentNum);
         studentFio.appendChild(popover);
         student.appendChild(studentFio);

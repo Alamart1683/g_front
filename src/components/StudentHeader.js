@@ -11,6 +11,7 @@ import orderImage from '../images/icons/order.png';
 import exitImage from '../images/icons/exit.png';
 import iconExamples from '../images/icons/samples.png';
 import iconTasks from '../images/icons/tasks.png';
+import iconMenu from '../images/icons/menu.png';
 
 export default function StudentHeader() {
     const { authTokens, setAuthTokens } = useAuthContext();
@@ -57,6 +58,9 @@ export default function StudentHeader() {
             case ('/stu/examples'):
                 document.getElementById('button-examples').classList.add('student-navbar-button-selected');
                 break;
+            case ('/stu/settings'):
+                document.getElementById('button-settings').classList.add('student-navbar-button-selected');
+                break;
             default:
                 console.log('url error');
         };
@@ -92,6 +96,12 @@ export default function StudentHeader() {
                 <Nav.Link>
                     <button type='button' className='student-navbar-button dark-background light size-30'>
                         Научный руководитель: <br />{scientificAdvisor}
+                    </button>
+                </Nav.Link>
+                <Nav.Link as={Link} to='/stu/settings'>
+                    <button id='button-settings' type='button' className='student-navbar-button dark-background light size-30'>
+                        <Image src={iconMenu} thumbnail className='student-navbar-image dark-background' />
+                        Настройки
                     </button>
                 </Nav.Link>
                 <Nav.Link>

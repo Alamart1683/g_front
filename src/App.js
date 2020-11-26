@@ -9,12 +9,14 @@ import LoginPage from './pages/guest/LoginPage';
 import RegisterPage from './pages/guest/RegisterPage';
 import ForgottenPasswordPage from './pages/guest/FogottenPasswordPage';
 import StartPage from './pages/guest/StartPage';
-import OrdersPage from './pages/common/OrdersPage'
-import TemplatesPage from './pages/common/TemplatesPage'
 import AuthRoute from './auth/AuthRoute';
 import GuestHeader from './components/GuestHeader';
 import Footer from './components/Footer';
 import NoMatch from './components/NoMatch';
+
+import OrdersPage from './pages/common/OrdersPage';
+import TemplatesPage from './pages/common/TemplatesPage';
+import SettingsPage from './pages/common/SettingsPage';
 
 import StudentHeader from './components/StudentHeader';
 import StudentInfoPage from './pages/student/StudentInfoPage';
@@ -74,6 +76,7 @@ export default function App() {
           <AuthRoute exact path='/stu/tasks' component={StudentTasksPage} />
           <AuthRoute exact path='/stu/orders' component={OrdersPage} />
           <AuthRoute exact path='/stu/examples' component={StudentExamplesPage} />
+          <AuthRoute exact path='/stu/settings' component={SettingsPage} />
 
           <AuthRoute exact path='/sca/students' component={SciAdvisorStudentsPage} />
           <AuthRoute exact path='/sca/stu-docs' component={SciAdvisorStudentsDocsPage} />
@@ -82,15 +85,18 @@ export default function App() {
           <AuthRoute exact path='/sca/templates' component={TemplatesPage} />
           <AuthRoute exact path='/sca/projects' component={ScaProjectsPage} />
           <AuthRoute exact path='/sca/examples' component={ScaExamplesPage} />
+          <AuthRoute exact path='/sca/settings' component={SettingsPage} />
 
           <AuthRoute exact path='/hoc/orders' component={HocOrdersPage} />
           <AuthRoute exact path='/hoc/templates' component={HocTemplatesPage} />
           <AuthRoute exact path='/hoc/association' component={HocStudentAssociationPage} />
+          <AuthRoute exact path='/hoc/settings' component={SettingsPage} />
 
           <AuthRoute exact path='/admin/association' component={AdminAssociationPage} />
           <AuthRoute exact path='/admin/orders' component={AdminOrdersPage} />
           <AuthRoute exact path='/admin/templates' component={AdminTemplatesPage} />
           <AuthRoute exact path='/admin/registration' component={AdminRegistrationPage} />
+          <AuthRoute exact path='/admin/settings' component={SettingsPage} />
 
           <Route path='*' component={NoMatch} />
         </Switch>

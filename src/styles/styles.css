@@ -156,18 +156,14 @@ html, body {
 	height: 68px;
 	border-radius: 7px;
 	font-family: 'PT Sans', sans-serif;
-	border-width: 0px;
 }
 
 .loginForm-button:hover {
 	background-color: #618FCA;
 }
 
-.loginForm-button:focus {
-    outline: none !important;
-    border: none !important;
-    -webkit-box-shadow: none !important;
-    box-shadow: none !important;
+.loginForm-button:disabled {
+	background-color: #859dbb;
 }
 
 /* Кнопки на панели навигации студента */
@@ -923,6 +919,10 @@ html, body {
 /* Текст кнопок */
 .size-32 {
     font-size: 32px;
+}
+
+.size-36 {
+    font-size: 36px;
 }
 
 .size-30 {
@@ -1789,6 +1789,29 @@ html, body {
 	margin-left: 10px;
 }
 
-.sci-table-checkbox:hover {
-	
+.recover-password-div {
+	margin-top: 145px;
+	margin-left: auto;
+    margin-right: auto;
+	width: 405px;
+	height: 605px;
+	text-align: center;
+	display: block;
+	border-radius: 7px;
+}
+
+.forgotten-password-modal-header {
+	border-top-left-radius: 7px;
+	border-top-right-radius: 7px;
+}
+
+.forgotten-password-modal-body {
+	border-bottom-left-radius: 7px;
+	border-bottom-right-radius: 7px;
+	text-align: center;
+}
+
+.forgotten-password-input {
+	border-radius: 7px;
+	text-align: center;
 }

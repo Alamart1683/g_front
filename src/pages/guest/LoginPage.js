@@ -72,7 +72,6 @@ export default function LoginPage() {
 
   return(
     <div>
-
         <Form className="loginForm light-background" onSubmit={ e => {e.preventDefault(); postLogin();} }>
           <p className="size-48 dark loginForm-topLabel">Вход</p>
 
