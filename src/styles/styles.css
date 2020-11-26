@@ -158,6 +158,12 @@ html, body {
 	font-family: 'PT Sans', sans-serif;
 }
 
+.loginForm-button:focus {
+    outline: none !important;
+    -webkit-box-shadow: none !important;
+    box-shadow: none !important;
+}
+
 .loginForm-button:hover {
 	background-color: #618FCA;
 }
@@ -914,6 +920,10 @@ html, body {
 /* Заголовки форм */
 .size-48 {
     font-size: 48px;
+}
+
+.size-42 {
+    font-size: 42px;
 }
 
 /* Текст кнопок */
@@ -1750,6 +1760,10 @@ html, body {
 	padding-left: 10px;
 }
 
+.admin-registration-input:disabled {
+	background-color: rgb(240, 235, 235);
+}
+
 .admin-registration-select {
 	border-radius: 7px;
 	margin-left: 50px;
@@ -1757,6 +1771,10 @@ html, body {
 	height: 40px;
 	margin-bottom: 20px;
 	padding-left: 10px;
+}
+
+.admin-registration-select:disabled {
+	background-color: rgb(240, 235, 235);
 }
 
 .admin-registration-button {
@@ -1790,11 +1808,11 @@ html, body {
 }
 
 .recover-password-div {
-	margin-top: 145px;
+	margin-top: 115px;
 	margin-left: auto;
     margin-right: auto;
 	width: 405px;
-	height: 605px;
+	height: 640px;
 	text-align: center;
 	display: block;
 	border-radius: 7px;

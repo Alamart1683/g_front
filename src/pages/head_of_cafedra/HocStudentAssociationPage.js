@@ -56,7 +56,7 @@ export default function HocStudentAssociationPage() {
                 'Authorization': 'Bearer ' + authTokens.accessToken 
             },
           }).then((response) => {
-            console.log(response);
+            //console.log(response);
             setStudentData(response.data);
           }).catch(result => {
             console.log(result.data);
