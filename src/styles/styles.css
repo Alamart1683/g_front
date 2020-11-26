@@ -1380,13 +1380,13 @@ html, body {
 }
 
 .sca-examples-modal1-header, .sca-examples-modal1-body {
-	width: 690px;
+	width: 790px;
 	position: relative;
-	left: -50px;
+	left: -150px;
 }
 
 .sca-examples-dropdown {
-	width: 650px;
+	width: 750px;
 	padding: 2px 4px;
 	margin-top: 5px;
 	margin-bottom: 10px;
