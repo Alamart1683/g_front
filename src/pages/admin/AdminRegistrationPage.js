@@ -237,7 +237,7 @@ export default function AdminRegistrationPage() {
         var secondName = $('#admin-second-name').val();
         var phone = $('#admin-phone').val();
         axios({
-            url: apiURL + '/admin/registration/admin',
+            url: apiURL + '/root/registration/admin',
             method: 'POST',
             params: {
                 'email': email,
