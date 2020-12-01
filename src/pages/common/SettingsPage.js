@@ -50,8 +50,8 @@ export default function SettingsPage() {
                     document.getElementById('student-phone').value = response.data.studentPhone;
                     document.getElementById('student-speciality').value = response.data.studentSpeciality;
                     document.getElementById('student-name').value = response.data.studentName;
-                    document.getElementById('student-surname').value = response.data.studentSecondName;
-                    document.getElementById('student-second-name').value = response.data.studentSurname;
+                    document.getElementById('student-surname').value = response.data.studentSurname;
+                    document.getElementById('student-second-name').value = response.data.studentSecondName;
                     document.getElementById('student-role').value = 'Студент';
                     document.getElementById('student-group').value = response.data.studentGroup;
                     break;
@@ -59,8 +59,8 @@ export default function SettingsPage() {
                     document.getElementById('student-mail').value = response.data.advisorEmail;
                     document.getElementById('student-phone').value = response.data.advisorPhone;
                     document.getElementById('student-name').value = response.data.advisorName;
-                    document.getElementById('student-surname').value = response.data.advisorSecondName;
-                    document.getElementById('student-second-name').value = response.data.advisorSurname;
+                    document.getElementById('student-surname').value = response.data.advisorSurname;
+                    document.getElementById('student-second-name').value = response.data.advisorSecondName;
                     document.getElementById('student-role').value = 'Научный руководитель';
                     document.getElementById('student-speciality').style.visibility = 'hidden';
                     document.getElementById('student-group').style.visibility = 'hidden';
@@ -71,8 +71,8 @@ export default function SettingsPage() {
                     document.getElementById('student-mail').value = response.data.advisorEmail;
                     document.getElementById('student-phone').value = response.data.advisorPhone;
                     document.getElementById('student-name').value = response.data.advisorName;
-                    document.getElementById('student-surname').value = response.data.advisorSecondName;
-                    document.getElementById('student-second-name').value = response.data.advisorSurname;
+                    document.getElementById('student-surname').value = response.data.advisorSurname;
+                    document.getElementById('student-second-name').value = response.data.advisorSecondName;
                     document.getElementById('student-role').value = 'Заведующий кафедрой';
                     document.getElementById('student-speciality').style.visibility = 'hidden';
                     document.getElementById('student-group').style.visibility = 'hidden';

@@ -87,7 +87,7 @@ export default function LoginPage() {
               placeholder="Введите пароль" className="size-24 loginForm-input"/>
               <Link to="/guest/forgotten_password">
                   <Form.Text className="size-21 dark loginForm-label2">
-                    Забыли пароль? Восстановить
+                    Не знаете или забыли пароль?
                   </Form.Text>
               </Link>
           </Form.Group>

@@ -55,6 +55,24 @@ export default function StudentTasksPage() {
     const [detailedDescriptionPP, setDetailedDescriptionPP] = useState('');
     const [conclusionPP, setConclusionPP] = useState('');
 
+    // ВКР - отзыв научного руководителя
+    const [vkrReviewVersions, setVkrReviewVersions] = useState([]);
+
+    // ВКР - допуск
+    const [vkrDopuskVersions, setVkrDopuskVersions] = useState([]);
+
+    // ВКР - задание
+    const [vkrTaskVersions, setVkrTaskVersions] = useState([]);
+
+    // ВКР - РПЗ
+    const [vkrRPZVersions, setVkrRPZVersions] = useState([]);
+
+    // ВКР - антиплагиат
+    const [vkrAntiplagiatVersions, setAntiplagiatTasskVersions] = useState([]);
+
+    // ВКР - презентация
+    const [vkrPrezentationVersions, setPrezentationTasskVersions] = useState([]);
+
     if (!fetchedData) {
         setFetchedData(true);
         getTaskVersions('Научно-исследовательская работа');
@@ -158,6 +176,11 @@ export default function StudentTasksPage() {
         }).catch(result => {
             console.log(result.data);
         });
+    }
+
+    // Получение версий документов по ВКР
+    function getVkrDocumentVersions() {
+
     }
 
     // Вывод версий задания нир
@@ -992,7 +1015,7 @@ export default function StudentTasksPage() {
     }
 
     function makeTaskVersion(type) {
-        console.log(type);
+        //console.log(type);
         var formData = new FormData();
         formData.append('taskType', type);
         formData.append('studentTheme', studentTheme);
@@ -1040,6 +1063,29 @@ export default function StudentTasksPage() {
         formData.append('file', file);
         axios({
             url: apiURL + '/student/document/report/upload',
+            method: 'POST',
+            data: formData,
+            headers: {
+                'Content-Type': 'multipart/form-data',
+                'Authorization': 'Bearer ' + authTokens.accessToken
+            },
+        }).then((response) => {
+            //console.log(response);
+            window.location.reload();
+        }).catch(result => {
+            console.log(result);
+        });
+    }
+
+    function uploadDocument(file, type, kind) {
+        var formData = new FormData();
+        formData.append('documentFormType', type);
+        formData.append('documentFormKind', kind);
+        formData.append('documentFormDescription', 'Документ');
+        formData.append('documentFormViewRights', 'Я и мой научный руководитель');
+        formData.append('file', file);
+        axios({
+            url: apiURL + '/scientific_advisor/document/upload',
             method: 'POST',
             data: formData,
             headers: {
@@ -1164,158 +1210,6 @@ export default function StudentTasksPage() {
             });
         });
 
-        // Создание новой версии задания пп...
-        $('#make-long-pp-task-button').off().on('click', function () {
-            makeTaskVersion('Практика по получению знаний и умений');
-        });
-
-        // Послать версию задания ПП... науч руку
-        $('.long-pp-version-send-button').off().on('click', function () {
-            var versionId = $(this).parent().parent().attr('id');
-            var arrayID = versionId.split('-')[3];
-            axios({
-                url: apiURL + '/student/document/management/task/nir/send',
-                method: 'POST',
-                params: {
-                    'newStatus': 'Рассматривается',
-                    'versionID': longPPData[arrayID].systemVersionID,
-                },
-                headers: {
-                    'Authorization': 'Bearer ' + authTokens.accessToken
-                },
-            }).then((response) => {
-                //console.log(response);
-                window.location.reload(true);
-            }).catch(result => {
-                console.log(result.data);
-            });
-        });
-
-        // Скачать версию задания ПП...
-        $('.long-pp-version-download-button').off().on('click', function () {
-            var versionId = $(this).parent().parent().attr('id');
-            var arrayID = versionId.split('-')[3];
-            axios({
-                url: apiURL + '/document/download/version',
-                method: 'GET',
-                responseType: 'blob',
-                params: {
-                    versionID: longPPData[arrayID].systemVersionID,
-                },
-                headers: {
-                    'Authorization': 'Bearer ' + authTokens.accessToken
-                },
-            }).then((response) => {
-                const url = window.URL.createObjectURL(new Blob([response.data]));
-                const link = document.createElement('a');
-                link.href = url;
-                link.setAttribute('download', 'Задание на ПпППУиОПД.docx');
-                document.body.appendChild(link);
-                link.click();
-
-            }).catch(result => {
-                console.log(result.data);
-            });
-        });
-
-        // Удалить версию задания ПП...
-        $('.long-pp-version-delete-button').off().on('click', function () {
-            var versionId = $(this).parent().parent().attr('id');
-            var arrayID = versionId.split('-')[3];
-            console.log(arrayID);
-            console.log(longPPData[arrayID]);
-            axios({
-                url: apiURL + '/student/document/task/version/delete',
-                method: 'DELETE',
-                params: {
-                    versionID: longPPData[arrayID].systemVersionID,
-                },
-                headers: {
-                    'Authorization': 'Bearer ' + authTokens.accessToken
-                },
-            }).then((response) => {
-                window.location.reload(true);
-            }).catch(result => {
-                console.log(result.data);
-            });
-        });
-
-        // Создание новой версии задания ПП
-        $('#make-pp-task-button').off().on('click', function () {
-            makeTaskVersion('Преддипломная практика');
-        });
-
-        // Послать версию задания НИР науч руку
-        $('.pp-version-send-button').off().on('click', function () {
-            //console.log('sent');
-            var versionId = $(this).parent().parent().attr('id');
-            var arrayID = versionId.split('-')[2];
-            console.log(arrayID);
-            axios({
-                url: apiURL + '/student/document/management/task/nir/send',
-                method: 'POST',
-                params: {
-                    'newStatus': 'Рассматривается',
-                    'versionID': PPData[arrayID].systemVersionID,
-                },
-                headers: {
-                    'Authorization': 'Bearer ' + authTokens.accessToken
-                },
-            }).then((response) => {
-                window.location.reload(true);
-            }).catch(result => {
-                console.log(result.data);
-            });
-        });
-
-        // Скачать версию задания НИР
-        $('.pp-version-download-button').off().on('click', function () {
-            var versionId = $(this).parent().parent().attr('id');
-            var arrayID = versionId.split('-')[2];
-            axios({
-                url: apiURL + '/document/download/version',
-                method: 'GET',
-                responseType: 'blob',
-                params: {
-                    versionID: PPData[arrayID].systemVersionID,
-                },
-                headers: {
-                    'Authorization': 'Bearer ' + authTokens.accessToken
-                },
-            }).then((response) => {
-                const url = window.URL.createObjectURL(new Blob([response.data]));
-                const link = document.createElement('a');
-                link.href = url;
-                link.setAttribute('download', 'Задание на ПП.docx');
-                document.body.appendChild(link);
-                link.click();
-
-            }).catch(result => {
-                console.log(result.data);
-            });
-        });
-
-        // Удалить версию задания НИР
-        $('.pp-version-delete-button').off().on('click', function () {
-            var versionId = $(this).parent().parent().attr('id');
-            var arrayID = versionId.split('-')[2];
-            console.log(arrayID);
-            axios({
-                url: apiURL + '/student/document/task/version/delete',
-                method: 'DELETE',
-                params: {
-                    versionID: PPData[arrayID].systemVersionID,
-                },
-                headers: {
-                    'Authorization': 'Bearer ' + authTokens.accessToken
-                },
-            }).then((response) => {
-                window.location.reload(true);
-            }).catch(result => {
-                console.log(result.data);
-            });
-        });
-
         // Создать версию отчёта по НИР
         $('#make-nir-otchet-button').off().on('click', function () {
             $('#nir-otchet-file-input').trigger('click');
@@ -1383,6 +1277,82 @@ export default function StudentTasksPage() {
                 method: 'DELETE',
                 params: {
                     versionID: nirOtchetVersions[arrayID].systemVersionID,
+                },
+                headers: {
+                    'Authorization': 'Bearer ' + authTokens.accessToken
+                },
+            }).then((response) => {
+                window.location.reload(true);
+            }).catch(result => {
+                console.log(result.data);
+            });
+        });
+
+        // Создание новой версии задания пп...
+        $('#make-long-pp-task-button').off().on('click', function () {
+            makeTaskVersion('Практика по получению знаний и умений');
+        });
+
+        // Послать версию задания ПП... науч руку
+        $('.long-pp-version-send-button').off().on('click', function () {
+            var versionId = $(this).parent().parent().attr('id');
+            var arrayID = versionId.split('-')[3];
+            axios({
+                url: apiURL + '/student/document/management/task/nir/send',
+                method: 'POST',
+                params: {
+                    'newStatus': 'Рассматривается',
+                    'versionID': longPPData[arrayID].systemVersionID,
+                },
+                headers: {
+                    'Authorization': 'Bearer ' + authTokens.accessToken
+                },
+            }).then((response) => {
+                //console.log(response);
+                window.location.reload(true);
+            }).catch(result => {
+                console.log(result.data);
+            });
+        });
+
+        // Скачать версию задания ПП...
+        $('.long-pp-version-download-button').off().on('click', function () {
+            var versionId = $(this).parent().parent().attr('id');
+            var arrayID = versionId.split('-')[3];
+            axios({
+                url: apiURL + '/document/download/version',
+                method: 'GET',
+                responseType: 'blob',
+                params: {
+                    versionID: longPPData[arrayID].systemVersionID,
+                },
+                headers: {
+                    'Authorization': 'Bearer ' + authTokens.accessToken
+                },
+            }).then((response) => {
+                const url = window.URL.createObjectURL(new Blob([response.data]));
+                const link = document.createElement('a');
+                link.href = url;
+                link.setAttribute('download', 'Задание на ПпППУиОПД.docx');
+                document.body.appendChild(link);
+                link.click();
+
+            }).catch(result => {
+                console.log(result.data);
+            });
+        });
+
+        // Удалить версию задания ПП...
+        $('.long-pp-version-delete-button').off().on('click', function () {
+            var versionId = $(this).parent().parent().attr('id');
+            var arrayID = versionId.split('-')[3];
+            console.log(arrayID);
+            console.log(longPPData[arrayID]);
+            axios({
+                url: apiURL + '/student/document/task/version/delete',
+                method: 'DELETE',
+                params: {
+                    versionID: longPPData[arrayID].systemVersionID,
                 },
                 headers: {
                     'Authorization': 'Bearer ' + authTokens.accessToken
@@ -1472,6 +1442,82 @@ export default function StudentTasksPage() {
             });
         });
 
+        // Создание новой версии задания ПП
+        $('#make-pp-task-button').off().on('click', function () {
+            makeTaskVersion('Преддипломная практика');
+        });
+
+        // Послать версию задания ПП науч руку
+        $('.pp-version-send-button').off().on('click', function () {
+            //console.log('sent');
+            var versionId = $(this).parent().parent().attr('id');
+            var arrayID = versionId.split('-')[2];
+            console.log(arrayID);
+            axios({
+                url: apiURL + '/student/document/management/task/nir/send',
+                method: 'POST',
+                params: {
+                    'newStatus': 'Рассматривается',
+                    'versionID': PPData[arrayID].systemVersionID,
+                },
+                headers: {
+                    'Authorization': 'Bearer ' + authTokens.accessToken
+                },
+            }).then((response) => {
+                window.location.reload(true);
+            }).catch(result => {
+                console.log(result.data);
+            });
+        });
+
+        // Скачать версию задания ПП
+        $('.pp-version-download-button').off().on('click', function () {
+            var versionId = $(this).parent().parent().attr('id');
+            var arrayID = versionId.split('-')[2];
+            axios({
+                url: apiURL + '/document/download/version',
+                method: 'GET',
+                responseType: 'blob',
+                params: {
+                    versionID: PPData[arrayID].systemVersionID,
+                },
+                headers: {
+                    'Authorization': 'Bearer ' + authTokens.accessToken
+                },
+            }).then((response) => {
+                const url = window.URL.createObjectURL(new Blob([response.data]));
+                const link = document.createElement('a');
+                link.href = url;
+                link.setAttribute('download', 'Задание на ПП.docx');
+                document.body.appendChild(link);
+                link.click();
+
+            }).catch(result => {
+                console.log(result.data);
+            });
+        });
+
+        // Удалить версию задания ПП
+        $('.pp-version-delete-button').off().on('click', function () {
+            var versionId = $(this).parent().parent().attr('id');
+            var arrayID = versionId.split('-')[2];
+            console.log(arrayID);
+            axios({
+                url: apiURL + '/student/document/task/version/delete',
+                method: 'DELETE',
+                params: {
+                    versionID: PPData[arrayID].systemVersionID,
+                },
+                headers: {
+                    'Authorization': 'Bearer ' + authTokens.accessToken
+                },
+            }).then((response) => {
+                window.location.reload(true);
+            }).catch(result => {
+                console.log(result.data);
+            });
+        });
+
         // Создать версию отчёта по ПП
         $('#make-pp-otchet-button').off().on('click', function () {
             $('#pp-otchet-file-input').trigger('click');
@@ -1549,6 +1595,107 @@ export default function StudentTasksPage() {
                 console.log(result);
             });
         });
+
+        // TODO
+
+        // Создать версию отзыва научного руководителя
+        $('#make-vkr-review-button').off().on('click', function () {
+            $('#vkr-review-file-input').trigger('click');
+        });
+
+        // Послать версию отзыва научного руководителя
+        $('.vkr-review-version-send-button').off().on('click', function () {
+            //console.log('sent');
+            var versionId = $(this).parent().parent().attr('id');
+            var arrayID = versionId.split('-')[2];
+            //console.log(arrayID);
+            axios({
+                url: apiURL + '/student/document/management/task/nir/send',
+                method: 'POST',
+                params: {
+                    'newStatus': 'Рассматривается',
+                    'versionID': PPData[arrayID].systemVersionID,
+                },
+                headers: {
+                    'Authorization': 'Bearer ' + authTokens.accessToken
+                },
+            }).then((response) => {
+                window.location.reload(true);
+            }).catch(result => {
+                console.log(result.data);
+            });
+        });
+
+        // Скачать версию отзыва научного руководителя
+        $('.vkr-review-version-download-button').off().on('click', function () {
+            var versionId = $(this).parent().parent().attr('id');
+            var arrayID = versionId.split('-')[2];
+            axios({
+                url: apiURL + '/document/download/version',
+                method: 'GET',
+                responseType: 'blob',
+                params: {
+                    versionID: PPData[arrayID].systemVersionID,
+                },
+                headers: {
+                    'Authorization': 'Bearer ' + authTokens.accessToken
+                },
+            }).then((response) => {
+                const url = window.URL.createObjectURL(new Blob([response.data]));
+                const link = document.createElement('a');
+                link.href = url;
+                link.setAttribute('download', 'Задание на ПП.docx');
+                document.body.appendChild(link);
+                link.click();
+
+            }).catch(result => {
+                console.log(result.data);
+            });
+        });
+
+        // Удалить версию отзыва научного руководителя
+        $('.vkr-review-version-delete-button').off().on('click', function () {
+            var versionId = $(this).parent().parent().attr('id');
+            var arrayID = versionId.split('-')[2];
+            console.log(arrayID);
+            axios({
+                url: apiURL + '/student/document/task/version/delete',
+                method: 'DELETE',
+                params: {
+                    versionID: PPData[arrayID].systemVersionID,
+                },
+                headers: {
+                    'Authorization': 'Bearer ' + authTokens.accessToken
+                },
+            }).then((response) => {
+                window.location.reload(true);
+            }).catch(result => {
+                console.log(result.data);
+            });
+        });
+
+        // Создать версию отчёта по НИР
+        $('#make-nir-otchet-button').off().on('click', function () {
+            $('#nir-otchet-file-input').trigger('click');
+        });
+
+
+        // Создать версию отзыва научного руководителя
+        $('#make-vkr-dopusk-button').off().on('click', function () {
+            $('#vkr-dopusk-file-input').trigger('click');
+        });
+
+        // Создать версию презентации
+        $('#make-vkr-presentation-button').off().on('click', function () {
+            $('#vkr-presentation-file-input').trigger('click');
+        });
+
+        // Создать версию HGP
+        $('#make-vkr-rpz-button').off().on('click', function () {
+            $('#vkr-rpz-file-input').trigger('click');
+        });
+
+        // TODO
 
         // Функция кнопки "перенести в меню" для задания НИР
         $('.nir-copy').off().on('click', function () {
@@ -1912,7 +2059,7 @@ export default function StudentTasksPage() {
                     <div className='info-break-div'>&nbsp;</div>
 
                     <Tabs defaultActiveKey='none' onSelect={() => { setTimeout(function () { window.scrollTo(0, 2000); }, 1); }} className='info-form-subtab light-background container-fluid'>
-                        <Tab eventKey='info21' title={
+                        <Tab eventKey='info31' title={
                             <p className='size-30 light dark-background info-form-subtab-title'>
                                 <Image src={iconDocument} thumbnail className='dark-background info-form-subtab-icon icon-small' />
                                 Задание на ПП
@@ -1954,7 +2101,7 @@ export default function StudentTasksPage() {
 
                             </div>
                         </Tab>
-                        <Tab eventKey='info22' title={
+                        <Tab eventKey='info32' title={
                             <p className='size-30 light dark-background info-form-subtab-title' style={{ marginLeft: '880px' }}>
                                 <Image src={iconDocument} thumbnail className='dark-background info-form-subtab-icon icon-small' />
                                 Отчет о<br />прохождении ПП
@@ -2034,6 +2181,172 @@ export default function StudentTasksPage() {
                         </div>
                     </div>
                     <div className='info-break-div'>&nbsp;</div>
+
+                    <Tabs defaultActiveKey='none' onSelect={() => { setTimeout(function () { window.scrollTo(0, 2000); }, 1); }} className='info-form-subtab light-background container-fluid'>
+                        <Tab eventKey='info41' title={
+                            <p className='size-30 light dark-background info-form-subtab-title'>
+                                <Image src={iconDocument} thumbnail className='dark-background info-form-subtab-icon icon-small' />
+                                Отзыв научного<br />руководителя
+                            </p>
+                        }>
+                            <div className='info-sub-tab-div'>
+
+                                <div className='info-break-div' style={{ marginBottom: '20px' }}>&nbsp;</div>
+
+                                <p className='size-30 dark info-sub-tab-title'>Отзыв научного руководителя</p>
+
+                                <div id='student-vkr-review-version-div' className='student-nir-task-version-div light-background'></div>
+
+                                <div className='info-sub-tab-div'>
+
+                                    <button type='button' id='make-vkr-review-button' className='size-30 light dark-background info-button-1' style={{ height: '100px', width: '670px', marginLeft: '410px' }}>
+                                        <Image src={iconDocument} thumbnail className='dark-background thumbnail-icon' style={{ position: 'relative', top: '-25px' }} />
+                                        <div style={{ display: 'inline-block' }}><p style={{ marginBottom: '0px' }}>Сформировать и загрузить новую версию<br />отзыва научного руководителя</p></div>
+                                    </button>
+                                    <input id='vkr-review-file-input' type='file' style={{ display: 'none' }} onChange={(e) => {
+                                        if (e.target.files.length !== 0) {
+
+                                            uploadDocument(e.target.files[0], 'ВКР', 'Отзыв');
+                                        }
+                                    }} ></input>
+
+                                </div>
+                            </div>
+                        </Tab>
+                        <Tab eventKey='info42' title={
+                            <p className='size-30 light dark-background info-form-subtab-title' style={{ marginLeft: '29px' }}>
+                                <Image src={iconDocument} thumbnail className='dark-background info-form-subtab-icon icon-small' />
+                                Допуск к<br />защите
+                            </p>
+                        }>
+                            <div className='info-break-div' style={{ marginBottom: '20px' }}>&nbsp;</div>
+
+                            <p className='size-30 dark info-sub-tab-title'>Допуск к защите</p>
+
+                            <div id='student-vkr-dopusk-version-div' className='student-nir-task-version-div light-background'></div>
+
+                            <div className='info-sub-tab-div'>
+
+                                <button type='button' id='make-vkr-dopusk-button' className='size-30 light dark-background info-button-1' style={{ height: '100px', width: '670px', marginLeft: '410px' }}>
+                                    <Image src={iconDocument} thumbnail className='dark-background thumbnail-icon' style={{ position: 'relative', top: '-25px' }} />
+                                    <div style={{ display: 'inline-block' }}><p style={{ marginBottom: '0px' }}>Сформировать и загрузить новую версию<br />допуска к защите ВКР</p></div>
+                                </button>
+                                <input id='vkr-dopusk-file-input' type='file' style={{ display: 'none' }} onChange={(e) => {
+                                    if (e.target.files.length !== 0) {
+
+                                        uploadDocument(e.target.files[0], 'ВКР', 'Допуск');
+                                    }
+                                }} ></input>
+                            </div>
+                        </Tab>
+                        <Tab eventKey='info43' title={
+                            <p className='size-30 light dark-background info-form-subtab-title' style={{ marginLeft: '29px' }}>
+                                <Image src={iconDocument} thumbnail className='dark-background info-form-subtab-icon icon-small' />
+                                Задание<br />на ВКР
+                            </p>
+                        }>
+                            <div className='info-break-div' style={{ marginBottom: '20px' }}>&nbsp;</div>
+
+                            <p className='size-30 dark info-sub-tab-title'>Задание на ВКР</p>
+
+                            <div id='student-vkr-task-version-div' className='student-nir-task-version-div light-background'></div>
+
+                            <div className='info-sub-tab-div'>
+
+
+                                <button type='button' id='make-vkr-task-button' className='size-30 light dark-background info-button-1' style={{ height: '100px', width: '670px', marginLeft: '410px' }}>
+                                    <Image src={iconDocument} thumbnail className='dark-background thumbnail-icon' style={{ position: 'relative', top: '-25px' }} />
+                                    <div style={{ display: 'inline-block' }}><p style={{ marginBottom: '0px' }}>Сформировать и загрузить новую версию<br />задания ВКР</p></div>
+                                </button>
+                                <input id='vkr-ефыл-file-input' type='file' style={{ display: 'none' }} onChange={(e) => {
+                                    if (e.target.files.length !== 0) {
+
+                                        //uploadDocument(e.target.files[0], 'ВКР', 'Допуск');
+                                    }
+                                }} ></input>
+
+                            </div>
+                        </Tab>
+                        <Tab eventKey='info44' title={
+                            <p className='size-30 light dark-background info-form-subtab-title' style={{ marginLeft: '29px' }}>
+                                <Image src={iconDocument} thumbnail className='dark-background info-form-subtab-icon icon-small' />
+                                РПЗ
+                            </p>
+                        }>
+                            <div className='info-break-div' style={{ marginBottom: '20px' }}>&nbsp;</div>
+
+                            <p className='size-30 dark info-sub-tab-title'>РПЗ</p>
+
+                            <div id='student-vkr-rpz-version-div' className='student-nir-task-version-div light-background'></div>
+
+                            <div className='info-sub-tab-div'>
+
+
+                                <button type='button' id='make-vkr-rpz-button' className='size-30 light dark-background info-button-1' style={{ height: '100px', width: '480px', marginLeft: '505px' }}>
+                                    <Image src={iconDocument} thumbnail className='dark-background thumbnail-icon' style={{ position: 'relative', top: '-25px' }} />
+                                    <div style={{ display: 'inline-block' }}><p style={{ marginBottom: '0px' }}>Сформировать и загрузить<br />новую версию РПЗ</p></div>
+                                </button>
+                                <input id='vkr-rpz-file-input' type='file' style={{ display: 'none' }} onChange={(e) => {
+                                    if (e.target.files.length !== 0) {
+
+                                        //makeOtchetVersion(e.target.files[0], 'Преддипломная практика');
+                                    }
+                                }} ></input>
+                            </div>
+                        </Tab>
+                        <Tab eventKey='info45' title={
+                            <p className='size-30 light dark-background info-form-subtab-title' style={{ marginLeft: '29px' }}>
+                                <Image src={iconDocument} thumbnail className='dark-background info-form-subtab-icon icon-small' />
+                                Проверка на<br />антиплагиат
+                            </p>
+                        }>
+                            <div className='info-break-div' style={{ marginBottom: '20px' }}>&nbsp;</div>
+
+                            <p className='size-30 dark info-sub-tab-title'>Проверка на антиплагиат</p>
+
+                            <div id='student-vkr-antiplagiat-version-div' className='student-nir-task-version-div light-background'></div>
+
+                            <div className='info-sub-tab-div'>
+
+                                <button type='button' id='make-vkr-antiplagiat-button' className='size-30 light dark-background info-button-1' style={{ height: '100px', width: '670px', marginLeft: '410px' }}>
+                                    <Image src={iconDocument} thumbnail className='dark-background thumbnail-icon' style={{ position: 'relative', top: '-25px' }} />
+                                    <div style={{ display: 'inline-block' }}><p style={{ marginBottom: '0px' }}>Сформировать и загрузить новую версию<br />отчета об антиплагиате</p></div>
+                                </button>
+                                <input id='vkr-antiplagiat-file-input' type='file' style={{ display: 'none' }} onChange={(e) => {
+                                    if (e.target.files.length !== 0) {
+
+                                        uploadDocument(e.target.files[0], 'ВКР', 'Антиплагиат');
+                                    }
+                                }} ></input>
+                            </div>
+                        </Tab>
+                        <Tab eventKey='info46' title={
+                            <p className='size-30 light dark-background info-form-subtab-title' style={{ marginLeft: '29px' }}>
+                                <Image src={iconDocument} thumbnail className='dark-background info-form-subtab-icon icon-small' />
+                                Презентация<br />к защите
+                            </p>
+                        }>
+                            <div className='info-break-div' style={{ marginBottom: '20px' }}>&nbsp;</div>
+
+                            <p className='size-30 dark info-sub-tab-title'>Презентация к защите</p>
+
+                            <div id='student-vkr-presentation-version-div' className='student-nir-task-version-div light-background'></div>
+
+                            <div className='info-sub-tab-div'>
+
+                                <button type='button' id='make-vkr-presentation-button' className='size-30 light dark-background info-button-1' style={{ height: '100px', width: '670px', marginLeft: '410px' }}>
+                                    <Image src={iconDocument} thumbnail className='dark-background thumbnail-icon' style={{ position: 'relative', top: '-25px' }} />
+                                    <div style={{ display: 'inline-block' }}><p style={{ marginBottom: '0px' }}>Сформировать и загрузить новую версию<br />презентации</p></div>
+                                </button>
+                                <input id='vkr-presentation-file-input' type='file' style={{ display: 'none' }} onChange={(e) => {
+                                    if (e.target.files.length !== 0) {
+
+                                        uploadDocument(e.target.files[0], 'ВКР', 'Презентация');
+                                    }
+                                }} ></input>
+                            </div>
+                        </Tab>
+                    </Tabs>
                 </Tab>
             </Tabs>
 

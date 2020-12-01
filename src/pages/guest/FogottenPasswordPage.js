@@ -123,7 +123,7 @@ export default function ForgottenPasswordPage() {
 
         <p id='error-message' style={{ visibility: 'hidden', marginBottom: '10px' }} className='dark size-24'>Такого пользователя<br />не существует!</p>
 
-        <button id='change-password-button' type='button' disabled className="size-32 dark-background light loginForm-button" style={{ height: '98px' }}>Отправить на почту<br />код для смены пароля</button>
+        <button id='change-password-button' type='button' disabled className="size-32 dark-background light loginForm-button" style={{ height: '148px' }}>Отправить на почту<br />код для смены пароля</button>
 
         <Link to='/guest/login'>
           <button type='button' style={{ marginTop: '20px' }} className="size-32 dark-background light loginForm-button">Назад</button>
