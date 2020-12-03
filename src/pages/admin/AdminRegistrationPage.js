@@ -230,7 +230,6 @@ export default function AdminRegistrationPage() {
     }
 
     function registerAdmin() {
-        //console.log('register admin');
         var email = $('#admin-mail').val();
         var name = $('#admin-name').val();
         var surname = $('#admin-surname').val();

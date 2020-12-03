@@ -22,6 +22,7 @@ import StudentHeader from './components/StudentHeader';
 import StudentInfoPage from './pages/student/StudentInfoPage';
 import StudentTasksPage from './pages/student/StudentTasksPage';
 import StudentExamplesPage from './pages/student/StudentExamplesPage';
+import StudentThemePage from './pages/student/StudentThemePage';
 //import StudentDocumentPage from './pages/student/StudentDocumentPage';
 
 import SciAdvisorHeader from './components/SciAdvisorHeader';
@@ -31,6 +32,7 @@ import ScaStuViewPage from './pages/scientific_advisor/ScaStuViewPage';
 import SciAdvisorStudentsDocsPage from './pages/scientific_advisor/SciAdvisorStudentsDocsPage';
 import ScaProjectsPage from './pages/scientific_advisor/ScaProjectsPage';
 import ScaExamplesPage from './pages/scientific_advisor/ScaExamplesPage';
+import ScaThemesPage from './pages/scientific_advisor/ScaThemesPage';
 
 import HocHeader from './components/HocHeader';
 //import HocDocumentooborotPage from './pages/head_of_cafedra/HocDocumentooborotPage';
@@ -77,6 +79,7 @@ export default function App() {
           <AuthRoute exact path='/stu/orders' component={OrdersPage} />
           <AuthRoute exact path='/stu/examples' component={StudentExamplesPage} />
           <AuthRoute exact path='/stu/settings' component={SettingsPage} />
+          <AuthRoute exact path='/stu/theme' component={StudentThemePage} />
 
           <AuthRoute exact path='/sca/students' component={SciAdvisorStudentsPage} />
           <AuthRoute exact path='/sca/stu-docs' component={SciAdvisorStudentsDocsPage} />
@@ -86,6 +89,7 @@ export default function App() {
           <AuthRoute exact path='/sca/projects' component={ScaProjectsPage} />
           <AuthRoute exact path='/sca/examples' component={ScaExamplesPage} />
           <AuthRoute exact path='/sca/settings' component={SettingsPage} />
+          <AuthRoute exact path='/sca/stu-themes' component={ScaThemesPage} />
 
           <AuthRoute exact path='/hoc/orders' component={HocOrdersPage} />
           <AuthRoute exact path='/hoc/templates' component={HocTemplatesPage} />

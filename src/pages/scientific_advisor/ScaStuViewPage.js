@@ -99,6 +99,11 @@ export default function ScaStuViewPage() {
         // Имя студента
         var studentFio = document.createElement('th');
 
+        var projectArea = 'Комплексный проект не назначен';
+        if (item.projectArea != 'Нет проектной области') {
+            projectArea = item.projectArea;
+        }
+
         var popover = document.createElement('a');
         popover.href = '#';
         popover.onclick = 'return false;';
@@ -109,7 +114,9 @@ export default function ScaStuViewPage() {
         $(popover).attr('data-content', "Имя: " + item.fio +
             "<br /> Группа: " + item.group +
             "<br /> Телефон: " + item.phone +
-            "<br /> Почта: " + item.email);
+            "<br /> Почта: " + item.email +
+            "<br /> Комплексный проект: " + projectArea +
+            "<br /> Проект: " + item.projectName);
         popover.innerText = item.fio.split(' ')[0] +
             '. ' +
             item.fio.split(' ')[1].charAt(0) +
@@ -117,12 +124,18 @@ export default function ScaStuViewPage() {
             item.fio.split(' ')[2].charAt(0) +
             '.';
 
-        // Проект студента
-        var studentProject = document.createElement('th');
-        studentProject.innerText = item.projectArea + '\n' + item.projectName;
-        studentProject.style.overflow = 'hidden';
-        studentProject.style.textOverflow = 'ellipsis';
-        studentProject.style.maxWidth = '300px';
+        // Тема студента
+        var studentTheme = document.createElement('th');
+        studentTheme.innerText = item.studentVkrTheme;
+        if (item.studentVkrThemeEditable) {
+            studentTheme.innerText += ' - Не одобрено';
+        }
+        else {
+            studentTheme.innerText += ' - Одобрено';
+        }
+        studentTheme.style.overflow = 'hidden';
+        studentTheme.style.textOverflow = 'ellipsis';
+        studentTheme.style.maxWidth = '300px';
 
         // НИР
         var studentNir = document.createElement('th');
@@ -294,11 +307,18 @@ export default function ScaStuViewPage() {
 
         var vkrPresentationDiv = document.createElement('div');
 
+        var studentButtonTh = document.createElement('th');
+        var studentButton = document.createElement('button');
+        studentButton.style.minWidth = '100px';
+        studentButton.className = 'student-table-button';
+        studentButton.innerText = 'Перейти к студенту';
+        studentButton.id = 'student-table-button-' + i;
+
         student.appendChild(studentNum);
         studentFio.appendChild(popover);
         student.appendChild(studentFio);
 
-        student.appendChild(studentProject);
+        student.appendChild(studentTheme);
 
         nirTaskDiv.appendChild(nirTaskStatus);
         nirTaskDiv.appendChild(nirTaskCheckbox);
@@ -1963,13 +1983,13 @@ export default function ScaStuViewPage() {
                 <Table striped bordered hover>
                     <thead className='size-24 dark'>
                         <tr>
-                        <th>#</th>
+                            <th>#</th>
                             <th>ФИО</th>
-                            <th>Проект</th>
-                            <th style={{minWidth:'203px'}}>НИР</th>
-                            <th style={{minWidth:'278px'}}>ПпППУиОПД</th>
-                            <th style={{minWidth:'193px'}}>ПП</th>
-                            <th style={{minWidth:'243px'}}>ВКР</th>
+                            <th>Тема</th>
+                            <th style={{ minWidth: '203px' }}>НИР</th>
+                            <th style={{ minWidth: '278px' }}>ПпППУиОПД</th>
+                            <th style={{ minWidth: '193px' }}>ПП</th>
+                            <th style={{ minWidth: '243px' }}>ВКР</th>
                         </tr>
                     </thead>
                     <tbody id='student-table-body' className='size-24 dark'>

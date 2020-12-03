@@ -269,7 +269,7 @@ export default function ScaProjectsPage() {
                     var deleteAreaButton = document.createElement('button');
                     deleteAreaButton.id = 'delete-area-' + i;
                     deleteAreaButton.type = 'button';
-                    deleteAreaButton.innerText = 'Удалить программу проектов';
+                    deleteAreaButton.innerText = 'Удалить комплексный проект';
                     deleteAreaButton.className = 'sca-projects-table-button delete-project-area-button';
 
                     studentRowEmpty.appendChild(rowNumEmpty);
@@ -302,7 +302,7 @@ export default function ScaProjectsPage() {
             $(this).parent().find('.sci-advisor-status-dropdown-content').toggle();
         });
 
-        // Создать программу проектов
+        // Создать комплексный проект
         $('#add-project-area-button').off().on('click', function (event) {
             console.log(projectAreaName);
             axios({
@@ -345,7 +345,7 @@ export default function ScaProjectsPage() {
             });
         });
 
-        // Удалить программу проектов
+        // Удалить комплексный проект
         $('.delete-project-area-button').off().on('click', function (event) {
             //console.log( $(this).attr('id') );
             var areaId = $(this).attr('id').split('-')[2];
@@ -435,7 +435,7 @@ export default function ScaProjectsPage() {
                     <thead className='size-24 dark'>
                         <tr>
                             <th >#</th>
-                            <th >Программа проектов</th>
+                            <th >Комплексный проект</th>
                             <th >Проект</th>
                             <th >Студент</th>
                             <th style={{width:'180px'}}></th>
@@ -447,8 +447,8 @@ export default function ScaProjectsPage() {
                 </Table>
             </div>
             <div className='sca-projects-menu-div light-background'>
-                <p className='dark size-30 sca-projects-title'><b>Добавление программы проектов</b></p>
-                <p className='dark size-24'>Название программы проектов:</p>
+                <p className='dark size-30 sca-projects-title'><b>Добавление комплексного проекта</b></p>
+                <p className='dark size-24'>Название комплексного проекта:</p>
                 <textarea maxLength='256' id='project-area-name' value={projectAreaName} onChange={(e) => {
                     setProjectAreaName(e.target.value);
                     if (e.target.value.length > 0) {
@@ -461,10 +461,10 @@ export default function ScaProjectsPage() {
 
                 </textarea>
                 <button id='add-project-area-button' type='button' disabled className='light size-24 dark-background sca-projects-button'>
-                    Добавить программу проектов
+                    Добавить комплексный проект
                 </button>
 
-                <p className='dark size-30 sca-projects-title'><b>Добавление проекта<br />в программу проектов</b></p>
+                <p className='dark size-30 sca-projects-title'><b>Добавление проекта<br />в комплексный проект</b></p>
                 <p className='dark size-24'>Название проекта:</p>
                 <textarea maxLength='100' id='project-name' value={projectName} onChange={(e) => {
                     setProjectName(e.target.value);
@@ -478,7 +478,7 @@ export default function ScaProjectsPage() {
                 }} className='dark size-24 sca-projects-text-area'>
 
                 </textarea>
-                <p className='dark size-24'>Программа проектов,<br />в которую добавить проект:</p>
+                <p className='dark size-24'>Комплексный проект,<br />в который добавить проект:</p>
                 <select id='area-dropdown-list' size={projectAreaData.length} className='dark size-24 sca-projects-dropdown'
                     onChange={(e) => {
                         if (projectName.length > 0 && $('#area-dropdown-list :selected').val() !== undefined) {

@@ -5,6 +5,7 @@ import { useAuthContext } from '../auth/AuthContext';
 import axios from 'axios';
 import { apiURL } from '../Config';
 import $ from 'jquery';
+import 'bootstrap/dist/js/bootstrap.bundle.min';
 
 import iconInfo from '../images/icons/info.png';
 import orderImage from '../images/icons/order.png';
@@ -16,11 +17,13 @@ import iconMenu from '../images/icons/menu.png';
 export default function StudentHeader() {
     const { authTokens, setAuthTokens } = useAuthContext();
     const [fetchedData, setFetchedData] = useState(false);
-    const [scientificAdvisor, setScientificAdvisor] = useState('');
+    const [scientificAdvisorData, setScientificAdvisorData] = useState([]);
+    const [theme, setTheme] = useState('');
 
     if (!fetchedData) {
         setFetchedData(true);
         getScientificAdvisor();
+        getTheme();
     }
 
     function getScientificAdvisor() {
@@ -31,9 +34,24 @@ export default function StudentHeader() {
                 'Authorization': 'Bearer ' + authTokens.accessToken
             },
         }).then((response) => {
-            //console.log(response);
-            setScientificAdvisor(response.data.advsiorFio);
+            //console.log(response.data);
+            setScientificAdvisorData(response.data);
             //console.log(scientificAdvisor);
+        }).catch(result => {
+            console.log(result.data);
+        });
+    }
+
+    function getTheme() {
+        axios({
+            url: apiURL + '/student/get/vkr_theme',
+            method: 'GET',
+            headers: {
+                'Authorization': 'Bearer ' + authTokens.accessToken
+            },
+        }).then((response) => {
+            //console.log(response);
+            setTheme(response.data.vkrTheme);
         }).catch(result => {
             console.log(result.data);
         });
@@ -44,6 +62,7 @@ export default function StudentHeader() {
     }
 
     $(function () {
+
         $('.student-navbar-button').removeClass('student-navbar-button-selected');
         switch (window.location.pathname) {
             case ('/stu/info'):
@@ -61,9 +80,22 @@ export default function StudentHeader() {
             case ('/stu/settings'):
                 document.getElementById('button-settings').classList.add('student-navbar-button-selected');
                 break;
+                case ('/stu/theme'):
+                    document.getElementById('button-theme').classList.add('student-navbar-button-selected');
+                    break;
             default:
                 console.log('url error');
         };
+
+        $('[data-toggle="popover"]').popover();
+
+        $('body').on('click', function (e) {
+            $('[data-toggle=popover]').each(function () {
+                if (!$(this).is(e.target) && $(this).has(e.target).length === 0 && $('.popover').has(e.target).length === 0) {
+                    $(this).popover('hide');
+                }
+            });
+        });
     });
 
     return (
@@ -93,17 +125,31 @@ export default function StudentHeader() {
                         Приказы
                     </button>
                 </Nav.Link>
-                <Nav.Link>
-                    <button type='button' className='student-navbar-button dark-background light size-30'>
-                        Научный руководитель: <br />{scientificAdvisor}
+
+                <Nav.Item style={{marginLeft:'3px', marginRight:'3px'}}>
+                    <button type='button' className='student-navbar-button dark-background light size-30' data-toggle="popover"
+                        data-placement="bottom" title="Данные научного руководителя:"
+                        data-content={scientificAdvisorData.length != [] ? "Имя: " + scientificAdvisorData.advsiorFio + "\nТелефон: " +
+                            scientificAdvisorData.advisorPhone + "\nПочта: " + scientificAdvisorData.advisorEmail : ''}>
+                        Научный руководитель: <br />{scientificAdvisorData.length != [] ? scientificAdvisorData.advsiorFio.split(' ')[0] + ' '
+                            + scientificAdvisorData.advsiorFio.split(' ')[1].charAt(0) + '. ' + scientificAdvisorData.advsiorFio.split(' ')[2].charAt(0) + '.' : ''}
+                    </button>
+
+                </Nav.Item>
+
+                <Nav.Link as={Link} to='/stu/theme'>
+                    <button type='button' id='button-theme' className='student-navbar-button dark-background light size-30'>
+                        Тема ВКР: <br />{ theme }
                     </button>
                 </Nav.Link>
+
                 <Nav.Link as={Link} to='/stu/settings'>
                     <button id='button-settings' type='button' className='student-navbar-button dark-background light size-30'>
                         <Image src={iconMenu} thumbnail className='student-navbar-image dark-background' />
-                        Настройки
+                        Личные<br />данные
                     </button>
                 </Nav.Link>
+
                 <Nav.Link>
                     <button type='button' onClick={() => { logOut() }} className='student-navbar-button dark-background light size-30'>
                         <Image src={exitImage} thumbnail className='student-navbar-image dark-background' />
@@ -111,6 +157,7 @@ export default function StudentHeader() {
                     </button>
                 </Nav.Link>
             </Navbar>
+
         </div>
 
     );

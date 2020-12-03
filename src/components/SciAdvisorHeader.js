@@ -12,6 +12,7 @@ import orderImage from '../images/icons/order.png';
 import templateImage from '../images/icons/template.png';
 import exitImage from '../images/icons/exit.png';
 import iconMenu from '../images/icons/menu.png';
+import iconSelected from '../images/icons/documents_selected.png';
 
 export default function SciAdvisorHeader() {
 
@@ -45,6 +46,9 @@ export default function SciAdvisorHeader() {
             case ('/sca/settings'):
                 document.getElementById('button-settings').classList.add('student-navbar-button-selected');
                 break;
+                case ('/sca/stu-themes'):
+                    document.getElementById('button-themes').classList.add('student-navbar-button-selected');
+                    break;
             default:
                 console.log('url error');
         };
@@ -56,7 +60,7 @@ export default function SciAdvisorHeader() {
                 <Nav.Link as={Link} to='/sca/students'>
                     <button id='button-students' type='button' className='student-navbar-button dark-background light size-30'>
                         <Image src={iconStudents} thumbnail className='student-navbar-image dark-background' />
-                        Мои студенты
+                        Мои<br />студенты
                     </button>
                 </Nav.Link>
                 <Nav.Link as={Link} to='/sca/stu-docs'>
@@ -68,7 +72,13 @@ export default function SciAdvisorHeader() {
                 <Nav.Link as={Link} to='/sca/projects'>
                     <button id='button-projects' type='button' className='student-navbar-button dark-background light size-30'>
                         <Image src={iconMyProject} thumbnail className='student-navbar-image dark-background' />
-                        Мои проекты
+                        Проекты<br />студентов
+                    </button>
+                </Nav.Link>
+                <Nav.Link as={Link} to='/sca/stu-themes'>
+                    <button id='button-themes' type='button' className='student-navbar-button dark-background light size-30'>
+                        <Image src={iconSelected} thumbnail className='student-navbar-image dark-background' />
+                        Темы<br />студентов
                     </button>
                 </Nav.Link>
                 <Nav.Link as={Link} to='/sca/examples'>
@@ -92,7 +102,7 @@ export default function SciAdvisorHeader() {
                 <Nav.Link as={Link} to='/sca/settings'>
                     <button id='button-settings' type='button' className='student-navbar-button dark-background light size-30'>
                         <Image src={iconMenu} thumbnail className='student-navbar-image dark-background' />
-                        Настройки
+                        Личные<br />данные
                     </button>
                 </Nav.Link>
                 {authTokens.userRole === 'scientific_advisor' ? (

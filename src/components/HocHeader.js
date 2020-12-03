@@ -68,7 +68,7 @@ export default function ScaStuHeader() {
                 <Nav.Link as={Link} to='/hoc/settings'>
                     <button id='button-settings' type='button' className='student-navbar-button dark-background light size-30'>
                         <Image src={iconMenu} thumbnail className='student-navbar-image dark-background' />
-                        Настройки
+                        Личные<br />данные
                     </button>
                 </Nav.Link>
                 <Nav.Link>

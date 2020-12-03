@@ -413,7 +413,7 @@ export default function ScaExamplesPage() {
                         }
                         fillProjectData($('#dropdown-create-area :selected').val());
                     }} className='dark size-24 sca-examples-dropdown'>
-                        <option value='' disabled hidden>Выберите права доступа к образцу по программе проектов</option>
+                        <option value='' disabled hidden>Выберите права доступа к образцу по комплексному проекту</option>
                         <option value='Все мои студенты'>Все мои студенты</option>
                     </select>
 
@@ -426,7 +426,7 @@ export default function ScaExamplesPage() {
                         }
                     }} className='dark size-24 sca-examples-dropdown'>
                         <option value='' disabled hidden>Выберите права доступа к образцу по проекту</option>
-                        <option value='Все проекты в программе проектов'>Все проекты в программе проектов</option>
+                        <option value='Все проекты в программе проектов'>Все проекты в комплексном проекте</option>
                     </select>
 
                     <button id='create-example-button' disabled className='size-24 dark-background light sca-modal-button' style={{ marginLeft: '180px' }}>
@@ -460,7 +460,7 @@ export default function ScaExamplesPage() {
                         }
                         fillAlterProjectData($('#dropdown-alter-area :selected').val(), null);
                     }} className='dark size-24 sca-examples-dropdown'>
-                        <option value='' disabled hidden>Выберите права доступа к образцу по программе проектов</option>
+                        <option value='' disabled hidden>Выберите права доступа к образцу по комплексному проекту</option>
                         <option value='Все мои студенты'>Все мои студенты</option>
                     </select>
 
@@ -473,7 +473,7 @@ export default function ScaExamplesPage() {
                         }
                     }} className='dark size-24 sca-examples-dropdown'>
                         <option value='' disabled hidden>Выберите права доступа к образцу по проекту</option>
-                        <option value='Все проекты в программе проектов'>Все проекты в программе проектов</option>
+                        <option value='Все проекты в программе проектов'>Все проекты в комплексном проекте</option>
                     </select>
 
                     <button id='alter-example-button' disabled className='size-24 dark-background light sca-modal-button' style={{ marginLeft: '180px' }}>

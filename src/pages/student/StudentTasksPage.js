@@ -178,6 +178,7 @@ export default function StudentTasksPage() {
         });
     }
 
+    // TODO
     // Получение версий документов по ВКР
     function getVkrDocumentVersions() {
 
@@ -204,6 +205,12 @@ export default function StudentTasksPage() {
             var versionStatus = document.createElement('p');
             versionStatus.className = 'light size-24 nir-header-text';
             versionStatus.innerText = 'Статус: ' + item.status;
+
+            // Кнопка просмотреть
+            var viewButton = document.createElement('button');
+            viewButton.className = 'dark size-24 nir-version-header-button nir-version-view-button';
+            viewButton.innerText = 'Просмотреть';
+            viewButton.type = 'button';
 
             // Кнопка отправить науч руку
             var sendButton = document.createElement('button');
@@ -302,6 +309,7 @@ export default function StudentTasksPage() {
             clickableArea.appendChild(versionName);
             clickableArea.appendChild(versionStatus);
             nirVersionHeader.appendChild(clickableArea);
+            nirVersionHeader.appendChild(viewButton);
             nirVersionHeader.appendChild(sendButton);
             nirVersionHeader.appendChild(downloadButton);
             nirVersionHeader.appendChild(deleteButton);
@@ -1209,6 +1217,50 @@ export default function StudentTasksPage() {
                 console.log(result.data);
             });
         });
+
+
+        // TODO
+        // Просмотреть версию задания НИР
+        $('.nir-version-view-button').off().on('click', function () {
+
+            console.log('view');
+
+            var versionId = $(this).parent().parent().attr('id');
+            var arrayID = versionId.split('-')[2];
+            axios({
+                url: apiURL + '/document/download/version',
+                method: 'GET',
+                responseType: 'blob',
+                params: {
+                    versionID: nirVersions[arrayID].systemVersionID,
+                },
+                headers: {
+                    'Authorization': 'Bearer ' + authTokens.accessToken
+                },
+            }).then((response) => {
+                //const url = window.URL.createObjectURL(new Blob([response.data] ));
+                const url = window.URL.createObjectURL(new Blob([response.data], { type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' } ));
+                
+                const link = document.createElement('a');
+                link.href = url;
+                link.setAttribute('download', 'Задание на НИР.docx');
+
+                console.log(response);
+                console.log(url);
+                console.log(link);
+
+                //window.open(url, '_blank');
+                //var win = window.open();
+                //win.document.write('<iframe src="https://docs.google.com/viewer?url=' + url + '&embedded=true" frameborder="0" style="border:0; top:0px; left:0px; bottom:0px; right:0px; width:100%; height:100%;" allowfullscreen></iframe>');
+
+                //document.body.appendChild(link);
+                //link.click();
+
+            }).catch(result => {
+                console.log(result.data);
+            });
+        });
+
 
         // Создать версию отчёта по НИР
         $('#make-nir-otchet-button').off().on('click', function () {
