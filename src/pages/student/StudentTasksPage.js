@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Form, Tabs, Tab, Image, Accordion, Card } from 'react-bootstrap';
+import { Form, Tabs, Tab, Image, Accordion, Card, Table } from 'react-bootstrap';
 import axios from 'axios';
 import { useAuthContext } from '../../auth/AuthContext';
 import { apiURL } from '../../Config';
@@ -22,6 +22,8 @@ export default function StudentTasksPage() {
 
     const { authTokens } = useAuthContext();
     const [fetchedData, setFetchedData] = useState(false);
+
+    const [studentData, setStudentData] = useState('');
 
     // Образцы
     const [examples, setExamples] = useState([]);
@@ -75,6 +77,7 @@ export default function StudentTasksPage() {
 
     if (!fetchedData) {
         setFetchedData(true);
+        getStudentData();
         getTaskVersions('Научно-исследовательская работа');
         getOtchetVersions('Научно-исследовательская работа');
         getTaskVersions('Практика по получению знаний и умений');
@@ -84,6 +87,12 @@ export default function StudentTasksPage() {
 
         getExamples();
     }
+
+    useEffect(() => {
+        if (studentData !== '') {
+            showStudentData(studentData);
+        }
+    }, [studentData]);
 
     useEffect(() => {
         showNirVersions(nirVersions);
@@ -112,6 +121,276 @@ export default function StudentTasksPage() {
     useEffect(() => {
         showExamples(examples);
     }, [examples]);
+
+    function getStudentData() {
+        console.log('1');
+        axios({
+            url: apiURL + '/student/get/about/me',
+            method: 'GET',
+            headers: {
+                'Authorization': 'Bearer ' + authTokens.accessToken
+            },
+        }).then((response) => {
+            //console.log(response);
+            setStudentData(response.data);
+        }).catch(result => {
+            console.log(result.data);
+        });
+    }
+
+    function showStudentData(item) {
+        console.log(item);
+
+        var student = document.createElement('tr');
+        student.className = 'size-20 dark';
+
+        // Имя студента
+        var studentFio = document.createElement('th');
+
+        // Тема студента
+        var studentTheme = document.createElement('th');
+        studentTheme.innerText = item.studentVkrTheme;
+        if (item.studentVkrThemeEditable) {
+            studentTheme.innerText += ' - Не одобрено';
+        }
+        else {
+            studentTheme.innerText += ' - Одобрено';
+        }
+        studentTheme.style.overflow = 'hidden';
+        studentTheme.style.textOverflow = 'ellipsis';
+        studentTheme.style.maxWidth = '300px';
+
+        // НИР
+        var studentNir = document.createElement('th');
+
+        var nirTaskCheckbox = document.createElement('input');
+        nirTaskCheckbox.type = 'checkbox';
+        nirTaskCheckbox.className = 'sci-table-checkbox';
+        if (item.studentDocumentsStatusView.nirTaskStatus) {
+            nirTaskCheckbox.checked = true;
+        }
+        var nirTaskStatus = document.createElement('label');
+        nirTaskStatus.htmlFor = nirTaskCheckbox;
+        nirTaskStatus.innerText = 'Задание на НИР:';
+        nirTaskStatus.style.width = '148px';
+
+        var nirTaskDiv = document.createElement('div');
+
+        var nirReportCheckbox = document.createElement('input');
+        nirReportCheckbox.type = 'checkbox';
+        nirReportCheckbox.className = 'sci-table-checkbox';
+        if (item.studentDocumentsStatusView.nirReportStatus) {
+            nirReportCheckbox.checked = true;
+        }
+        var nirReportStatus = document.createElement('label');
+        nirReportStatus.htmlFor = nirReportCheckbox;
+        nirReportStatus.innerText = 'Отчет по НИР:';
+        nirReportStatus.style.width = '148px';
+
+        var nirReportDiv = document.createElement('div');
+
+        // ППП...
+        var studentLongPP = document.createElement('th');
+
+        var longPPTaskCheckbox = document.createElement('input');
+        longPPTaskCheckbox.type = 'checkbox';
+        longPPTaskCheckbox.className = 'sci-table-checkbox';
+        if (item.studentDocumentsStatusView.ppppuipdTaskStatus) {
+            longPPTaskCheckbox.checked = true;
+        }
+        var longPPTaskStatus = document.createElement('label');
+        longPPTaskStatus.htmlFor = longPPTaskCheckbox;
+        longPPTaskStatus.innerText = 'Задание по ПпППУиОПД:';
+        longPPTaskStatus.style.width = '223px';
+
+        var longPPTaskDiv = document.createElement('div');
+
+        var longPPReportCheckbox = document.createElement('input');
+        longPPReportCheckbox.type = 'checkbox';
+        longPPReportCheckbox.className = 'sci-table-checkbox';
+        if (item.studentDocumentsStatusView.ppppuipdReportStatus) {
+            longPPReportCheckbox.checked = true;
+        }
+        var longPPReportStatus = document.createElement('label');
+        longPPReportStatus.htmlFor = longPPReportCheckbox;
+        longPPReportStatus.innerText = 'Отчет по ПпППУиОПД:';
+        longPPReportStatus.style.width = '223px';
+
+        var longPPReportDiv = document.createElement('div');
+
+        // ПП
+        var studentPP = document.createElement('th');
+
+        var ppTaskCheckbox = document.createElement('input');
+        ppTaskCheckbox.type = 'checkbox';
+        ppTaskCheckbox.className = 'sci-table-checkbox';
+        if (item.studentDocumentsStatusView.ppTaskStatus) {
+            ppTaskCheckbox.checked = true;
+        }
+        var ppTaskStatus = document.createElement('label');
+        ppTaskStatus.htmlFor = ppTaskCheckbox;
+        ppTaskStatus.innerText = 'Задание по ПП:';
+        ppTaskStatus.style.width = '138px';
+
+        var ppTaskDiv = document.createElement('div');
+
+        var ppReportCheckbox = document.createElement('input');
+        ppReportCheckbox.type = 'checkbox';
+        ppReportCheckbox.className = 'sci-table-checkbox';
+        if (item.studentDocumentsStatusView.ppReportStatus) {
+            ppReportCheckbox.checked = true;
+        }
+        var ppReportStatus = document.createElement('label');
+        ppReportStatus.htmlFor = ppReportCheckbox;
+        ppReportStatus.innerText = 'Отчет по ПП:';
+        ppReportStatus.style.width = '138px';
+
+        var ppReportDiv = document.createElement('div');
+
+        // ВКР
+        var studentVkr = document.createElement('th');
+
+        var vkrAdvisorFeedbackCheckbox = document.createElement('input');
+        vkrAdvisorFeedbackCheckbox.type = 'checkbox';
+        vkrAdvisorFeedbackCheckbox.className = 'sci-table-checkbox';
+        if (item.studentDocumentsStatusView.vkrAdvisorFeedback) {
+            vkrAdvisorFeedbackCheckbox.checked = true;
+        }
+        var vkrAdvisorFeedbackStatus = document.createElement('label');
+        vkrAdvisorFeedbackStatus.htmlFor = vkrAdvisorFeedbackCheckbox;
+        vkrAdvisorFeedbackStatus.innerText = 'Отзыв руководителя:';
+        vkrAdvisorFeedbackStatus.style.width = '188px';
+
+        var vkrAdvisorFeedbackDiv = document.createElement('div');
+
+        var vkrAllowanceCheckbox = document.createElement('input');
+        vkrAllowanceCheckbox.type = 'checkbox';
+        vkrAllowanceCheckbox.className = 'sci-table-checkbox';
+        if (item.studentDocumentsStatusView.vkrAllowance) {
+            vkrAllowanceCheckbox.checked = true;
+        }
+        var vkrAllowanceStatus = document.createElement('label');
+        vkrAllowanceStatus.htmlFor = vkrAllowanceCheckbox;
+        vkrAllowanceStatus.innerText = 'Допуск к ВКР:';
+        vkrAllowanceStatus.style.width = '188px';
+
+        var vkrAllowanceStatusDiv = document.createElement('div');
+
+        var vkrTaskCheckbox = document.createElement('input');
+        vkrTaskCheckbox.type = 'checkbox';
+        vkrTaskCheckbox.className = 'sci-table-checkbox';
+        //vkrTaskCheckbox.disabled = true;
+        if (item.studentDocumentsStatusView.vkrTask) {
+            vkrTaskCheckbox.checked = true;
+        }
+        var vkrTaskStatus = document.createElement('label');
+        vkrTaskStatus.htmlFor = vkrTaskCheckbox;
+        vkrTaskStatus.innerText = 'Задание ВКР:';
+        vkrTaskStatus.style.width = '188px';
+
+        var vkrTaskDiv = document.createElement('div');
+
+        var vkrRPZCheckbox = document.createElement('input');
+        vkrRPZCheckbox.type = 'checkbox';
+        vkrRPZCheckbox.className = 'sci-table-checkbox';
+        //vkrRPZCheckbox.disabled = true;
+        if (item.studentDocumentsStatusView.vkrRPZ) {
+            vkrRPZCheckbox.checked = true;
+        }
+        var vkrRPZStatus = document.createElement('label');
+        vkrRPZStatus.htmlFor = vkrRPZCheckbox;
+        vkrRPZStatus.innerText = 'РПЗ:';
+        vkrRPZStatus.style.width = '188px';
+
+        var vkrRPZDiv = document.createElement('div');
+
+        var vkrAntiplagiatCheckbox = document.createElement('input');
+        vkrAntiplagiatCheckbox.type = 'checkbox';
+        vkrAntiplagiatCheckbox.className = 'sci-table-checkbox';
+        if (item.studentDocumentsStatusView.vkrAntiplagiat) {
+            vkrAntiplagiatCheckbox.checked = true;
+        }
+        var vkrAntiplagiatStatus = document.createElement('label');
+        vkrAntiplagiatStatus.htmlFor = vkrAntiplagiatCheckbox;
+        vkrAntiplagiatStatus.innerText = 'Антиплагиат:';
+        vkrAntiplagiatStatus.style.width = '188px';
+
+        var vkrAntiplagiatDiv = document.createElement('div');
+
+        var vkrPresentationCheckbox = document.createElement('input');
+        vkrPresentationCheckbox.type = 'checkbox';
+        vkrPresentationCheckbox.className = 'sci-table-checkbox';
+        if (item.studentDocumentsStatusView.vkrPresentation) {
+            vkrPresentationCheckbox.checked = true;
+        }
+        var vkrPresentationStatus = document.createElement('label');
+        vkrPresentationStatus.htmlFor = vkrPresentationCheckbox;
+        vkrPresentationStatus.innerText = 'Презентация:';
+        vkrPresentationStatus.style.width = '188px';
+
+        var vkrPresentationDiv = document.createElement('div');
+
+        student.appendChild(studentTheme);
+
+        nirTaskDiv.appendChild(nirTaskStatus);
+        nirTaskDiv.appendChild(nirTaskCheckbox);
+        studentNir.appendChild(nirTaskDiv);
+
+        nirReportDiv.appendChild(nirReportStatus);
+        nirReportDiv.appendChild(nirReportCheckbox);
+        studentNir.appendChild(nirReportDiv);
+
+        student.appendChild(studentNir);
+
+        longPPTaskDiv.appendChild(longPPTaskStatus);
+        longPPTaskDiv.appendChild(longPPTaskCheckbox);
+        studentLongPP.appendChild(longPPTaskDiv);
+
+        longPPReportDiv.appendChild(longPPReportStatus);
+        longPPReportDiv.appendChild(longPPReportCheckbox);
+        studentLongPP.appendChild(longPPReportDiv);
+
+        student.appendChild(studentLongPP);
+
+        ppTaskDiv.appendChild(ppTaskStatus);
+        ppTaskDiv.appendChild(ppTaskCheckbox);
+        studentPP.appendChild(ppTaskDiv);
+
+        ppReportDiv.appendChild(ppReportStatus);
+        ppReportDiv.appendChild(ppReportCheckbox);
+        studentPP.appendChild(ppReportDiv);
+
+        student.appendChild(studentPP);
+
+        vkrAdvisorFeedbackDiv.appendChild(vkrAdvisorFeedbackStatus);
+        vkrAdvisorFeedbackDiv.appendChild(vkrAdvisorFeedbackCheckbox);
+        studentVkr.appendChild(vkrAdvisorFeedbackDiv);
+
+        vkrAllowanceStatusDiv.appendChild(vkrAllowanceStatus);
+        vkrAllowanceStatusDiv.appendChild(vkrAllowanceCheckbox);
+        studentVkr.appendChild(vkrAllowanceStatusDiv);
+
+        vkrTaskDiv.appendChild(vkrTaskStatus);
+        vkrTaskDiv.appendChild(vkrTaskCheckbox);
+        studentVkr.appendChild(vkrTaskDiv);
+
+        vkrRPZDiv.appendChild(vkrRPZStatus);
+        vkrRPZDiv.appendChild(vkrRPZCheckbox);
+        studentVkr.appendChild(vkrRPZDiv);
+
+        vkrAntiplagiatDiv.appendChild(vkrAntiplagiatStatus);
+        vkrAntiplagiatDiv.appendChild(vkrAntiplagiatCheckbox);
+        studentVkr.appendChild(vkrAntiplagiatDiv);
+
+        vkrPresentationDiv.appendChild(vkrPresentationStatus);
+        vkrPresentationDiv.appendChild(vkrPresentationCheckbox);
+        studentVkr.appendChild(vkrPresentationDiv);
+
+        student.appendChild(studentVkr);
+
+        document.getElementById('student-table-body').appendChild(student);
+        
+    }
 
     // Получение версий заданий
     function getTaskVersions(type) {
@@ -207,10 +486,12 @@ export default function StudentTasksPage() {
             versionStatus.innerText = 'Статус: ' + item.status;
 
             // Кнопка просмотреть
+            /*
             var viewButton = document.createElement('button');
             viewButton.className = 'dark size-24 nir-version-header-button nir-version-view-button';
             viewButton.innerText = 'Просмотреть';
             viewButton.type = 'button';
+            */
 
             // Кнопка отправить науч руку
             var sendButton = document.createElement('button');
@@ -309,7 +590,7 @@ export default function StudentTasksPage() {
             clickableArea.appendChild(versionName);
             clickableArea.appendChild(versionStatus);
             nirVersionHeader.appendChild(clickableArea);
-            nirVersionHeader.appendChild(viewButton);
+            //nirVersionHeader.appendChild(viewButton);
             nirVersionHeader.appendChild(sendButton);
             nirVersionHeader.appendChild(downloadButton);
             nirVersionHeader.appendChild(deleteButton);
@@ -1239,8 +1520,8 @@ export default function StudentTasksPage() {
                 },
             }).then((response) => {
                 //const url = window.URL.createObjectURL(new Blob([response.data] ));
-                const url = window.URL.createObjectURL(new Blob([response.data], { type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' } ));
-                
+                const url = window.URL.createObjectURL(new Blob([response.data], { type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' }));
+
                 const link = document.createElement('a');
                 link.href = url;
                 link.setAttribute('download', 'Задание на НИР.docx');
@@ -1812,597 +2093,619 @@ export default function StudentTasksPage() {
     });
 
     return (
-        <Form className='info-form light-background'>
-            <Tabs defaultActiveKey='info1' className='info-form-main-tabs' onSelect={(firstTab) => {
-                $('#image1').attr('src', infoBlock1);
-                $('#image2').attr('src', infoBlock2);
-                $('#image3').attr('src', infoBlock3);
-                $('#image4').attr('src', infoBlock4);
-                switch (firstTab) {
-                    case 'info1':
-                        $('#image1').attr('src', infoBlock11);
-                        break;
-                    case 'info2':
-                        $('#image2').attr('src', infoBlock22);
-                        break;
-                    case 'info3':
-                        $('#image3').attr('src', infoBlock33);
-                        break;
-                    case 'info4':
-                        $('#image4').attr('src', infoBlock44);
-                        break;
-                    default:
-                        console.log('tabError');
-                }
-            }}>
-                <Tab eventKey='info1' title={<Image id='image1' src={infoBlock11} thumbnail className='info-form-image' style={{ borderTopRightRadius: '0px', borderBottomRightRadius: '0px' }} />} className='info-form-tabs'>
+        <div>
 
-                    <div className='dark info-task-block'>
-                        <p className='size-24 info-text-block-title'>НАУЧНО-ИССЛЕДОВАТЕЛЬСКАЯ РАБОТА</p>
-                        <div>
-                            <p id='NIRStart' className='size-20 info-text-block-start-date'><b>Начало: 1.09.2020</b></p>
-                            <p id='NIREnd' className='size-20 info-text-block-end-date'><b>Конец: 21.12.2020</b></p>
-                        </div>
-                        <div style={{ clear: 'both' }}></div>
+            <div className='sci-advisor-students-form'>
+                <div>
+                    <Table striped bordered hover style={{ width: '1490px', marginLeft: 'auto', marginRight: 'auto' }}>
+                        <thead className='size-24 dark'>
+                            <tr>
+                                <th>Тема</th>
+                                <th style={{ minWidth: '203px' }}>НИР</th>
+                                <th style={{ minWidth: '278px' }}>ПпППУиОПД</th>
+                                <th style={{ minWidth: '193px' }}>ПП</th>
+                                <th style={{ minWidth: '243px' }}>ВКР</th>
+                            </tr>
+                        </thead>
+                        <tbody id='student-table-body'>
 
-                        <div className='task-page-accordion-div'>
-                            <Accordion>
-                                <Card>
-                                    <Accordion.Toggle as={Card.Header} eventKey="acc0" className='dark size-28 accordion-clickable'>
-                                        Образцы по НИР
+                        </tbody>
+                    </Table>
+                </div>
+            </div>
+
+            <Form className='info-form light-background'>
+
+                <Tabs defaultActiveKey='info1' className='info-form-main-tabs' onSelect={(firstTab) => {
+                    $('#image1').attr('src', infoBlock1);
+                    $('#image2').attr('src', infoBlock2);
+                    $('#image3').attr('src', infoBlock3);
+                    $('#image4').attr('src', infoBlock4);
+                    switch (firstTab) {
+                        case 'info1':
+                            $('#image1').attr('src', infoBlock11);
+                            break;
+                        case 'info2':
+                            $('#image2').attr('src', infoBlock22);
+                            break;
+                        case 'info3':
+                            $('#image3').attr('src', infoBlock33);
+                            break;
+                        case 'info4':
+                            $('#image4').attr('src', infoBlock44);
+                            break;
+                        default:
+                            console.log('tabError');
+                    }
+                }}>
+                    <Tab eventKey='info1' title={<Image id='image1' src={infoBlock11} thumbnail className='info-form-image' style={{ borderTopRightRadius: '0px', borderBottomRightRadius: '0px' }} />} className='info-form-tabs'>
+
+                        <div className='dark info-task-block'>
+                            <p className='size-24 info-text-block-title'>НАУЧНО-ИССЛЕДОВАТЕЛЬСКАЯ РАБОТА</p>
+                            <div>
+                                <p id='NIRStart' className='size-20 info-text-block-start-date'><b>Начало: 1.09.2020</b></p>
+                                <p id='NIREnd' className='size-20 info-text-block-end-date'><b>Конец: 21.12.2020</b></p>
+                            </div>
+                            <div style={{ clear: 'both' }}></div>
+
+                            <div className='task-page-accordion-div'>
+                                <Accordion>
+                                    <Card>
+                                        <Accordion.Toggle as={Card.Header} eventKey="acc0" className='dark size-28 accordion-clickable'>
+                                            Образцы по НИР
                                     </Accordion.Toggle>
-                                    <Accordion.Collapse eventKey="acc0">
-                                        <Card.Body id='example-panel-1'>
+                                        <Accordion.Collapse eventKey="acc0">
+                                            <Card.Body id='example-panel-1'>
 
-                                        </Card.Body>
-                                    </Accordion.Collapse>
-                                </Card>
-                            </Accordion>
+                                            </Card.Body>
+                                        </Accordion.Collapse>
+                                    </Card>
+                                </Accordion>
+                            </div>
                         </div>
-                    </div>
-                    <div className='info-break-div'>&nbsp;</div>
+                        <div className='info-break-div'>&nbsp;</div>
 
-                    <Tabs defaultActiveKey='none' onSelect={() => { setTimeout(function () { window.scrollTo(0, 2000); }, 1); }} className='info-form-subtab light-background container-fluid'>
-                        <Tab eventKey='info11' title={
-                            <p className='size-30 light dark-background info-form-subtab-title'>
-                                <Image src={iconDocument} thumbnail className='dark-background info-form-subtab-icon icon-small' />
+                        <Tabs defaultActiveKey='none' onSelect={() => { setTimeout(function () { window.scrollTo(0, 2000); }, 1); }} className='info-form-subtab light-background container-fluid'>
+                            <Tab eventKey='info11' title={
+                                <p className='size-30 light dark-background info-form-subtab-title'>
+                                    <Image src={iconDocument} thumbnail className='dark-background info-form-subtab-icon icon-small' />
                                 Задание на НИР
                             </p>
-                        }>
-                            <div className='info-sub-tab-div'>
+                            }>
+                                <div className='info-sub-tab-div'>
 
-                                <div className='info-break-div' style={{ marginBottom: '20px' }}>&nbsp;</div>
+                                    <div className='info-break-div' style={{ marginBottom: '20px' }}>&nbsp;</div>
 
-                                <p className='size-30 dark info-sub-tab-title'>Задание на НИР</p>
+                                    <p className='size-30 dark info-sub-tab-title'>Задание на НИР</p>
 
-                                <div id='student-nir-task-version-div' className='student-nir-task-version-div light-background'></div>
+                                    <div id='student-nir-task-version-div' className='student-nir-task-version-div light-background'></div>
 
-                                <div className='info-row'>
-                                    <div className='info-column'>
-                                        <Form.Label column className="size-21 dark info-input-label">Тема:</Form.Label>
-                                        <textarea maxLength='1024' value={studentTheme} onChange={(e) => { setStudentTheme(e.target.value); }} className='dark size-24 info-input-area' />
+                                    <div className='info-row'>
+                                        <div className='info-column'>
+                                            <Form.Label column className="size-21 dark info-input-label">Тема:</Form.Label>
+                                            <textarea maxLength='1024' value={studentTheme} onChange={(e) => { setStudentTheme(e.target.value); }} className='dark size-24 info-input-area' />
 
-                                        <Form.Label column className="size-21 dark info-input-label">Изучить:</Form.Label>
-                                        <textarea maxLength='2048' value={toExplore} onChange={(e) => { setToExplore(e.target.value); }} className='dark size-24 info-input-area' />
+                                            <Form.Label column className="size-21 dark info-input-label">Изучить:</Form.Label>
+                                            <textarea maxLength='2048' value={toExplore} onChange={(e) => { setToExplore(e.target.value); }} className='dark size-24 info-input-area' />
 
-                                        <Form.Label column className="size-21 dark info-input-label">Практически выполнить:</Form.Label>
-                                        <textarea maxLength='2048' value={toCreate} onChange={(e) => { setToCreate(e.target.value); }} className='dark size-24 info-input-area' />
+                                            <Form.Label column className="size-21 dark info-input-label">Практически выполнить:</Form.Label>
+                                            <textarea maxLength='2048' value={toCreate} onChange={(e) => { setToCreate(e.target.value); }} className='dark size-24 info-input-area' />
+                                        </div>
+
+                                        <div className='info-column'>
+                                            <Form.Label column className="size-21 dark info-input-label">Ознакомиться:</Form.Label>
+                                            <textarea maxLength='2048' value={toFamiliarize} onChange={(e) => { setToFamiliarize(e.target.value); }} className='dark size-24 info-input-area' />
+
+                                            <Form.Label column className="size-21 dark info-input-label">Дополнительное задание:</Form.Label>
+                                            <textarea maxLength='2048' value={additionalTask} onChange={(e) => { setAdditionalTask(e.target.value); }} className='dark size-24 info-input-area' />
+
+                                            <button type='button' id='make-nir-task-button' className='size-30 light dark-background info-button-1' style={{ height: '100px' }}>
+                                                <Image src={iconDocument} thumbnail className='dark-background thumbnail-icon' style={{ position: 'relative', top: '-25px' }} />
+                                                <div style={{ display: 'inline-block' }}><p style={{ marginBottom: '0px' }}>Создать новую версию<br />задания на НИР</p></div>
+                                            </button>
+                                        </div>
                                     </div>
 
-                                    <div className='info-column'>
-                                        <Form.Label column className="size-21 dark info-input-label">Ознакомиться:</Form.Label>
-                                        <textarea maxLength='2048' value={toFamiliarize} onChange={(e) => { setToFamiliarize(e.target.value); }} className='dark size-24 info-input-area' />
-
-                                        <Form.Label column className="size-21 dark info-input-label">Дополнительное задание:</Form.Label>
-                                        <textarea maxLength='2048' value={additionalTask} onChange={(e) => { setAdditionalTask(e.target.value); }} className='dark size-24 info-input-area' />
-
-                                        <button type='button' id='make-nir-task-button' className='size-30 light dark-background info-button-1' style={{ height: '100px' }}>
-                                            <Image src={iconDocument} thumbnail className='dark-background thumbnail-icon' style={{ position: 'relative', top: '-25px' }} />
-                                            <div style={{ display: 'inline-block' }}><p style={{ marginBottom: '0px' }}>Создать новую версию<br />задания на НИР</p></div>
-                                        </button>
-                                    </div>
                                 </div>
-
-                            </div>
-                        </Tab>
-                        <Tab eventKey='info12' title={
-                            <p className='size-30 light dark-background info-form-subtab-title' style={{ marginLeft: '846px' }}>
-                                <Image src={iconDocument} thumbnail className='dark-background info-form-subtab-icon icon-small' />
+                            </Tab>
+                            <Tab eventKey='info12' title={
+                                <p className='size-30 light dark-background info-form-subtab-title' style={{ marginLeft: '846px' }}>
+                                    <Image src={iconDocument} thumbnail className='dark-background info-form-subtab-icon icon-small' />
                                 Отчет о<br />прохождении НИР
                             </p>
-                        }>
-                            <div className='info-break-div' style={{ marginBottom: '20px' }}>&nbsp;</div>
-
-                            <p className='size-30 dark info-sub-tab-title'>Отчет о прохождении НИР</p>
-
-                            <div id='student-nir-otchet-version-div' className='student-nir-task-version-div light-background'></div>
-
-                            <div className='info-sub-tab-div'>
-
-                                <div className='info-row'>
-                                    <div className='info-column'>
-                                        <Form.Label column className="size-21 dark info-input-label">Детальное содержание:</Form.Label>
-                                        <textarea id='nir-otchet-description' maxLength='1024' value={detailedDescription} onChange={(e) => {
-                                            setDetailedDescription(e.target.value);
-                                            if ($('#nir-otchet-description').val() === '' || $('#nir-otchet-conclusion').val() === '') {
-                                                document.getElementById('make-nir-otchet-button').disabled = true;
-                                            }
-                                            else {
-                                                document.getElementById('make-nir-otchet-button').disabled = false;
-                                            }
-                                        }} className='dark size-24 info-input-area' />
-                                    </div>
-
-                                    <div className='info-column'>
-                                        <Form.Label column className="size-21 dark info-input-label">Заключение научного руководителя:</Form.Label>
-                                        <textarea id='nir-otchet-conclusion' maxLength='2048' value={conclusion} onChange={(e) => {
-                                            setConclusion(e.target.value);
-                                            if ($('#nir-otchet-description').val() === '' || $('#nir-otchet-conclusion').val() === '') {
-                                                document.getElementById('make-nir-otchet-button').disabled = true;
-                                            }
-                                            else {
-                                                document.getElementById('make-nir-otchet-button').disabled = false;
-                                            }
-                                        }} className='dark size-24 info-input-area' />
-                                    </div>
-                                </div>
-
-                                <button type='button' disabled id='make-nir-otchet-button' className='size-30 light dark-background info-button-inline-block' style={{ marginLeft: '425px', marginTop: '20px' }}>
-                                    <Image src={iconProject} thumbnail className='dark-background thumbnail-icon' />
-                                        Сформировать и загрузить версию отчета
-                                </button>
-                                <input id='nir-otchet-file-input' type='file' style={{ display: 'none' }} onChange={(e) => {
-                                    console.log(e.target.files);
-                                    if (e.target.files.length !== 0) {
-                                        makeOtchetVersion(e.target.files[0], 'Научно-исследовательская работа');
-                                    }
-                                }} ></input>
-                            </div>
-                        </Tab>
-                    </Tabs>
-                </Tab>
-                <Tab eventKey='info2' title={<Image id='image2' src={infoBlock2} thumbnail className='info-form-image' style={{ borderTopLeftRadius: '0px', borderTopRightRadius: '0px', borderBottomRightRadius: '0px', borderBottomLeftRadius: '0px' }} />}>
-                    <div className='dark info-task-block'>
-                        <p className='size-24 info-text-block-title'>ПРАКТИКА ПО ПОЛУЧЕНИЮ ПРОФЕССИОНАЛЬНЫХ УМЕНИЙ И ОПЫТА ПРОФЕССИОНАЛЬНОЙ ДЕЯТЕЛЬНОСТИ</p>
-                        <div>
-                            <p className='size-20 info-text-block-start-date'><b>Начало: 09.02.2021</b></p>
-                            <p className='size-20 info-text-block-end-date'><b>Конец: 05.04.2021</b></p>
-                        </div>
-                        <div style={{ clear: 'both' }}></div>
-                        <div className='task-page-accordion-div'>
-                            <Accordion>
-                                <Card>
-                                    <Accordion.Toggle as={Card.Header} eventKey="acc1" className='dark size-28 accordion-clickable'>
-                                        Образцы по ПпППУиОПД
-                                    </Accordion.Toggle>
-                                    <Accordion.Collapse eventKey="acc1">
-                                        <Card.Body id='example-panel-2'>
-
-                                        </Card.Body>
-                                    </Accordion.Collapse>
-                                </Card>
-                            </Accordion>
-                        </div>
-                    </div>
-                    <div className='info-break-div'>&nbsp;</div>
-
-                    <Tabs defaultActiveKey='none' onSelect={() => { setTimeout(function () { window.scrollTo(0, 2000); }, 1); }} className='info-form-subtab light-background container-fluid'>
-                        <Tab eventKey='info21' title={
-                            <p className='size-30 light dark-background info-form-subtab-title'>
-                                <Image src={iconDocument} thumbnail className='dark-background info-form-subtab-icon icon-small' />
-                                Задание на ПпППУиОПД
-                            </p>
-                        }>
-                            <div className='info-sub-tab-div'>
-
+                            }>
                                 <div className='info-break-div' style={{ marginBottom: '20px' }}>&nbsp;</div>
 
-                                <p className='size-30 dark info-sub-tab-title'>Задание на ПпППУиОПД</p>
+                                <p className='size-30 dark info-sub-tab-title'>Отчет о прохождении НИР</p>
 
-                                <div id='student-long-pp-task-version-div' className='student-nir-task-version-div light-background'></div>
-
-                                <div className='info-row'>
-                                    <div className='info-column'>
-                                        <Form.Label column className="size-21 dark info-input-label">Тема:</Form.Label>
-                                        <textarea maxLength='1024' value={studentTheme} onChange={(e) => { setStudentTheme(e.target.value); }} className='dark size-24 info-input-area' />
-
-                                        <Form.Label column className="size-21 dark info-input-label">Изучить:</Form.Label>
-                                        <textarea maxLength='2048' value={toExplore} onChange={(e) => { setToExplore(e.target.value); }} className='dark size-24 info-input-area' />
-
-                                        <Form.Label column className="size-21 dark info-input-label">Практически выполнить:</Form.Label>
-                                        <textarea maxLength='2048' value={toCreate} onChange={(e) => { setToCreate(e.target.value); }} className='dark size-24 info-input-area' />
-                                    </div>
-
-                                    <div className='info-column'>
-                                        <Form.Label column className="size-21 dark info-input-label">Ознакомиться:</Form.Label>
-                                        <textarea maxLength='2048' value={toFamiliarize} onChange={(e) => { setToFamiliarize(e.target.value); }} className='dark size-24 info-input-area' />
-
-                                        <Form.Label column className="size-21 dark info-input-label">Дополнительное задание:</Form.Label>
-                                        <textarea maxLength='2048' value={additionalTask} onChange={(e) => { setAdditionalTask(e.target.value); }} className='dark size-24 info-input-area' />
-
-                                        <button type='button' id='make-long-pp-task-button' className='size-30 light dark-background info-button-1' style={{ height: '100px' }}>
-                                            <Image src={iconDocument} thumbnail className='dark-background thumbnail-icon' style={{ position: 'relative', top: '-25px' }} />
-                                            <div style={{ display: 'inline-block' }}><p style={{ marginBottom: '0px' }}>Создать новую версию<br />задания на ПпППУиОПД</p></div>
-                                        </button>
-                                    </div>
-                                </div>
-
-                            </div>
-                        </Tab>
-                        <Tab eventKey='info22' title={
-                            <p className='size-30 light dark-background info-form-subtab-title' style={{ marginLeft: '626px' }}>
-                                <Image src={iconDocument} thumbnail className='dark-background info-form-subtab-icon icon-small' />
-                                Отчет о<br />прохождении ПпППУиОПД
-                            </p>
-                        }>
-                            <div className='info-break-div' style={{ marginBottom: '20px' }}>&nbsp;</div>
-
-                            <p className='size-30 dark info-sub-tab-title'>Отчет о прохождении ПпППУиОПД</p>
-
-                            <div id='student-long-pp-otchet-version-div' className='student-nir-task-version-div light-background'></div>
-
-                            <div className='info-sub-tab-div'>
-
-                                <div className='info-row'>
-                                    <div className='info-column'>
-                                        <Form.Label column className='size-21 dark info-input-label'>Детальное содержание:</Form.Label>
-                                        <textarea id='long-pp-otchet-description' maxLength='1024' value={detailedDescriptionLongPP} onChange={(e) => {
-                                            setDetailedDescriptionLongPP(e.target.value);
-                                            if ($('#long-pp-otchet-description').val() === '' || $('#long-pp-otchet-conclusion').val() === '') {
-                                                document.getElementById('make-long-pp-otchet-button').disabled = true;
-                                            }
-                                            else {
-                                                document.getElementById('make-long-pp-otchet-button').disabled = false;
-                                            }
-                                        }} className='dark size-24 info-input-area' />
-                                    </div>
-
-                                    <div className='info-column'>
-                                        <Form.Label column className='size-21 dark info-input-label'>Заключение научного руководителя:</Form.Label>
-                                        <textarea id='long-pp-otchet-conclusion' maxLength='2048' value={conclusionLongPP} onChange={(e) => {
-                                            setConclusionLongPP(e.target.value);
-                                            if ($('#long-pp-otchet-description').val() === '' || $('#long-pp-otchet-conclusion').val() === '') {
-                                                document.getElementById('make-long-pp-otchet-button').disabled = true;
-                                            }
-                                            else {
-                                                document.getElementById('make-long-pp-otchet-button').disabled = false;
-                                            }
-                                        }} className='dark size-24 info-input-area' />
-                                    </div>
-                                </div>
-
-                                <button type='button' disabled id='make-long-pp-otchet-button' className='size-30 light dark-background info-button-inline-block' style={{ marginLeft: '425px', marginTop: '20px' }}>
-                                    <Image src={iconProject} thumbnail className='dark-background thumbnail-icon' />
-                                        Сформировать и загрузить версию отчета
-                                </button>
-                                <input id='long-pp-otchet-file-input' type='file' style={{ display: 'none' }} onChange={(e) => {
-                                    console.log(e.target.files);
-                                    if (e.target.files.length !== 0) {
-                                        makeOtchetVersion(e.target.files[0], 'Практика по получению знаний и умений');
-                                    }
-                                }} ></input>
-                            </div>
-                        </Tab>
-                    </Tabs>
-                </Tab>
-                <Tab eventKey='info3' title={<Image id='image3' src={infoBlock3} thumbnail className='info-form-image' style={{ borderTopLeftRadius: '0px', borderTopRightRadius: '0px', borderBottomRightRadius: '0px', borderBottomLeftRadius: '0px' }} />}>
-                    <div className='dark info-task-block'>
-                        <p className='size-24 info-text-block-title'>ПРЕДДИПЛОМНАЯ ПРАКТИКА</p>
-                        <div>
-                            <p className='size-20 info-text-block-start-date'><b>Начало: 20.04.2021</b></p>
-                            <p className='size-20 info-text-block-end-date'><b>Конец: 17.05.2021</b></p>
-                        </div>
-                        <div style={{ clear: 'both' }}></div>
-                        <div className='task-page-accordion-div'>
-                            <Accordion>
-                                <Card>
-                                    <Accordion.Toggle as={Card.Header} eventKey="acc2" className='dark size-28 accordion-clickable'>
-                                        Образцы по ПП
-                                    </Accordion.Toggle>
-                                    <Accordion.Collapse eventKey="acc2">
-                                        <Card.Body id='example-panel-3'>
-
-                                        </Card.Body>
-                                    </Accordion.Collapse>
-                                </Card>
-                            </Accordion>
-                        </div>
-                    </div>
-                    <div className='info-break-div'>&nbsp;</div>
-
-                    <Tabs defaultActiveKey='none' onSelect={() => { setTimeout(function () { window.scrollTo(0, 2000); }, 1); }} className='info-form-subtab light-background container-fluid'>
-                        <Tab eventKey='info31' title={
-                            <p className='size-30 light dark-background info-form-subtab-title'>
-                                <Image src={iconDocument} thumbnail className='dark-background info-form-subtab-icon icon-small' />
-                                Задание на ПП
-                            </p>
-                        }>
-                            <div className='info-sub-tab-div'>
-
-                                <div className='info-break-div' style={{ marginBottom: '20px' }}>&nbsp;</div>
-
-                                <p className='size-30 dark info-sub-tab-title'>Задание на ПП</p>
-
-                                <div id='student-pp-task-version-div' className='student-nir-task-version-div light-background'></div>
-
-                                <div className='info-row'>
-                                    <div className='info-column'>
-                                        <Form.Label column className="size-21 dark info-input-label">Тема:</Form.Label>
-                                        <textarea maxLength='1024' value={studentTheme} onChange={(e) => { setStudentTheme(e.target.value); }} className='dark size-24 info-input-area' />
-
-                                        <Form.Label column className="size-21 dark info-input-label">Изучить:</Form.Label>
-                                        <textarea maxLength='2048' value={toExplore} onChange={(e) => { setToExplore(e.target.value); }} className='dark size-24 info-input-area' />
-
-                                        <Form.Label column className="size-21 dark info-input-label">Практически выполнить:</Form.Label>
-                                        <textarea maxLength='2048' value={toCreate} onChange={(e) => { setToCreate(e.target.value); }} className='dark size-24 info-input-area' />
-                                    </div>
-
-                                    <div className='info-column'>
-                                        <Form.Label column className="size-21 dark info-input-label">Ознакомиться:</Form.Label>
-                                        <textarea maxLength='2048' value={toFamiliarize} onChange={(e) => { setToFamiliarize(e.target.value); }} className='dark size-24 info-input-area' />
-
-                                        <Form.Label column className="size-21 dark info-input-label">Дополнительное задание:</Form.Label>
-                                        <textarea maxLength='2048' value={additionalTask} onChange={(e) => { setAdditionalTask(e.target.value); }} className='dark size-24 info-input-area' />
-
-                                        <button type='button' id='make-pp-task-button' className='size-30 light dark-background info-button-1' style={{ height: '100px' }}>
-                                            <Image src={iconDocument} thumbnail className='dark-background thumbnail-icon' style={{ position: 'relative', top: '-25px' }} />
-                                            <div style={{ display: 'inline-block' }}><p style={{ marginBottom: '0px' }}>Создать новую версию<br />задания на ПП</p></div>
-                                        </button>
-                                    </div>
-                                </div>
-
-                            </div>
-                        </Tab>
-                        <Tab eventKey='info32' title={
-                            <p className='size-30 light dark-background info-form-subtab-title' style={{ marginLeft: '880px' }}>
-                                <Image src={iconDocument} thumbnail className='dark-background info-form-subtab-icon icon-small' />
-                                Отчет о<br />прохождении ПП
-                            </p>
-                        }>
-                            <div className='info-break-div' style={{ marginBottom: '20px' }}>&nbsp;</div>
-
-                            <p className='size-30 dark info-sub-tab-title'>Отчет о прохождении ПП</p>
-
-                            <div id='student-pp-otchet-version-div' className='student-nir-task-version-div light-background'></div>
-
-                            <div className='info-sub-tab-div'>
-
-                                <div className='info-row'>
-                                    <div className='info-column'>
-                                        <Form.Label column className='size-21 dark info-input-label'>Детальное содержание:</Form.Label>
-                                        <textarea id='pp-otchet-description' maxLength='1024' value={detailedDescriptionPP} onChange={(e) => {
-                                            setDetailedDescriptionPP(e.target.value);
-                                            if ($('#pp-otchet-description').val() === '' || $('#pp-otchet-conclusion').val() === '') {
-                                                document.getElementById('make-pp-otchet-button').disabled = true;
-                                            }
-                                            else {
-                                                document.getElementById('make-pp-otchet-button').disabled = false;
-                                            }
-                                        }} className='dark size-24 info-input-area' />
-                                    </div>
-
-                                    <div className='info-column'>
-                                        <Form.Label column className='size-21 dark info-input-label'>Заключение научного руководителя:</Form.Label>
-                                        <textarea id='pp-otchet-conclusion' maxLength='2048' value={conclusionPP} onChange={(e) => {
-                                            setConclusionPP(e.target.value);
-                                            if ($('#pp-otchet-description').val() === '' || $('#pp-otchet-conclusion').val() === '') {
-                                                document.getElementById('make-pp-otchet-button').disabled = true;
-                                            }
-                                            else {
-                                                document.getElementById('make-pp-otchet-button').disabled = false;
-                                            }
-                                        }} className='dark size-24 info-input-area' />
-                                    </div>
-                                </div>
-
-                                <button type='button' disabled id='make-pp-otchet-button' className='size-30 light dark-background info-button-inline-block' style={{ marginLeft: '425px', marginTop: '20px' }}>
-                                    <Image src={iconProject} thumbnail className='dark-background thumbnail-icon' />
-                                        Сформировать и загрузить версию отчета
-                                </button>
-                                <input id='pp-otchet-file-input' type='file' style={{ display: 'none' }} onChange={(e) => {
-                                    console.log(e.target.files);
-                                    if (e.target.files.length !== 0) {
-                                        makeOtchetVersion(e.target.files[0], 'Преддипломная практика');
-                                    }
-                                }} ></input>
-                            </div>
-                        </Tab>
-                    </Tabs>
-                </Tab>
-                <Tab eventKey='info4' title={<Image id='image4' src={infoBlock4} thumbnail className='info-form-image' style={{ borderTopLeftRadius: '0px', borderBottomLeftRadius: '0px' }} />}>
-                    <div className='dark info-task-block'>
-                        <p className='size-24 info-text-block-title'>ПОДГОТОВКА И ЗАЩИТА ВКР</p>
-                        <div>
-                            <p className='size-20 info-text-block-start-date'><b>Начало: 25.05.2021</b></p>
-                            <p className='size-20 info-text-block-end-date'><b>Конец: 05.07.2021</b></p>
-                        </div>
-                        <div style={{ clear: 'both' }}></div>
-                        <div className='task-page-accordion-div'>
-                            <Accordion>
-                                <Card>
-                                    <Accordion.Toggle as={Card.Header} eventKey="acc3" className='dark size-28 accordion-clickable'>
-                                        Образцы по ВКР
-                                    </Accordion.Toggle>
-                                    <Accordion.Collapse eventKey="acc3">
-                                        <Card.Body id='example-panel-4'>
-
-                                        </Card.Body>
-                                    </Accordion.Collapse>
-                                </Card>
-                            </Accordion>
-                        </div>
-                    </div>
-                    <div className='info-break-div'>&nbsp;</div>
-
-                    <Tabs defaultActiveKey='none' onSelect={() => { setTimeout(function () { window.scrollTo(0, 2000); }, 1); }} className='info-form-subtab light-background container-fluid'>
-                        <Tab eventKey='info41' title={
-                            <p className='size-30 light dark-background info-form-subtab-title'>
-                                <Image src={iconDocument} thumbnail className='dark-background info-form-subtab-icon icon-small' />
-                                Отзыв научного<br />руководителя
-                            </p>
-                        }>
-                            <div className='info-sub-tab-div'>
-
-                                <div className='info-break-div' style={{ marginBottom: '20px' }}>&nbsp;</div>
-
-                                <p className='size-30 dark info-sub-tab-title'>Отзыв научного руководителя</p>
-
-                                <div id='student-vkr-review-version-div' className='student-nir-task-version-div light-background'></div>
+                                <div id='student-nir-otchet-version-div' className='student-nir-task-version-div light-background'></div>
 
                                 <div className='info-sub-tab-div'>
 
-                                    <button type='button' id='make-vkr-review-button' className='size-30 light dark-background info-button-1' style={{ height: '100px', width: '670px', marginLeft: '410px' }}>
+                                    <div className='info-row'>
+                                        <div className='info-column'>
+                                            <Form.Label column className="size-21 dark info-input-label">Детальное содержание:</Form.Label>
+                                            <textarea id='nir-otchet-description' maxLength='1024' value={detailedDescription} onChange={(e) => {
+                                                setDetailedDescription(e.target.value);
+                                                if ($('#nir-otchet-description').val() === '' || $('#nir-otchet-conclusion').val() === '') {
+                                                    document.getElementById('make-nir-otchet-button').disabled = true;
+                                                }
+                                                else {
+                                                    document.getElementById('make-nir-otchet-button').disabled = false;
+                                                }
+                                            }} className='dark size-24 info-input-area' />
+                                        </div>
+
+                                        <div className='info-column'>
+                                            <Form.Label column className="size-21 dark info-input-label">Заключение научного руководителя:</Form.Label>
+                                            <textarea id='nir-otchet-conclusion' maxLength='2048' value={conclusion} onChange={(e) => {
+                                                setConclusion(e.target.value);
+                                                if ($('#nir-otchet-description').val() === '' || $('#nir-otchet-conclusion').val() === '') {
+                                                    document.getElementById('make-nir-otchet-button').disabled = true;
+                                                }
+                                                else {
+                                                    document.getElementById('make-nir-otchet-button').disabled = false;
+                                                }
+                                            }} className='dark size-24 info-input-area' />
+                                        </div>
+                                    </div>
+
+                                    <button type='button' disabled id='make-nir-otchet-button' className='size-30 light dark-background info-button-inline-block' style={{ marginLeft: '425px', marginTop: '20px' }}>
+                                        <Image src={iconProject} thumbnail className='dark-background thumbnail-icon' />
+                                        Сформировать и загрузить версию отчета
+                                </button>
+                                    <input id='nir-otchet-file-input' type='file' style={{ display: 'none' }} onChange={(e) => {
+                                        console.log(e.target.files);
+                                        if (e.target.files.length !== 0) {
+                                            makeOtchetVersion(e.target.files[0], 'Научно-исследовательская работа');
+                                        }
+                                    }} ></input>
+                                </div>
+                            </Tab>
+                        </Tabs>
+                    </Tab>
+                    <Tab eventKey='info2' title={<Image id='image2' src={infoBlock2} thumbnail className='info-form-image' style={{ borderTopLeftRadius: '0px', borderTopRightRadius: '0px', borderBottomRightRadius: '0px', borderBottomLeftRadius: '0px' }} />}>
+                        <div className='dark info-task-block'>
+                            <p className='size-24 info-text-block-title'>ПРАКТИКА ПО ПОЛУЧЕНИЮ ПРОФЕССИОНАЛЬНЫХ УМЕНИЙ И ОПЫТА ПРОФЕССИОНАЛЬНОЙ ДЕЯТЕЛЬНОСТИ</p>
+                            <div>
+                                <p className='size-20 info-text-block-start-date'><b>Начало: 09.02.2021</b></p>
+                                <p className='size-20 info-text-block-end-date'><b>Конец: 05.04.2021</b></p>
+                            </div>
+                            <div style={{ clear: 'both' }}></div>
+                            <div className='task-page-accordion-div'>
+                                <Accordion>
+                                    <Card>
+                                        <Accordion.Toggle as={Card.Header} eventKey="acc1" className='dark size-28 accordion-clickable'>
+                                            Образцы по ПпППУиОПД
+                                    </Accordion.Toggle>
+                                        <Accordion.Collapse eventKey="acc1">
+                                            <Card.Body id='example-panel-2'>
+
+                                            </Card.Body>
+                                        </Accordion.Collapse>
+                                    </Card>
+                                </Accordion>
+                            </div>
+                        </div>
+                        <div className='info-break-div'>&nbsp;</div>
+
+                        <Tabs defaultActiveKey='none' onSelect={() => { setTimeout(function () { window.scrollTo(0, 2000); }, 1); }} className='info-form-subtab light-background container-fluid'>
+                            <Tab eventKey='info21' title={
+                                <p className='size-30 light dark-background info-form-subtab-title'>
+                                    <Image src={iconDocument} thumbnail className='dark-background info-form-subtab-icon icon-small' />
+                                Задание на ПпППУиОПД
+                            </p>
+                            }>
+                                <div className='info-sub-tab-div'>
+
+                                    <div className='info-break-div' style={{ marginBottom: '20px' }}>&nbsp;</div>
+
+                                    <p className='size-30 dark info-sub-tab-title'>Задание на ПпППУиОПД</p>
+
+                                    <div id='student-long-pp-task-version-div' className='student-nir-task-version-div light-background'></div>
+
+                                    <div className='info-row'>
+                                        <div className='info-column'>
+                                            <Form.Label column className="size-21 dark info-input-label">Тема:</Form.Label>
+                                            <textarea maxLength='1024' value={studentTheme} onChange={(e) => { setStudentTheme(e.target.value); }} className='dark size-24 info-input-area' />
+
+                                            <Form.Label column className="size-21 dark info-input-label">Изучить:</Form.Label>
+                                            <textarea maxLength='2048' value={toExplore} onChange={(e) => { setToExplore(e.target.value); }} className='dark size-24 info-input-area' />
+
+                                            <Form.Label column className="size-21 dark info-input-label">Практически выполнить:</Form.Label>
+                                            <textarea maxLength='2048' value={toCreate} onChange={(e) => { setToCreate(e.target.value); }} className='dark size-24 info-input-area' />
+                                        </div>
+
+                                        <div className='info-column'>
+                                            <Form.Label column className="size-21 dark info-input-label">Ознакомиться:</Form.Label>
+                                            <textarea maxLength='2048' value={toFamiliarize} onChange={(e) => { setToFamiliarize(e.target.value); }} className='dark size-24 info-input-area' />
+
+                                            <Form.Label column className="size-21 dark info-input-label">Дополнительное задание:</Form.Label>
+                                            <textarea maxLength='2048' value={additionalTask} onChange={(e) => { setAdditionalTask(e.target.value); }} className='dark size-24 info-input-area' />
+
+                                            <button type='button' id='make-long-pp-task-button' className='size-30 light dark-background info-button-1' style={{ height: '100px' }}>
+                                                <Image src={iconDocument} thumbnail className='dark-background thumbnail-icon' style={{ position: 'relative', top: '-25px' }} />
+                                                <div style={{ display: 'inline-block' }}><p style={{ marginBottom: '0px' }}>Создать новую версию<br />задания на ПпППУиОПД</p></div>
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </Tab>
+                            <Tab eventKey='info22' title={
+                                <p className='size-30 light dark-background info-form-subtab-title' style={{ marginLeft: '626px' }}>
+                                    <Image src={iconDocument} thumbnail className='dark-background info-form-subtab-icon icon-small' />
+                                Отчет о<br />прохождении ПпППУиОПД
+                            </p>
+                            }>
+                                <div className='info-break-div' style={{ marginBottom: '20px' }}>&nbsp;</div>
+
+                                <p className='size-30 dark info-sub-tab-title'>Отчет о прохождении ПпППУиОПД</p>
+
+                                <div id='student-long-pp-otchet-version-div' className='student-nir-task-version-div light-background'></div>
+
+                                <div className='info-sub-tab-div'>
+
+                                    <div className='info-row'>
+                                        <div className='info-column'>
+                                            <Form.Label column className='size-21 dark info-input-label'>Детальное содержание:</Form.Label>
+                                            <textarea id='long-pp-otchet-description' maxLength='1024' value={detailedDescriptionLongPP} onChange={(e) => {
+                                                setDetailedDescriptionLongPP(e.target.value);
+                                                if ($('#long-pp-otchet-description').val() === '' || $('#long-pp-otchet-conclusion').val() === '') {
+                                                    document.getElementById('make-long-pp-otchet-button').disabled = true;
+                                                }
+                                                else {
+                                                    document.getElementById('make-long-pp-otchet-button').disabled = false;
+                                                }
+                                            }} className='dark size-24 info-input-area' />
+                                        </div>
+
+                                        <div className='info-column'>
+                                            <Form.Label column className='size-21 dark info-input-label'>Заключение научного руководителя:</Form.Label>
+                                            <textarea id='long-pp-otchet-conclusion' maxLength='2048' value={conclusionLongPP} onChange={(e) => {
+                                                setConclusionLongPP(e.target.value);
+                                                if ($('#long-pp-otchet-description').val() === '' || $('#long-pp-otchet-conclusion').val() === '') {
+                                                    document.getElementById('make-long-pp-otchet-button').disabled = true;
+                                                }
+                                                else {
+                                                    document.getElementById('make-long-pp-otchet-button').disabled = false;
+                                                }
+                                            }} className='dark size-24 info-input-area' />
+                                        </div>
+                                    </div>
+
+                                    <button type='button' disabled id='make-long-pp-otchet-button' className='size-30 light dark-background info-button-inline-block' style={{ marginLeft: '425px', marginTop: '20px' }}>
+                                        <Image src={iconProject} thumbnail className='dark-background thumbnail-icon' />
+                                        Сформировать и загрузить версию отчета
+                                </button>
+                                    <input id='long-pp-otchet-file-input' type='file' style={{ display: 'none' }} onChange={(e) => {
+                                        console.log(e.target.files);
+                                        if (e.target.files.length !== 0) {
+                                            makeOtchetVersion(e.target.files[0], 'Практика по получению знаний и умений');
+                                        }
+                                    }} ></input>
+                                </div>
+                            </Tab>
+                        </Tabs>
+                    </Tab>
+                    <Tab eventKey='info3' title={<Image id='image3' src={infoBlock3} thumbnail className='info-form-image' style={{ borderTopLeftRadius: '0px', borderTopRightRadius: '0px', borderBottomRightRadius: '0px', borderBottomLeftRadius: '0px' }} />}>
+                        <div className='dark info-task-block'>
+                            <p className='size-24 info-text-block-title'>ПРЕДДИПЛОМНАЯ ПРАКТИКА</p>
+                            <div>
+                                <p className='size-20 info-text-block-start-date'><b>Начало: 20.04.2021</b></p>
+                                <p className='size-20 info-text-block-end-date'><b>Конец: 17.05.2021</b></p>
+                            </div>
+                            <div style={{ clear: 'both' }}></div>
+                            <div className='task-page-accordion-div'>
+                                <Accordion>
+                                    <Card>
+                                        <Accordion.Toggle as={Card.Header} eventKey="acc2" className='dark size-28 accordion-clickable'>
+                                            Образцы по ПП
+                                    </Accordion.Toggle>
+                                        <Accordion.Collapse eventKey="acc2">
+                                            <Card.Body id='example-panel-3'>
+
+                                            </Card.Body>
+                                        </Accordion.Collapse>
+                                    </Card>
+                                </Accordion>
+                            </div>
+                        </div>
+                        <div className='info-break-div'>&nbsp;</div>
+
+                        <Tabs defaultActiveKey='none' onSelect={() => { setTimeout(function () { window.scrollTo(0, 2000); }, 1); }} className='info-form-subtab light-background container-fluid'>
+                            <Tab eventKey='info31' title={
+                                <p className='size-30 light dark-background info-form-subtab-title'>
+                                    <Image src={iconDocument} thumbnail className='dark-background info-form-subtab-icon icon-small' />
+                                Задание на ПП
+                            </p>
+                            }>
+                                <div className='info-sub-tab-div'>
+
+                                    <div className='info-break-div' style={{ marginBottom: '20px' }}>&nbsp;</div>
+
+                                    <p className='size-30 dark info-sub-tab-title'>Задание на ПП</p>
+
+                                    <div id='student-pp-task-version-div' className='student-nir-task-version-div light-background'></div>
+
+                                    <div className='info-row'>
+                                        <div className='info-column'>
+                                            <Form.Label column className="size-21 dark info-input-label">Тема:</Form.Label>
+                                            <textarea maxLength='1024' value={studentTheme} onChange={(e) => { setStudentTheme(e.target.value); }} className='dark size-24 info-input-area' />
+
+                                            <Form.Label column className="size-21 dark info-input-label">Изучить:</Form.Label>
+                                            <textarea maxLength='2048' value={toExplore} onChange={(e) => { setToExplore(e.target.value); }} className='dark size-24 info-input-area' />
+
+                                            <Form.Label column className="size-21 dark info-input-label">Практически выполнить:</Form.Label>
+                                            <textarea maxLength='2048' value={toCreate} onChange={(e) => { setToCreate(e.target.value); }} className='dark size-24 info-input-area' />
+                                        </div>
+
+                                        <div className='info-column'>
+                                            <Form.Label column className="size-21 dark info-input-label">Ознакомиться:</Form.Label>
+                                            <textarea maxLength='2048' value={toFamiliarize} onChange={(e) => { setToFamiliarize(e.target.value); }} className='dark size-24 info-input-area' />
+
+                                            <Form.Label column className="size-21 dark info-input-label">Дополнительное задание:</Form.Label>
+                                            <textarea maxLength='2048' value={additionalTask} onChange={(e) => { setAdditionalTask(e.target.value); }} className='dark size-24 info-input-area' />
+
+                                            <button type='button' id='make-pp-task-button' className='size-30 light dark-background info-button-1' style={{ height: '100px' }}>
+                                                <Image src={iconDocument} thumbnail className='dark-background thumbnail-icon' style={{ position: 'relative', top: '-25px' }} />
+                                                <div style={{ display: 'inline-block' }}><p style={{ marginBottom: '0px' }}>Создать новую версию<br />задания на ПП</p></div>
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </Tab>
+                            <Tab eventKey='info32' title={
+                                <p className='size-30 light dark-background info-form-subtab-title' style={{ marginLeft: '880px' }}>
+                                    <Image src={iconDocument} thumbnail className='dark-background info-form-subtab-icon icon-small' />
+                                Отчет о<br />прохождении ПП
+                            </p>
+                            }>
+                                <div className='info-break-div' style={{ marginBottom: '20px' }}>&nbsp;</div>
+
+                                <p className='size-30 dark info-sub-tab-title'>Отчет о прохождении ПП</p>
+
+                                <div id='student-pp-otchet-version-div' className='student-nir-task-version-div light-background'></div>
+
+                                <div className='info-sub-tab-div'>
+
+                                    <div className='info-row'>
+                                        <div className='info-column'>
+                                            <Form.Label column className='size-21 dark info-input-label'>Детальное содержание:</Form.Label>
+                                            <textarea id='pp-otchet-description' maxLength='1024' value={detailedDescriptionPP} onChange={(e) => {
+                                                setDetailedDescriptionPP(e.target.value);
+                                                if ($('#pp-otchet-description').val() === '' || $('#pp-otchet-conclusion').val() === '') {
+                                                    document.getElementById('make-pp-otchet-button').disabled = true;
+                                                }
+                                                else {
+                                                    document.getElementById('make-pp-otchet-button').disabled = false;
+                                                }
+                                            }} className='dark size-24 info-input-area' />
+                                        </div>
+
+                                        <div className='info-column'>
+                                            <Form.Label column className='size-21 dark info-input-label'>Заключение научного руководителя:</Form.Label>
+                                            <textarea id='pp-otchet-conclusion' maxLength='2048' value={conclusionPP} onChange={(e) => {
+                                                setConclusionPP(e.target.value);
+                                                if ($('#pp-otchet-description').val() === '' || $('#pp-otchet-conclusion').val() === '') {
+                                                    document.getElementById('make-pp-otchet-button').disabled = true;
+                                                }
+                                                else {
+                                                    document.getElementById('make-pp-otchet-button').disabled = false;
+                                                }
+                                            }} className='dark size-24 info-input-area' />
+                                        </div>
+                                    </div>
+
+                                    <button type='button' disabled id='make-pp-otchet-button' className='size-30 light dark-background info-button-inline-block' style={{ marginLeft: '425px', marginTop: '20px' }}>
+                                        <Image src={iconProject} thumbnail className='dark-background thumbnail-icon' />
+                                        Сформировать и загрузить версию отчета
+                                </button>
+                                    <input id='pp-otchet-file-input' type='file' style={{ display: 'none' }} onChange={(e) => {
+                                        console.log(e.target.files);
+                                        if (e.target.files.length !== 0) {
+                                            makeOtchetVersion(e.target.files[0], 'Преддипломная практика');
+                                        }
+                                    }} ></input>
+                                </div>
+                            </Tab>
+                        </Tabs>
+                    </Tab>
+                    <Tab eventKey='info4' title={<Image id='image4' src={infoBlock4} thumbnail className='info-form-image' style={{ borderTopLeftRadius: '0px', borderBottomLeftRadius: '0px' }} />}>
+                        <div className='dark info-task-block'>
+                            <p className='size-24 info-text-block-title'>ПОДГОТОВКА И ЗАЩИТА ВКР</p>
+                            <div>
+                                <p className='size-20 info-text-block-start-date'><b>Начало: 25.05.2021</b></p>
+                                <p className='size-20 info-text-block-end-date'><b>Конец: 05.07.2021</b></p>
+                            </div>
+                            <div style={{ clear: 'both' }}></div>
+                            <div className='task-page-accordion-div'>
+                                <Accordion>
+                                    <Card>
+                                        <Accordion.Toggle as={Card.Header} eventKey="acc3" className='dark size-28 accordion-clickable'>
+                                            Образцы по ВКР
+                                    </Accordion.Toggle>
+                                        <Accordion.Collapse eventKey="acc3">
+                                            <Card.Body id='example-panel-4'>
+
+                                            </Card.Body>
+                                        </Accordion.Collapse>
+                                    </Card>
+                                </Accordion>
+                            </div>
+                        </div>
+                        <div className='info-break-div'>&nbsp;</div>
+
+                        <Tabs defaultActiveKey='none' onSelect={() => { setTimeout(function () { window.scrollTo(0, 2000); }, 1); }} className='info-form-subtab light-background container-fluid'>
+                            <Tab eventKey='info41' title={
+                                <p className='size-30 light dark-background info-form-subtab-title'>
+                                    <Image src={iconDocument} thumbnail className='dark-background info-form-subtab-icon icon-small' />
+                                Отзыв научного<br />руководителя
+                            </p>
+                            }>
+                                <div className='info-sub-tab-div'>
+
+                                    <div className='info-break-div' style={{ marginBottom: '20px' }}>&nbsp;</div>
+
+                                    <p className='size-30 dark info-sub-tab-title'>Отзыв научного руководителя</p>
+
+                                    <div id='student-vkr-review-version-div' className='student-nir-task-version-div light-background'></div>
+
+                                    <div className='info-sub-tab-div'>
+
+                                        <button type='button' id='make-vkr-review-button' className='size-30 light dark-background info-button-1' style={{ height: '100px', width: '670px', marginLeft: '410px' }}>
+                                            <Image src={iconDocument} thumbnail className='dark-background thumbnail-icon' style={{ position: 'relative', top: '-25px' }} />
+                                            <div style={{ display: 'inline-block' }}><p style={{ marginBottom: '0px' }}>Сформировать и загрузить новую версию<br />отзыва научного руководителя</p></div>
+                                        </button>
+                                        <input id='vkr-review-file-input' type='file' style={{ display: 'none' }} onChange={(e) => {
+                                            if (e.target.files.length !== 0) {
+
+                                                uploadDocument(e.target.files[0], 'ВКР', 'Отзыв');
+                                            }
+                                        }} ></input>
+
+                                    </div>
+                                </div>
+                            </Tab>
+                            <Tab eventKey='info42' title={
+                                <p className='size-30 light dark-background info-form-subtab-title' style={{ marginLeft: '29px' }}>
+                                    <Image src={iconDocument} thumbnail className='dark-background info-form-subtab-icon icon-small' />
+                                Допуск к<br />защите
+                            </p>
+                            }>
+                                <div className='info-break-div' style={{ marginBottom: '20px' }}>&nbsp;</div>
+
+                                <p className='size-30 dark info-sub-tab-title'>Допуск к защите</p>
+
+                                <div id='student-vkr-dopusk-version-div' className='student-nir-task-version-div light-background'></div>
+
+                                <div className='info-sub-tab-div'>
+
+                                    <button type='button' id='make-vkr-dopusk-button' className='size-30 light dark-background info-button-1' style={{ height: '100px', width: '670px', marginLeft: '410px' }}>
                                         <Image src={iconDocument} thumbnail className='dark-background thumbnail-icon' style={{ position: 'relative', top: '-25px' }} />
-                                        <div style={{ display: 'inline-block' }}><p style={{ marginBottom: '0px' }}>Сформировать и загрузить новую версию<br />отзыва научного руководителя</p></div>
+                                        <div style={{ display: 'inline-block' }}><p style={{ marginBottom: '0px' }}>Сформировать и загрузить новую версию<br />допуска к защите ВКР</p></div>
                                     </button>
-                                    <input id='vkr-review-file-input' type='file' style={{ display: 'none' }} onChange={(e) => {
+                                    <input id='vkr-dopusk-file-input' type='file' style={{ display: 'none' }} onChange={(e) => {
                                         if (e.target.files.length !== 0) {
 
-                                            uploadDocument(e.target.files[0], 'ВКР', 'Отзыв');
+                                            uploadDocument(e.target.files[0], 'ВКР', 'Допуск');
+                                        }
+                                    }} ></input>
+                                </div>
+                            </Tab>
+                            <Tab eventKey='info43' title={
+                                <p className='size-30 light dark-background info-form-subtab-title' style={{ marginLeft: '29px' }}>
+                                    <Image src={iconDocument} thumbnail className='dark-background info-form-subtab-icon icon-small' />
+                                Задание<br />на ВКР
+                            </p>
+                            }>
+                                <div className='info-break-div' style={{ marginBottom: '20px' }}>&nbsp;</div>
+
+                                <p className='size-30 dark info-sub-tab-title'>Задание на ВКР</p>
+
+                                <div id='student-vkr-task-version-div' className='student-nir-task-version-div light-background'></div>
+
+                                <div className='info-sub-tab-div'>
+
+
+                                    <button type='button' id='make-vkr-task-button' className='size-30 light dark-background info-button-1' style={{ height: '100px', width: '670px', marginLeft: '410px' }}>
+                                        <Image src={iconDocument} thumbnail className='dark-background thumbnail-icon' style={{ position: 'relative', top: '-25px' }} />
+                                        <div style={{ display: 'inline-block' }}><p style={{ marginBottom: '0px' }}>Сформировать и загрузить новую версию<br />задания ВКР</p></div>
+                                    </button>
+                                    <input id='vkr-ефыл-file-input' type='file' style={{ display: 'none' }} onChange={(e) => {
+                                        if (e.target.files.length !== 0) {
+
+                                            //uploadDocument(e.target.files[0], 'ВКР', 'Допуск');
                                         }
                                     }} ></input>
 
                                 </div>
-                            </div>
-                        </Tab>
-                        <Tab eventKey='info42' title={
-                            <p className='size-30 light dark-background info-form-subtab-title' style={{ marginLeft: '29px' }}>
-                                <Image src={iconDocument} thumbnail className='dark-background info-form-subtab-icon icon-small' />
-                                Допуск к<br />защите
-                            </p>
-                        }>
-                            <div className='info-break-div' style={{ marginBottom: '20px' }}>&nbsp;</div>
-
-                            <p className='size-30 dark info-sub-tab-title'>Допуск к защите</p>
-
-                            <div id='student-vkr-dopusk-version-div' className='student-nir-task-version-div light-background'></div>
-
-                            <div className='info-sub-tab-div'>
-
-                                <button type='button' id='make-vkr-dopusk-button' className='size-30 light dark-background info-button-1' style={{ height: '100px', width: '670px', marginLeft: '410px' }}>
-                                    <Image src={iconDocument} thumbnail className='dark-background thumbnail-icon' style={{ position: 'relative', top: '-25px' }} />
-                                    <div style={{ display: 'inline-block' }}><p style={{ marginBottom: '0px' }}>Сформировать и загрузить новую версию<br />допуска к защите ВКР</p></div>
-                                </button>
-                                <input id='vkr-dopusk-file-input' type='file' style={{ display: 'none' }} onChange={(e) => {
-                                    if (e.target.files.length !== 0) {
-
-                                        uploadDocument(e.target.files[0], 'ВКР', 'Допуск');
-                                    }
-                                }} ></input>
-                            </div>
-                        </Tab>
-                        <Tab eventKey='info43' title={
-                            <p className='size-30 light dark-background info-form-subtab-title' style={{ marginLeft: '29px' }}>
-                                <Image src={iconDocument} thumbnail className='dark-background info-form-subtab-icon icon-small' />
-                                Задание<br />на ВКР
-                            </p>
-                        }>
-                            <div className='info-break-div' style={{ marginBottom: '20px' }}>&nbsp;</div>
-
-                            <p className='size-30 dark info-sub-tab-title'>Задание на ВКР</p>
-
-                            <div id='student-vkr-task-version-div' className='student-nir-task-version-div light-background'></div>
-
-                            <div className='info-sub-tab-div'>
-
-
-                                <button type='button' id='make-vkr-task-button' className='size-30 light dark-background info-button-1' style={{ height: '100px', width: '670px', marginLeft: '410px' }}>
-                                    <Image src={iconDocument} thumbnail className='dark-background thumbnail-icon' style={{ position: 'relative', top: '-25px' }} />
-                                    <div style={{ display: 'inline-block' }}><p style={{ marginBottom: '0px' }}>Сформировать и загрузить новую версию<br />задания ВКР</p></div>
-                                </button>
-                                <input id='vkr-ефыл-file-input' type='file' style={{ display: 'none' }} onChange={(e) => {
-                                    if (e.target.files.length !== 0) {
-
-                                        //uploadDocument(e.target.files[0], 'ВКР', 'Допуск');
-                                    }
-                                }} ></input>
-
-                            </div>
-                        </Tab>
-                        <Tab eventKey='info44' title={
-                            <p className='size-30 light dark-background info-form-subtab-title' style={{ marginLeft: '29px' }}>
-                                <Image src={iconDocument} thumbnail className='dark-background info-form-subtab-icon icon-small' />
+                            </Tab>
+                            <Tab eventKey='info44' title={
+                                <p className='size-30 light dark-background info-form-subtab-title' style={{ marginLeft: '29px' }}>
+                                    <Image src={iconDocument} thumbnail className='dark-background info-form-subtab-icon icon-small' />
                                 РПЗ
                             </p>
-                        }>
-                            <div className='info-break-div' style={{ marginBottom: '20px' }}>&nbsp;</div>
+                            }>
+                                <div className='info-break-div' style={{ marginBottom: '20px' }}>&nbsp;</div>
 
-                            <p className='size-30 dark info-sub-tab-title'>РПЗ</p>
+                                <p className='size-30 dark info-sub-tab-title'>РПЗ</p>
 
-                            <div id='student-vkr-rpz-version-div' className='student-nir-task-version-div light-background'></div>
+                                <div id='student-vkr-rpz-version-div' className='student-nir-task-version-div light-background'></div>
 
-                            <div className='info-sub-tab-div'>
+                                <div className='info-sub-tab-div'>
 
 
-                                <button type='button' id='make-vkr-rpz-button' className='size-30 light dark-background info-button-1' style={{ height: '100px', width: '480px', marginLeft: '505px' }}>
-                                    <Image src={iconDocument} thumbnail className='dark-background thumbnail-icon' style={{ position: 'relative', top: '-25px' }} />
-                                    <div style={{ display: 'inline-block' }}><p style={{ marginBottom: '0px' }}>Сформировать и загрузить<br />новую версию РПЗ</p></div>
-                                </button>
-                                <input id='vkr-rpz-file-input' type='file' style={{ display: 'none' }} onChange={(e) => {
-                                    if (e.target.files.length !== 0) {
+                                    <button type='button' id='make-vkr-rpz-button' className='size-30 light dark-background info-button-1' style={{ height: '100px', width: '480px', marginLeft: '505px' }}>
+                                        <Image src={iconDocument} thumbnail className='dark-background thumbnail-icon' style={{ position: 'relative', top: '-25px' }} />
+                                        <div style={{ display: 'inline-block' }}><p style={{ marginBottom: '0px' }}>Сформировать и загрузить<br />новую версию РПЗ</p></div>
+                                    </button>
+                                    <input id='vkr-rpz-file-input' type='file' style={{ display: 'none' }} onChange={(e) => {
+                                        if (e.target.files.length !== 0) {
 
-                                        //makeOtchetVersion(e.target.files[0], 'Преддипломная практика');
-                                    }
-                                }} ></input>
-                            </div>
-                        </Tab>
-                        <Tab eventKey='info45' title={
-                            <p className='size-30 light dark-background info-form-subtab-title' style={{ marginLeft: '29px' }}>
-                                <Image src={iconDocument} thumbnail className='dark-background info-form-subtab-icon icon-small' />
+                                            //makeOtchetVersion(e.target.files[0], 'Преддипломная практика');
+                                        }
+                                    }} ></input>
+                                </div>
+                            </Tab>
+                            <Tab eventKey='info45' title={
+                                <p className='size-30 light dark-background info-form-subtab-title' style={{ marginLeft: '29px' }}>
+                                    <Image src={iconDocument} thumbnail className='dark-background info-form-subtab-icon icon-small' />
                                 Проверка на<br />антиплагиат
                             </p>
-                        }>
-                            <div className='info-break-div' style={{ marginBottom: '20px' }}>&nbsp;</div>
+                            }>
+                                <div className='info-break-div' style={{ marginBottom: '20px' }}>&nbsp;</div>
 
-                            <p className='size-30 dark info-sub-tab-title'>Проверка на антиплагиат</p>
+                                <p className='size-30 dark info-sub-tab-title'>Проверка на антиплагиат</p>
 
-                            <div id='student-vkr-antiplagiat-version-div' className='student-nir-task-version-div light-background'></div>
+                                <div id='student-vkr-antiplagiat-version-div' className='student-nir-task-version-div light-background'></div>
 
-                            <div className='info-sub-tab-div'>
+                                <div className='info-sub-tab-div'>
 
-                                <button type='button' id='make-vkr-antiplagiat-button' className='size-30 light dark-background info-button-1' style={{ height: '100px', width: '670px', marginLeft: '410px' }}>
-                                    <Image src={iconDocument} thumbnail className='dark-background thumbnail-icon' style={{ position: 'relative', top: '-25px' }} />
-                                    <div style={{ display: 'inline-block' }}><p style={{ marginBottom: '0px' }}>Сформировать и загрузить новую версию<br />отчета об антиплагиате</p></div>
-                                </button>
-                                <input id='vkr-antiplagiat-file-input' type='file' style={{ display: 'none' }} onChange={(e) => {
-                                    if (e.target.files.length !== 0) {
+                                    <button type='button' id='make-vkr-antiplagiat-button' className='size-30 light dark-background info-button-1' style={{ height: '100px', width: '670px', marginLeft: '410px' }}>
+                                        <Image src={iconDocument} thumbnail className='dark-background thumbnail-icon' style={{ position: 'relative', top: '-25px' }} />
+                                        <div style={{ display: 'inline-block' }}><p style={{ marginBottom: '0px' }}>Сформировать и загрузить новую версию<br />отчета об антиплагиате</p></div>
+                                    </button>
+                                    <input id='vkr-antiplagiat-file-input' type='file' style={{ display: 'none' }} onChange={(e) => {
+                                        if (e.target.files.length !== 0) {
 
-                                        uploadDocument(e.target.files[0], 'ВКР', 'Антиплагиат');
-                                    }
-                                }} ></input>
-                            </div>
-                        </Tab>
-                        <Tab eventKey='info46' title={
-                            <p className='size-30 light dark-background info-form-subtab-title' style={{ marginLeft: '29px' }}>
-                                <Image src={iconDocument} thumbnail className='dark-background info-form-subtab-icon icon-small' />
+                                            uploadDocument(e.target.files[0], 'ВКР', 'Антиплагиат');
+                                        }
+                                    }} ></input>
+                                </div>
+                            </Tab>
+                            <Tab eventKey='info46' title={
+                                <p className='size-30 light dark-background info-form-subtab-title' style={{ marginLeft: '29px' }}>
+                                    <Image src={iconDocument} thumbnail className='dark-background info-form-subtab-icon icon-small' />
                                 Презентация<br />к защите
                             </p>
-                        }>
-                            <div className='info-break-div' style={{ marginBottom: '20px' }}>&nbsp;</div>
+                            }>
+                                <div className='info-break-div' style={{ marginBottom: '20px' }}>&nbsp;</div>
 
-                            <p className='size-30 dark info-sub-tab-title'>Презентация к защите</p>
+                                <p className='size-30 dark info-sub-tab-title'>Презентация к защите</p>
 
-                            <div id='student-vkr-presentation-version-div' className='student-nir-task-version-div light-background'></div>
+                                <div id='student-vkr-presentation-version-div' className='student-nir-task-version-div light-background'></div>
 
-                            <div className='info-sub-tab-div'>
+                                <div className='info-sub-tab-div'>
 
-                                <button type='button' id='make-vkr-presentation-button' className='size-30 light dark-background info-button-1' style={{ height: '100px', width: '670px', marginLeft: '410px' }}>
-                                    <Image src={iconDocument} thumbnail className='dark-background thumbnail-icon' style={{ position: 'relative', top: '-25px' }} />
-                                    <div style={{ display: 'inline-block' }}><p style={{ marginBottom: '0px' }}>Сформировать и загрузить новую версию<br />презентации</p></div>
-                                </button>
-                                <input id='vkr-presentation-file-input' type='file' style={{ display: 'none' }} onChange={(e) => {
-                                    if (e.target.files.length !== 0) {
+                                    <button type='button' id='make-vkr-presentation-button' className='size-30 light dark-background info-button-1' style={{ height: '100px', width: '670px', marginLeft: '410px' }}>
+                                        <Image src={iconDocument} thumbnail className='dark-background thumbnail-icon' style={{ position: 'relative', top: '-25px' }} />
+                                        <div style={{ display: 'inline-block' }}><p style={{ marginBottom: '0px' }}>Сформировать и загрузить новую версию<br />презентации</p></div>
+                                    </button>
+                                    <input id='vkr-presentation-file-input' type='file' style={{ display: 'none' }} onChange={(e) => {
+                                        if (e.target.files.length !== 0) {
 
-                                        uploadDocument(e.target.files[0], 'ВКР', 'Презентация');
-                                    }
-                                }} ></input>
-                            </div>
-                        </Tab>
-                    </Tabs>
-                </Tab>
-            </Tabs>
+                                            uploadDocument(e.target.files[0], 'ВКР', 'Презентация');
+                                        }
+                                    }} ></input>
+                                </div>
+                            </Tab>
+                        </Tabs>
+                    </Tab>
+                </Tabs>
 
-        </Form>
-
+            </Form>
+        </div>
     );
 }
