@@ -57,33 +57,43 @@ export default function StudentTasksPage() {
     const [detailedDescriptionPP, setDetailedDescriptionPP] = useState('');
     const [conclusionPP, setConclusionPP] = useState('');
 
+    // ВКР - задание
+    const [vkrTaskVersions, setVkrTaskVersions] = useState([]);
+    const [vkrDocs, setVkrDocs] = useState('');
+    const [vkrAims, setVkrAims] = useState('');
+    const [vkrTasks, setVkrTasks] = useState('');
+
+    // ВКР - РПЗ
+    const [vkrOtchetVersions, setVkrOtchetVersions] = useState([]);
+
     // ВКР - отзыв научного руководителя
     const [vkrReviewVersions, setVkrReviewVersions] = useState([]);
 
     // ВКР - допуск
     const [vkrDopuskVersions, setVkrDopuskVersions] = useState([]);
 
-    // ВКР - задание
-    const [vkrTaskVersions, setVkrTaskVersions] = useState([]);
-
-    // ВКР - РПЗ
-    const [vkrRPZVersions, setVkrRPZVersions] = useState([]);
-
     // ВКР - антиплагиат
-    const [vkrAntiplagiatVersions, setAntiplagiatTasskVersions] = useState([]);
+    const [vkrAntiplagiatVersions, setAntiplagiatVersions] = useState([]);
 
     // ВКР - презентация
-    const [vkrPrezentationVersions, setPrezentationTasskVersions] = useState([]);
+    const [vkrPrezentationVersions, setPrezentationVersions] = useState([]);
 
     if (!fetchedData) {
         setFetchedData(true);
+
         getStudentData();
+
         getTaskVersions('Научно-исследовательская работа');
         getOtchetVersions('Научно-исследовательская работа');
+
         getTaskVersions('Практика по получению знаний и умений');
         getOtchetVersions('Практика по получению знаний и умений');
+
         getTaskVersions('Преддипломная практика');
         getOtchetVersions('Преддипломная практика');
+
+        getTaskVersions('ВКР');
+        getOtchetVersions('ВКР');
 
         getExamples();
     }
@@ -117,6 +127,14 @@ export default function StudentTasksPage() {
     useEffect(() => {
         showPPOtchetVersions(PPOtchetVersions);
     }, [PPOtchetVersions]);
+
+    useEffect(() => {
+        showVkrTaskVersions(vkrTaskVersions);
+    }, [vkrTaskVersions]);
+    
+    useEffect(() => {
+        showVkrOtchetVersions(vkrOtchetVersions);
+    }, [vkrOtchetVersions]);
 
     useEffect(() => {
         showExamples(examples);
@@ -389,7 +407,7 @@ export default function StudentTasksPage() {
         student.appendChild(studentVkr);
 
         document.getElementById('student-table-body').appendChild(student);
-        
+
     }
 
     // Получение версий заданий
@@ -416,6 +434,10 @@ export default function StudentTasksPage() {
                 case 'Преддипломная практика':
                     //console.log(response.data);
                     setPPData(response.data);
+                    break;
+                case 'ВКР':
+                    //console.log(response.data);
+                    setVkrTaskVersions(response.data);
                     break;
                 default:
                     console.log(response);
@@ -449,18 +471,16 @@ export default function StudentTasksPage() {
                     //console.log(response);
                     setPPOtchetVersions(response.data);
                     break;
+                case 'ВКР':
+                    //console.log(response);
+                    setVkrOtchetVersions(response.data);
+                    break;
                 default:
                     console.log(response);
             }
         }).catch(result => {
             console.log(result.data);
         });
-    }
-
-    // TODO
-    // Получение версий документов по ВКР
-    function getVkrDocumentVersions() {
-
     }
 
     // Вывод версий задания нир
@@ -898,6 +918,140 @@ export default function StudentTasksPage() {
         }
     }
 
+    // Вывод версий задания ВКР
+    function showVkrTaskVersions(vkrTaskVersionArray) {
+        for (var i = 0; i < vkrTaskVersionArray.length; i++) {
+            var item = vkrTaskVersionArray[i];
+
+            var nirVersion = document.createElement('div');
+            nirVersion.className = 'nir-version light-background';
+            nirVersion.id = 'vkr-version-' + i;
+
+            var nirVersionHeader = document.createElement('div');
+            nirVersionHeader.className = 'nir-version-header dark-background';
+
+            // Имя версии
+            var versionName = document.createElement('p');
+            versionName.className = 'light size-24 nir-header-text';
+            versionName.innerText = 'Версия: ' + item.versionEditionDate;
+
+            // Статус версии
+            var versionStatus = document.createElement('p');
+            versionStatus.className = 'light size-24 nir-header-text';
+            versionStatus.innerText = 'Статус: ' + item.status;
+
+            // Кнопка отправить науч руку
+            var sendButton = document.createElement('button');
+            sendButton.className = 'dark size-24 nir-version-header-button vkr-version-send-button';
+            sendButton.innerText = 'Отправить науч. руку';
+            sendButton.type = 'button';
+            // Запретить отсылку, если версия отправлена
+            if (item.status !== 'Не отправлено') {
+                sendButton.disabled = true;
+            }
+
+            // Кнопка скачать документ
+            var downloadButton = document.createElement('button');
+            downloadButton.className = 'dark size-24 nir-version-header-button vkr-version-download-button';
+            downloadButton.innerText = 'Сохранить документ';
+            downloadButton.type = 'button';
+
+            // Кнопка удалить
+            var deleteButton = document.createElement('button');
+            deleteButton.className = 'dark size-24 nir-version-header-button vkr-version-delete-button';
+            deleteButton.innerText = 'Удалить версию';
+            deleteButton.type = 'button';
+            // Запретить удаление, если версия отправлена
+            if (item.status !== 'Не отправлено' && item.status !== 'Замечания') {
+                deleteButton.disabled = true;
+            }
+
+            var clickableArea = document.createElement('div');
+            clickableArea.className = 'nir-version-clickable';
+
+            var nirVersionContent = document.createElement('div');
+            nirVersionContent.className = 'nir-version-content light-background';
+
+            var themeLabel = document.createElement('p');
+            themeLabel.className = 'dark size-21 nir-text-label';
+            themeLabel.innerText = 'Тема:';
+
+            // Тема
+            var themeArea = document.createElement('textarea');
+            themeArea.className = 'dark size-18 nir-text-area'
+            themeArea.disabled = true;
+            themeArea.value = item.theme;
+
+            var aimLabel = document.createElement('p');
+            aimLabel.className = 'dark size-21 nir-text-label';
+            aimLabel.innerText = 'Цель:';
+
+            // Цель
+            var aimArea = document.createElement('textarea');
+            aimArea.className = 'dark size-18 nir-text-area'
+            aimArea.disabled = true;
+            aimArea.value = item.vkrAim;
+
+            var tasksLabel = document.createElement('p');
+            tasksLabel.className = 'dark size-21 nir-text-label';
+            tasksLabel.innerText = 'Задачи:';
+
+            // Ззадачи
+            var tasksArea = document.createElement('textarea');
+            tasksArea.className = 'dark size-18 nir-text-area'
+            tasksArea.disabled = true;
+            tasksArea.value = item.vkrTasks;
+
+            var docsLabel = document.createElement('p');
+            docsLabel.className = 'dark size-21 nir-text-label2';
+            docsLabel.innerText = 'Разрабатываемые документы:';
+
+            // Ознакомиться
+            var docsArea = document.createElement('textarea');
+            docsArea.className = 'dark size-18 nir-text-area2'
+            docsArea.disabled = true;
+            docsArea.value = item.vkrDocs;
+
+            var copyButton = document.createElement('button');
+            copyButton.className = 'light dark-background size-21 nir-copy-button vkr-copy';
+            copyButton.innerText = 'Перенести значения в меню';
+            copyButton.type = 'button';
+            copyButton.style.marginLeft = '500px';
+
+            var rowDiv = document.createElement('div');
+            rowDiv.className = 'info-row';
+            var columnDiv1 = document.createElement('div');
+            columnDiv1.className = 'info-column';
+            var columnDiv2 = document.createElement('div');
+            columnDiv2.className = 'info-column';
+
+            clickableArea.appendChild(versionName);
+            clickableArea.appendChild(versionStatus);
+            nirVersionHeader.appendChild(clickableArea);
+            //nirVersionHeader.appendChild(viewButton);
+            nirVersionHeader.appendChild(sendButton);
+            nirVersionHeader.appendChild(downloadButton);
+            nirVersionHeader.appendChild(deleteButton);
+            nirVersion.appendChild(nirVersionHeader);
+            columnDiv1.appendChild(themeLabel);
+            columnDiv1.appendChild(themeArea);
+            columnDiv1.appendChild(aimLabel);
+            columnDiv1.appendChild(aimArea);
+            columnDiv2.appendChild(tasksLabel);
+            columnDiv2.appendChild(tasksArea);
+            columnDiv2.appendChild(docsLabel);
+            columnDiv2.appendChild(docsArea);
+            //columnDiv2.appendChild(copyButton);
+            rowDiv.appendChild(columnDiv1);
+            rowDiv.appendChild(columnDiv2);
+            nirVersionContent.appendChild(rowDiv);
+            nirVersionContent.appendChild(copyButton);
+            nirVersion.appendChild(nirVersionContent);
+            document.getElementById('student-vkr-task-version-div').appendChild(nirVersion);
+        }
+
+    }
+
     // Вывод на экран версий отчетов НИР
     function showNirOtchetVersions(nirOtchetVersionArray) {
         if (nirOtchetVersionArray.length > 0) {
@@ -1237,6 +1391,70 @@ export default function StudentTasksPage() {
         }
     }
 
+    // Вывод на экран версий отчетов НИР
+    function showVkrOtchetVersions(nirOtchetVersionArray) {
+        if (nirOtchetVersionArray.length > 0) {
+            for (var i = 0; i < nirOtchetVersionArray.length; i++) {
+                var item = nirOtchetVersionArray[i];
+
+                var nirVersion = document.createElement('div');
+                nirVersion.className = 'nir-version light-background';
+                nirVersion.id = 'nir-otchet-version-' + i;
+
+                var nirVersionHeader = document.createElement('div');
+                nirVersionHeader.className = 'nir-version-header dark-background';
+
+                // Имя версии
+                var versionName = document.createElement('p');
+                versionName.className = 'light size-24 nir-header-text';
+                versionName.innerText = 'Версия: ' + item.versionEditionDate;
+
+                // Статус версии
+                var versionStatus = document.createElement('p');
+                versionStatus.className = 'light size-24 nir-header-text';
+                versionStatus.innerText = 'Статус: ' + item.status;
+
+                var clickableArea = document.createElement('div');
+                clickableArea.className = 'nir-version-titles';
+
+                // Кнопка отправить науч руку
+                var sendButton = document.createElement('button');
+                sendButton.className = 'dark size-24 nir-version-header-button vkr-otchet-send-button';
+                sendButton.innerText = 'Отправить науч. руку';
+                sendButton.type = 'button';
+                if (item.status !== 'Не отправлено') {
+                    sendButton.disabled = true;
+                }
+
+                // Кнопка скачать отчёт
+                var downloadButton = document.createElement('button');
+                downloadButton.className = 'dark size-24 nir-version-header-button vkr-otchet-download-button';
+                downloadButton.innerText = 'Сохранить документ';
+                downloadButton.type = 'button';
+
+                // Кнопка удалить
+                var deleteButton = document.createElement('button');
+                deleteButton.className = 'dark size-24 nir-version-header-button vkr-otchet-delete-button';
+                deleteButton.innerText = 'Удалить версию';
+                deleteButton.type = 'button';
+                if (item.status !== 'Не отправлено' && item.status !== 'Замечания') {
+                    deleteButton.disabled = true;
+                }
+
+
+                clickableArea.appendChild(versionName);
+                clickableArea.appendChild(versionStatus);
+                nirVersionHeader.appendChild(clickableArea);
+                nirVersionHeader.appendChild(sendButton);
+                nirVersionHeader.appendChild(downloadButton);
+                nirVersionHeader.appendChild(deleteButton);
+                nirVersion.appendChild(nirVersionHeader);
+
+                document.getElementById('student-vkr-otchet-version-div').appendChild(nirVersion);
+            }
+        }
+    }
+
     function getExamples() {
         axios({
             url: apiURL + '/document/view/templates/student',
@@ -1308,23 +1526,44 @@ export default function StudentTasksPage() {
         var formData = new FormData();
         formData.append('taskType', type);
         formData.append('studentTheme', studentTheme);
-        formData.append('toExplore', toExplore);
-        formData.append('toCreate', toCreate);
-        formData.append('toFamiliarize', toFamiliarize);
-        formData.append('additionalTask', additionalTask);
-        axios({
-            url: apiURL + '/student/document/management/task/nir/create',
-            method: 'POST',
-            data: formData,
-            headers: {
-                'Authorization': 'Bearer ' + authTokens.accessToken
-            },
-        }).then((response) => {
-            window.location.reload();
-            //console.log(response);
-        }).catch(result => {
-            console.log(result);
-        });
+        switch (type) {
+            case 'ВКР':
+                formData.append('vkrAim', vkrAims);
+                formData.append('vkrTasks', vkrTasks);
+                formData.append('vkrDocs', vkrDocs);
+                axios({
+                    url: apiURL + '/student/document/management/task/vkr/create',
+                    method: 'POST',
+                    data: formData,
+                    headers: {
+                        'Authorization': 'Bearer ' + authTokens.accessToken
+                    },
+                }).then((response) => {
+                    window.location.reload();
+                    //console.log(response);
+                }).catch(result => {
+                    console.log(result);
+                });
+                break;
+            default:
+                formData.append('toExplore', toExplore);
+                formData.append('toCreate', toCreate);
+                formData.append('toFamiliarize', toFamiliarize);
+                formData.append('additionalTask', additionalTask);
+                axios({
+                    url: apiURL + '/student/document/management/task/nir/create',
+                    method: 'POST',
+                    data: formData,
+                    headers: {
+                        'Authorization': 'Bearer ' + authTokens.accessToken
+                    },
+                }).then((response) => {
+                    window.location.reload();
+                    //console.log(response);
+                }).catch(result => {
+                    console.log(result);
+                });
+        }
     }
 
     function makeOtchetVersion(file, type) {
@@ -1345,6 +1584,8 @@ export default function StudentTasksPage() {
             case 'Преддипломная практика':
                 formData.append('detailedContent', detailedDescriptionPP);
                 formData.append('advisorConclusion', conclusionPP);
+                break;
+            case 'ВКР':
                 break;
             default:
                 console.log('Неопознанный тип отчета')
@@ -1498,50 +1739,6 @@ export default function StudentTasksPage() {
                 console.log(result.data);
             });
         });
-
-
-        // TODO
-        // Просмотреть версию задания НИР
-        $('.nir-version-view-button').off().on('click', function () {
-
-            console.log('view');
-
-            var versionId = $(this).parent().parent().attr('id');
-            var arrayID = versionId.split('-')[2];
-            axios({
-                url: apiURL + '/document/download/version',
-                method: 'GET',
-                responseType: 'blob',
-                params: {
-                    versionID: nirVersions[arrayID].systemVersionID,
-                },
-                headers: {
-                    'Authorization': 'Bearer ' + authTokens.accessToken
-                },
-            }).then((response) => {
-                //const url = window.URL.createObjectURL(new Blob([response.data] ));
-                const url = window.URL.createObjectURL(new Blob([response.data], { type: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document' }));
-
-                const link = document.createElement('a');
-                link.href = url;
-                link.setAttribute('download', 'Задание на НИР.docx');
-
-                console.log(response);
-                console.log(url);
-                console.log(link);
-
-                //window.open(url, '_blank');
-                //var win = window.open();
-                //win.document.write('<iframe src="https://docs.google.com/viewer?url=' + url + '&embedded=true" frameborder="0" style="border:0; top:0px; left:0px; bottom:0px; right:0px; width:100%; height:100%;" allowfullscreen></iframe>');
-
-                //document.body.appendChild(link);
-                //link.click();
-
-            }).catch(result => {
-                console.log(result.data);
-            });
-        });
-
 
         // Создать версию отчёта по НИР
         $('#make-nir-otchet-button').off().on('click', function () {
@@ -1929,46 +2126,46 @@ export default function StudentTasksPage() {
             });
         });
 
-        // TODO
-
-        // Создать версию отзыва научного руководителя
-        $('#make-vkr-review-button').off().on('click', function () {
-            $('#vkr-review-file-input').trigger('click');
+        // Создание новой версии задания ВКР
+        $('#make-vkr-task-button').off().on('click', function () {
+            makeTaskVersion('ВКР');
         });
 
-        // Послать версию отзыва научного руководителя
-        $('.vkr-review-version-send-button').off().on('click', function () {
+        // Послать версию задания ВКР науч руку
+        $('.vkr-version-send-button').off().on('click', function () {
             //console.log('sent');
             var versionId = $(this).parent().parent().attr('id');
             var arrayID = versionId.split('-')[2];
-            //console.log(arrayID);
+            console.log(arrayID);
             axios({
                 url: apiURL + '/student/document/management/task/nir/send',
                 method: 'POST',
                 params: {
                     'newStatus': 'Рассматривается',
-                    'versionID': PPData[arrayID].systemVersionID,
+                    'versionID': vkrTaskVersions[arrayID].systemVersionID,
                 },
                 headers: {
                     'Authorization': 'Bearer ' + authTokens.accessToken
                 },
             }).then((response) => {
+                console.log(response);
                 window.location.reload(true);
             }).catch(result => {
                 console.log(result.data);
             });
         });
 
-        // Скачать версию отзыва научного руководителя
-        $('.vkr-review-version-download-button').off().on('click', function () {
+        // Скачать задание ВКР
+        $('.vkr-version-download-button').off().on('click', function () {
             var versionId = $(this).parent().parent().attr('id');
             var arrayID = versionId.split('-')[2];
+            console.log(vkrTaskVersions[arrayID]);
             axios({
                 url: apiURL + '/document/download/version',
                 method: 'GET',
                 responseType: 'blob',
                 params: {
-                    versionID: PPData[arrayID].systemVersionID,
+                    versionID: vkrTaskVersions[arrayID].systemVersionID,
                 },
                 headers: {
                     'Authorization': 'Bearer ' + authTokens.accessToken
@@ -1977,7 +2174,7 @@ export default function StudentTasksPage() {
                 const url = window.URL.createObjectURL(new Blob([response.data]));
                 const link = document.createElement('a');
                 link.href = url;
-                link.setAttribute('download', 'Задание на ПП.docx');
+                link.setAttribute('download', 'Задание на ВКР.docx');
                 document.body.appendChild(link);
                 link.click();
 
@@ -1986,8 +2183,8 @@ export default function StudentTasksPage() {
             });
         });
 
-        // Удалить версию отзыва научного руководителя
-        $('.vkr-review-version-delete-button').off().on('click', function () {
+        // Удалить версию задания ВКР
+        $('.vkr-version-delete-button').off().on('click', function () {
             var versionId = $(this).parent().parent().attr('id');
             var arrayID = versionId.split('-')[2];
             console.log(arrayID);
@@ -1995,7 +2192,7 @@ export default function StudentTasksPage() {
                 url: apiURL + '/student/document/task/version/delete',
                 method: 'DELETE',
                 params: {
-                    versionID: PPData[arrayID].systemVersionID,
+                    versionID: vkrTaskVersions[arrayID].systemVersionID,
                 },
                 headers: {
                     'Authorization': 'Bearer ' + authTokens.accessToken
@@ -2007,25 +2204,102 @@ export default function StudentTasksPage() {
             });
         });
 
-        // Создать версию отчёта по НИР
-        $('#make-nir-otchet-button').off().on('click', function () {
-            $('#nir-otchet-file-input').trigger('click');
+        // Создать версию отчёта по ВКР
+        $('#make-vkr-otchet-button').off().on('click', function () {
+            $('#vkr-otchet-file-input').trigger('click');
+        });
+
+        // Отправить отчёт ВКР науч руку
+        $('.vkr-otchet-send-button').off().on('click', function () {
+            var versionId = $(this).parent().parent().attr('id');
+            var arrayID = versionId.split('-')[3];
+            axios({
+                url: apiURL + '/student/document/management/report/nir/send',
+                method: 'POST',
+                params: {
+                    'newStatus': 'Рассматривается',
+                    'versionID': vkrOtchetVersions[arrayID].systemVersionID,
+                },
+                headers: {
+                    'Authorization': 'Bearer ' + authTokens.accessToken
+                },
+            }).then((response) => {
+                //console.log(response);
+                window.location.reload(true);
+            }).catch(result => {
+                console.log(result);
+            });
+        });
+
+        // Скачать отчёт ВКР
+        $('.vkr-otchet-download-button').off().on('click', function () {
+            var versionId = $(this).parent().parent().attr('id');
+            console.log($(this).parent().parent());
+            var arrayID = versionId.split('-')[3];
+
+            axios({
+                url: apiURL + '/student/document/download/report',
+                method: 'GET',
+                responseType: 'blob',
+                params: {
+                    'type': 'ВКР',
+                    'reportVersion': vkrOtchetVersions[arrayID].systemVersionID,
+                },
+                headers: {
+                    'Authorization': 'Bearer ' + authTokens.accessToken
+                },
+            }).then((response) => {
+                const url = window.URL.createObjectURL(new Blob([response.data]));
+                const link = document.createElement('a');
+                link.href = url;
+                link.setAttribute('download', 'РПЗ.docx');
+                document.body.appendChild(link);
+                link.click();
+
+            }).catch(result => {
+                console.log(result.data);
+            });
+        });
+
+        // Удалить отчёт ВКР
+        $('.vkr-otchet-delete-button').off().on('click', function () {
+            console.log('delete otchet');
+            var versionId = $(this).parent().parent().attr('id');
+            var arrayID = versionId.split('-')[3];
+            axios({
+                url: apiURL + '/student/document/report/version/delete',
+                method: 'DELETE',
+                params: {
+                    versionID: vkrOtchetVersions[arrayID].systemVersionID,
+                },
+                headers: {
+                    'Authorization': 'Bearer ' + authTokens.accessToken
+                },
+            }).then((response) => {
+                window.location.reload(true);
+            }).catch(result => {
+                console.log(result);
+            });
         });
 
 
+        // TODO
+
         // Создать версию отзыва научного руководителя
+        $('#make-vkr-review-button').off().on('click', function () {
+            $('#vkr-review-file-input').trigger('click');
+        });
+
+        // Создать версию допуска
         $('#make-vkr-dopusk-button').off().on('click', function () {
             $('#vkr-dopusk-file-input').trigger('click');
         });
 
+
+
         // Создать версию презентации
         $('#make-vkr-presentation-button').off().on('click', function () {
             $('#vkr-presentation-file-input').trigger('click');
-        });
-
-        // Создать версию HGP
-        $('#make-vkr-rpz-button').off().on('click', function () {
-            $('#vkr-rpz-file-input').trigger('click');
         });
 
         // TODO
@@ -2054,7 +2328,7 @@ export default function StudentTasksPage() {
             setAdditionalTask(longPPData[arrayID].additionalTask);
         });
 
-        // Функция кнопки "перенести в меню" для задания ПП...
+        // Функция кнопки "перенести в меню" для задания ПП
         $('.pp-copy').off().on('click', function () {
             var versionId = $(this).parent().parent().parent().parent().attr('id');
             var arrayID = versionId.split('-')[2];
@@ -2064,6 +2338,17 @@ export default function StudentTasksPage() {
             setToCreate(PPData[arrayID].toCreate);
             setToFamiliarize(PPData[arrayID].toFamiliarize);
             setAdditionalTask(PPData[arrayID].additionalTask);
+        });
+
+        // Функция кнопки "перенести в меню" для задания ВКР
+        $('.vkr-copy').off().on('click', function () {
+            var versionId = $(this).parent().parent().attr('id');
+            var arrayID = versionId.split('-')[2];
+
+            setStudentTheme(vkrTaskVersions[arrayID].theme);
+            setVkrDocs(vkrTaskVersions[arrayID].vkrDocs);
+            setVkrAims(vkrTaskVersions[arrayID].vkrAim);
+            setVkrTasks(vkrTaskVersions[arrayID].vkrTasks);
         });
 
         // Функция кнопки "перенести в меню" для отчета НИР
@@ -2561,7 +2846,7 @@ export default function StudentTasksPage() {
                                         <input id='vkr-review-file-input' type='file' style={{ display: 'none' }} onChange={(e) => {
                                             if (e.target.files.length !== 0) {
 
-                                                uploadDocument(e.target.files[0], 'ВКР', 'Отзыв');
+                                                //uploadDocument(e.target.files[0], 'ВКР', 'Отзыв');
                                             }
                                         }} ></input>
 
@@ -2589,7 +2874,7 @@ export default function StudentTasksPage() {
                                     <input id='vkr-dopusk-file-input' type='file' style={{ display: 'none' }} onChange={(e) => {
                                         if (e.target.files.length !== 0) {
 
-                                            uploadDocument(e.target.files[0], 'ВКР', 'Допуск');
+                                            //uploadDocument(e.target.files[0], 'ВКР', 'Допуск');
                                         }
                                     }} ></input>
                                 </div>
@@ -2608,17 +2893,30 @@ export default function StudentTasksPage() {
 
                                 <div className='info-sub-tab-div'>
 
+                                    <div className='info-row'>
+                                        <div className='info-column'>
+                                            <Form.Label column className="size-21 dark info-input-label">Тема:</Form.Label>
+                                            <textarea maxLength='1024' value={studentTheme} onChange={(e) => { setStudentTheme(e.target.value); }} className='dark size-24 info-input-area' />
+
+                                            <Form.Label column className="size-21 dark info-input-label">Цель:</Form.Label>
+                                            <textarea maxLength='2048' value={vkrAims} onChange={(e) => { setVkrAims(e.target.value); }} className='dark size-24 info-input-area' />
+
+                                        </div>
+
+                                        <div className='info-column'>
+                                            <Form.Label column className="size-21 dark info-input-label">Задачи:</Form.Label>
+                                            <textarea maxLength='2048' value={vkrTasks} onChange={(e) => { setVkrTasks(e.target.value); }} className='dark size-24 info-input-area' />
+
+                                            <Form.Label column className="size-21 dark info-input-label">Разрабатываемые документы:</Form.Label>
+                                            <textarea maxLength='2048' value={vkrDocs} onChange={(e) => { setVkrDocs(e.target.value); }} className='dark size-24 info-input-area' />
+
+                                        </div>
+                                    </div>
 
                                     <button type='button' id='make-vkr-task-button' className='size-30 light dark-background info-button-1' style={{ height: '100px', width: '670px', marginLeft: '410px' }}>
                                         <Image src={iconDocument} thumbnail className='dark-background thumbnail-icon' style={{ position: 'relative', top: '-25px' }} />
-                                        <div style={{ display: 'inline-block' }}><p style={{ marginBottom: '0px' }}>Сформировать и загрузить новую версию<br />задания ВКР</p></div>
+                                        <div style={{ display: 'inline-block' }}><p style={{ marginBottom: '0px' }}>Создать новую версию<br />задания на ВКР</p></div>
                                     </button>
-                                    <input id='vkr-ефыл-file-input' type='file' style={{ display: 'none' }} onChange={(e) => {
-                                        if (e.target.files.length !== 0) {
-
-                                            //uploadDocument(e.target.files[0], 'ВКР', 'Допуск');
-                                        }
-                                    }} ></input>
 
                                 </div>
                             </Tab>
@@ -2632,19 +2930,19 @@ export default function StudentTasksPage() {
 
                                 <p className='size-30 dark info-sub-tab-title'>РПЗ</p>
 
-                                <div id='student-vkr-rpz-version-div' className='student-nir-task-version-div light-background'></div>
+                                <div id='student-vkr-otchet-version-div' className='student-nir-task-version-div light-background'></div>
 
                                 <div className='info-sub-tab-div'>
 
 
-                                    <button type='button' id='make-vkr-rpz-button' className='size-30 light dark-background info-button-1' style={{ height: '100px', width: '480px', marginLeft: '505px' }}>
+                                    <button type='button' id='make-vkr-otchet-button' className='size-30 light dark-background info-button-1' style={{ height: '100px', width: '480px', marginLeft: '505px' }}>
                                         <Image src={iconDocument} thumbnail className='dark-background thumbnail-icon' style={{ position: 'relative', top: '-25px' }} />
                                         <div style={{ display: 'inline-block' }}><p style={{ marginBottom: '0px' }}>Сформировать и загрузить<br />новую версию РПЗ</p></div>
                                     </button>
-                                    <input id='vkr-rpz-file-input' type='file' style={{ display: 'none' }} onChange={(e) => {
+                                    <input id='vkr-otchet-file-input' type='file' style={{ display: 'none' }} onChange={(e) => {
                                         if (e.target.files.length !== 0) {
 
-                                            //makeOtchetVersion(e.target.files[0], 'Преддипломная практика');
+                                            makeOtchetVersion(e.target.files[0], 'ВКР');
                                         }
                                     }} ></input>
                                 </div>
@@ -2670,7 +2968,7 @@ export default function StudentTasksPage() {
                                     <input id='vkr-antiplagiat-file-input' type='file' style={{ display: 'none' }} onChange={(e) => {
                                         if (e.target.files.length !== 0) {
 
-                                            uploadDocument(e.target.files[0], 'ВКР', 'Антиплагиат');
+                                            //uploadDocument(e.target.files[0], 'ВКР', 'Антиплагиат');
                                         }
                                     }} ></input>
                                 </div>
@@ -2696,7 +2994,7 @@ export default function StudentTasksPage() {
                                     <input id='vkr-presentation-file-input' type='file' style={{ display: 'none' }} onChange={(e) => {
                                         if (e.target.files.length !== 0) {
 
-                                            uploadDocument(e.target.files[0], 'ВКР', 'Презентация');
+                                            //uploadDocument(e.target.files[0], 'ВКР', 'Презентация');
                                         }
                                     }} ></input>
                                 </div>

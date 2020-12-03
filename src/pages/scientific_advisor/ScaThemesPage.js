@@ -101,7 +101,7 @@ export default function StudentThemePage() {
             var unconfirmButton = document.createElement('button');
             //studentButton.style.minWidth = '100px';
             unconfirmButton.className = 'sca-projects-table-button unconfirm-button';
-            unconfirmButton.innerText = 'Разрешить изменять';
+            unconfirmButton.innerText = 'Разрешить изменять тему';
             unconfirmButton.id = 'unconfirm-button-' + i;
 
             var studentStatus = document.createElement('th');

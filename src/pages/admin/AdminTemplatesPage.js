@@ -219,6 +219,8 @@ export default function AdminTemplatesPage() {
         $('.hoc-order-template-delete-button').off().on('click', function () {
             var systemDocumentId = $(this).parent().attr('id');
             var arrayId = systemDocumentId.split('-')[4];
+            console.log(arrayId);
+            console.log(templates[arrayId]);
             axios({
                 url: apiURL + '/scientific_advisor/document/delete/',
                 method: 'DELETE',
@@ -229,6 +231,7 @@ export default function AdminTemplatesPage() {
                     'Authorization': 'Bearer ' + authTokens.accessToken
                 },
             }).then((response) => {
+                console.log(response);
                 window.location.reload(true);
             }).catch(result => {
                 console.log(result.data);
