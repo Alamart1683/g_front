@@ -56,10 +56,10 @@ export default function StudentThemePage() {
     return(
         <div>
             <div className='ordersPanel'>
-                <div id="orderContentPanel1" className="contentPanel" style={{ height: '450px'}}>
+                <div id="orderContentPanel1" className="contentPanel" style={{ minHeight: '450px'}}>
                     <p style={{ marginLeft: '600px' }} className='dark size-72'>Тема ВКР</p>
                     
-                    <textarea style={{ marginLeft: '90px', height: '60px', textAlign: 'center', width:'1300px' }} maxLength='90' id='theme' type='text' value={theme} onChange={(e) => {
+                    <textarea style={{ marginLeft: '90px', height: '120px', textAlign: 'center', width:'1300px', maxHeight:'300px' }} maxLength='1023' id='theme' type='text' value={theme} onChange={(e) => {
                         setTheme(e.target.value);
                         if ($('#theme').val() !== '' &&  document.getElementById('error-message').style.visibility != 'visible') {
                             document.getElementById('change-theme-button').disabled = false;

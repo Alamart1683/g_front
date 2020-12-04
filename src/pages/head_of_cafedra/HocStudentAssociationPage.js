@@ -228,6 +228,7 @@ export default function HocStudentAssociationPage() {
                 },
             }).then((response) => {
                 $(this).parent().find('.student-status')[0].innerText = 'Подтвержден';
+                $(this).parent().find('.hoc-confirm-student-button')[0].disabled = true;
                 studentData[stidentId].studentIsConfirmed = true;
                 //window.location.reload(true);
             }).catch(result => {

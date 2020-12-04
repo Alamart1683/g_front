@@ -24,6 +24,7 @@ export default function StudentTasksPage() {
     const [fetchedData, setFetchedData] = useState(false);
 
     const [studentData, setStudentData] = useState('');
+    const [themeConfirmed, setThemeConfirmed] = useState('');
 
     // Образцы
     const [examples, setExamples] = useState([]);
@@ -180,17 +181,14 @@ export default function StudentTasksPage() {
         var student = document.createElement('tr');
         student.className = 'size-20 dark';
 
-        // Имя студента
-        var studentFio = document.createElement('th');
-
         // Тема студента
         var studentTheme = document.createElement('th');
         studentTheme.innerText = item.studentVkrTheme;
         if (item.studentVkrThemeEditable) {
-            studentTheme.innerText += ' - Не одобрено';
+            setThemeConfirmed('Не одобрена');
         }
         else {
-            studentTheme.innerText += ' - Одобрено';
+            setThemeConfirmed('Одобрена');
         }
         studentTheme.style.overflow = 'hidden';
         studentTheme.style.textOverflow = 'ellipsis';
@@ -1965,6 +1963,9 @@ export default function StudentTasksPage() {
     }
 
     $(function () {
+        $('.sci-table-checkbox').off().on('click', function(e) {
+            e.preventDefault();
+        });
 
         // Показ полей версии
         $(document).off().on('click', '.nir-version-clickable', function (event) {
@@ -3074,7 +3075,7 @@ export default function StudentTasksPage() {
                     <Table striped bordered hover style={{ width: '1490px', marginLeft: 'auto', marginRight: 'auto' }}>
                         <thead className='size-24 dark'>
                             <tr>
-                                <th>Тема</th>
+                                <th>Тема - {themeConfirmed}</th>
                                 <th style={{ minWidth: '203px' }}>НИР</th>
                                 <th style={{ minWidth: '278px' }}>ПпППУиОПД</th>
                                 <th style={{ minWidth: '193px' }}>ПП</th>

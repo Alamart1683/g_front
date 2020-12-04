@@ -289,6 +289,9 @@ export default function SciAdvisorStudentsDocsPage() {
                 case 'Преддипломная практика':
                     link.setAttribute('download', 'Задание на ПП.docx');
                     break;
+                case 'ВКР':
+                    link.setAttribute('download', 'Задание на ВКР.docx');
+                    break;
                 default:
                     link.setAttribute('download', 'Неопознанный документ.docx');
             }
@@ -326,6 +329,9 @@ export default function SciAdvisorStudentsDocsPage() {
                     break;
                 case 'Преддипломная практика':
                     link.setAttribute('download', 'Отчёт по ПП.docx');
+                    break;
+                case 'ВКР':
+                    link.setAttribute('download', 'Отчёт по ВКР.docx');
                     break;
                 default:
                     link.setAttribute('download', 'Неопознанный документ.docx');
@@ -418,8 +424,6 @@ export default function SciAdvisorStudentsDocsPage() {
         });
     }
 
-    // TODO add more version names
-    // TODO handle other stage documents
     // Получение ид версии документа
     function getVersionId(arrayId1, arrayId2) {
         var documentType = documentData[arrayId1].documentType;
@@ -458,14 +462,93 @@ export default function SciAdvisorStudentsDocsPage() {
                 }
             case 'ВКР':
                 switch (documentKind) {
+                    case 'Задание':
+                        return documentData[arrayId1].taskVersions[arrayId2].systemVersionID;
+                    case 'Отчёт':
+                        return documentData[arrayId1].reportVersions[arrayId2].systemVersionID;
                     default:
-                        console.log('getting vkr version id error');
-                        return -1;
+                        return documentData[arrayId1].vkrStuffVersionViews[arrayId2].systemVersionID;
                 }
             default:
                 console.log('getting version id error');
                 return -1;
         }
+    }
+
+    function gradeVkrStuff(versionId, status) {
+        axios({
+            url: apiURL + '/scientific_advisor/document/management/vkr/stuff/check',
+            method: 'POST',
+            params: {
+                'versionID': versionId,
+                'newStatus': status,
+            },
+            headers: {
+                'Authorization': 'Bearer ' + authTokens.accessToken
+            },
+        }).then((response) => {
+            console.log(response)
+            //window.location.reload(true);
+        }).catch(result => {
+            console.log(result);
+        });
+    }
+
+    function deleteVkrStuff(studentId, versionId) {
+        axios({
+            url: apiURL + '/scientific_advisor/document/vkr/stuff/version/delete',
+            method: 'DELETE',
+            params: {
+                'versionID': versionId,
+                'studentID': studentId,
+            },
+            headers: {
+                'Authorization': 'Bearer ' + authTokens.accessToken
+            },
+        }).then((response) => {
+            //console.log(response);
+            window.location.reload(true);
+        }).catch(result => {
+            console.log(result.data);
+        });
+    }
+
+    function downloadVkrStuff(versionId, kind) {
+        axios({
+            url: apiURL + '/document/download/version',
+            method: 'GET',
+            responseType: 'blob',
+            params: {
+                versionID: versionId,
+            },
+            headers: {
+                'Authorization': 'Bearer ' + authTokens.accessToken
+            },
+        }).then((response) => {
+            const url = window.URL.createObjectURL(new Blob([response.data]));
+            const link = document.createElement('a');
+            link.href = url;
+            switch (kind) {
+                case 'Допуск':
+                    link.setAttribute('download', 'Допуск к ВКР.docx');
+                    break;
+                case 'Отзыв':
+                    link.setAttribute('download', 'Отзыв научного руководителя.docx');
+                    break;
+                case 'Антиплагиат':
+                    link.setAttribute('download', 'Отчёт по антиплагиату.docx');
+                    break;
+                case 'Презентация':
+                    link.setAttribute('download', 'Презентация по ВКР.pptx');
+                    break;
+                default:
+                    link.setAttribute('download', 'Неопознанный документ.docx');
+            }
+            document.body.appendChild(link);
+            link.click();
+        }).catch(result => {
+            console.log(result.data);
+        });
     }
 
     $(function () {
@@ -474,46 +557,72 @@ export default function SciAdvisorStudentsDocsPage() {
             $(this).parent().find('.sca-scu-version-status-dropdown-content').toggle();
         });
 
-        // TODO handle new document types
         // Отправить со статусом "Одобрено"
         $('.status-odobreno').off().on('click', function (event) {
             var documentId = $(this).parent().parent().parent().parent().attr('id');
             var arrayID1 = documentId.split('-')[1];
             var arrayID2 = documentId.split('-')[2];
             var versionId = getVersionId(arrayID1, arrayID2);
-            switch (documentData[arrayID1].documentKind) {
-                case 'Задание':
-                    gradeTask(versionId, 'Одобрено');
-                    break;
-                case 'Отчёт':
-                    gradeReport(versionId, 'Одобрено');
+            switch (documentData[arrayID1].documentType) {
+                case 'ВКР':
+                    switch (documentData[arrayID1].documentKind) {
+                        case 'Задание':
+                            gradeTask(versionId, 'Одобрено');
+                            break;
+                        case 'Отчёт':
+                            gradeReport(versionId, 'Одобрено');
+                            break;
+                        default:
+                            gradeVkrStuff(versionId, 'Одобрено');
+                    }
                     break;
                 default:
-                    console.log('deleteError');
+                    switch (documentData[arrayID1].documentKind) {
+                        case 'Задание':
+                            gradeTask(versionId, 'Одобрено');
+                            break;
+                        case 'Отчёт':
+                            gradeReport(versionId, 'Одобрено');
+                            break;
+                        default:
+                            console.log('gradeError');
+                    }
             }
         });
 
-        // TODO versionId
         // Отправить со статусом "Замечания"
         $('.status-zamechaniya').off().on('click', function (event) {
             var documentId = $(this).parent().parent().parent().parent().attr('id');
             var arrayID1 = documentId.split('-')[1];
             var arrayID2 = documentId.split('-')[2];
             var versionId = getVersionId(arrayID1, arrayID2);
-            switch (documentData[arrayID1].documentKind) {
-                case 'Задание':
-                    gradeTask(versionId, 'Замечания');
-                    break;
-                case 'Отчёт':
-                    gradeReport(versionId, 'Замечания');
+            switch (documentData[arrayID1].documentType) {
+                case 'ВКР':
+                    switch (documentData[arrayID1].documentKind) {
+                        case 'Задание':
+                            gradeTask(versionId, 'Замечания');
+                            break;
+                        case 'Отчёт':
+                            gradeReport(versionId, 'Замечания');
+                            break;
+                        default:
+                            gradeVkrStuff(versionId, 'Замечания');
+                    }
                     break;
                 default:
-                    console.log('deleteError');
+                    switch (documentData[arrayID1].documentKind) {
+                        case 'Задание':
+                            gradeTask(versionId, 'Замечания');
+                            break;
+                        case 'Отчёт':
+                            gradeReport(versionId, 'Замечания');
+                            break;
+                        default:
+                            console.log('gradeError');
+                    }
             }
-
         });
 
-        // TODO handle new document types
         // Удалить версию
         $('.version-delete-button').off().on('click', function (event) {
             var documentId = $(this).parent().parent().attr('id');
@@ -521,15 +630,31 @@ export default function SciAdvisorStudentsDocsPage() {
             var arrayID2 = documentId.split('-')[2];
             var versionId = getVersionId(arrayID1, arrayID2);
             var studentId = documentData[arrayID1].systemCreatorID;
-            switch (documentData[arrayID1].documentKind) {
-                case 'Задание':
-                    deleteTask(studentId, versionId);
-                    break;
-                case 'Отчёт':
-                    deleteReport(studentId, versionId);
+
+            switch (documentData[arrayID1].documentType) {
+                case 'ВКР':
+                    switch (documentData[arrayID1].documentKind) {
+                        case 'Задание':
+                            deleteTask(studentId, versionId);
+                            break;
+                        case 'Отчёт':
+                            deleteReport(studentId, versionId);
+                            break;
+                        default:
+                            deleteVkrStuff(studentId, versionId);
+                    }
                     break;
                 default:
-                    console.log('deleteError');
+                    switch (documentData[arrayID1].documentKind) {
+                        case 'Задание':
+                            deleteTask(studentId, versionId);
+                            break;
+                        case 'Отчёт':
+                            deleteReport(studentId, versionId);;
+                            break;
+                        default:
+                            console.log('gradeError');
+                    }
             }
 
         });
@@ -587,8 +712,16 @@ export default function SciAdvisorStudentsDocsPage() {
                     break;
                 case 'ВКР':
                     switch (documentData[arrayID1].documentKind) {
+                        case 'Задание':
+                            //console.log(versionId);
+                            downloadTask(versionId, 'ВКР');
+                            break;
+                        case 'Отчёт':
+                            //console.log(versionId);
+                            downloadReport(versionId, studentId, 'ВКР');
+                            break;
                         default:
-                            console.log('downloadError');
+                            downloadVkrStuff(versionId, documentData[arrayID1].documentKind);
                     }
                     break;
                 default:

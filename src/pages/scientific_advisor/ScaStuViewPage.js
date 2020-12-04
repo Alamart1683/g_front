@@ -2819,7 +2819,7 @@ export default function ScaStuViewPage() {
         $('.vkr-review-delete-button').off().on('click', function (event) {
             var versionId = $(this).parent().parent().attr('id');
             var arrayID = versionId.split('-')[3];
-            console.log(arrayID);
+            //console.log(arrayID);
             axios({
                 url: apiURL + '/scientific_advisor/document/vkr/stuff/version/delete',
                 method: 'DELETE',

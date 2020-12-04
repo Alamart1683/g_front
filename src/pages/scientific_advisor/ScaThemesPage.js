@@ -80,7 +80,7 @@ export default function StudentThemePage() {
            var studentInput = document.createElement('textarea');
            studentInput.className = 'sca-student-theme-area dark';
            studentInput.value = item.studentVkrTheme;
-           studentInput.maxLength = '99';
+           studentInput.maxLength = '1023';
            studentInput.id = 'student-input-'+i;
 
             var changeButtonTh = document.createElement('th');
