@@ -403,6 +403,10 @@ html, body {
     box-shadow: none !important;
 }
 
+.info-button-1:disabled, .info-button-1:disabled .img-thumbnail {
+    background-color: #859dbb;
+}
+
 .info-button-inline-block {
 	display: inline-block;
 	padding: 2px 4px;
