@@ -487,8 +487,8 @@ export default function SciAdvisorStudentsDocsPage() {
                 'Authorization': 'Bearer ' + authTokens.accessToken
             },
         }).then((response) => {
-            console.log(response)
-            //window.location.reload(true);
+            //console.log(response)
+            window.location.reload(true);
         }).catch(result => {
             console.log(result);
         });
