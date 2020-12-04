@@ -205,7 +205,7 @@ export default function ScaExamplesPage() {
         }
         formData.append('file', file);
         axios({
-            url: apiURL + '/scientific_advisor/document/upload',
+            url: apiURL + '/document/upload',
             method: 'POST',
             data: formData,
             headers: {

@@ -54,6 +54,18 @@ export default function ScaStuViewPage() {
     // ВКР - РПЗ
     const [vkrOtchetVersions, setVkrOtchetVersions] = useState([]);
 
+    // ВКР - отзыв научного руководителя
+    const [vkrReviewVersions, setVkrReviewVersions] = useState([]);
+
+    // ВКР - допуск
+    const [vkrDopuskVersions, setVkrDopuskVersions] = useState([]);
+
+    // ВКР - антиплагиат
+    const [vkrAntiplagiatVersions, setAntiplagiatVersions] = useState([]);
+
+    // ВКР - презентация
+    const [vkrPrezentationVersions, setPrezentationVersions] = useState([]);
+
     if (!fetchedData) {
         setFetchedData(true);
         getStudentTaskVersions('Научно-исследовательская работа');
@@ -62,9 +74,13 @@ export default function ScaStuViewPage() {
         getOtchetVersions('Практика по получению знаний и умений');
         getStudentTaskVersions('Преддипломная практика');
         getOtchetVersions('Преддипломная практика');
-
         getStudentTaskVersions('ВКР');
         getOtchetVersions('ВКР');
+
+        getVkrStuff('Допуск');
+        getVkrStuff('Отзыв');
+        getVkrStuff('Антиплагиат');
+        getVkrStuff('Презентация');
 
         setStudentData(JSON.parse(sessionStorage.getItem('student')));
     }
@@ -96,10 +112,26 @@ export default function ScaStuViewPage() {
     useEffect(() => {
         showPPOtchetVersions(PPOtchetVersions);
     }, [PPOtchetVersions]);
-    
+
     useEffect(() => {
         showVkrOtchetVersions(vkrOtchetVersions);
     }, [vkrOtchetVersions]);
+
+    useEffect(() => {
+        showVkrDopuskVersions(vkrDopuskVersions);
+    }, [vkrDopuskVersions]);
+
+    useEffect(() => {
+        showVkrReviewVersions(vkrReviewVersions);
+    }, [vkrReviewVersions]);
+
+    useEffect(() => {
+        showVkrAntiplagiatVersions(vkrAntiplagiatVersions);
+    }, [vkrAntiplagiatVersions]);
+
+    useEffect(() => {
+        showVkrPresentationVersions(vkrPrezentationVersions);
+    }, [vkrPrezentationVersions]);
 
     useEffect(() => {
         showStudent(studentData, 0);
@@ -473,6 +505,375 @@ export default function ScaStuViewPage() {
         }).catch(result => {
             console.log(result.data);
         });
+    }
+
+    function getVkrStuff(stuffKind) {
+        axios({
+            url: apiURL + '/scientific_advisor/document/vkr/stuff/view',
+            method: 'GET',
+            params: {
+                'stuffKind': stuffKind,
+                'studentID': sessionStorage.getItem('viewedStudentId'),
+            },
+            headers: {
+                'Authorization': 'Bearer ' + authTokens.accessToken
+            },
+        }).then((response) => {
+            switch (stuffKind) {
+                case 'Допуск':
+                    //console.log('Допуск');
+                    //console.log(response);
+                    setVkrDopuskVersions(response.data);
+                    break;
+                case 'Отзыв':
+                    //console.log('Отзыв');
+                    //console.log(response);
+                    setVkrReviewVersions(response.data);
+                    break;
+                case 'Антиплагиат':
+                    //console.log('Антиплагиат');
+                    //console.log(response);
+                    setAntiplagiatVersions(response.data);
+                    break;
+                case 'Презентация':
+                    //console.log('Презентация');
+                    //console.log(response);
+                    setPrezentationVersions(response.data);
+                    break;
+                default:
+                    console.log(response);
+            }
+        }).catch(result => {
+            console.log(result.data);
+        });
+    }
+
+    // Показать допуск ВКР
+    function showVkrDopuskVersions(nirOtchetVersionArray) {
+        for (var i = 0; i < nirOtchetVersionArray.length; i++) {
+            var item = nirOtchetVersionArray[i];
+            //console.log(item);
+
+            var nirVersion = document.createElement('div');
+            nirVersion.className = 'nir-version light-background';
+            nirVersion.id = 'vkr-dopusk-version-' + i;
+
+            var nirVersionHeader = document.createElement('div');
+            nirVersionHeader.className = 'nir-version-header dark-background';
+
+            // Имя версии
+            var versionName = document.createElement('p');
+            versionName.className = 'light size-24 nir-header-text';
+            versionName.innerText = 'Версия: ' + item.versionEditionDate;
+
+            // Статус версии
+            var versionStatus = document.createElement('p');
+            versionStatus.className = 'light size-24 nir-header-text';
+            versionStatus.innerText = 'Статус: ' + item.documentStatus;
+
+            // Кнопка отправить науч руку
+            var sendButton = document.createElement('button');
+            sendButton.className = 'dark size-24 nir-version-header-button nir-version-send-button';
+            sendButton.innerText = 'Отправить студенту:';
+            sendButton.type = 'button';
+            if (item.documentStatus === 'Одобрено' || item.documentStatus === 'Замечания') {
+                sendButton.disabled = true;
+            }
+
+            var dropdownDiv = document.createElement('div');
+            dropdownDiv.className = 'sci-advisor-status-dropdown-div';
+
+            var dropdownContent = document.createElement('div');
+            dropdownContent.className = 'sci-advisor-status-dropdown-content';
+
+            var statusOdobreno = document.createElement('p');
+            statusOdobreno.className = 'dark size-18 vkr-dopusk-status-odobreno';
+            statusOdobreno.innerText = 'Одобрено';
+
+            var statusZamechaniya = document.createElement('p');
+            statusZamechaniya.className = 'dark size-18 vkr-dopusk-status-zamechaniya';
+            statusZamechaniya.innerText = 'Замечания';
+
+            // Кнопка скачать отчёт
+            var downloadButton = document.createElement('button');
+            downloadButton.className = 'dark size-24 nir-version-header-button vkr-dopusk-download-button';
+            downloadButton.innerText = 'Сохранить документ';
+            downloadButton.type = 'button';
+
+            // Кнопка удалить
+            var deleteButton = document.createElement('button');
+            deleteButton.className = 'dark size-24 nir-version-header-button vkr-dopusk-delete-button';
+            deleteButton.innerText = 'Удалить версию';
+            deleteButton.type = 'button';
+            if (item.documentStatus !== 'Не отправлено' && item.documentStatus !== 'Замечания') {
+                deleteButton.disabled = true;
+            }
+
+            var clickableArea = document.createElement('div');
+            clickableArea.className = 'nir-version-titles';
+
+            clickableArea.appendChild(versionName);
+            clickableArea.appendChild(versionStatus);
+            nirVersionHeader.appendChild(clickableArea);
+
+            dropdownDiv.appendChild(sendButton);
+            dropdownContent.appendChild(statusOdobreno);
+            dropdownContent.appendChild(statusZamechaniya);
+            dropdownDiv.appendChild(dropdownContent);
+            nirVersionHeader.appendChild(dropdownDiv);
+
+            nirVersionHeader.appendChild(downloadButton);
+            nirVersionHeader.appendChild(deleteButton);
+            nirVersion.appendChild(nirVersionHeader);
+
+            document.getElementById('student-vkr-dopusk-version-div').appendChild(nirVersion);
+        }
+    }
+
+    // Показать отзыв ВКР
+    function showVkrReviewVersions(nirOtchetVersionArray) {
+        for (var i = 0; i < nirOtchetVersionArray.length; i++) {
+            var item = nirOtchetVersionArray[i];
+            //console.log(item);
+
+            var nirVersion = document.createElement('div');
+            nirVersion.className = 'nir-version light-background';
+            nirVersion.id = 'vkr-dopusk-version-' + i;
+
+            var nirVersionHeader = document.createElement('div');
+            nirVersionHeader.className = 'nir-version-header dark-background';
+
+            // Имя версии
+            var versionName = document.createElement('p');
+            versionName.className = 'light size-24 nir-header-text';
+            versionName.innerText = 'Версия: ' + item.versionEditionDate;
+
+            // Статус версии
+            var versionStatus = document.createElement('p');
+            versionStatus.className = 'light size-24 nir-header-text';
+            versionStatus.innerText = 'Статус: ' + item.documentStatus;
+
+            // Кнопка отправить науч руку
+            var sendButton = document.createElement('button');
+            sendButton.className = 'dark size-24 nir-version-header-button nir-version-send-button';
+            sendButton.innerText = 'Отправить студенту:';
+            sendButton.type = 'button';
+            if (item.documentStatus === 'Одобрено' || item.documentStatus === 'Замечания') {
+                sendButton.disabled = true;
+            }
+
+            var dropdownDiv = document.createElement('div');
+            dropdownDiv.className = 'sci-advisor-status-dropdown-div';
+
+            var dropdownContent = document.createElement('div');
+            dropdownContent.className = 'sci-advisor-status-dropdown-content';
+
+            var statusOdobreno = document.createElement('p');
+            statusOdobreno.className = 'dark size-18 vkr-review-status-odobreno';
+            statusOdobreno.innerText = 'Одобрено';
+
+            var statusZamechaniya = document.createElement('p');
+            statusZamechaniya.className = 'dark size-18 vkr-review-status-zamechaniya';
+            statusZamechaniya.innerText = 'Замечания';
+
+            // Кнопка скачать отчёт
+            var downloadButton = document.createElement('button');
+            downloadButton.className = 'dark size-24 nir-version-header-button vkr-review-download-button';
+            downloadButton.innerText = 'Сохранить документ';
+            downloadButton.type = 'button';
+
+            // Кнопка удалить
+            var deleteButton = document.createElement('button');
+            deleteButton.className = 'dark size-24 nir-version-header-button vkr-review-delete-button';
+            deleteButton.innerText = 'Удалить версию';
+            deleteButton.type = 'button';
+            if (item.documentStatus !== 'Не отправлено' && item.documentStatus !== 'Замечания') {
+                deleteButton.disabled = true;
+            }
+
+            var clickableArea = document.createElement('div');
+            clickableArea.className = 'nir-version-titles';
+
+            clickableArea.appendChild(versionName);
+            clickableArea.appendChild(versionStatus);
+            nirVersionHeader.appendChild(clickableArea);
+
+            dropdownDiv.appendChild(sendButton);
+            dropdownContent.appendChild(statusOdobreno);
+            dropdownContent.appendChild(statusZamechaniya);
+            dropdownDiv.appendChild(dropdownContent);
+            nirVersionHeader.appendChild(dropdownDiv);
+
+            nirVersionHeader.appendChild(downloadButton);
+            nirVersionHeader.appendChild(deleteButton);
+            nirVersion.appendChild(nirVersionHeader);
+
+            document.getElementById('student-vkr-review-version-div').appendChild(nirVersion);
+        }
+    }
+
+    // Показать антиплагиат ВКР
+    function showVkrAntiplagiatVersions(nirOtchetVersionArray) {
+        for (var i = 0; i < nirOtchetVersionArray.length; i++) {
+            var item = nirOtchetVersionArray[i];
+            //console.log(item);
+
+            var nirVersion = document.createElement('div');
+            nirVersion.className = 'nir-version light-background';
+            nirVersion.id = 'vkr-dopusk-version-' + i;
+
+            var nirVersionHeader = document.createElement('div');
+            nirVersionHeader.className = 'nir-version-header dark-background';
+
+            // Имя версии
+            var versionName = document.createElement('p');
+            versionName.className = 'light size-24 nir-header-text';
+            versionName.innerText = 'Версия: ' + item.versionEditionDate;
+
+            // Статус версии
+            var versionStatus = document.createElement('p');
+            versionStatus.className = 'light size-24 nir-header-text';
+            versionStatus.innerText = 'Статус: ' + item.documentStatus;
+
+            // Кнопка отправить науч руку
+            var sendButton = document.createElement('button');
+            sendButton.className = 'dark size-24 nir-version-header-button nir-version-send-button';
+            sendButton.innerText = 'Отправить студенту:';
+            sendButton.type = 'button';
+            if (item.documentStatus === 'Одобрено' || item.documentStatus === 'Замечания') {
+                sendButton.disabled = true;
+            }
+
+            var dropdownDiv = document.createElement('div');
+            dropdownDiv.className = 'sci-advisor-status-dropdown-div';
+
+            var dropdownContent = document.createElement('div');
+            dropdownContent.className = 'sci-advisor-status-dropdown-content';
+
+            var statusOdobreno = document.createElement('p');
+            statusOdobreno.className = 'dark size-18 vkr-antiplagiat-status-odobreno';
+            statusOdobreno.innerText = 'Одобрено';
+
+            var statusZamechaniya = document.createElement('p');
+            statusZamechaniya.className = 'dark size-18 vkr-antiplagiat-status-zamechaniya';
+            statusZamechaniya.innerText = 'Замечания';
+
+            // Кнопка скачать отчёт
+            var downloadButton = document.createElement('button');
+            downloadButton.className = 'dark size-24 nir-version-header-button vkr-antiplagiat-download-button';
+            downloadButton.innerText = 'Сохранить документ';
+            downloadButton.type = 'button';
+
+            // Кнопка удалить
+            var deleteButton = document.createElement('button');
+            deleteButton.className = 'dark size-24 nir-version-header-button vkr-antiplagiat-delete-button';
+            deleteButton.innerText = 'Удалить версию';
+            deleteButton.type = 'button';
+            if (item.documentStatus !== 'Не отправлено' && item.documentStatus !== 'Замечания') {
+                deleteButton.disabled = true;
+            }
+
+            var clickableArea = document.createElement('div');
+            clickableArea.className = 'nir-version-titles';
+
+            clickableArea.appendChild(versionName);
+            clickableArea.appendChild(versionStatus);
+            nirVersionHeader.appendChild(clickableArea);
+
+            dropdownDiv.appendChild(sendButton);
+            dropdownContent.appendChild(statusOdobreno);
+            dropdownContent.appendChild(statusZamechaniya);
+            dropdownDiv.appendChild(dropdownContent);
+            nirVersionHeader.appendChild(dropdownDiv);
+
+            nirVersionHeader.appendChild(downloadButton);
+            nirVersionHeader.appendChild(deleteButton);
+            nirVersion.appendChild(nirVersionHeader);
+
+            document.getElementById('student-vkr-antiplagiat-version-div').appendChild(nirVersion);
+        }
+    }
+
+    // Показать презентации ВКР
+    function showVkrPresentationVersions(nirOtchetVersionArray) {
+        for (var i = 0; i < nirOtchetVersionArray.length; i++) {
+            var item = nirOtchetVersionArray[i];
+            //console.log(item);
+
+            var nirVersion = document.createElement('div');
+            nirVersion.className = 'nir-version light-background';
+            nirVersion.id = 'vkr-dopusk-version-' + i;
+
+            var nirVersionHeader = document.createElement('div');
+            nirVersionHeader.className = 'nir-version-header dark-background';
+
+            // Имя версии
+            var versionName = document.createElement('p');
+            versionName.className = 'light size-24 nir-header-text';
+            versionName.innerText = 'Версия: ' + item.versionEditionDate;
+
+            // Статус версии
+            var versionStatus = document.createElement('p');
+            versionStatus.className = 'light size-24 nir-header-text';
+            versionStatus.innerText = 'Статус: ' + item.documentStatus;
+
+            // Кнопка отправить науч руку
+            var sendButton = document.createElement('button');
+            sendButton.className = 'dark size-24 nir-version-header-button nir-version-send-button';
+            sendButton.innerText = 'Отправить студенту:';
+            sendButton.type = 'button';
+            if (item.documentStatus === 'Одобрено' || item.documentStatus === 'Замечания') {
+                sendButton.disabled = true;
+            }
+
+            var dropdownDiv = document.createElement('div');
+            dropdownDiv.className = 'sci-advisor-status-dropdown-div';
+
+            var dropdownContent = document.createElement('div');
+            dropdownContent.className = 'sci-advisor-status-dropdown-content';
+
+            var statusOdobreno = document.createElement('p');
+            statusOdobreno.className = 'dark size-18 vkr-presentation-status-odobreno';
+            statusOdobreno.innerText = 'Одобрено';
+
+            var statusZamechaniya = document.createElement('p');
+            statusZamechaniya.className = 'dark size-18 vkr-presentation-status-zamechaniya';
+            statusZamechaniya.innerText = 'Замечания';
+
+            // Кнопка скачать отчёт
+            var downloadButton = document.createElement('button');
+            downloadButton.className = 'dark size-24 nir-version-header-button vkr-presentation-download-button';
+            downloadButton.innerText = 'Сохранить документ';
+            downloadButton.type = 'button';
+
+            // Кнопка удалить
+            var deleteButton = document.createElement('button');
+            deleteButton.className = 'dark size-24 nir-version-header-button vkr-presentation-delete-button';
+            deleteButton.innerText = 'Удалить версию';
+            deleteButton.type = 'button';
+            if (item.documentStatus !== 'Не отправлено' && item.documentStatus !== 'Замечания') {
+                deleteButton.disabled = true;
+            }
+
+            var clickableArea = document.createElement('div');
+            clickableArea.className = 'nir-version-titles';
+
+            clickableArea.appendChild(versionName);
+            clickableArea.appendChild(versionStatus);
+            nirVersionHeader.appendChild(clickableArea);
+
+            dropdownDiv.appendChild(sendButton);
+            dropdownContent.appendChild(statusOdobreno);
+            dropdownContent.appendChild(statusZamechaniya);
+            dropdownDiv.appendChild(dropdownContent);
+            nirVersionHeader.appendChild(dropdownDiv);
+
+            nirVersionHeader.appendChild(downloadButton);
+            nirVersionHeader.appendChild(deleteButton);
+            nirVersion.appendChild(nirVersionHeader);
+
+            document.getElementById('student-vkr-presentation-version-div').appendChild(nirVersion);
+        }
     }
 
     // Показать задания НИР
@@ -1722,8 +2123,8 @@ export default function ScaStuViewPage() {
                 formData.append('detailedContent', detailedDescriptionPP);
                 formData.append('advisorConclusion', conclusionPP);
                 break;
-                case 'ВКР':
-                    break;
+            case 'ВКР':
+                break;
             default:
                 console.log('Неопознанный тип отчета')
         }
@@ -1767,6 +2168,25 @@ export default function ScaStuViewPage() {
             window.location.reload(true);
         }).catch(result => {
             console.log(result.data);
+        });
+    }
+
+    function gradeVkrStuff(versionId, status) {
+        axios({
+            url: apiURL + '/scientific_advisor/document/management/vkr/stuff/check',
+            method: 'POST',
+            params: {
+                'versionID': versionId,
+                'newStatus': status,
+            },
+            headers: {
+                'Authorization': 'Bearer ' + authTokens.accessToken
+            },
+        }).then((response) => {
+            //console.log(response)
+            window.location.reload(true);
+        }).catch(result => {
+            console.log(result);
         });
     }
 
@@ -2346,6 +2766,291 @@ export default function ScaStuViewPage() {
             });
         });
 
+        /*
+        // Создание отзыва ВКР
+        $('#make-vkr-review-button').off().on('click', function () {
+            $('#vkr-review-file-input').trigger('click');
+        });
+        */
+
+        // Оценка отзыва ВКР - одобрено
+        $('.vkr-review-status-odobreno').off().on('click', function (event) {
+            var versionId = $(this).parent().parent().parent().parent().attr('id');
+            var arrayID = versionId.split('-')[3];
+            gradeVkrStuff(vkrReviewVersions[arrayID].systemVersionID, 'Одобрено');
+
+        });
+
+        // Оценка отзыва ВКР - замечания
+        $('.vkr-review-status-zamechaniya').off().on('click', function (event) {
+            var versionId = $(this).parent().parent().parent().parent().attr('id');
+            //console.log($(this).parent().parent().parent().parent());
+            var arrayID = versionId.split('-')[3];
+            gradeVkrStuff(vkrReviewVersions[arrayID].systemVersionID, 'Замечания');
+        });
+
+        // Скачать версию отзыва ВКР
+        $('.vkr-review-download-button').off().on('click', function (event) {
+            var versionId = $(this).parent().parent().attr('id');
+            var arrayID = versionId.split('-')[3];
+            axios({
+                url: apiURL + '/document/download/version',
+                method: 'GET',
+                responseType: 'blob',
+                params: {
+                    versionID: vkrReviewVersions[arrayID].systemVersionID,
+                },
+                headers: {
+                    'Authorization': 'Bearer ' + authTokens.accessToken
+                },
+            }).then((response) => {
+                const url = window.URL.createObjectURL(new Blob([response.data]));
+                const link = document.createElement('a');
+                link.href = url;
+                link.setAttribute('download', 'Отзыв научного руководителя.docx');
+                document.body.appendChild(link);
+                link.click();
+            }).catch(result => {
+                console.log(result.data);
+            });
+        });
+
+        // Удалить версию отзыва ВКР
+        $('.vkr-review-delete-button').off().on('click', function (event) {
+            var versionId = $(this).parent().parent().attr('id');
+            var arrayID = versionId.split('-')[3];
+            console.log(arrayID);
+            axios({
+                url: apiURL + '/scientific_advisor/document/vkr/stuff/version/delete',
+                method: 'DELETE',
+                params: {
+                    versionID: vkrReviewVersions[arrayID].systemVersionID,
+                    'studentID': sessionStorage.getItem('viewedStudentId'),
+                },
+                headers: {
+                    'Authorization': 'Bearer ' + authTokens.accessToken
+                },
+            }).then((response) => {
+                //console.log(response);
+                window.location.reload(true);
+            }).catch(result => {
+                console.log(result.data);
+            });
+        });
+
+        /*
+        // Создание допуска ВКР
+        $('#make-vkr-review-button').off().on('click', function () {
+            $('#vkr-review-file-input').trigger('click');
+        });
+        */
+
+        // Оценка допуска ВКР - одобрено
+        $('.vkr-dopusk-status-odobreno').off().on('click', function (event) {
+            var versionId = $(this).parent().parent().parent().parent().attr('id');
+            var arrayID = versionId.split('-')[3];
+            gradeVkrStuff(vkrDopuskVersions[arrayID].systemVersionID, 'Одобрено');
+
+        });
+
+        // Оценка допуска ВКР - замечания
+        $('.vkr-dopusk-status-zamechaniya').off().on('click', function (event) {
+            var versionId = $(this).parent().parent().parent().parent().attr('id');
+            //console.log($(this).parent().parent().parent().parent());
+            var arrayID = versionId.split('-')[3];
+            gradeVkrStuff(vkrDopuskVersions[arrayID].systemVersionID, 'Замечания');
+        });
+
+        // Скачать версию допуска ВКР
+        $('.vkr-dopusk-download-button').off().on('click', function (event) {
+            var versionId = $(this).parent().parent().attr('id');
+            var arrayID = versionId.split('-')[3];
+            axios({
+                url: apiURL + '/document/download/version',
+                method: 'GET',
+                responseType: 'blob',
+                params: {
+                    versionID: vkrDopuskVersions[arrayID].systemVersionID,
+                },
+                headers: {
+                    'Authorization': 'Bearer ' + authTokens.accessToken
+                },
+            }).then((response) => {
+                const url = window.URL.createObjectURL(new Blob([response.data]));
+                const link = document.createElement('a');
+                link.href = url;
+                link.setAttribute('download', 'Допуск к защите.docx');
+                document.body.appendChild(link);
+                link.click();
+            }).catch(result => {
+                console.log(result.data);
+            });
+        });
+
+        // Удалить версию допуска ВКР
+        $('.vkr-dopusk-delete-button').off().on('click', function (event) {
+            var versionId = $(this).parent().parent().attr('id');
+            var arrayID = versionId.split('-')[3];
+            axios({
+                url: apiURL + '/scientific_advisor/document/vkr/stuff/version/delete',
+                method: 'DELETE',
+                params: {
+                    versionID: vkrDopuskVersions[arrayID].systemVersionID,
+                    'studentID': sessionStorage.getItem('viewedStudentId'),
+                },
+                headers: {
+                    'Authorization': 'Bearer ' + authTokens.accessToken
+                },
+            }).then((response) => {
+                //console.log(response);
+                window.location.reload(true);
+            }).catch(result => {
+                console.log(result.data);
+            });
+        });
+
+        /*
+        // Создание антиплагиата ВКР
+        $('#make-vkr-review-button').off().on('click', function () {
+            $('#vkr-review-file-input').trigger('click');
+        });
+        */
+
+        // Оценка антиплагиата ВКР - одобрено
+        $('.vkr-antiplagiat-status-odobreno').off().on('click', function (event) {
+            var versionId = $(this).parent().parent().parent().parent().attr('id');
+            var arrayID = versionId.split('-')[3];
+            gradeVkrStuff(vkrAntiplagiatVersions[arrayID].systemVersionID, 'Одобрено');
+
+        });
+
+        // Оценка антиплагиата ВКР - замечания
+        $('.vkr-antiplagiat-status-zamechaniya').off().on('click', function (event) {
+            var versionId = $(this).parent().parent().parent().parent().attr('id');
+            //console.log($(this).parent().parent().parent().parent());
+            var arrayID = versionId.split('-')[3];
+            gradeVkrStuff(vkrAntiplagiatVersions[arrayID].systemVersionID, 'Замечания');
+        });
+
+        // Скачать версию антиплагиата ВКР
+        $('.vkr-antiplagiat-download-button').off().on('click', function (event) {
+            var versionId = $(this).parent().parent().attr('id');
+            var arrayID = versionId.split('-')[3];
+            axios({
+                url: apiURL + '/document/download/version',
+                method: 'GET',
+                responseType: 'blob',
+                params: {
+                    versionID: vkrAntiplagiatVersions[arrayID].systemVersionID,
+                },
+                headers: {
+                    'Authorization': 'Bearer ' + authTokens.accessToken
+                },
+            }).then((response) => {
+                const url = window.URL.createObjectURL(new Blob([response.data]));
+                const link = document.createElement('a');
+                link.href = url;
+                link.setAttribute('download', 'Отчет о прохождении проверки на антиплагиат.docx');
+                document.body.appendChild(link);
+                link.click();
+            }).catch(result => {
+                console.log(result.data);
+            });
+        });
+
+        // Удалить версию антиплагиата ВКР
+        $('.vkr-antiplagiat-delete-button').off().on('click', function (event) {
+            var versionId = $(this).parent().parent().attr('id');
+            var arrayID = versionId.split('-')[3];
+            axios({
+                url: apiURL + '/scientific_advisor/document/vkr/stuff/version/delete',
+                method: 'DELETE',
+                params: {
+                    versionID: vkrAntiplagiatVersions[arrayID].systemVersionID,
+                    'studentID': sessionStorage.getItem('viewedStudentId'),
+                },
+                headers: {
+                    'Authorization': 'Bearer ' + authTokens.accessToken
+                },
+            }).then((response) => {
+                //console.log(response);
+                window.location.reload(true);
+            }).catch(result => {
+                console.log(result.data);
+            });
+        });
+
+        /*
+        // Создание презентации ВКР
+        $('#make-vkr-review-button').off().on('click', function () {
+            $('#vkr-review-file-input').trigger('click');
+        });
+        */
+
+        // Оценка презентации ВКР - одобрено
+        $('.vkr-presentation-status-odobreno').off().on('click', function (event) {
+            var versionId = $(this).parent().parent().parent().parent().attr('id');
+            var arrayID = versionId.split('-')[3];
+            gradeVkrStuff(vkrPrezentationVersions[arrayID].systemVersionID, 'Одобрено');
+
+        });
+
+        // Оценка презентации ВКР - замечания
+        $('.vkr-presentation-status-zamechaniya').off().on('click', function (event) {
+            var versionId = $(this).parent().parent().parent().parent().attr('id');
+            //console.log($(this).parent().parent().parent().parent());
+            var arrayID = versionId.split('-')[3];
+            gradeVkrStuff(vkrPrezentationVersions[arrayID].systemVersionID, 'Замечания');
+        });
+
+        // Скачать версию презентации ВКР
+        $('.vkr-presentation-download-button').off().on('click', function (event) {
+            var versionId = $(this).parent().parent().attr('id');
+            var arrayID = versionId.split('-')[3];
+            axios({
+                url: apiURL + '/document/download/version',
+                method: 'GET',
+                responseType: 'blob',
+                params: {
+                    versionID: vkrPrezentationVersions[arrayID].systemVersionID,
+                },
+                headers: {
+                    'Authorization': 'Bearer ' + authTokens.accessToken
+                },
+            }).then((response) => {
+                const url = window.URL.createObjectURL(new Blob([response.data]));
+                const link = document.createElement('a');
+                link.href = url;
+                link.setAttribute('download', 'Презентация по ВКР.pptx');
+                document.body.appendChild(link);
+                link.click();
+            }).catch(result => {
+                console.log(result.data);
+            });
+        });
+
+        // Удалить версию презентации ВКР
+        $('.vkr-presentation-delete-button').off().on('click', function (event) {
+            var versionId = $(this).parent().parent().attr('id');
+            var arrayID = versionId.split('-')[3];
+            axios({
+                url: apiURL + '/scientific_advisor/document/vkr/stuff/version/delete',
+                method: 'DELETE',
+                params: {
+                    versionID: vkrPrezentationVersions[arrayID].systemVersionID,
+                    'studentID': sessionStorage.getItem('viewedStudentId'),
+                },
+                headers: {
+                    'Authorization': 'Bearer ' + authTokens.accessToken
+                },
+            }).then((response) => {
+                //console.log(response);
+                window.location.reload(true);
+            }).catch(result => {
+                console.log(result.data);
+            });
+        });
+
         // Функция кнопки "перенести в меню" для задания НИР
         $('.nir-copy').off().on('click', function () {
             var versionId = $(this).parent().parent().parent().parent().attr('id');
@@ -2416,7 +3121,6 @@ export default function ScaStuViewPage() {
             setVkrAims(vkrTaskVersions[arrayID].vkrAim);
             setVkrTasks(vkrTaskVersions[arrayID].vkrTasks);
         });
-
 
     });
 
@@ -2769,8 +3473,8 @@ export default function ScaStuViewPage() {
                             <Tab eventKey='info41' title={
                                 <p className='size-30 light dark-background info-form-subtab-title'>
                                     <Image src={iconDocument} thumbnail className='dark-background info-form-subtab-icon icon-small' />
-        Отзыв научного<br />руководителя
-    </p>
+                                Отзыв научного<br />руководителя
+                            </p>
                             }>
                                 <div className='info-sub-tab-div'>
 
@@ -2784,12 +3488,18 @@ export default function ScaStuViewPage() {
 
                                         <button type='button' id='make-vkr-review-button' className='size-30 light dark-background info-button-1' style={{ height: '100px', width: '670px', marginLeft: '410px' }}>
                                             <Image src={iconDocument} thumbnail className='dark-background thumbnail-icon' style={{ position: 'relative', top: '-25px' }} />
-                                            <div style={{ display: 'inline-block' }}><p style={{ marginBottom: '0px' }}>Сформировать и загрузить новую версию<br />отзыва научного руководителя</p></div>
+                                            <div style={{ display: 'inline-block' }}><p style={{ marginBottom: '0px' }}>Загрузить новую версию<br />отзыва научного руководителя</p></div>
                                         </button>
                                         <input id='vkr-review-file-input' type='file' style={{ display: 'none' }} onChange={(e) => {
                                             if (e.target.files.length !== 0) {
+                                                if (vkrReviewVersions.length == 0) {
+                                                    //uploadDocument(e.target.files[0], 'ВКР', 'Отзыв');
+                                                }
+                                                else {
+                                                    //uploadDocumentVersion(e.target.files[0], vkrReviewVersions[0].systemDocumentID, 'Отзыв версия')
+                                                    //uploadDocument(e.target.files[0], 'ВКР', 'Отзыв');
+                                                }
 
-                                                //uploadDocument(e.target.files[0], 'ВКР', 'Отзыв');
                                             }
                                         }} ></input>
 
@@ -2799,8 +3509,8 @@ export default function ScaStuViewPage() {
                             <Tab eventKey='info42' title={
                                 <p className='size-30 light dark-background info-form-subtab-title' style={{ marginLeft: '29px' }}>
                                     <Image src={iconDocument} thumbnail className='dark-background info-form-subtab-icon icon-small' />
-        Допуск к<br />защите
-    </p>
+                                Допуск к<br />защите
+                            </p>
                             }>
                                 <div className='info-break-div' style={{ marginBottom: '20px' }}>&nbsp;</div>
 
@@ -2812,12 +3522,18 @@ export default function ScaStuViewPage() {
 
                                     <button type='button' id='make-vkr-dopusk-button' className='size-30 light dark-background info-button-1' style={{ height: '100px', width: '670px', marginLeft: '410px' }}>
                                         <Image src={iconDocument} thumbnail className='dark-background thumbnail-icon' style={{ position: 'relative', top: '-25px' }} />
-                                        <div style={{ display: 'inline-block' }}><p style={{ marginBottom: '0px' }}>Сформировать и загрузить новую версию<br />допуска к защите ВКР</p></div>
+                                        <div style={{ display: 'inline-block' }}><p style={{ marginBottom: '0px' }}>Загрузить новую версию<br />допуска к защите ВКР</p></div>
                                     </button>
                                     <input id='vkr-dopusk-file-input' type='file' style={{ display: 'none' }} onChange={(e) => {
                                         if (e.target.files.length !== 0) {
+                                            if (vkrDopuskVersions.length == 0) {
+                                                //uploadDocument(e.target.files[0], 'ВКР', 'Допуск');
+                                            }
+                                            else {
+                                                //uploadDocumentVersion(e.target.files[0], vkrDopuskVersions[0].systemDocumentID, 'Допуск версия')
+                                                //uploadDocument(e.target.files[0], 'ВКР', 'Отзыв');
+                                            }
 
-                                            //uploadDocument(e.target.files[0], 'ВКР', 'Допуск');
                                         }
                                     }} ></input>
                                 </div>
@@ -2825,8 +3541,8 @@ export default function ScaStuViewPage() {
                             <Tab eventKey='info43' title={
                                 <p className='size-30 light dark-background info-form-subtab-title' style={{ marginLeft: '29px' }}>
                                     <Image src={iconDocument} thumbnail className='dark-background info-form-subtab-icon icon-small' />
-        Задание<br />на ВКР
-    </p>
+                                Задание<br />на ВКР
+                            </p>
                             }>
                                 <div className='info-break-div' style={{ marginBottom: '20px' }}>&nbsp;</div>
 
@@ -2866,8 +3582,8 @@ export default function ScaStuViewPage() {
                             <Tab eventKey='info44' title={
                                 <p className='size-30 light dark-background info-form-subtab-title' style={{ marginLeft: '29px' }}>
                                     <Image src={iconDocument} thumbnail className='dark-background info-form-subtab-icon icon-small' />
-        РПЗ
-    </p>
+                                РПЗ
+                            </p>
                             }>
                                 <div className='info-break-div' style={{ marginBottom: '20px' }}>&nbsp;</div>
 
@@ -2877,14 +3593,12 @@ export default function ScaStuViewPage() {
 
                                 <div className='info-sub-tab-div'>
 
-
                                     <button type='button' id='make-vkr-otchet-button' className='size-30 light dark-background info-button-1' style={{ height: '100px', width: '480px', marginLeft: '505px' }}>
                                         <Image src={iconDocument} thumbnail className='dark-background thumbnail-icon' style={{ position: 'relative', top: '-25px' }} />
-                                        <div style={{ display: 'inline-block' }}><p style={{ marginBottom: '0px' }}>Сформировать и загрузить<br />новую версию РПЗ</p></div>
+                                        <div style={{ display: 'inline-block' }}><p style={{ marginBottom: '0px' }}>Загрузить<br />новую версию РПЗ</p></div>
                                     </button>
                                     <input id='vkr-otchet-file-input' type='file' style={{ display: 'none' }} onChange={(e) => {
                                         if (e.target.files.length !== 0) {
-
                                             makeOtchetVersion(e.target.files[0], 'ВКР');
                                         }
                                     }} ></input>
@@ -2893,8 +3607,8 @@ export default function ScaStuViewPage() {
                             <Tab eventKey='info45' title={
                                 <p className='size-30 light dark-background info-form-subtab-title' style={{ marginLeft: '29px' }}>
                                     <Image src={iconDocument} thumbnail className='dark-background info-form-subtab-icon icon-small' />
-                                    Проверка на<br />антиплагиат
-                                </p>
+                                Проверка на<br />антиплагиат
+                            </p>
                             }>
                                 <div className='info-break-div' style={{ marginBottom: '20px' }}>&nbsp;</div>
 
@@ -2906,21 +3620,27 @@ export default function ScaStuViewPage() {
 
                                     <button type='button' id='make-vkr-antiplagiat-button' className='size-30 light dark-background info-button-1' style={{ height: '100px', width: '670px', marginLeft: '410px' }}>
                                         <Image src={iconDocument} thumbnail className='dark-background thumbnail-icon' style={{ position: 'relative', top: '-25px' }} />
-                                        <div style={{ display: 'inline-block' }}><p style={{ marginBottom: '0px' }}>Сформировать и загрузить новую версию<br />отчета об антиплагиате</p></div>
+                                        <div style={{ display: 'inline-block' }}><p style={{ marginBottom: '0px' }}>Загрузить новую версию<br />отчета об антиплагиате</p></div>
                                     </button>
                                     <input id='vkr-antiplagiat-file-input' type='file' style={{ display: 'none' }} onChange={(e) => {
                                         if (e.target.files.length !== 0) {
-
+                                            if (vkrAntiplagiatVersions.length == 0) {
+                                                //uploadDocument(e.target.files[0], 'ВКР', 'Антиплагиат');
+                                            }
+                                            else {
+                                                //uploadDocumentVersion(e.target.files[0], vkrAntiplagiatVersions[0].systemDocumentID, 'Антиплагиат версия')
+                                            }
                                             //uploadDocument(e.target.files[0], 'ВКР', 'Антиплагиат');
                                         }
+
                                     }} ></input>
                                 </div>
                             </Tab>
                             <Tab eventKey='info46' title={
                                 <p className='size-30 light dark-background info-form-subtab-title' style={{ marginLeft: '29px' }}>
                                     <Image src={iconDocument} thumbnail className='dark-background info-form-subtab-icon icon-small' />
-                                    Презентация<br />к защите
-                                </p>
+                                Презентация<br />к защите
+                            </p>
                             }>
                                 <div className='info-break-div' style={{ marginBottom: '20px' }}>&nbsp;</div>
 
@@ -2932,11 +3652,16 @@ export default function ScaStuViewPage() {
 
                                     <button type='button' id='make-vkr-presentation-button' className='size-30 light dark-background info-button-1' style={{ height: '100px', width: '670px', marginLeft: '410px' }}>
                                         <Image src={iconDocument} thumbnail className='dark-background thumbnail-icon' style={{ position: 'relative', top: '-25px' }} />
-                                        <div style={{ display: 'inline-block' }}><p style={{ marginBottom: '0px' }}>Сформировать и загрузить новую версию<br />презентации</p></div>
+                                        <div style={{ display: 'inline-block' }}><p style={{ marginBottom: '0px' }}>Загрузить новую версию<br />презентации</p></div>
                                     </button>
                                     <input id='vkr-presentation-file-input' type='file' style={{ display: 'none' }} onChange={(e) => {
                                         if (e.target.files.length !== 0) {
-
+                                            if (vkrPrezentationVersions.length == 0) {
+                                                //uploadDocument(e.target.files[0], 'ВКР', 'Презентация');
+                                            }
+                                            else {
+                                                //uploadDocumentVersion(e.target.files[0], vkrPrezentationVersions[0].systemDocumentID, 'Презентация версия')
+                                            }
                                             //uploadDocument(e.target.files[0], 'ВКР', 'Презентация');
                                         }
                                     }} ></input>

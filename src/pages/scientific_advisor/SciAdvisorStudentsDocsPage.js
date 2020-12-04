@@ -33,7 +33,7 @@ export default function SciAdvisorStudentsDocsPage() {
             },
         }).then((response) => {
             setDocumentData(response.data);
-            //console.log(response.data);
+            console.log(response.data);
         }).catch(result => {
             console.log(result.data);
         });
@@ -97,6 +97,30 @@ export default function SciAdvisorStudentsDocsPage() {
                     break;
                 case 'ВКР':
                     switch (documentKind) {
+                        case 'Задание':
+                            documentName = 'Задание по ВКР';
+                            documentItem = documentArray[i].taskVersions;
+                            break;
+                        case 'Отчёт':
+                            documentName = 'Отчет по ВКР';
+                            documentItem = documentArray[i].reportVersions;
+                            break;
+                        case 'Допуск':
+                            documentName = 'Допуск';
+                            documentItem = documentArray[i].vkrStuffVersionViews;
+                            break;
+                        case 'Отзыв':
+                            documentName = 'Отзыв научного руководителя';
+                            documentItem = documentArray[i].vkrStuffVersionViews;
+                            break;
+                        case 'Антиплагиат':
+                            documentName = 'Отчет по антиплагиату';
+                            documentItem = documentArray[i].vkrStuffVersionViews;
+                            break;
+                        case 'Презентация':
+                            documentName = 'Презентация по ВКР';
+                            documentItem = documentArray[i].vkrStuffVersionViews;
+                            break;
                         default:
                             documentName = 'Неопознанный документ по ВКР';
                     }
@@ -108,6 +132,12 @@ export default function SciAdvisorStudentsDocsPage() {
             for (var j = 0; j < documentItem.length; j++) {
                 var documentVersion = documentItem[j];
                 //console.log(documentVersion);
+                if (documentKind == 'Задание' || documentKind == 'Отчёт') {
+                    var documentStatus = documentVersion.status;
+                }
+                else {
+                    var documentStatus = documentVersion.documentStatus;
+                }
 
                 var versionDiv = document.createElement('div');
                 versionDiv.className = 'sca-scu-version-div ' +
@@ -129,7 +159,7 @@ export default function SciAdvisorStudentsDocsPage() {
 
                 var versionStatus = document.createElement('p');
                 versionStatus.className = 'order-name-text light size-24';
-                versionStatus.innerText = 'Статус: ' + documentVersion.status;
+                versionStatus.innerText = 'Статус: ' + documentStatus;
 
                 var titleDiv1 = document.createElement('div');
                 titleDiv1.className = 'sca-scu-version-title-div1';
@@ -151,7 +181,7 @@ export default function SciAdvisorStudentsDocsPage() {
                 sendButton.innerText = 'Отправить\nстуденту:';
                 sendButton.type = 'button';
                 // Запретить отсылку, если версия отправлена
-                if (documentVersion.status === 'Одобрено' || documentVersion.status === 'Замечания') {
+                if (documentStatus === 'Одобрено' || documentStatus === 'Замечания') {
                     sendButton.disabled = true;
                 }
 
@@ -181,7 +211,7 @@ export default function SciAdvisorStudentsDocsPage() {
                 deleteButton.innerText = 'Удалить\nверсию';
                 deleteButton.type = 'button';
                 // Запретить удаление, если версия отправлена
-                if (documentVersion.status !== 'Не отправлено' && documentVersion.status !== 'Замечания') {
+                if (documentStatus !== 'Не отправлено' && documentStatus !== 'Замечания') {
                     deleteButton.disabled = true;
                 }
 
