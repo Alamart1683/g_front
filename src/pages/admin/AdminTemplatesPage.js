@@ -147,7 +147,7 @@ export default function AdminTemplatesPage() {
                 console.log('Неопознанный тип шаблона');
         }
         axios({
-            url: apiURL + '/scientific_advisor/document/upload',
+            url: apiURL + '/document/upload',
             method: 'POST',
             data: formData,
             headers: {
