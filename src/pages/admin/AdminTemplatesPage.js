@@ -52,6 +52,7 @@ export default function AdminTemplatesPage() {
             templateName.className = 'dark-background hoc-order-template-name';
             templateName.id = 'hoc-order-template-name';
             templateName.style.top = '-5px';
+            templateName.style.width = '660px';
 
             var templateNameText = document.createElement('p');
             templateNameText.className = 'hoc-order-template-name-text light size-22'
@@ -88,8 +89,16 @@ export default function AdminTemplatesPage() {
             templateDelete.className = 'hoc-order-template-delete-button light size-22';
             templateDelete.id = 'hoc-template-delete-button';
             templateDelete.innerText = "Удалить";
+            
+            // Кнопка просмотреть
+            var viewButton = document.createElement('button');
+            viewButton.className = 'hoc-order-template-delete-button light size-22 version-view-button';
+            viewButton.id = 'template-view-' + i;
+            viewButton.innerText = 'Просмотреть';
+            viewButton.type = 'button';
 
             documentFile.appendChild(templateName);
+            documentFile.appendChild(viewButton);
             documentFile.appendChild(templateDownload);
             documentFile.appendChild(templateDelete);
 
@@ -242,6 +251,27 @@ export default function AdminTemplatesPage() {
             $('#template-file-input').trigger('click');
         });
 
+        $('.version-view-button').off().on('click', function (e) {
+            e.preventDefault();
+            var arrayId = $(this).attr('id').split('-')[2];
+            axios({
+                url: apiURL + '/document/get/outer/link/single',
+                method: 'GET',
+                params: {
+                    'creatorID': templates[arrayId].systemCreatorID,
+                    'documentName': templates[arrayId].documentName,
+                },
+                headers: {
+                    'Authorization': 'Bearer ' + authTokens.accessToken
+                },
+            }).then((response) => {
+                //console.log('https://docs.google.com/gview?url=' + response.data);
+                window.open('https://docs.google.com/gview?url=' + response.data, '_blank');
+            }).catch(result => {
+                console.log('error');
+                console.log(result);
+            });
+        });
     });
 
     return (

@@ -160,7 +160,6 @@ export default function StudentTasksPage() {
     }, [vkrPrezentationVersions]);
 
     function getStudentData() {
-        console.log('1');
         axios({
             url: apiURL + '/student/get/about/me',
             method: 'GET',
@@ -184,6 +183,8 @@ export default function StudentTasksPage() {
         // Тема студента
         var studentTheme = document.createElement('th');
         studentTheme.innerText = item.studentVkrTheme;
+        // Заполнить поля "Тема"
+        setStudentTheme(item.studentVkrTheme);
         if (item.studentVkrThemeEditable) {
             setThemeConfirmed('Не одобрена');
         }
@@ -589,10 +590,17 @@ export default function StudentTasksPage() {
                     deleteButton.disabled = true;
                 }
 
+                // Кнопка просмотреть
+                var viewButton = document.createElement('button');
+                viewButton.className = 'dark size-24 nir-version-header-button version-view-button';
+                viewButton.id = 'vkrDopusk-view-' + i;
+                viewButton.innerText = 'Просмотреть';
+                viewButton.type = 'button';
 
                 clickableArea.appendChild(versionName);
                 clickableArea.appendChild(versionStatus);
                 nirVersionHeader.appendChild(clickableArea);
+                nirVersionHeader.appendChild(viewButton);
                 nirVersionHeader.appendChild(sendButton);
                 nirVersionHeader.appendChild(downloadButton);
                 nirVersionHeader.appendChild(deleteButton);
@@ -653,10 +661,18 @@ export default function StudentTasksPage() {
                     deleteButton.disabled = true;
                 }
 
+                // Кнопка просмотреть
+                var viewButton = document.createElement('button');
+                viewButton.className = 'dark size-24 nir-version-header-button version-view-button';
+                viewButton.id = 'vkrReview-view-' + i;
+                viewButton.innerText = 'Просмотреть';
+                viewButton.type = 'button';
+
 
                 clickableArea.appendChild(versionName);
                 clickableArea.appendChild(versionStatus);
                 nirVersionHeader.appendChild(clickableArea);
+                nirVersionHeader.appendChild(viewButton);
                 nirVersionHeader.appendChild(sendButton);
                 nirVersionHeader.appendChild(downloadButton);
                 nirVersionHeader.appendChild(deleteButton);
@@ -717,9 +733,17 @@ export default function StudentTasksPage() {
                     deleteButton.disabled = true;
                 }
 
+                // Кнопка просмотреть
+                var viewButton = document.createElement('button');
+                viewButton.className = 'dark size-24 nir-version-header-button version-view-button';
+                viewButton.id = 'vkrAntiplagiat-view-' + i;
+                viewButton.innerText = 'Просмотреть';
+                viewButton.type = 'button';
+
                 clickableArea.appendChild(versionName);
                 clickableArea.appendChild(versionStatus);
                 nirVersionHeader.appendChild(clickableArea);
+                nirVersionHeader.appendChild(viewButton);
                 nirVersionHeader.appendChild(sendButton);
                 nirVersionHeader.appendChild(downloadButton);
                 nirVersionHeader.appendChild(deleteButton);
@@ -780,9 +804,17 @@ export default function StudentTasksPage() {
                     deleteButton.disabled = true;
                 }
 
+                // Кнопка просмотреть
+                var viewButton = document.createElement('button');
+                viewButton.className = 'dark size-24 nir-version-header-button version-view-button';
+                viewButton.id = 'vkrPresentation-view-' + i;
+                viewButton.innerText = 'Просмотреть';
+                viewButton.type = 'button';
+
                 clickableArea.appendChild(versionName);
                 clickableArea.appendChild(versionStatus);
                 nirVersionHeader.appendChild(clickableArea);
+                nirVersionHeader.appendChild(viewButton);
                 nirVersionHeader.appendChild(sendButton);
                 nirVersionHeader.appendChild(downloadButton);
                 nirVersionHeader.appendChild(deleteButton);
@@ -814,14 +846,6 @@ export default function StudentTasksPage() {
             var versionStatus = document.createElement('p');
             versionStatus.className = 'light size-24 nir-header-text';
             versionStatus.innerText = 'Статус: ' + item.status;
-
-            // Кнопка просмотреть
-            /*
-            var viewButton = document.createElement('button');
-            viewButton.className = 'dark size-24 nir-version-header-button nir-version-view-button';
-            viewButton.innerText = 'Просмотреть';
-            viewButton.type = 'button';
-            */
 
             // Кнопка отправить науч руку
             var sendButton = document.createElement('button');
@@ -917,10 +941,19 @@ export default function StudentTasksPage() {
             var columnDiv2 = document.createElement('div');
             columnDiv2.className = 'info-column';
 
+            // Кнопка просмотреть
+            var viewButton = document.createElement('button');
+            viewButton.className = 'dark size-24 nir-version-header-button version-view-button';
+            viewButton.id = 'nirTask-view-' + i;
+            viewButton.innerText = 'Просмотреть';
+            viewButton.type = 'button';
+
             clickableArea.appendChild(versionName);
             clickableArea.appendChild(versionStatus);
             nirVersionHeader.appendChild(clickableArea);
-            //nirVersionHeader.appendChild(viewButton);
+
+            nirVersionHeader.appendChild(viewButton);
+
             nirVersionHeader.appendChild(sendButton);
             nirVersionHeader.appendChild(downloadButton);
             nirVersionHeader.appendChild(deleteButton);
@@ -1060,9 +1093,17 @@ export default function StudentTasksPage() {
             var columnDiv2 = document.createElement('div');
             columnDiv2.className = 'info-column';
 
+            // Кнопка просмотреть
+            var viewButton = document.createElement('button');
+            viewButton.className = 'dark size-24 nir-version-header-button version-view-button';
+            viewButton.id = 'longPPTask-view-' + i;
+            viewButton.innerText = 'Просмотреть';
+            viewButton.type = 'button';
+
             clickableArea.appendChild(versionName);
             clickableArea.appendChild(versionStatus);
             longPPVersionHeader.appendChild(clickableArea);
+            longPPVersionHeader.appendChild(viewButton);
             longPPVersionHeader.appendChild(sendButton);
             longPPVersionHeader.appendChild(downloadButton);
             longPPVersionHeader.appendChild(deleteButton);
@@ -1202,9 +1243,17 @@ export default function StudentTasksPage() {
             var columnDiv2 = document.createElement('div');
             columnDiv2.className = 'info-column';
 
+            // Кнопка просмотреть
+            var viewButton = document.createElement('button');
+            viewButton.className = 'dark size-24 nir-version-header-button version-view-button';
+            viewButton.id = 'ppTask-view-' + i;
+            viewButton.innerText = 'Просмотреть';
+            viewButton.type = 'button';
+
             clickableArea.appendChild(versionName);
             clickableArea.appendChild(versionStatus);
             longPPVersionHeader.appendChild(clickableArea);
+            longPPVersionHeader.appendChild(viewButton);
             longPPVersionHeader.appendChild(sendButton);
             longPPVersionHeader.appendChild(downloadButton);
             longPPVersionHeader.appendChild(deleteButton);
@@ -1335,10 +1384,18 @@ export default function StudentTasksPage() {
             var columnDiv2 = document.createElement('div');
             columnDiv2.className = 'info-column';
 
+            // Кнопка просмотреть
+            var viewButton = document.createElement('button');
+            viewButton.className = 'dark size-24 nir-version-header-button version-view-button';
+            viewButton.id = 'vkrTask-view-' + i;
+            viewButton.innerText = 'Просмотреть';
+            viewButton.type = 'button';
+
+
             clickableArea.appendChild(versionName);
             clickableArea.appendChild(versionStatus);
             nirVersionHeader.appendChild(clickableArea);
-            //nirVersionHeader.appendChild(viewButton);
+            nirVersionHeader.appendChild(viewButton);
             nirVersionHeader.appendChild(sendButton);
             nirVersionHeader.appendChild(downloadButton);
             nirVersionHeader.appendChild(deleteButton);
@@ -1452,9 +1509,17 @@ export default function StudentTasksPage() {
                 var columnDiv2 = document.createElement('div');
                 columnDiv2.className = 'info-column';
 
+                // Кнопка просмотреть
+                var viewButton = document.createElement('button');
+                viewButton.className = 'dark size-24 nir-version-header-button version-view-button';
+                viewButton.id = 'nirOtchet-view-' + i;
+                viewButton.innerText = 'Просмотреть';
+                viewButton.type = 'button';
+
                 clickableArea.appendChild(versionName);
                 clickableArea.appendChild(versionStatus);
                 nirVersionHeader.appendChild(clickableArea);
+                nirVersionHeader.appendChild(viewButton);
                 nirVersionHeader.appendChild(sendButton);
                 nirVersionHeader.appendChild(downloadButton);
                 nirVersionHeader.appendChild(deleteButton);
@@ -1565,9 +1630,17 @@ export default function StudentTasksPage() {
                 var columnDiv2 = document.createElement('div');
                 columnDiv2.className = 'info-column';
 
+                // Кнопка просмотреть
+                var viewButton = document.createElement('button');
+                viewButton.className = 'dark size-24 nir-version-header-button version-view-button';
+                viewButton.id = 'longPPOtchet-view-' + i;
+                viewButton.innerText = 'Просмотреть';
+                viewButton.type = 'button';
+
                 clickableArea.appendChild(versionName);
                 clickableArea.appendChild(versionStatus);
                 nirVersionHeader.appendChild(clickableArea);
+                nirVersionHeader.appendChild(viewButton);
                 nirVersionHeader.appendChild(sendButton);
                 nirVersionHeader.appendChild(downloadButton);
                 nirVersionHeader.appendChild(deleteButton);
@@ -1678,9 +1751,17 @@ export default function StudentTasksPage() {
                 var columnDiv2 = document.createElement('div');
                 columnDiv2.className = 'info-column';
 
+                // Кнопка просмотреть
+                var viewButton = document.createElement('button');
+                viewButton.className = 'dark size-24 nir-version-header-button version-view-button';
+                viewButton.id = 'ppOtchet-view-' + i;
+                viewButton.innerText = 'Просмотреть';
+                viewButton.type = 'button';
+
                 clickableArea.appendChild(versionName);
                 clickableArea.appendChild(versionStatus);
                 nirVersionHeader.appendChild(clickableArea);
+                nirVersionHeader.appendChild(viewButton);
                 nirVersionHeader.appendChild(sendButton);
                 nirVersionHeader.appendChild(downloadButton);
                 nirVersionHeader.appendChild(deleteButton);
@@ -1751,10 +1832,17 @@ export default function StudentTasksPage() {
                     deleteButton.disabled = true;
                 }
 
+                // Кнопка просмотреть
+                var viewButton = document.createElement('button');
+                viewButton.className = 'dark size-24 nir-version-header-button version-view-button';
+                viewButton.id = 'vkrOtchet-view-' + i;
+                viewButton.innerText = 'Просмотреть';
+                viewButton.type = 'button';
 
                 clickableArea.appendChild(versionName);
                 clickableArea.appendChild(versionStatus);
                 nirVersionHeader.appendChild(clickableArea);
+                nirVersionHeader.appendChild(viewButton);
                 nirVersionHeader.appendChild(sendButton);
                 nirVersionHeader.appendChild(downloadButton);
                 nirVersionHeader.appendChild(deleteButton);
@@ -1791,7 +1879,7 @@ export default function StudentTasksPage() {
 
             var titleDiv = document.createElement('div');
             titleDiv.className = 'student-example-title dark-background';
-            titleDiv.style.width = '1120px';
+            titleDiv.style.width = '840px';
 
             var exampleImage = document.createElement('img');
             exampleImage.className = 'order-name-image'
@@ -1807,9 +1895,17 @@ export default function StudentTasksPage() {
             exampleDownload.id = 'example-download-' + i;
             exampleDownload.innerText = "Сохранить образец";
 
+            // Кнопка просмотреть
+            var viewButton = document.createElement('button');
+            viewButton.className = 'student-example-download light size-24 version-view-button';
+            viewButton.id = 'example-view-' + i;
+            viewButton.innerText = 'Просмотреть';
+            viewButton.type = 'button';
+
             titleDiv.appendChild(exampleImage);
             titleDiv.appendChild(exampleName);
             exampleDiv.appendChild(titleDiv);
+            exampleDiv.appendChild(viewButton);
             exampleDiv.appendChild(exampleDownload);
 
             switch (example.documentType) {
@@ -1962,8 +2058,47 @@ export default function StudentTasksPage() {
         });
     }
 
+    function viewDoc(versionId) {
+        axios({
+            url: apiURL + '/document/get/outer/link',
+            method: 'GET',
+            params: {
+                'versionID': versionId,
+            },
+            headers: {
+                'Authorization': 'Bearer ' + authTokens.accessToken
+            },
+        }).then((response) => {
+            //console.log('https://docs.google.com/gview?url=' + response.data);
+            window.open('https://docs.google.com/gview?url=' + response.data, '_blank');
+        }).catch(result => {
+            console.log('error');
+            console.log(result);
+        });
+    }
+
+    function viewExample(arrayId) {
+        axios({
+            url: apiURL + '/document/get/outer/link/single',
+            method: 'GET',
+            params: {
+                'creatorID': examples[arrayId].systemCreatorID,
+                'documentName': examples[arrayId].documentName,
+            },
+            headers: {
+                'Authorization': 'Bearer ' + authTokens.accessToken
+            },
+        }).then((response) => {
+            //console.log('https://docs.google.com/gview?url=' + response.data);
+            window.open('https://docs.google.com/gview?url=' + response.data, '_blank');
+        }).catch(result => {
+            console.log('error');
+            console.log(result);
+        });
+    }
+
     $(function () {
-        $('.sci-table-checkbox').off().on('click', function(e) {
+        $('.sci-table-checkbox').off().on('click', function (e) {
             e.preventDefault();
         });
 
@@ -3065,6 +3200,67 @@ export default function StudentTasksPage() {
             setConclusionPP(PPOtchetVersions[id].advisorConclusion);
         });
 
+        $('.version-view-button').off().on('click', function (e) {
+            e.preventDefault();
+            var thisType = $(this).attr('id').split('-')[0];
+            var arrayId = $(this).attr('id').split('-')[2];
+            var versionId = -1;
+            switch (thisType) {
+                case 'nirTask':
+                    versionId = nirVersions[arrayId].systemVersionID;
+                    viewDoc(versionId);
+                    break;
+                case 'nirOtchet':
+                    versionId = nirOtchetVersions[arrayId].systemVersionID;
+                    viewDoc(versionId);
+                    break;
+                case 'longPPTask':
+                    versionId = longPPData[arrayId].systemVersionID;
+                    viewDoc(versionId);
+                    break;
+                case 'longPPOtchet':
+                    versionId = longPPOtchetVersions[arrayId].systemVersionID;
+                    viewDoc(versionId);
+                    break;
+                case 'ppTask':
+                    versionId = PPData[arrayId].systemVersionID;
+                    viewDoc(versionId);
+                    break;
+                case 'ppOtchet':
+                    versionId = PPOtchetVersions[arrayId].systemVersionID;
+                    viewDoc(versionId);
+                    break;
+                case 'vkrTask':
+                    versionId = vkrTaskVersions[arrayId].systemVersionID;
+                    viewDoc(versionId);
+                    break;
+                case 'vkrOtchet':
+                    versionId = vkrOtchetVersions[arrayId].systemVersionID;
+                    viewDoc(versionId);
+                    break;
+                case 'vkrDopusk':
+                    versionId = vkrDopuskVersions[arrayId].systemVersionID;
+                    viewDoc(versionId);
+                    break;
+                case 'vkrReview':
+                    versionId = vkrReviewVersions[arrayId].systemVersionID;
+                    viewDoc(versionId);
+                    break;
+                case 'vkrAntiplagiat':
+                    versionId = vkrAntiplagiatVersions[arrayId].systemVersionID;
+                    viewDoc(versionId);
+                    break;
+                case 'vkrPresentation':
+                    versionId = vkrPrezentationVersions[arrayId].systemVersionID;
+                    viewDoc(versionId);
+                    break;
+                case 'example':
+                    viewExample(arrayId);
+                    break;
+                default:
+                    console.log('View error');
+            }
+        })
     });
 
     return (

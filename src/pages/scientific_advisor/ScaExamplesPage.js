@@ -133,6 +133,15 @@ export default function ScaExamplesPage() {
             deleteButton.id = 'delete-button-' + i;
             deleteButton.className = 'sca-example-file-button size-24 light dark-background delete-button';
             deleteButton.innerText = 'Удалить';
+            deleteButton.style.width = '95px';
+
+            // Кнопка просмотреть
+            var viewButton = document.createElement('button');
+            viewButton.className = 'sca-example-file-button size-24 light dark-background version-view-button';
+            viewButton.id = 'example-view-' + i;
+            viewButton.innerText = 'Просмотреть';
+            viewButton.type = 'button';
+            viewButton.style.width = '140px';
 
             clickableDiv.appendChild(iconImage);
             textDiv.appendChild(exampleName);
@@ -140,6 +149,7 @@ export default function ScaExamplesPage() {
             textDiv.appendChild(examplePermissions);
             clickableDiv.appendChild(textDiv);
             exampleDiv.appendChild(clickableDiv);
+            exampleDiv.appendChild(viewButton);
             exampleDiv.appendChild(downloadButton);
             exampleDiv.appendChild(deleteButton);
             document.getElementById('examples-div').appendChild(exampleDiv);
@@ -358,6 +368,28 @@ export default function ScaExamplesPage() {
             var area = $('#dropdown-alter-area :selected').val();
             var project = $('#dropdown-alter-project :selected').val();
             alterExamplePermissions(example, area, project);
+        });
+
+        $('.version-view-button').off().on('click', function (e) {
+            e.preventDefault();
+            var arrayId = $(this).attr('id').split('-')[2];
+            axios({
+                url: apiURL + '/document/get/outer/link/single',
+                method: 'GET',
+                params: {
+                    'creatorID': examples[arrayId].systemCreatorID,
+                    'documentName': examples[arrayId].documentName,
+                },
+                headers: {
+                    'Authorization': 'Bearer ' + authTokens.accessToken
+                },
+            }).then((response) => {
+                //console.log('https://docs.google.com/gview?url=' + response.data);
+                window.open('https://docs.google.com/gview?url=' + response.data, '_blank');
+            }).catch(result => {
+                console.log('error');
+                console.log(result);
+            });
         });
 
     });

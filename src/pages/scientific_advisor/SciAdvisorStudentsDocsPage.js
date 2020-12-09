@@ -39,9 +39,8 @@ export default function SciAdvisorStudentsDocsPage() {
         });
     }
 
-    // TODO handle new file type
     function showFiles(documentArray) {
-        console.log(documentArray);
+        //console.log(documentArray);
         for (var i = 0; i < documentArray.length; i++) {
             var documentItem;
 
@@ -50,8 +49,6 @@ export default function SciAdvisorStudentsDocsPage() {
             var documentType = documentArray[i].documentType;
             var documentKind = documentArray[i].documentKind;
             var documentName;
-            // TODO add more version names
-            // TODO handle other stage documents
             switch (documentType) {
                 case 'Научно-исследовательская работа':
                     switch (documentKind) {
@@ -84,11 +81,11 @@ export default function SciAdvisorStudentsDocsPage() {
                 case 'Преддипломная практика':
                     switch (documentKind) {
                         case 'Задание':
-                            documentName = 'Задание по преддипломной практике';
+                            documentName = 'Задание по ПП';
                             documentItem = documentArray[i].taskVersions;
                             break;
                         case 'Отчёт':
-                            documentName = 'Отчет по преддипломной практике';
+                            documentName = 'Отчет по ПП';
                             documentItem = documentArray[i].reportVersions;
                             break;
                         default:
@@ -215,6 +212,14 @@ export default function SciAdvisorStudentsDocsPage() {
                     deleteButton.disabled = true;
                 }
 
+                // Кнопка просмотреть
+                var viewButton = document.createElement('button');
+                viewButton.className = 'light dark-background size-20 sca-scu-version-button version-view-button';
+                viewButton.innerText = 'Просмотреть';
+                viewButton.type = 'button';
+                viewButton.style.position = 'relative';
+                viewButton.style.top = '-54px';
+
                 var versionHeaderDiv = document.createElement('div');
                 versionHeaderDiv.className = 'sca-scu-version-header-div';
 
@@ -229,6 +234,7 @@ export default function SciAdvisorStudentsDocsPage() {
                 titlesDiv.appendChild(titleDiv2);
 
                 versionHeaderDiv.appendChild(titlesDiv);
+                versionHeaderDiv.appendChild(viewButton);
 
                 dropdownDiv.appendChild(sendButton);
                 dropdownContent.appendChild(statusOdobreno);
@@ -551,6 +557,25 @@ export default function SciAdvisorStudentsDocsPage() {
         });
     }
 
+    function viewDoc(versionId) {
+        axios({
+            url: apiURL + '/document/get/outer/link',
+            method: 'GET',
+            params: {
+                'versionID': versionId,
+            },
+            headers: {
+                'Authorization': 'Bearer ' + authTokens.accessToken
+            },
+        }).then((response) => {
+            //console.log('https://docs.google.com/gview?url=' + response.data);
+            window.open('https://docs.google.com/gview?url=' + response.data, '_blank');
+        }).catch(result => {
+            console.log('error');
+            console.log(result);
+        });
+    }
+
     $(function () {
         // Вывод меню статусов
         $('.version-send-button').off().on('click', function (event) {
@@ -659,7 +684,6 @@ export default function SciAdvisorStudentsDocsPage() {
 
         });
 
-        // TODO handle new document types
         // Скачать версию
         $('.version-download-button').off().on('click', function (event) {
             var documentId = $(this).parent().parent().attr('id');
@@ -727,6 +751,14 @@ export default function SciAdvisorStudentsDocsPage() {
                 default:
                     console.log('downloadError');
             }
+        });
+
+        $('.version-view-button').off().on('click', function (e) {
+            var documentId = $(this).parent().parent().attr('id');
+            var arrayID1 = documentId.split('-')[1];
+            var arrayID2 = documentId.split('-')[2];
+            var versionId = getVersionId(arrayID1, arrayID2);
+            viewDoc(versionId);
         });
 
         $('#checkNir').off().on('click', function (event) {

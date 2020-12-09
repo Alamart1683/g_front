@@ -25,13 +25,13 @@ export default function HocTemplatesPage() {
         axios({
             url: apiURL + '/document/view/templates',
             method: 'GET',
-            headers: { 
-                'Authorization': 'Bearer ' + authTokens.accessToken 
+            headers: {
+                'Authorization': 'Bearer ' + authTokens.accessToken
             },
-          }).then((response) => {
+        }).then((response) => {
             //console.log(response);
             setTemplates(response.data);
-          }).catch(result => {
+        }).catch(result => {
             console.log(result.data);
         });
     }
@@ -49,10 +49,11 @@ export default function HocTemplatesPage() {
             templateName.className = 'dark-background hoc-order-template-name';
             templateName.id = 'hoc-order-template-name';
             templateName.style.top = '-5px';
+            templateName.style.width = '660px';
 
             var templateNameText = document.createElement('p');
             templateNameText.className = 'hoc-order-template-name-text light size-22'
-            templateNameText.innerText=template.documentName;
+            templateNameText.innerText = template.documentName;
             templateNameText.style.maxHeight = '30px';
             templateNameText.style.maxWidth = '450px';
             templateNameText.style.overflow = 'hidden';
@@ -60,8 +61,8 @@ export default function HocTemplatesPage() {
             templateNameText.style.whiteSpace = 'nowrap';
 
             var templateNameImage = document.createElement('img');
-            templateNameImage.className='hoc-order-template-name-image'
-            templateNameImage.src=templateImage;
+            templateNameImage.className = 'hoc-order-template-name-image'
+            templateNameImage.src = templateImage;
 
             var templateDownload = document.createElement('button');
             templateDownload.className = 'hoc-order-template-download-button light size-22';
@@ -83,11 +84,19 @@ export default function HocTemplatesPage() {
                 templateStatus.innerText = 'Статус: Не одобрено';
             }
 
+            // Кнопка просмотреть
+            var viewButton = document.createElement('button');
+            viewButton.className = 'hoc-order-template-delete-button light size-22 version-view-button';
+            viewButton.id = 'template-view-' + i;
+            viewButton.innerText = 'Просмотреть';
+            viewButton.type = 'button';
+
             templateName.appendChild(templateNameImage);
             templateName.appendChild(templateNameText);
             templateName.appendChild(templateStatus);
 
             documentFile.appendChild(templateName);
+            documentFile.appendChild(viewButton);
             documentFile.appendChild(templateConfirm);
             documentFile.appendChild(templateDownload);
 
@@ -183,35 +192,57 @@ export default function HocTemplatesPage() {
                 console.log(result);
             });
         });
+
+        $('.version-view-button').off().on('click', function (e) {
+            e.preventDefault();
+            var arrayId = $(this).attr('id').split('-')[2];
+            axios({
+                url: apiURL + '/document/get/outer/link/single',
+                method: 'GET',
+                params: {
+                    'creatorID': templates[arrayId].systemCreatorID,
+                    'documentName': templates[arrayId].documentName,
+                },
+                headers: {
+                    'Authorization': 'Bearer ' + authTokens.accessToken
+                },
+            }).then((response) => {
+                //console.log('https://docs.google.com/gview?url=' + response.data);
+                window.open('https://docs.google.com/gview?url=' + response.data, '_blank');
+            }).catch(result => {
+                console.log('error');
+                console.log(result);
+            });
+        });
     });
 
-    return(
+    return (
         <div className='orders-templates-panel'>
             <div className='clearfix'>
-            <div className='hoc-templates-orders-buttons-panel' style={{height:'400px'}} id='hoc-templates-buttons-panel'>
-                <button type='button' className='size-22 light orders-templates-button orders-templates-button-selected' id='button-1'>
-                    Научно-исследовательская работа
+                <div className='hoc-templates-orders-buttons-panel' style={{ height: '400px' }} id='hoc-templates-buttons-panel'>
+                    <button type='button' className='size-22 light orders-templates-button orders-templates-button-selected' id='button-1'>
+                        Научно-исследовательская работа
                 </button>
 
-                <button type='button' className='size-22 light orders-templates-button ' id='button-2'>
-                    ПпППУиОПД
+                    <button type='button' className='size-22 light orders-templates-button ' id='button-2'>
+                        ПпППУиОПД
                 </button>
 
-                <button type='button' className='size-22 light orders-templates-button' id='button-3'>
-                    Преддипломная практика
+                    <button type='button' className='size-22 light orders-templates-button' id='button-3'>
+                        Преддипломная практика
                 </button>
 
-                <button type='button' className='size-22 light orders-templates-button' id='button-4'>
-                    Защита ВКР
+                    <button type='button' className='size-22 light orders-templates-button' id='button-4'>
+                        Защита ВКР
                 </button>
-            </div>
+                </div>
 
-            <div className='hoc-orders-templates-document-panel-common'> 
-                <div className='hoc-orders-templates-document-panel' id='hoc-templates-document-panel1'></div>
-                <div className='hoc-orders-templates-document-panel hoc-orders-templates-document-panel-hidden' id='hoc-templates-document-panel2'></div>
-                <div className='hoc-orders-templates-document-panel hoc-orders-templates-document-panel-hidden' id='hoc-templates-document-panel3'></div>
-                <div className='hoc-orders-templates-document-panel hoc-orders-templates-document-panel-hidden' id='hoc-templates-document-panel4'></div>
-            </div>
+                <div className='hoc-orders-templates-document-panel-common'>
+                    <div className='hoc-orders-templates-document-panel' id='hoc-templates-document-panel1'></div>
+                    <div className='hoc-orders-templates-document-panel hoc-orders-templates-document-panel-hidden' id='hoc-templates-document-panel2'></div>
+                    <div className='hoc-orders-templates-document-panel hoc-orders-templates-document-panel-hidden' id='hoc-templates-document-panel3'></div>
+                    <div className='hoc-orders-templates-document-panel hoc-orders-templates-document-panel-hidden' id='hoc-templates-document-panel4'></div>
+                </div>
             </div>
         </div>
     );

@@ -716,8 +716,8 @@ html, body {
 }
 
 .nir-version-clickable {
-	/*width: 670px;*/
-	width: 810px;
+	width: 670px;
+	/*width: 810px; */
 	height: 50px;
 	border-radius: 7px;
 	cursor: pointer;
@@ -729,7 +729,8 @@ html, body {
 }
 
 .nir-version-titles {
-	width: 810px;
+	width: 670px;
+	/*width: 810px; */
 	height: 50px;
 	border-radius: 7px;
 	display: inline-block;
@@ -1067,7 +1068,6 @@ html, body {
 	margin-left: 10px;
 	background-color: #89AFE0;;
 	border-radius: 7px;
-	border-width: 0px;
 }
 
 .template-doc-download:hover {
@@ -1152,7 +1152,7 @@ html, body {
 }
 
 .sca-scu-version-titles-div {
-	width: 860px;
+	width: 732px;
 	height: 90px;
 	display: inline-block;
 	position: relative;
@@ -1360,7 +1360,7 @@ html, body {
 
 .sca-example-file-clickable {
 	height: 90px;
-	width: 855px;
+	width: 735px;
 	border-radius: 7px;
 	float: left;
 }
@@ -1376,7 +1376,7 @@ html, body {
 .sca-example-text-div {
 	display: inline-block;
 	margin-left: 10px;
-	width: 740px;
+	width: 635px;
 	height: 86px;
 	white-space: nowrap;
 	overflow: hidden;
@@ -1688,7 +1688,7 @@ html, body {
 
 .hoc-order-name-div {
 	display: inline-block;
-	width: 802px;
+	width: 703px;
 	height: 125px;
 	border-radius: 7px;
 	position: relative;
@@ -1697,7 +1697,7 @@ html, body {
 
 .hoc-order-titles-div {
 	display: inline-block;
-	width: 720px;
+	width: 620px;
 	white-space: nowrap;
 	overflow: hidden;
   	text-overflow: ellipsis;

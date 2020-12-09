@@ -50,7 +50,7 @@ export default function OrdersPage() {
             var orderName = document.createElement('div');
             orderName.className = 'hoc-order-name-div dark-background';
             orderName.id = 'hoc-order-template-name';
-            orderName.style.width = '1240px';
+            orderName.style.width = '1030px';
 
             var orderNameImage = document.createElement('img');
             orderNameImage.className = 'hoc-order-template-name-image';
@@ -115,6 +115,17 @@ export default function OrdersPage() {
             orderDownload.style.top = '-62px';
             //orderDownload.style.display = 'inline-block';
             orderDownload.style.width = '200px';
+            
+            // Кнопка просмотреть
+            var viewButton = document.createElement('button');
+            viewButton.className = 'hoc-order-template-download-button light size-22 version-view-button';
+            viewButton.id = 'template-view-' + i;
+            viewButton.innerText = 'Просмотреть';
+            viewButton.style.height = '120px';
+            viewButton.style.width = '200px';
+            viewButton.style.position = 'relative';
+            viewButton.style.top = '-62px';
+            viewButton.type = 'button';
 
             orderName.appendChild(orderNameImage);
 
@@ -128,6 +139,7 @@ export default function OrdersPage() {
             orderName.appendChild(orderTitles);
 
             orderFile.appendChild(orderName);
+            orderFile.appendChild(viewButton);
             orderFile.appendChild(orderDownload);
 
             switch (order.documentType) {
@@ -153,9 +165,7 @@ export default function OrdersPage() {
         // Скачать приказ
         $('.hoc-order-template-download-button').off().on('click', function (event) {
             var systemDocumentId = $(this).attr('id');
-            // console.log(systemDocumentId);
             var arrayID = systemDocumentId.split('-')[2];
-            // console.log(arrayID);
             axios({
                 url: apiURL + '/document/download/',
                 method: 'GET',
@@ -203,6 +213,27 @@ export default function OrdersPage() {
             }
         })
 
+        $('.version-view-button').off().on('click', function (e) {
+            e.preventDefault();
+            var arrayId = $(this).attr('id').split('-')[2];
+            axios({
+                url: apiURL + '/document/get/outer/link/single',
+                method: 'GET',
+                params: {
+                    'creatorID': orders[arrayId].systemCreatorID,
+                    'documentName': orders[arrayId].documentName,
+                },
+                headers: {
+                    'Authorization': 'Bearer ' + authTokens.accessToken
+                },
+            }).then((response) => {
+                //console.log('https://docs.google.com/gview?url=' + response.data);
+                window.open('https://docs.google.com/gview?url=' + response.data, '_blank');
+            }).catch(result => {
+                console.log('error');
+                console.log(result);
+            });
+        });
     });
 
     return (

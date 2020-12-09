@@ -89,11 +89,13 @@ export default function AdminOrdersPage() {
             orderStartDate.className = 'hoc-order-template-name-text light size-20';
             orderStartDate.innerText = 'Дата начала: ' + order.startDate;
             orderStartDate.style.marginBottom = '0px';
+            orderStartDate.style.marginLeft = '10px';
 
             var orderEndDate = document.createElement('p');
             orderEndDate.className = 'hoc-order-template-name-text light size-20';
             orderEndDate.innerText = 'Дата конца: ' + order.endDate;
             orderEndDate.style.marginBottom = '0px';
+            orderEndDate.style.marginLeft = '10px';
 
             var orderStatus = document.createElement('p');
             orderStatus.className = 'hoc-order-template-name-text light size-20';
@@ -112,6 +114,7 @@ export default function AdminOrdersPage() {
             orderDownload.id = 'hoc-order-download-button';
             orderDownload.innerText = "Сохранить";
             orderDownload.style.height = '120px'
+            orderDownload.style.width = '105px';
             orderDownload.style.position = 'relative';
             orderDownload.style.top = '-62px';
 
@@ -120,8 +123,21 @@ export default function AdminOrdersPage() {
             orderDelete.id = 'hoc-order-delete-button';
             orderDelete.innerText = "Удалить";
             orderDelete.style.height = '120px'
+            orderDelete.style.width = '100px';
             orderDelete.style.position = 'relative';
             orderDelete.style.top = '-62px';
+            
+            // Кнопка просмотреть
+            var viewButton = document.createElement('button');
+            viewButton.className = 'hoc-order-template-delete-button light size-22 version-view-button';
+            viewButton.id = 'order-view-' + i;
+            viewButton.innerText = 'Просмотреть';
+            viewButton.type = 'button';
+            viewButton.style.height = '120px';
+            viewButton.style.width = '135px';
+            viewButton.style.position = 'relative';
+            viewButton.style.top = '-62px';
+            viewButton.type = 'button';
 
             orderName.appendChild(orderNameImage);
 
@@ -135,6 +151,7 @@ export default function AdminOrdersPage() {
             orderName.appendChild(orderTitles);
 
             orderFile.appendChild(orderName);
+            orderFile.appendChild(viewButton);
             orderFile.appendChild(orderDownload);
             orderFile.appendChild(orderDelete);
 
@@ -331,6 +348,27 @@ export default function AdminOrdersPage() {
             $('#order-file-input').trigger('click');
         });
 
+        $('.version-view-button').off().on('click', function (e) {
+            e.preventDefault();
+            var arrayId = $(this).attr('id').split('-')[2];
+            axios({
+                url: apiURL + '/document/get/outer/link/single',
+                method: 'GET',
+                params: {
+                    'creatorID': orders[arrayId].systemCreatorID,
+                    'documentName': orders[arrayId].documentName,
+                },
+                headers: {
+                    'Authorization': 'Bearer ' + authTokens.accessToken
+                },
+            }).then((response) => {
+                //console.log('https://docs.google.com/gview?url=' + response.data);
+                window.open('https://docs.google.com/gview?url=' + response.data, '_blank');
+            }).catch(result => {
+                console.log('error');
+                console.log(result);
+            });
+        });
     });
 
     return (

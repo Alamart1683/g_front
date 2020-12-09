@@ -47,6 +47,7 @@ export default function TemplatesPage() {
             var templateName = document.createElement('div');
             templateName.className = 'template-name light-background';
             templateName.id = 'template-doc-name';
+            templateName.style.width = '900px';
 
             var templateNameText = document.createElement('p');
             templateNameText.className = 'template-name-text light size-24'
@@ -71,7 +72,17 @@ export default function TemplatesPage() {
             templateDownload.style.position = 'relative';
             templateDownload.style.top = '-17px';
 
+            // Кнопка просмотреть
+            var viewButton = document.createElement('button');
+            viewButton.className = 'template-doc-download light size-24 version-view-button';
+            viewButton.id = 'template-view-' + i;
+            viewButton.innerText = 'Просмотреть';
+            viewButton.type = 'button';
+            viewButton.style.position = 'relative';
+            viewButton.style.top = '1px';
+
             documentFile.appendChild(templateName);
+            documentFile.appendChild(viewButton);
             documentFile.appendChild(templateDownload);
 
             switch (template.documentType) {
@@ -146,6 +157,29 @@ export default function TemplatesPage() {
                     console.log('switchError');
             }
         })
+
+        $('.version-view-button').off().on('click', function (e) {
+            e.preventDefault();
+            var arrayId = $(this).attr('id').split('-')[2];
+            axios({
+                url: apiURL + '/document/get/outer/link/single',
+                method: 'GET',
+                params: {
+                    'creatorID': templates[arrayId].systemCreatorID,
+                    'documentName': templates[arrayId].documentName,
+                },
+                headers: {
+                    'Authorization': 'Bearer ' + authTokens.accessToken
+                },
+            }).then((response) => {
+                //console.log('https://docs.google.com/gview?url=' + response.data);
+                window.open('https://docs.google.com/gview?url=' + response.data, '_blank');
+            }).catch(result => {
+                console.log('error');
+                console.log(result);
+            });
+        });
+
     });
 
     return (

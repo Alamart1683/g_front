@@ -45,6 +45,7 @@ export default function StudentExamplesPage() {
 
             var titleDiv = document.createElement('div');
             titleDiv.className = 'student-example-title dark-background';
+            titleDiv.style.width = '900px';
 
             var exampleImage = document.createElement('img');
             exampleImage.className = 'order-name-image'
@@ -59,9 +60,17 @@ export default function StudentExamplesPage() {
             exampleDownload.id = 'example-download-' + i;
             exampleDownload.innerText = "Сохранить образец";
 
+            // Кнопка просмотреть
+            var viewButton = document.createElement('button');
+            viewButton.className = 'student-example-download light size-24 version-view-button';
+            viewButton.id = 'example-view-' + i;
+            viewButton.innerText = 'Просмотреть';
+            viewButton.type = 'button';
+
             titleDiv.appendChild(exampleImage);
             titleDiv.appendChild(exampleName);
             exampleDiv.appendChild(titleDiv);
+            exampleDiv.appendChild(viewButton);
             exampleDiv.appendChild(exampleDownload);
             switch (example.documentType) {
                 case 'Научно-исследовательская работа':
@@ -130,6 +139,28 @@ export default function StudentExamplesPage() {
 
             }).catch(result => {
                 console.log(result.data);
+            });
+        });
+        
+        $('.version-view-button').off().on('click', function (e) {
+            e.preventDefault();
+            var arrayId = $(this).attr('id').split('-')[2];
+            axios({
+                url: apiURL + '/document/get/outer/link/single',
+                method: 'GET',
+                params: {
+                    'creatorID': examples[arrayId].systemCreatorID,
+                    'documentName': examples[arrayId].documentName,
+                },
+                headers: {
+                    'Authorization': 'Bearer ' + authTokens.accessToken
+                },
+            }).then((response) => {
+                //console.log('https://docs.google.com/gview?url=' + response.data);
+                window.open('https://docs.google.com/gview?url=' + response.data, '_blank');
+            }).catch(result => {
+                console.log('error');
+                console.log(result);
             });
         });
     });

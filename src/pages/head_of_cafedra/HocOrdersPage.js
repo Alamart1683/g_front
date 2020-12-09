@@ -29,7 +29,7 @@ export default function HocOrdersPage() {
                 'Authorization': 'Bearer ' + authTokens.accessToken
             },
         }).then((response) => {
-            console.log(response.data);
+            //console.log(response.data);
             setOrders(response.data);
         }).catch(result => {
             console.log(result.data);
@@ -85,18 +85,21 @@ export default function HocOrdersPage() {
             var orderStartDate = document.createElement('p');
             orderStartDate.className = 'hoc-order-template-name-text light size-20';
             orderStartDate.innerText = 'Дата начала: ' + order.startDate;
+            orderStartDate.style.marginLeft = '10px';
             orderStartDate.style.marginBottom = '0px';
 
             var orderEndDate = document.createElement('p');
             orderEndDate.className = 'hoc-order-template-name-text light size-20';
             orderEndDate.innerText = 'Дата конца: ' + order.endDate;
             orderEndDate.style.marginBottom = '0px';
+            orderEndDate.style.marginLeft = '10px';
 
             var orderDownload = document.createElement('button');
             orderDownload.className = 'hoc-order-template-download-button light size-22';
             orderDownload.id = 'hoc-order-download-button';
             orderDownload.innerText = "Сохранить";
-            orderDownload.style.height = '120px'
+            orderDownload.style.height = '120px';
+            orderDownload.style.width = '105px';
             orderDownload.style.position = 'relative';
             orderDownload.style.top = '-62px';
 
@@ -104,7 +107,8 @@ export default function HocOrdersPage() {
             orderConfirm.className = 'hoc-order-template-delete-button light size-22 hoc-order-template-confirm-button';
             orderConfirm.id = 'confirm-button-' + i;
             orderConfirm.innerText = 'Одобрить';
-            orderConfirm.style.height = '120px'
+            orderConfirm.style.height = '120px';
+            orderConfirm.style.width = '100px';
             orderConfirm.style.position = 'relative';
             orderConfirm.style.top = '-62px';
 
@@ -120,6 +124,17 @@ export default function HocOrdersPage() {
             orderStatus.style.display = 'block';
             orderStatus.style.marginTop = '-6px';
             orderStatus.style.marginBottom = '0px';
+            
+            // Кнопка просмотреть
+            var viewButton = document.createElement('button');
+            viewButton.className = 'hoc-order-template-download-button light size-22 version-view-button';
+            viewButton.id = 'template-view-' + i;
+            viewButton.innerText = 'Просмотреть';
+            viewButton.style.height = '120px';
+            viewButton.style.width = '135px';
+            viewButton.style.position = 'relative';
+            viewButton.style.top = '-62px';
+            viewButton.type = 'button';
 
             orderName.appendChild(orderNameImage);
 
@@ -133,6 +148,7 @@ export default function HocOrdersPage() {
             orderName.appendChild(orderTitles);
 
             orderFile.appendChild(orderName);
+            orderFile.appendChild(viewButton);
             orderFile.appendChild(orderConfirm);
             orderFile.appendChild(orderDownload);
 
@@ -232,6 +248,28 @@ export default function HocOrdersPage() {
 
         $('#create-order-button').off().on('click', function () {
             $('#order-file-input').trigger('click');
+        });
+
+        $('.version-view-button').off().on('click', function (e) {
+            e.preventDefault();
+            var arrayId = $(this).attr('id').split('-')[2];
+            axios({
+                url: apiURL + '/document/get/outer/link/single',
+                method: 'GET',
+                params: {
+                    'creatorID': orders[arrayId].systemCreatorID,
+                    'documentName': orders[arrayId].documentName,
+                },
+                headers: {
+                    'Authorization': 'Bearer ' + authTokens.accessToken
+                },
+            }).then((response) => {
+                //console.log('https://docs.google.com/gview?url=' + response.data);
+                window.open('https://docs.google.com/gview?url=' + response.data, '_blank');
+            }).catch(result => {
+                console.log('error');
+                console.log(result);
+            });
         });
 
     });

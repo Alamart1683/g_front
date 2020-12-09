@@ -15,6 +15,7 @@ export default function ScaStuViewPage() {
     const { authTokens } = useAuthContext();
     const [fetchedData, setFetchedData] = useState(false);
     const [studentData, setStudentData] = useState([]);
+    const [themeConfirmed, setThemeConfirmed] = useState('');
 
     // Задание на НИР
     const [nirVersions, setNirVersions] = useState([]);
@@ -139,14 +140,11 @@ export default function ScaStuViewPage() {
 
     // Заполнение таблицы студентов
     function showStudent(item, i) {
-        //console.log(item);
+        console.log(item);
 
         var student = document.createElement('tr');
         student.id = 'student' + i;
         student.className = 'size-20 dark';
-
-        var studentNum = document.createElement('th');
-        studentNum.innerText = i + 1;
 
         // Имя студента
         var studentFio = document.createElement('th');
@@ -178,12 +176,13 @@ export default function ScaStuViewPage() {
 
         // Тема студента
         var studentTheme = document.createElement('th');
+        setStudentTheme(item.studentVkrTheme);
         studentTheme.innerText = item.studentVkrTheme;
         if (item.studentVkrThemeEditable) {
-            studentTheme.innerText += ' - Не одобрено';
+            setThemeConfirmed('Не одобрена');
         }
         else {
-            studentTheme.innerText += ' - Одобрено';
+            setThemeConfirmed('Одобрена');
         }
         studentTheme.style.overflow = 'hidden';
         studentTheme.style.textOverflow = 'ellipsis';
@@ -359,14 +358,6 @@ export default function ScaStuViewPage() {
 
         var vkrPresentationDiv = document.createElement('div');
 
-        var studentButtonTh = document.createElement('th');
-        var studentButton = document.createElement('button');
-        studentButton.style.minWidth = '100px';
-        studentButton.className = 'student-table-button';
-        studentButton.innerText = 'Перейти к студенту';
-        studentButton.id = 'student-table-button-' + i;
-
-        student.appendChild(studentNum);
         studentFio.appendChild(popover);
         student.appendChild(studentFio);
 
@@ -612,10 +603,17 @@ export default function ScaStuViewPage() {
             var clickableArea = document.createElement('div');
             clickableArea.className = 'nir-version-titles';
 
+            // Кнопка просмотреть
+            var viewButton = document.createElement('button');
+            viewButton.className = 'dark size-24 nir-version-header-button version-view-button';
+            viewButton.id = 'vkrDopusk-view-' + i;
+            viewButton.innerText = 'Просмотреть';
+            viewButton.type = 'button';
+
             clickableArea.appendChild(versionName);
             clickableArea.appendChild(versionStatus);
             nirVersionHeader.appendChild(clickableArea);
-
+            nirVersionHeader.appendChild(viewButton);
             dropdownDiv.appendChild(sendButton);
             dropdownContent.appendChild(statusOdobreno);
             dropdownContent.appendChild(statusZamechaniya);
@@ -694,9 +692,17 @@ export default function ScaStuViewPage() {
             var clickableArea = document.createElement('div');
             clickableArea.className = 'nir-version-titles';
 
+            // Кнопка просмотреть
+            var viewButton = document.createElement('button');
+            viewButton.className = 'dark size-24 nir-version-header-button version-view-button';
+            viewButton.id = 'vkrReview-view-' + i;
+            viewButton.innerText = 'Просмотреть';
+            viewButton.type = 'button';
+
             clickableArea.appendChild(versionName);
             clickableArea.appendChild(versionStatus);
             nirVersionHeader.appendChild(clickableArea);
+            nirVersionHeader.appendChild(viewButton);
 
             dropdownDiv.appendChild(sendButton);
             dropdownContent.appendChild(statusOdobreno);
@@ -776,9 +782,17 @@ export default function ScaStuViewPage() {
             var clickableArea = document.createElement('div');
             clickableArea.className = 'nir-version-titles';
 
+            // Кнопка просмотреть
+            var viewButton = document.createElement('button');
+            viewButton.className = 'dark size-24 nir-version-header-button version-view-button';
+            viewButton.id = 'vkrAntiplagiat-view-' + i;
+            viewButton.innerText = 'Просмотреть';
+            viewButton.type = 'button';
+
             clickableArea.appendChild(versionName);
             clickableArea.appendChild(versionStatus);
             nirVersionHeader.appendChild(clickableArea);
+            nirVersionHeader.appendChild(viewButton);
 
             dropdownDiv.appendChild(sendButton);
             dropdownContent.appendChild(statusOdobreno);
@@ -858,9 +872,17 @@ export default function ScaStuViewPage() {
             var clickableArea = document.createElement('div');
             clickableArea.className = 'nir-version-titles';
 
+            // Кнопка просмотреть
+            var viewButton = document.createElement('button');
+            viewButton.className = 'dark size-24 nir-version-header-button version-view-button';
+            viewButton.id = 'vkrPresentation-view-' + i;
+            viewButton.innerText = 'Просмотреть';
+            viewButton.type = 'button';
+
             clickableArea.appendChild(versionName);
             clickableArea.appendChild(versionStatus);
             nirVersionHeader.appendChild(clickableArea);
+            nirVersionHeader.appendChild(viewButton);
 
             dropdownDiv.appendChild(sendButton);
             dropdownContent.appendChild(statusOdobreno);
@@ -1007,9 +1029,17 @@ export default function ScaStuViewPage() {
                 var columnDiv2 = document.createElement('div');
                 columnDiv2.className = 'info-column';
 
+                // Кнопка просмотреть
+                var viewButton = document.createElement('button');
+                viewButton.className = 'dark size-24 nir-version-header-button version-view-button';
+                viewButton.id = 'nirTask-view-' + i;
+                viewButton.innerText = 'Просмотреть';
+                viewButton.type = 'button';
+
                 clickableArea.appendChild(versionName);
                 clickableArea.appendChild(versionStatus);
                 nirVersionHeader.appendChild(clickableArea);
+                nirVersionHeader.appendChild(viewButton);
 
                 dropdownDiv.appendChild(sendButton);
                 dropdownContent.appendChild(statusOdobreno);
@@ -1171,9 +1201,17 @@ export default function ScaStuViewPage() {
                 var columnDiv2 = document.createElement('div');
                 columnDiv2.className = 'info-column';
 
+                // Кнопка просмотреть
+                var viewButton = document.createElement('button');
+                viewButton.className = 'dark size-24 nir-version-header-button version-view-button';
+                viewButton.id = 'longPPTask-view-' + i;
+                viewButton.innerText = 'Просмотреть';
+                viewButton.type = 'button';
+
                 clickableArea.appendChild(versionName);
                 clickableArea.appendChild(versionStatus);
                 nirVersionHeader.appendChild(clickableArea);
+                nirVersionHeader.appendChild(viewButton);
 
                 dropdownDiv.appendChild(sendButton);
                 dropdownContent.appendChild(statusOdobreno);
@@ -1335,9 +1373,17 @@ export default function ScaStuViewPage() {
                 var columnDiv2 = document.createElement('div');
                 columnDiv2.className = 'info-column';
 
+                // Кнопка просмотреть
+                var viewButton = document.createElement('button');
+                viewButton.className = 'dark size-24 nir-version-header-button version-view-button';
+                viewButton.id = 'ppTask-view-' + i;
+                viewButton.innerText = 'Просмотреть';
+                viewButton.type = 'button';
+
                 clickableArea.appendChild(versionName);
                 clickableArea.appendChild(versionStatus);
                 nirVersionHeader.appendChild(clickableArea);
+                nirVersionHeader.appendChild(viewButton);
 
                 dropdownDiv.appendChild(sendButton);
                 dropdownContent.appendChild(statusOdobreno);
@@ -1490,9 +1536,17 @@ export default function ScaStuViewPage() {
                 var columnDiv2 = document.createElement('div');
                 columnDiv2.className = 'info-column';
 
+                // Кнопка просмотреть
+                var viewButton = document.createElement('button');
+                viewButton.className = 'dark size-24 nir-version-header-button version-view-button';
+                viewButton.id = 'vkrTask-view-' + i;
+                viewButton.innerText = 'Просмотреть';
+                viewButton.type = 'button';
+
                 clickableArea.appendChild(versionName);
                 clickableArea.appendChild(versionStatus);
                 nirVersionHeader.appendChild(clickableArea);
+                nirVersionHeader.appendChild(viewButton);
 
                 dropdownDiv.appendChild(sendButton);
                 dropdownContent.appendChild(statusOdobreno);
@@ -1626,9 +1680,17 @@ export default function ScaStuViewPage() {
                 var columnDiv2 = document.createElement('div');
                 columnDiv2.className = 'info-column';
 
+                // Кнопка просмотреть
+                var viewButton = document.createElement('button');
+                viewButton.className = 'dark size-24 nir-version-header-button version-view-button';
+                viewButton.id = 'nirOtchet-view-' + i;
+                viewButton.innerText = 'Просмотреть';
+                viewButton.type = 'button';
+
                 clickableArea.appendChild(versionName);
                 clickableArea.appendChild(versionStatus);
                 nirVersionHeader.appendChild(clickableArea);
+                nirVersionHeader.appendChild(viewButton);
 
                 dropdownDiv.appendChild(sendButton);
                 dropdownContent.appendChild(statusOdobreno);
@@ -1758,9 +1820,17 @@ export default function ScaStuViewPage() {
             var columnDiv2 = document.createElement('div');
             columnDiv2.className = 'info-column';
 
+            // Кнопка просмотреть
+            var viewButton = document.createElement('button');
+            viewButton.className = 'dark size-24 nir-version-header-button version-view-button';
+            viewButton.id = 'longPPOtchet-view-' + i;
+            viewButton.innerText = 'Просмотреть';
+            viewButton.type = 'button';
+
             clickableArea.appendChild(versionName);
             clickableArea.appendChild(versionStatus);
             nirVersionHeader.appendChild(clickableArea);
+            nirVersionHeader.appendChild(viewButton);
 
             dropdownDiv.appendChild(sendButton);
             dropdownContent.appendChild(statusOdobreno);
@@ -1889,9 +1959,17 @@ export default function ScaStuViewPage() {
             var columnDiv2 = document.createElement('div');
             columnDiv2.className = 'info-column';
 
+            // Кнопка просмотреть
+            var viewButton = document.createElement('button');
+            viewButton.className = 'dark size-24 nir-version-header-button version-view-button';
+            viewButton.id = 'ppOtchet-view-' + i;
+            viewButton.innerText = 'Просмотреть';
+            viewButton.type = 'button';
+
             clickableArea.appendChild(versionName);
             clickableArea.appendChild(versionStatus);
             nirVersionHeader.appendChild(clickableArea);
+            nirVersionHeader.appendChild(viewButton);
 
             dropdownDiv.appendChild(sendButton);
             dropdownContent.appendChild(statusOdobreno);
@@ -1980,9 +2058,17 @@ export default function ScaStuViewPage() {
             var clickableArea = document.createElement('div');
             clickableArea.className = 'nir-version-titles';
 
+            // Кнопка просмотреть
+            var viewButton = document.createElement('button');
+            viewButton.className = 'dark size-24 nir-version-header-button version-view-button';
+            viewButton.id = 'vkrOtchet-view-' + i;
+            viewButton.innerText = 'Просмотреть';
+            viewButton.type = 'button';
+
             clickableArea.appendChild(versionName);
             clickableArea.appendChild(versionStatus);
             nirVersionHeader.appendChild(clickableArea);
+            nirVersionHeader.appendChild(viewButton);
 
             dropdownDiv.appendChild(sendButton);
             dropdownContent.appendChild(statusOdobreno);
@@ -2186,6 +2272,25 @@ export default function ScaStuViewPage() {
             //console.log(response)
             window.location.reload(true);
         }).catch(result => {
+            console.log(result);
+        });
+    }
+
+    function viewDoc(versionId) {
+        axios({
+            url: apiURL + '/document/get/outer/link',
+            method: 'GET',
+            params: {
+                'versionID': versionId,
+            },
+            headers: {
+                'Authorization': 'Bearer ' + authTokens.accessToken
+            },
+        }).then((response) => {
+            //console.log('https://docs.google.com/gview?url=' + response.data);
+            window.open('https://docs.google.com/gview?url=' + response.data, '_blank');
+        }).catch(result => {
+            console.log('error');
             console.log(result);
         });
     }
@@ -3122,17 +3227,74 @@ export default function ScaStuViewPage() {
             setVkrTasks(vkrTaskVersions[arrayID].vkrTasks);
         });
 
+        $('.version-view-button').off().on('click', function (e) {
+            e.preventDefault();
+            var thisType = $(this).attr('id').split('-')[0];
+            var arrayId = $(this).attr('id').split('-')[2];
+            var versionId = -1;
+            switch (thisType) {
+                case 'nirTask':
+                    versionId = nirVersions[arrayId].systemVersionID;
+                    viewDoc(versionId);
+                    break;
+                case 'nirOtchet':
+                    versionId = nirOtchetVersions[arrayId].systemVersionID;
+                    viewDoc(versionId);
+                    break;
+                case 'longPPTask':
+                    versionId = longPPData[arrayId].systemVersionID;
+                    viewDoc(versionId);
+                    break;
+                case 'longPPOtchet':
+                    versionId = longPPOtchetVersions[arrayId].systemVersionID;
+                    viewDoc(versionId);
+                    break;
+                case 'ppTask':
+                    versionId = PPData[arrayId].systemVersionID;
+                    viewDoc(versionId);
+                    break;
+                case 'ppOtchet':
+                    versionId = PPOtchetVersions[arrayId].systemVersionID;
+                    viewDoc(versionId);
+                    break;
+                case 'vkrTask':
+                    versionId = vkrTaskVersions[arrayId].systemVersionID;
+                    viewDoc(versionId);
+                    break;
+                case 'vkrOtchet':
+                    versionId = vkrOtchetVersions[arrayId].systemVersionID;
+                    viewDoc(versionId);
+                    break;
+                case 'vkrDopusk':
+                    versionId = vkrDopuskVersions[arrayId].systemVersionID;
+                    viewDoc(versionId);
+                    break;
+                case 'vkrReview':
+                    versionId = vkrReviewVersions[arrayId].systemVersionID;
+                    viewDoc(versionId);
+                    break;
+                case 'vkrAntiplagiat':
+                    versionId = vkrAntiplagiatVersions[arrayId].systemVersionID;
+                    viewDoc(versionId);
+                    break;
+                case 'vkrPresentation':
+                    versionId = vkrPrezentationVersions[arrayId].systemVersionID;
+                    viewDoc(versionId);
+                    break;
+                default:
+                    console.log('View error');
+            }
+        })
     });
 
     return (
         <div>
             <div className='sci-advisor-students-form'>
-                <Table striped bordered hover>
+                <Table striped bordered hover style={{ width: '1488px', marginLeft: 'auto', marginRight: 'auto', }}>
                     <thead className='size-24 dark'>
                         <tr>
-                            <th>#</th>
                             <th>ФИО</th>
-                            <th>Тема</th>
+                            <th>Тема - {themeConfirmed}</th>
                             <th style={{ minWidth: '203px' }}>НИР</th>
                             <th style={{ minWidth: '278px' }}>ПпППУиОПД</th>
                             <th style={{ minWidth: '193px' }}>ПП</th>
