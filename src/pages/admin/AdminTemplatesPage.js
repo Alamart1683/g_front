@@ -12,6 +12,7 @@ export default function AdminTemplatesPage() {
     const [fetchedData, setFetchedData] = useState(false);
     const [templates, setTemplates] = useState([]);
 
+    const [stage, setStage] = useState('Шаблон задания на НИР');
     const [show, setShow] = useState(false);
 
     useEffect(() => {
@@ -89,7 +90,7 @@ export default function AdminTemplatesPage() {
             templateDelete.className = 'hoc-order-template-delete-button light size-22';
             templateDelete.id = 'hoc-template-delete-button';
             templateDelete.innerText = "Удалить";
-            
+
             // Кнопка просмотреть
             var viewButton = document.createElement('button');
             viewButton.className = 'hoc-order-template-delete-button light size-22 version-view-button';
@@ -180,15 +181,19 @@ export default function AdminTemplatesPage() {
             $(this).addClass('orders-templates-button-selected');
             switch (buttonId) {
                 case 'button-1':
+                    setStage('Шаблон задания на НИР');
                     $('#hoc-templates-document-panel1').removeClass('hoc-orders-templates-document-panel-hidden');
                     break;
                 case 'button-2':
+                    setStage('Шаблон задания на ПпППУиОПД');
                     $('#hoc-templates-document-panel2').removeClass('hoc-orders-templates-document-panel-hidden');
                     break;
                 case 'button-3':
+                    setStage('Шаблон задания на ПП');
                     $('#hoc-templates-document-panel3').removeClass('hoc-orders-templates-document-panel-hidden');
                     break;
                 case 'button-4':
+                    setStage('Шаблон задания на ВКР');
                     $('#hoc-templates-document-panel4').removeClass('hoc-orders-templates-document-panel-hidden');
                     break;
                 default:
@@ -293,17 +298,21 @@ export default function AdminTemplatesPage() {
                     <button type='button' className='size-22 light orders-templates-button' id='button-4'>
                         Защита ВКР
                 </button>
-
-                    <button type='button' onClick={(e) => { setShow(true); }} className='size-22 light orders-templates-upload-button' id='upload-button'>
-                        Загрузить шаблон
-                </button>
                 </div>
 
                 <div className='hoc-orders-templates-document-panel-common'>
-                    <div className='hoc-orders-templates-document-panel' id='hoc-templates-document-panel1'></div>
-                    <div className='hoc-orders-templates-document-panel hoc-orders-templates-document-panel-hidden' id='hoc-templates-document-panel2'></div>
-                    <div className='hoc-orders-templates-document-panel hoc-orders-templates-document-panel-hidden' id='hoc-templates-document-panel3'></div>
-                    <div className='hoc-orders-templates-document-panel hoc-orders-templates-document-panel-hidden' id='hoc-templates-document-panel4'></div>
+                    <div className='hoc-orders-templates-document-panel' id='hoc-templates-document-panel1'>
+                        <button type='button' onClick={(e) => { setShow(true); }} className='dark-background light size-32 admin-upload-button' style={{height:'90px'}}>Загрузить шаблон</button>
+                    </div>
+                    <div className='hoc-orders-templates-document-panel hoc-orders-templates-document-panel-hidden' id='hoc-templates-document-panel2'>
+                        <button type='button' onClick={(e) => { setShow(true); }} className='dark-background light size-32 admin-upload-button' style={{height:'90px'}}>Загрузить шаблон</button>
+                    </div>
+                    <div className='hoc-orders-templates-document-panel hoc-orders-templates-document-panel-hidden' id='hoc-templates-document-panel3'>
+                        <button type='button' onClick={(e) => { setShow(true); }} className='dark-background light size-32 admin-upload-button' style={{height:'90px'}}>Загрузить шаблон</button>
+                    </div>
+                    <div className='hoc-orders-templates-document-panel hoc-orders-templates-document-panel-hidden' id='hoc-templates-document-panel4'>
+                        <button type='button' onClick={(e) => { setShow(true); }} className='dark-background light size-32 admin-upload-button' style={{height:'90px'}}>Загрузить шаблон</button>
+                    </div>
                 </div>
             </div>
             <Modal centered show={show} onHide={(e) => { setShow(false); }} className='dark'>
@@ -313,7 +322,7 @@ export default function AdminTemplatesPage() {
                     </Modal.Title>
                 </Modal.Header>
                 <Modal.Body className='light-background sca-examples-modal1-body'>
-                    <select id='dropdown-template-type' defaultValue='' className='dark size-24 sca-examples-dropdown' onChange={(e) => {
+                    <select id='dropdown-template-type' defaultValue={stage} className='dark size-24 sca-examples-dropdown' onChange={(e) => {
                         if ($('#dropdown-template-type :selected').val() !== '') {
                             document.getElementById('create-template-button').disabled = false;
                         }

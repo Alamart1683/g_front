@@ -1620,7 +1620,7 @@ html, body {
 
 .hoc-templates-orders-buttons-panel {
 	width: 380px;
-	height: 496px;
+	height: 399px;
 	border-radius: 7px;
 	background-color: #B2CAEE;
 	float: left;
@@ -1853,4 +1853,12 @@ html, body {
 	border-radius: 7px;
 	font-size: 24px;
 	padding-left: 10px;
+}
+
+.admin-upload-button {
+	width:1087px;
+	height: 125px;
+	border-radius: 7px;
+	margin-left: 10px;
+	margin-top: 5px;
 }

@@ -12,6 +12,7 @@ export default function AdminOrdersPage() {
     const [fetchedData, setFetchedData] = useState(false);
     const [orders, setOrders] = useState([]);
 
+    const [stage, setStage] = useState('Приказ об организации НИР');
     const [show, setShow] = useState(false);
 
     useEffect(() => {
@@ -126,7 +127,7 @@ export default function AdminOrdersPage() {
             orderDelete.style.width = '100px';
             orderDelete.style.position = 'relative';
             orderDelete.style.top = '-62px';
-            
+
             // Кнопка просмотреть
             var viewButton = document.createElement('button');
             viewButton.className = 'hoc-order-template-delete-button light size-22 version-view-button';
@@ -280,15 +281,19 @@ export default function AdminOrdersPage() {
             $(this).addClass('orders-templates-button-selected');
             switch (buttonId) {
                 case 'button-1':
+                    setStage('Приказ об организации НИР');
                     $('#hoc-orders-document-panel1').removeClass('hoc-orders-templates-document-panel-hidden');
                     break;
                 case 'button-2':
+                    setStage('Приказ об организации ПпППУиОПД');
                     $('#hoc-orders-document-panel2').removeClass('hoc-orders-templates-document-panel-hidden');
                     break;
                 case 'button-3':
+                    setStage('Приказ об организации ПП');
                     $('#hoc-orders-document-panel3').removeClass('hoc-orders-templates-document-panel-hidden');
                     break;
                 case 'button-4':
+                    setStage('Приказ об организации ВКР');
                     $('#hoc-orders-document-panel4').removeClass('hoc-orders-templates-document-panel-hidden');
                     break;
                 default:
@@ -377,30 +382,35 @@ export default function AdminOrdersPage() {
                 <div className='hoc-templates-orders-buttons-panel' id='hoc-orders-buttons-panel'>
                     <button type='button' className='size-22 light orders-templates-button orders-templates-button-selected' id='button-1'>
                         Научно-исследовательская работа
-                </button>
+                    </button>
 
                     <button type='button' className='size-22 light orders-templates-button' id='button-2'>
                         ПпППУиОПД
-                </button>
+                    </button>
 
                     <button type='button' className='size-22 light orders-templates-button' id='button-3'>
                         Преддипломная практика
-                </button>
+                    </button>
 
                     <button type='button' className='size-22 light orders-templates-button' id='button-4'>
                         Защита ВКР
-                </button>
+                    </button>
 
-                    <button type='button' onClick={(e) => { setShow(true); }} className='size-22 light orders-templates-upload-button' id='upload-button'>
-                        Загрузить приказ
-                </button>
                 </div>
 
                 <div className='hoc-orders-templates-document-panel-common'>
-                    <div className='hoc-orders-templates-document-panel' id='hoc-orders-document-panel1'></div>
-                    <div className='hoc-orders-templates-document-panel hoc-orders-templates-document-panel-hidden' id='hoc-orders-document-panel2'></div>
-                    <div className='hoc-orders-templates-document-panel hoc-orders-templates-document-panel-hidden' id='hoc-orders-document-panel3'></div>
-                    <div className='hoc-orders-templates-document-panel hoc-orders-templates-document-panel-hidden' id='hoc-orders-document-panel4'></div>
+                    <div className='hoc-orders-templates-document-panel' id='hoc-orders-document-panel1'>
+                        <button type='button' onClick={(e) => { setShow(true); }} className='dark-background light size-32 admin-upload-button'>Загрузить приказ</button>
+                    </div>
+                    <div className='hoc-orders-templates-document-panel hoc-orders-templates-document-panel-hidden' id='hoc-orders-document-panel2'>
+                        <button type='button' onClick={(e) => { setShow(true); }} className='dark-background light size-32 admin-upload-button'>Загрузить приказ</button>
+                    </div>
+                    <div className='hoc-orders-templates-document-panel hoc-orders-templates-document-panel-hidden' id='hoc-orders-document-panel3'>
+                        <button type='button' onClick={(e) => { setShow(true); }} className='dark-background light size-32 admin-upload-button'>Загрузить приказ</button>
+                    </div>
+                    <div className='hoc-orders-templates-document-panel hoc-orders-templates-document-panel-hidden' id='hoc-orders-document-panel4'>
+                        <button type='button' onClick={(e) => { setShow(true); }} className='dark-background light size-32 admin-upload-button'>Загрузить приказ</button>
+                    </div>
                 </div>
             </div>
             <Modal centered show={show} onHide={(e) => { setShow(false); }} className='dark'>
@@ -410,7 +420,7 @@ export default function AdminOrdersPage() {
                     </Modal.Title>
                 </Modal.Header>
                 <Modal.Body className='light-background sca-examples-modal1-body'>
-                    <select id='dropdown-order-type' defaultValue='' className='dark size-24 sca-examples-dropdown' onChange={(e) => { checkIfCanUpload(); }}>
+                    <select id='dropdown-order-type' defaultValue={stage} className='dark size-24 sca-examples-dropdown' onChange={(e) => { checkIfCanUpload(); }}>
                         <option value='' disabled hidden>Выберите тип приказа</option>
                         <option value='Приказ об организации НИР'>Приказ об организации НИР</option>
                         <option value='Приказ об организации ПпППУиОПД'>Приказ об организации ПпППУиОПД</option>
