@@ -185,10 +185,13 @@ export default function StudentTasksPage() {
         studentTheme.innerText = item.studentVkrTheme;
         // Заполнить поля "Тема"
         setStudentTheme(item.studentVkrTheme);
-        if (item.studentVkrThemeEditable) {
+        if (item.studentVkrThemeEditable) {            
             setThemeConfirmed('Не одобрена');
         }
         else {
+            $.each($('.theme-area'), function (index, item) {
+                $(item).attr('disabled', true);
+            });
             setThemeConfirmed('Одобрена');
         }
         studentTheme.style.overflow = 'hidden';
@@ -3133,8 +3136,9 @@ export default function StudentTasksPage() {
         $('.nir-copy').off().on('click', function () {
             var versionId = $(this).parent().parent().parent().parent().attr('id');
             var arrayID = versionId.split('-')[2];
-
-            setStudentTheme(nirVersions[arrayID].theme);
+            if (themeConfirmed != 'Одобрена') {
+                setStudentTheme(nirVersions[arrayID].theme);
+            }
             setToExplore(nirVersions[arrayID].toExplore);
             setToCreate(nirVersions[arrayID].toCreate);
             setToFamiliarize(nirVersions[arrayID].toFamiliarize);
@@ -3146,7 +3150,9 @@ export default function StudentTasksPage() {
             var versionId = $(this).parent().parent().parent().parent().attr('id');
             var arrayID = versionId.split('-')[3];
 
-            setStudentTheme(longPPData[arrayID].theme);
+            if (themeConfirmed != 'Одобрена') {
+                setStudentTheme(longPPData[arrayID].theme);
+            }
             setToExplore(longPPData[arrayID].toExplore);
             setToCreate(longPPData[arrayID].toCreate);
             setToFamiliarize(longPPData[arrayID].toFamiliarize);
@@ -3158,7 +3164,9 @@ export default function StudentTasksPage() {
             var versionId = $(this).parent().parent().parent().parent().attr('id');
             var arrayID = versionId.split('-')[2];
 
-            setStudentTheme(PPData[arrayID].theme);
+            if (themeConfirmed != 'Одобрена') {
+                setStudentTheme(PPData[arrayID].theme);
+            }
             setToExplore(PPData[arrayID].toExplore);
             setToCreate(PPData[arrayID].toCreate);
             setToFamiliarize(PPData[arrayID].toFamiliarize);
@@ -3170,7 +3178,9 @@ export default function StudentTasksPage() {
             var versionId = $(this).parent().parent().attr('id');
             var arrayID = versionId.split('-')[2];
 
-            setStudentTheme(vkrTaskVersions[arrayID].theme);
+            if (themeConfirmed != 'Одобрена') {
+                setStudentTheme(vkrTaskVersions[arrayID].theme);
+            }
             setVkrDocs(vkrTaskVersions[arrayID].vkrDocs);
             setVkrAims(vkrTaskVersions[arrayID].vkrAim);
             setVkrTasks(vkrTaskVersions[arrayID].vkrTasks);
@@ -3354,7 +3364,7 @@ export default function StudentTasksPage() {
                                     <div className='info-row'>
                                         <div className='info-column'>
                                             <Form.Label column className="size-21 dark info-input-label">Тема:</Form.Label>
-                                            <textarea maxLength='1024' value={studentTheme} onChange={(e) => { setStudentTheme(e.target.value); }} className='dark size-24 info-input-area' />
+                                            <textarea maxLength='1024' value={studentTheme} onChange={(e) => { setStudentTheme(e.target.value); }} className='dark size-24 info-input-area theme-area' />
 
                                             <Form.Label column className="size-21 dark info-input-label">Изучить:</Form.Label>
                                             <textarea maxLength='2048' value={toExplore} onChange={(e) => { setToExplore(e.target.value); }} className='dark size-24 info-input-area' />
@@ -3478,7 +3488,7 @@ export default function StudentTasksPage() {
                                     <div className='info-row'>
                                         <div className='info-column'>
                                             <Form.Label column className="size-21 dark info-input-label">Тема:</Form.Label>
-                                            <textarea maxLength='1024' value={studentTheme} onChange={(e) => { setStudentTheme(e.target.value); }} className='dark size-24 info-input-area' />
+                                            <textarea maxLength='1024' value={studentTheme} onChange={(e) => { setStudentTheme(e.target.value); }} className='dark size-24 info-input-area theme-area' />
 
                                             <Form.Label column className="size-21 dark info-input-label">Изучить:</Form.Label>
                                             <textarea maxLength='2048' value={toExplore} onChange={(e) => { setToExplore(e.target.value); }} className='dark size-24 info-input-area' />
@@ -3602,7 +3612,7 @@ export default function StudentTasksPage() {
                                     <div className='info-row'>
                                         <div className='info-column'>
                                             <Form.Label column className="size-21 dark info-input-label">Тема:</Form.Label>
-                                            <textarea maxLength='1024' value={studentTheme} onChange={(e) => { setStudentTheme(e.target.value); }} className='dark size-24 info-input-area' />
+                                            <textarea maxLength='1024' value={studentTheme} onChange={(e) => { setStudentTheme(e.target.value); }} className='dark size-24 info-input-area theme-area' />
 
                                             <Form.Label column className="size-21 dark info-input-label">Изучить:</Form.Label>
                                             <textarea maxLength='2048' value={toExplore} onChange={(e) => { setToExplore(e.target.value); }} className='dark size-24 info-input-area' />
@@ -3794,7 +3804,7 @@ export default function StudentTasksPage() {
                                     <div className='info-row'>
                                         <div className='info-column'>
                                             <Form.Label column className="size-21 dark info-input-label">Тема:</Form.Label>
-                                            <textarea maxLength='1024' value={studentTheme} onChange={(e) => { setStudentTheme(e.target.value); }} className='dark size-24 info-input-area' />
+                                            <textarea maxLength='1024' value={studentTheme} onChange={(e) => { setStudentTheme(e.target.value); }} className='dark size-24 info-input-area theme-area' />
 
                                             <Form.Label column className="size-21 dark info-input-label">Цель:</Form.Label>
                                             <textarea maxLength='2048' value={vkrAims} onChange={(e) => { setVkrAims(e.target.value); }} className='dark size-24 info-input-area' />
