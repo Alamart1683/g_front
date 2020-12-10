@@ -1862,3 +1862,10 @@ html, body {
 	margin-left: 10px;
 	margin-top: 5px;
 }
+
+.table-report-mark-text {
+	display: inline-block;
+	white-space: pre;
+	margin-bottom: 0px;
+	width: 65px;
+}

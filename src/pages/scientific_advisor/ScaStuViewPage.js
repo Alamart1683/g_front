@@ -14,12 +14,14 @@ export default function ScaStuViewPage() {
 
     const { authTokens } = useAuthContext();
     const [fetchedData, setFetchedData] = useState(false);
+
+    const [students, setStudents] = useState([]);
     const [studentData, setStudentData] = useState([]);
+    const [studentTheme, setStudentTheme] = useState('');
     const [themeConfirmed, setThemeConfirmed] = useState('');
 
     // Задание на НИР
     const [nirVersions, setNirVersions] = useState([]);
-    const [studentTheme, setStudentTheme] = useState('');
     const [toExplore, setToExplore] = useState('');
     const [toCreate, setToCreate] = useState('');
     const [toFamiliarize, setToFamiliarize] = useState('');
@@ -69,6 +71,9 @@ export default function ScaStuViewPage() {
 
     if (!fetchedData) {
         setFetchedData(true);
+
+        getStudents();
+
         getStudentTaskVersions('Научно-исследовательская работа');
         getOtchetVersions('Научно-исследовательская работа');
         getStudentTaskVersions('Практика по получению знаний и умений');
@@ -82,8 +87,6 @@ export default function ScaStuViewPage() {
         getVkrStuff('Отзыв');
         getVkrStuff('Антиплагиат');
         getVkrStuff('Презентация');
-
-        setStudentData(JSON.parse(sessionStorage.getItem('student')));
     }
 
     useEffect(() => {
@@ -135,15 +138,42 @@ export default function ScaStuViewPage() {
     }, [vkrPrezentationVersions]);
 
     useEffect(() => {
-        showStudent(studentData, 0);
-    }, [studentData]);
+        var id = findStudent(students, JSON.parse(sessionStorage.getItem('viewedStudentId')));
+        if (id != -1) {
+            showStudent(students[id]);
+        }
+    }, [students]);
+
+    function getStudents() {
+        axios({
+            url: apiURL + '/scientific_advisor/student/active',
+            method: 'GET',
+            headers: {
+                'Authorization': 'Bearer ' + authTokens.accessToken
+            },
+        }).then((response) => {
+            //console.log(response);
+            setStudents(response.data);
+        }).catch(result => {
+            console.log(result.data);
+        });
+    }
+
+    function findStudent(studentArray, studentId) {
+        for (var i = 0; i < studentArray.length; i++) {
+            if (studentArray[i].systemStudentID == studentId) {
+                setStudentData(studentArray[i]);
+                return i;
+            }
+        }
+        return -1;
+    }
 
     // Заполнение таблицы студентов
-    function showStudent(item, i) {
-        console.log(item);
+    function showStudent(item) {
+        //console.log(item);
 
         var student = document.createElement('tr');
-        student.id = 'student' + i;
         student.className = 'size-20 dark';
 
         // Имя студента
@@ -168,7 +198,7 @@ export default function ScaStuViewPage() {
             "<br /> Комплексный проект: " + projectArea +
             "<br /> Проект: " + item.projectName);
         popover.innerText = item.fio.split(' ')[0] +
-            '. ' +
+            ' ' +
             item.fio.split(' ')[1].charAt(0) +
             '. ' +
             item.fio.split(' ')[2].charAt(0) +
@@ -176,9 +206,10 @@ export default function ScaStuViewPage() {
 
         // Тема студента
         var studentTheme = document.createElement('th');
-        setStudentTheme(item.studentVkrTheme);
         studentTheme.innerText = item.studentVkrTheme;
-        if (item.studentVkrThemeEditable) {
+        // Заполнить поля "Тема"
+        setStudentTheme(item.studentVkrTheme);
+        if (item.studentVkrThemeEditable) {            
             setThemeConfirmed('Не одобрена');
         }
         else {
@@ -194,170 +225,239 @@ export default function ScaStuViewPage() {
         // НИР
         var studentNir = document.createElement('th');
 
+        var nirTaskStatus = document.createElement('label');
+        nirTaskStatus.innerText = 'Задание на НИР:';
+        nirTaskStatus.style.width = '148px';
+
         var nirTaskCheckbox = document.createElement('input');
+
         nirTaskCheckbox.type = 'checkbox';
         nirTaskCheckbox.className = 'sci-table-checkbox';
         if (item.studentDocumentsStatusView.nirTaskStatus) {
             nirTaskCheckbox.checked = true;
         }
-        var nirTaskStatus = document.createElement('label');
-        nirTaskStatus.htmlFor = nirTaskCheckbox;
-        nirTaskStatus.innerText = 'Задание на НИР:';
-        nirTaskStatus.style.width = '148px';
+        nirTaskCheckbox.style.marginLeft = '22px';
+        nirTaskCheckbox.style.marginRight = '30px';
+
+        var nirTaskHocCheckbox = document.createElement('input');
+
+        nirTaskHocCheckbox.type = 'checkbox';
+        nirTaskHocCheckbox.className = 'sci-table-checkbox';
+        if (item.studentDocumentsStatusView.nirTaskHocRate) {
+            nirTaskHocCheckbox.checked = true;
+        }
 
         var nirTaskDiv = document.createElement('div');
 
-        var nirReportCheckbox = document.createElement('input');
-        nirReportCheckbox.type = 'checkbox';
-        nirReportCheckbox.className = 'sci-table-checkbox';
-        if (item.studentDocumentsStatusView.nirReportStatus) {
-            nirReportCheckbox.checked = true;
-        }
         var nirReportStatus = document.createElement('label');
-        nirReportStatus.htmlFor = nirReportCheckbox;
         nirReportStatus.innerText = 'Отчет по НИР:';
         nirReportStatus.style.width = '148px';
+
+        var nirReportMark = document.createElement('p');
+        nirReportMark.innerText = getStatus(item.studentDocumentsStatusView.nirReportStatus);
+        nirReportMark.className = 'table-report-mark-text';
+
+        var nirReportHocCheckbox = document.createElement('input');
+        nirReportHocCheckbox.type = 'checkbox';
+        nirReportHocCheckbox.className = 'sci-table-checkbox';
+        if (item.studentDocumentsStatusView.nirReportHocRate) {
+            nirReportHocCheckbox.checked = true;
+        }
 
         var nirReportDiv = document.createElement('div');
 
         // ППП...
         var studentLongPP = document.createElement('th');
 
+        var longPPTaskStatus = document.createElement('label');
+        longPPTaskStatus.innerText = 'Задание по ПпППУиОПД:';
+        longPPTaskStatus.style.width = '223px';
+
         var longPPTaskCheckbox = document.createElement('input');
+
         longPPTaskCheckbox.type = 'checkbox';
         longPPTaskCheckbox.className = 'sci-table-checkbox';
         if (item.studentDocumentsStatusView.ppppuipdTaskStatus) {
             longPPTaskCheckbox.checked = true;
         }
-        var longPPTaskStatus = document.createElement('label');
-        longPPTaskStatus.htmlFor = longPPTaskCheckbox;
-        longPPTaskStatus.innerText = 'Задание по ПпППУиОПД:';
-        longPPTaskStatus.style.width = '223px';
+        longPPTaskCheckbox.style.marginLeft = '22px';
+        longPPTaskCheckbox.style.marginRight = '30px';
+
+        var longPPTaskHocCheckbox = document.createElement('input');
+
+        longPPTaskHocCheckbox.type = 'checkbox';
+        longPPTaskHocCheckbox.className = 'sci-table-checkbox';
+        if (item.studentDocumentsStatusView.ppppuipdTaskHocRate) {
+            longPPTaskHocCheckbox.checked = true;
+        }
 
         var longPPTaskDiv = document.createElement('div');
 
-        var longPPReportCheckbox = document.createElement('input');
-        longPPReportCheckbox.type = 'checkbox';
-        longPPReportCheckbox.className = 'sci-table-checkbox';
-        if (item.studentDocumentsStatusView.ppppuipdReportStatus) {
-            longPPReportCheckbox.checked = true;
-        }
         var longPPReportStatus = document.createElement('label');
-        longPPReportStatus.htmlFor = longPPReportCheckbox;
         longPPReportStatus.innerText = 'Отчет по ПпППУиОПД:';
         longPPReportStatus.style.width = '223px';
+
+        var longPPReportMark = document.createElement('p');
+        longPPReportMark.innerText = getStatus(item.studentDocumentsStatusView.ppppuipdReportStatus);
+        longPPReportMark.className = 'table-report-mark-text';
+
+        var longPPReportHocCheckbox = document.createElement('input');
+        longPPReportHocCheckbox.type = 'checkbox';
+        longPPReportHocCheckbox.className = 'sci-table-checkbox';
+        if (item.studentDocumentsStatusView.ppppuipdReportHocRate) {
+            longPPReportHocCheckbox.checked = true;
+        }
 
         var longPPReportDiv = document.createElement('div');
 
         // ПП
         var studentPP = document.createElement('th');
 
+        var ppTaskStatus = document.createElement('label');
+        ppTaskStatus.innerText = 'Задание по ПП:';
+        ppTaskStatus.style.width = '138px';
+
         var ppTaskCheckbox = document.createElement('input');
+
         ppTaskCheckbox.type = 'checkbox';
         ppTaskCheckbox.className = 'sci-table-checkbox';
         if (item.studentDocumentsStatusView.ppTaskStatus) {
             ppTaskCheckbox.checked = true;
         }
-        var ppTaskStatus = document.createElement('label');
-        ppTaskStatus.htmlFor = ppTaskCheckbox;
-        ppTaskStatus.innerText = 'Задание по ПП:';
-        ppTaskStatus.style.width = '138px';
+        ppTaskCheckbox.style.marginLeft = '22px';
+        ppTaskCheckbox.style.marginRight = '30px';
+
+        var ppTaskHocCheckbox = document.createElement('input');
+
+        ppTaskHocCheckbox.type = 'checkbox';
+        ppTaskHocCheckbox.className = 'sci-table-checkbox';
+        if (item.studentDocumentsStatusView.ppTaskHocRate) {
+            ppTaskHocCheckbox.checked = true;
+        }
 
         var ppTaskDiv = document.createElement('div');
 
-        var ppReportCheckbox = document.createElement('input');
-        ppReportCheckbox.type = 'checkbox';
-        ppReportCheckbox.className = 'sci-table-checkbox';
-        if (item.studentDocumentsStatusView.ppReportStatus) {
-            ppReportCheckbox.checked = true;
-        }
         var ppReportStatus = document.createElement('label');
-        ppReportStatus.htmlFor = ppReportCheckbox;
         ppReportStatus.innerText = 'Отчет по ПП:';
         ppReportStatus.style.width = '138px';
+
+        var ppReportMark = document.createElement('p');
+        ppReportMark.innerText = getStatus(item.studentDocumentsStatusView.ppReportStatus);
+        ppReportMark.className = 'table-report-mark-text';
+
+        var ppReportHocCheckbox = document.createElement('input');
+
+        ppReportHocCheckbox.type = 'checkbox';
+        ppReportHocCheckbox.className = 'sci-table-checkbox';
+        if (item.studentDocumentsStatusView.ppReportHocRate) {
+            ppReportHocCheckbox.checked = true;
+        }
 
         var ppReportDiv = document.createElement('div');
 
         // ВКР
         var studentVkr = document.createElement('th');
 
+        var vkrAdvisorFeedbackStatus = document.createElement('label');
+        vkrAdvisorFeedbackStatus.innerText = 'Отзыв руководителя:';
+        vkrAdvisorFeedbackStatus.style.width = '188px';
+
         var vkrAdvisorFeedbackCheckbox = document.createElement('input');
+
         vkrAdvisorFeedbackCheckbox.type = 'checkbox';
         vkrAdvisorFeedbackCheckbox.className = 'sci-table-checkbox';
         if (item.studentDocumentsStatusView.vkrAdvisorFeedback) {
             vkrAdvisorFeedbackCheckbox.checked = true;
         }
-        var vkrAdvisorFeedbackStatus = document.createElement('label');
-        vkrAdvisorFeedbackStatus.htmlFor = vkrAdvisorFeedbackCheckbox;
-        vkrAdvisorFeedbackStatus.innerText = 'Отзыв руководителя:';
-        vkrAdvisorFeedbackStatus.style.width = '188px';
+        vkrAdvisorFeedbackCheckbox.style.marginLeft = '22px';
+
 
         var vkrAdvisorFeedbackDiv = document.createElement('div');
 
+        var vkrAllowanceStatus = document.createElement('label');
+        vkrAllowanceStatus.innerText = 'Допуск к ВКР:';
+        vkrAllowanceStatus.style.width = '188px';
+
         var vkrAllowanceCheckbox = document.createElement('input');
+
         vkrAllowanceCheckbox.type = 'checkbox';
         vkrAllowanceCheckbox.className = 'sci-table-checkbox';
         if (item.studentDocumentsStatusView.vkrAllowance) {
             vkrAllowanceCheckbox.checked = true;
         }
-        var vkrAllowanceStatus = document.createElement('label');
-        vkrAllowanceStatus.htmlFor = vkrAllowanceCheckbox;
-        vkrAllowanceStatus.innerText = 'Допуск к ВКР:';
-        vkrAllowanceStatus.style.width = '188px';
+        vkrAllowanceCheckbox.style.marginLeft = '22px';
 
         var vkrAllowanceStatusDiv = document.createElement('div');
 
-        var vkrTaskCheckbox = document.createElement('input');
-        vkrTaskCheckbox.type = 'checkbox';
-        vkrTaskCheckbox.className = 'sci-table-checkbox';
-        //vkrTaskCheckbox.disabled = true;
-        if (item.studentDocumentsStatusView.vkrTask) {
-            vkrTaskCheckbox.checked = true;
-        }
         var vkrTaskStatus = document.createElement('label');
-        vkrTaskStatus.htmlFor = vkrTaskCheckbox;
         vkrTaskStatus.innerText = 'Задание ВКР:';
         vkrTaskStatus.style.width = '188px';
 
+        var vkrTaskCheckbox = document.createElement('input');
+
+        vkrTaskCheckbox.type = 'checkbox';
+        vkrTaskCheckbox.className = 'sci-table-checkbox';
+        if (item.studentDocumentsStatusView.vkrTask) {
+            vkrTaskCheckbox.checked = true;
+        }
+        vkrTaskCheckbox.style.marginLeft = '22px';
+        vkrTaskCheckbox.style.marginRight = '30px';
+
+        var vkrTaskHocCheckbox = document.createElement('input');
+
+        vkrTaskHocCheckbox.type = 'checkbox';
+        vkrTaskHocCheckbox.className = 'sci-table-checkbox';
+        if (item.studentDocumentsStatusView.vkrTaskHocRate) {
+            vkrTaskHocCheckbox.checked = true;
+        }
+
         var vkrTaskDiv = document.createElement('div');
 
-        var vkrRPZCheckbox = document.createElement('input');
-        vkrRPZCheckbox.type = 'checkbox';
-        vkrRPZCheckbox.className = 'sci-table-checkbox';
-        //vkrRPZCheckbox.disabled = true;
-        if (item.studentDocumentsStatusView.vkrRPZ) {
-            vkrRPZCheckbox.checked = true;
-        }
         var vkrRPZStatus = document.createElement('label');
-        vkrRPZStatus.htmlFor = vkrRPZCheckbox;
         vkrRPZStatus.innerText = 'РПЗ:';
         vkrRPZStatus.style.width = '188px';
+
+        var vkrRPZMark = document.createElement('p');
+        vkrRPZMark.innerText = getStatus(item.studentDocumentsStatusView.vkrRPZ);
+        vkrRPZMark.className = 'table-report-mark-text';
+
+        var vkrRPZHocCheckbox = document.createElement('input');
+
+        vkrRPZHocCheckbox.type = 'checkbox';
+        vkrRPZHocCheckbox.className = 'sci-table-checkbox';
+        if (item.studentDocumentsStatusView.vkrRPZHocRate) {
+            vkrRPZHocCheckbox.checked = true;
+        }
 
         var vkrRPZDiv = document.createElement('div');
 
         var vkrAntiplagiatCheckbox = document.createElement('input');
+
+        var vkrAntiplagiatStatus = document.createElement('label');
+        vkrAntiplagiatStatus.innerText = 'Антиплагиат:';
+        vkrAntiplagiatStatus.style.width = '188px';
+
         vkrAntiplagiatCheckbox.type = 'checkbox';
         vkrAntiplagiatCheckbox.className = 'sci-table-checkbox';
         if (item.studentDocumentsStatusView.vkrAntiplagiat) {
             vkrAntiplagiatCheckbox.checked = true;
         }
-        var vkrAntiplagiatStatus = document.createElement('label');
-        vkrAntiplagiatStatus.htmlFor = vkrAntiplagiatCheckbox;
-        vkrAntiplagiatStatus.innerText = 'Антиплагиат:';
-        vkrAntiplagiatStatus.style.width = '188px';
+        vkrAntiplagiatCheckbox.style.marginLeft = '22px';
 
         var vkrAntiplagiatDiv = document.createElement('div');
 
         var vkrPresentationCheckbox = document.createElement('input');
+
+        var vkrPresentationStatus = document.createElement('label');
+        vkrPresentationStatus.innerText = 'Презентация:';
+        vkrPresentationStatus.style.width = '188px';
+
         vkrPresentationCheckbox.type = 'checkbox';
         vkrPresentationCheckbox.className = 'sci-table-checkbox';
         if (item.studentDocumentsStatusView.vkrPresentation) {
             vkrPresentationCheckbox.checked = true;
         }
-        var vkrPresentationStatus = document.createElement('label');
-        vkrPresentationStatus.htmlFor = vkrPresentationCheckbox;
-        vkrPresentationStatus.innerText = 'Презентация:';
-        vkrPresentationStatus.style.width = '188px';
+        vkrPresentationCheckbox.style.marginLeft = '22px';
 
         var vkrPresentationDiv = document.createElement('div');
 
@@ -368,33 +468,49 @@ export default function ScaStuViewPage() {
 
         nirTaskDiv.appendChild(nirTaskStatus);
         nirTaskDiv.appendChild(nirTaskCheckbox);
+        nirTaskDiv.appendChild(nirTaskHocCheckbox);
         studentNir.appendChild(nirTaskDiv);
 
         nirReportDiv.appendChild(nirReportStatus);
-        nirReportDiv.appendChild(nirReportCheckbox);
+        nirReportDiv.appendChild(nirReportMark);
+        nirReportDiv.appendChild(nirReportHocCheckbox);
         studentNir.appendChild(nirReportDiv);
 
         student.appendChild(studentNir);
 
         longPPTaskDiv.appendChild(longPPTaskStatus);
         longPPTaskDiv.appendChild(longPPTaskCheckbox);
+        longPPTaskDiv.appendChild(longPPTaskHocCheckbox);
         studentLongPP.appendChild(longPPTaskDiv);
 
         longPPReportDiv.appendChild(longPPReportStatus);
-        longPPReportDiv.appendChild(longPPReportCheckbox);
+        longPPReportDiv.appendChild(longPPReportMark);
+        longPPReportDiv.appendChild(longPPReportHocCheckbox);
         studentLongPP.appendChild(longPPReportDiv);
 
         student.appendChild(studentLongPP);
 
         ppTaskDiv.appendChild(ppTaskStatus);
         ppTaskDiv.appendChild(ppTaskCheckbox);
+        ppTaskDiv.appendChild(ppTaskHocCheckbox);
         studentPP.appendChild(ppTaskDiv);
 
         ppReportDiv.appendChild(ppReportStatus);
-        ppReportDiv.appendChild(ppReportCheckbox);
+        ppReportDiv.appendChild(ppReportMark);
+        ppReportDiv.appendChild(ppReportHocCheckbox);
         studentPP.appendChild(ppReportDiv);
 
         student.appendChild(studentPP);
+
+        vkrTaskDiv.appendChild(vkrTaskStatus);
+        vkrTaskDiv.appendChild(vkrTaskCheckbox);
+        vkrTaskDiv.appendChild(vkrTaskHocCheckbox);
+        studentVkr.appendChild(vkrTaskDiv);
+
+        vkrRPZDiv.appendChild(vkrRPZStatus);
+        vkrRPZDiv.appendChild(vkrRPZMark);
+        vkrRPZDiv.appendChild(vkrRPZHocCheckbox);
+        studentVkr.appendChild(vkrRPZDiv);
 
         vkrAdvisorFeedbackDiv.appendChild(vkrAdvisorFeedbackStatus);
         vkrAdvisorFeedbackDiv.appendChild(vkrAdvisorFeedbackCheckbox);
@@ -403,14 +519,6 @@ export default function ScaStuViewPage() {
         vkrAllowanceStatusDiv.appendChild(vkrAllowanceStatus);
         vkrAllowanceStatusDiv.appendChild(vkrAllowanceCheckbox);
         studentVkr.appendChild(vkrAllowanceStatusDiv);
-
-        vkrTaskDiv.appendChild(vkrTaskStatus);
-        vkrTaskDiv.appendChild(vkrTaskCheckbox);
-        studentVkr.appendChild(vkrTaskDiv);
-
-        vkrRPZDiv.appendChild(vkrRPZStatus);
-        vkrRPZDiv.appendChild(vkrRPZCheckbox);
-        studentVkr.appendChild(vkrRPZDiv);
 
         vkrAntiplagiatDiv.appendChild(vkrAntiplagiatStatus);
         vkrAntiplagiatDiv.appendChild(vkrAntiplagiatCheckbox);
@@ -425,6 +533,22 @@ export default function ScaStuViewPage() {
         document.getElementById('student-table-body').appendChild(student);
     }
 
+    function getStatus(status) {
+        switch (status) {
+            case 0:
+                return '     -';
+            case 2:
+                return 'неуд.';
+            case 3:
+                return 'удовл.';
+            case 4:
+                return '  хор.';
+            case 5:
+                return '  отл.';
+            default:
+                return '  ???';
+        }
+    }
     // Получение заданий НИР для студента
     function getStudentTaskVersions(type) {
         axios({
@@ -1617,13 +1741,25 @@ export default function ScaStuViewPage() {
                 var dropdownContent = document.createElement('div');
                 dropdownContent.className = 'sci-advisor-status-dropdown-content';
 
-                var statusOdobreno = document.createElement('p');
-                statusOdobreno.className = 'dark size-18 nir-otchet-status-odobreno';
-                statusOdobreno.innerText = 'Одобрено';
-
                 var statusZamechaniya = document.createElement('p');
                 statusZamechaniya.className = 'dark size-18 nir-otchet-status-zamechaniya';
                 statusZamechaniya.innerText = 'Замечания';
+
+                var status2 = document.createElement('p');
+                status2.className = 'dark size-18 nir-otchet-status-2';
+                status2.innerText = 'Неудовлетворительно';
+
+                var status3 = document.createElement('p');
+                status3.className = 'dark size-18 nir-otchet-status-3';
+                status3.innerText = 'Удовлетворительно';
+
+                var status4 = document.createElement('p');
+                status4.className = 'dark size-18 nir-otchet-status-4';
+                status4.innerText = 'Хорошо';
+
+                var status5 = document.createElement('p');
+                status5.className = 'dark size-18 nir-otchet-status-5';
+                status5.innerText = 'Отлично';
 
                 // Кнопка скачать отчёт
                 var downloadButton = document.createElement('button');
@@ -1696,8 +1832,11 @@ export default function ScaStuViewPage() {
                 nirVersionHeader.appendChild(viewButton);
 
                 dropdownDiv.appendChild(sendButton);
-                dropdownContent.appendChild(statusOdobreno);
                 dropdownContent.appendChild(statusZamechaniya);
+                dropdownContent.appendChild(status2);
+                dropdownContent.appendChild(status3);
+                dropdownContent.appendChild(status4);
+                dropdownContent.appendChild(status5);
                 dropdownDiv.appendChild(dropdownContent);
                 nirVersionHeader.appendChild(dropdownDiv);
 
@@ -1757,13 +1896,25 @@ export default function ScaStuViewPage() {
             var dropdownContent = document.createElement('div');
             dropdownContent.className = 'sci-advisor-status-dropdown-content';
 
-            var statusOdobreno = document.createElement('p');
-            statusOdobreno.className = 'dark size-18 long-pp-otchet-status-odobreno';
-            statusOdobreno.innerText = 'Одобрено';
-
             var statusZamechaniya = document.createElement('p');
             statusZamechaniya.className = 'dark size-18 long-pp-otchet-status-zamechaniya';
             statusZamechaniya.innerText = 'Замечания';
+
+            var status2 = document.createElement('p');
+            status2.className = 'dark size-18 long-pp-otchet-status-2';
+            status2.innerText = 'Неудовлетворительно';
+
+            var status3 = document.createElement('p');
+            status3.className = 'dark size-18 long-pp-otchet-status-3';
+            status3.innerText = 'Удовлетворительно';
+
+            var status4 = document.createElement('p');
+            status4.className = 'dark size-18 long-pp-otchet-status-4';
+            status4.innerText = 'Хорошо';
+
+            var status5 = document.createElement('p');
+            status5.className = 'dark size-18 long-pp-otchet-status-5';
+            status5.innerText = 'Отлично';
 
             // Кнопка скачать отчёт
             var downloadButton = document.createElement('button');
@@ -1836,8 +1987,11 @@ export default function ScaStuViewPage() {
             nirVersionHeader.appendChild(viewButton);
 
             dropdownDiv.appendChild(sendButton);
-            dropdownContent.appendChild(statusOdobreno);
             dropdownContent.appendChild(statusZamechaniya);
+            dropdownContent.appendChild(status2);
+            dropdownContent.appendChild(status3);
+            dropdownContent.appendChild(status4);
+            dropdownContent.appendChild(status5);
             dropdownDiv.appendChild(dropdownContent);
             nirVersionHeader.appendChild(dropdownDiv);
 
@@ -1896,13 +2050,25 @@ export default function ScaStuViewPage() {
             var dropdownContent = document.createElement('div');
             dropdownContent.className = 'sci-advisor-status-dropdown-content';
 
-            var statusOdobreno = document.createElement('p');
-            statusOdobreno.className = 'dark size-18 pp-otchet-status-odobreno';
-            statusOdobreno.innerText = 'Одобрено';
-
             var statusZamechaniya = document.createElement('p');
             statusZamechaniya.className = 'dark size-18 pp-otchet-status-zamechaniya';
             statusZamechaniya.innerText = 'Замечания';
+
+            var status2 = document.createElement('p');
+            status2.className = 'dark size-18 pp-otchet-status-2';
+            status2.innerText = 'Неудовлетворительно';
+
+            var status3 = document.createElement('p');
+            status3.className = 'dark size-18 pp-otchet-status-3';
+            status3.innerText = 'Удовлетворительно';
+
+            var status4 = document.createElement('p');
+            status4.className = 'dark size-18 pp-otchet-status-4';
+            status4.innerText = 'Хорошо';
+
+            var status5 = document.createElement('p');
+            status5.className = 'dark size-18 pp-otchet-status-5';
+            status5.innerText = 'Отлично';
 
             // Кнопка скачать отчёт
             var downloadButton = document.createElement('button');
@@ -1975,8 +2141,11 @@ export default function ScaStuViewPage() {
             nirVersionHeader.appendChild(viewButton);
 
             dropdownDiv.appendChild(sendButton);
-            dropdownContent.appendChild(statusOdobreno);
             dropdownContent.appendChild(statusZamechaniya);
+            dropdownContent.appendChild(status2);
+            dropdownContent.appendChild(status3);
+            dropdownContent.appendChild(status4);
+            dropdownContent.appendChild(status5);
             dropdownDiv.appendChild(dropdownContent);
             nirVersionHeader.appendChild(dropdownDiv);
 
@@ -2035,13 +2204,25 @@ export default function ScaStuViewPage() {
             var dropdownContent = document.createElement('div');
             dropdownContent.className = 'sci-advisor-status-dropdown-content';
 
-            var statusOdobreno = document.createElement('p');
-            statusOdobreno.className = 'dark size-18 vkr-otchet-status-odobreno';
-            statusOdobreno.innerText = 'Одобрено';
-
             var statusZamechaniya = document.createElement('p');
             statusZamechaniya.className = 'dark size-18 vkr-otchet-status-zamechaniya';
             statusZamechaniya.innerText = 'Замечания';
+
+            var status2 = document.createElement('p');
+            status2.className = 'dark size-18 vkr-otchet-status-2';
+            status2.innerText = 'Неудовлетворительно';
+
+            var status3 = document.createElement('p');
+            status3.className = 'dark size-18 vkr-otchet-status-3';
+            status3.innerText = 'Удовлетворительно';
+
+            var status4 = document.createElement('p');
+            status4.className = 'dark size-18 vkr-otchet-status-4';
+            status4.innerText = 'Хорошо';
+
+            var status5 = document.createElement('p');
+            status5.className = 'dark size-18 vkr-otchet-status-5';
+            status5.innerText = 'Отлично';
 
             // Кнопка скачать отчёт
             var downloadButton = document.createElement('button');
@@ -2074,8 +2255,11 @@ export default function ScaStuViewPage() {
             nirVersionHeader.appendChild(viewButton);
 
             dropdownDiv.appendChild(sendButton);
-            dropdownContent.appendChild(statusOdobreno);
             dropdownContent.appendChild(statusZamechaniya);
+            dropdownContent.appendChild(status2);
+            dropdownContent.appendChild(status3);
+            dropdownContent.appendChild(status4);
+            dropdownContent.appendChild(status5);
             dropdownDiv.appendChild(dropdownContent);
             nirVersionHeader.appendChild(dropdownDiv);
 
@@ -2385,18 +2569,35 @@ export default function ScaStuViewPage() {
             $('#nir-otchet-file-input').trigger('click');
         });
 
-        // Оценка отчёта НИР - одобрено
-        $('.nir-otchet-status-odobreno').off().on('click', function (event) {
-            var versionId = $(this).parent().parent().parent().parent().attr('id');
-            var arrayID = versionId.split('-')[3];
-            gradeOtchet(nirOtchetVersions, arrayID, 'Одобрено');
-        });
-
         // Оценка отчёта НИР - замечания
         $('.nir-otchet-status-zamechaniya').off().on('click', function (event) {
             var versionId = $(this).parent().parent().parent().parent().attr('id');
             var arrayID = versionId.split('-')[3];
             gradeOtchet(nirOtchetVersions, arrayID, 'Замечания');
+        });
+
+        $('.nir-otchet-status-2').off().on('click', function (event) {
+            var versionId = $(this).parent().parent().parent().parent().attr('id');
+            var arrayID = versionId.split('-')[3];
+            gradeOtchet(nirOtchetVersions, arrayID, 'Неудовлетворительно');
+        });
+
+        $('.nir-otchet-status-3').off().on('click', function (event) {
+            var versionId = $(this).parent().parent().parent().parent().attr('id');
+            var arrayID = versionId.split('-')[3];
+            gradeOtchet(nirOtchetVersions, arrayID, 'Удовлетворительно');
+        });
+
+        $('.nir-otchet-status-4').off().on('click', function (event) {
+            var versionId = $(this).parent().parent().parent().parent().attr('id');
+            var arrayID = versionId.split('-')[3];
+            gradeOtchet(nirOtchetVersions, arrayID, 'Хорошо');
+        });
+
+        $('.nir-otchet-status-5').off().on('click', function (event) {
+            var versionId = $(this).parent().parent().parent().parent().attr('id');
+            var arrayID = versionId.split('-')[3];
+            gradeOtchet(nirOtchetVersions, arrayID, 'Отлично');
         });
 
         // Удаление версии отчёта НИР
@@ -2527,18 +2728,35 @@ export default function ScaStuViewPage() {
             $('#long-pp-otchet-file-input').trigger('click');
         });
 
-        // Оценка отчёта ПП... - одобрено
-        $('.long-pp-otchet-status-odobreno').off().on('click', function () {
-            var versionId = $(this).parent().parent().parent().parent().attr('id');
-            var arrayID = versionId.split('-')[4];
-            gradeOtchet(longPPOtchetVersions, arrayID, 'Одобрено');
-        });
-
         // Оценка отчёта ПП... - замечания
         $('.long-pp-otchet-status-zamechaniya').off().on('click', function () {
             var versionId = $(this).parent().parent().parent().parent().attr('id');
             var arrayID = versionId.split('-')[4];
             gradeOtchet(longPPOtchetVersions, arrayID, 'Замечания');
+        });
+
+        $('.long-pp-otchet-status-2').off().on('click', function () {
+            var versionId = $(this).parent().parent().parent().parent().attr('id');
+            var arrayID = versionId.split('-')[4];
+            gradeOtchet(longPPOtchetVersions, arrayID, 'Неудовлетворительно');
+        });
+
+        $('.long-pp-otchet-status-3').off().on('click', function () {
+            var versionId = $(this).parent().parent().parent().parent().attr('id');
+            var arrayID = versionId.split('-')[4];
+            gradeOtchet(longPPOtchetVersions, arrayID, 'Удовлетворительно');
+        });
+
+        $('.long-pp-otchet-status-4').off().on('click', function () {
+            var versionId = $(this).parent().parent().parent().parent().attr('id');
+            var arrayID = versionId.split('-')[4];
+            gradeOtchet(longPPOtchetVersions, arrayID, 'Хорошо');
+        });
+
+        $('.long-pp-otchet-status-5').off().on('click', function () {
+            var versionId = $(this).parent().parent().parent().parent().attr('id');
+            var arrayID = versionId.split('-')[4];
+            gradeOtchet(longPPOtchetVersions, arrayID, 'Отлично');
         });
 
         // Удаление версии отчёта ПП...
@@ -2669,18 +2887,35 @@ export default function ScaStuViewPage() {
             $('#pp-otchet-file-input').trigger('click');
         });
 
-        // Оценка отчёта ПП - одобрено
-        $('.pp-otchet-status-odobreno').off().on('click', function () {
-            var versionId = $(this).parent().parent().parent().parent().attr('id');
-            var arrayID = versionId.split('-')[3];
-            gradeOtchet(PPOtchetVersions, arrayID, 'Одобрено');
-        });
-
         // Оценка отчёта ПП - замечания
         $('.pp-otchet-status-zamechaniya').off().on('click', function () {
             var versionId = $(this).parent().parent().parent().parent().attr('id');
             var arrayID = versionId.split('-')[3];
             gradeOtchet(PPOtchetVersions, arrayID, 'Замечания');
+        });
+        
+        $('.pp-otchet-status-2').off().on('click', function () {
+            var versionId = $(this).parent().parent().parent().parent().attr('id');
+            var arrayID = versionId.split('-')[3];
+            gradeOtchet(PPOtchetVersions, arrayID, 'Неудовлетворительно');
+        });
+        
+        $('.pp-otchet-status-3').off().on('click', function () {
+            var versionId = $(this).parent().parent().parent().parent().attr('id');
+            var arrayID = versionId.split('-')[3];
+            gradeOtchet(PPOtchetVersions, arrayID, 'Удовлетворительно');
+        });
+        
+        $('.pp-otchet-status-4').off().on('click', function () {
+            var versionId = $(this).parent().parent().parent().parent().attr('id');
+            var arrayID = versionId.split('-')[3];
+            gradeOtchet(PPOtchetVersions, arrayID, 'Хорошо');
+        });
+        
+        $('.pp-otchet-status-5').off().on('click', function () {
+            var versionId = $(this).parent().parent().parent().parent().attr('id');
+            var arrayID = versionId.split('-')[3];
+            gradeOtchet(PPOtchetVersions, arrayID, 'Отлично');
         });
 
         // Удаление версии отчёта ПП
@@ -2809,18 +3044,35 @@ export default function ScaStuViewPage() {
             $('#vkr-otchet-file-input').trigger('click');
         });
 
-        // Оценка отчёта ВКР - одобрено
-        $('.vkr-otchet-status-odobreno').off().on('click', function () {
-            var versionId = $(this).parent().parent().parent().parent().attr('id');
-            var arrayID = versionId.split('-')[3];
-            gradeOtchet(vkrOtchetVersions, arrayID, 'Одобрено');
-        });
-
         // Оценка отчёта ВКР - замечания
         $('.vkr-otchet-status-zamechaniya').off().on('click', function () {
             var versionId = $(this).parent().parent().parent().parent().attr('id');
             var arrayID = versionId.split('-')[3];
             gradeOtchet(vkrOtchetVersions, arrayID, 'Замечания');
+        });
+        
+        $('.vkr-otchet-status-2').off().on('click', function () {
+            var versionId = $(this).parent().parent().parent().parent().attr('id');
+            var arrayID = versionId.split('-')[3];
+            gradeOtchet(vkrOtchetVersions, arrayID, 'Неудовлетворительно');
+        });
+        
+        $('.vkr-otchet-status-3').off().on('click', function () {
+            var versionId = $(this).parent().parent().parent().parent().attr('id');
+            var arrayID = versionId.split('-')[3];
+            gradeOtchet(vkrOtchetVersions, arrayID, 'Удовлетворительно');
+        });
+        
+        $('.vkr-otchet-status-4').off().on('click', function () {
+            var versionId = $(this).parent().parent().parent().parent().attr('id');
+            var arrayID = versionId.split('-')[3];
+            gradeOtchet(vkrOtchetVersions, arrayID, 'Хорошо');
+        });
+        
+        $('.vkr-otchet-status-5').off().on('click', function () {
+            var versionId = $(this).parent().parent().parent().parent().attr('id');
+            var arrayID = versionId.split('-')[3];
+            gradeOtchet(vkrOtchetVersions, arrayID, 'Отлично');
         });
 
         // Удаление версии отчёта ВКР
@@ -3305,10 +3557,10 @@ export default function ScaStuViewPage() {
                         <tr>
                             <th>ФИО</th>
                             <th>Тема - {themeConfirmed}</th>
-                            <th style={{ minWidth: '203px' }}>НИР</th>
-                            <th style={{ minWidth: '278px' }}>ПпППУиОПД</th>
-                            <th style={{ minWidth: '193px' }}>ПП</th>
-                            <th style={{ minWidth: '243px' }}>ВКР</th>
+                            <th style={{ minWidth: '273px' }}>НИР</th>
+                            <th style={{ minWidth: '348px' }}>ПпППУиОПД</th>
+                            <th style={{ minWidth: '263px' }}>ПП</th>
+                            <th style={{ minWidth: '313px' }}>ВКР</th>
                         </tr>
                     </thead>
                     <tbody id='student-table-body' className='size-24 dark'>
