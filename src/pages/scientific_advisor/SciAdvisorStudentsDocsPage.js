@@ -129,8 +129,16 @@ export default function SciAdvisorStudentsDocsPage() {
             for (var j = 0; j < documentItem.length; j++) {
                 var documentVersion = documentItem[j];
                 //console.log(documentVersion);
-                if (documentKind == 'Задание' || documentKind == 'Отчёт') {
-                    var documentStatus = documentVersion.status;
+                if (documentKind === 'Задание' || documentKind === 'Отчёт') {
+                    var documentStatus = getStatus(documentVersion.status);
+                    if (documentKind === 'Отчёт') {
+                        if (documentVersion.hocRate) {
+                            documentStatus += ' - Одобрено';
+                        }
+                        else {
+                            documentStatus += ' - Не одобрено';
+                        }
+                    }
                 }
                 else {
                     var documentStatus = documentVersion.documentStatus;
@@ -178,7 +186,7 @@ export default function SciAdvisorStudentsDocsPage() {
                 sendButton.innerText = 'Отправить\nстуденту:';
                 sendButton.type = 'button';
                 // Запретить отсылку, если версия отправлена
-                if (documentStatus === 'Одобрено' || documentStatus === 'Замечания') {
+                if (documentStatus !== 'Не отправлено' && documentStatus !== 'Рассматривается') {
                     sendButton.disabled = true;
                 }
 
@@ -188,13 +196,36 @@ export default function SciAdvisorStudentsDocsPage() {
                 var dropdownContent = document.createElement('div');
                 dropdownContent.className = 'sca-scu-version-status-dropdown-content';
 
-                var statusOdobreno = document.createElement('p');
-                statusOdobreno.className = 'dark size-18 status-odobreno';
-                statusOdobreno.innerText = 'Одобрено';
+                if (documentKind === 'Отчёт') {
+                    var statusZamechaniya = document.createElement('p');
+                    statusZamechaniya.className = 'dark size-18 status-zamechaniya';
+                    statusZamechaniya.innerText = 'Замечания';
 
-                var statusZamechaniya = document.createElement('p');
-                statusZamechaniya.className = 'dark size-18 status-zamechaniya';
-                statusZamechaniya.innerText = 'Замечания';
+                    var status2 = document.createElement('p');
+                    status2.className = 'dark size-18 status-2';
+                    status2.innerText = 'Неудовлетворительно';
+
+                    var status3 = document.createElement('p');
+                    status3.className = 'dark size-18 status-3';
+                    status3.innerText = 'Удовлетворительно';
+
+                    var status4 = document.createElement('p');
+                    status4.className = 'dark size-18 status-4';
+                    status4.innerText = 'Хорошо';
+
+                    var status5 = document.createElement('p');
+                    status5.className = 'dark size-18 status-5';
+                    status5.innerText = 'Отлично';
+                }
+                else {
+                    var statusOdobreno = document.createElement('p');
+                    statusOdobreno.className = 'dark size-18 status-odobreno';
+                    statusOdobreno.innerText = 'Одобрено';
+
+                    var statusZamechaniya = document.createElement('p');
+                    statusZamechaniya.className = 'dark size-18 status-zamechaniya';
+                    statusZamechaniya.innerText = 'Замечания';
+                }
 
                 // Кнопка скачать документ
                 var downloadButton = document.createElement('button');
@@ -237,8 +268,17 @@ export default function SciAdvisorStudentsDocsPage() {
                 versionHeaderDiv.appendChild(viewButton);
 
                 dropdownDiv.appendChild(sendButton);
-                dropdownContent.appendChild(statusOdobreno);
-                dropdownContent.appendChild(statusZamechaniya);
+                if (documentKind === 'Отчёт') {
+                    dropdownContent.appendChild(statusZamechaniya);
+                    dropdownContent.appendChild(status2);
+                    dropdownContent.appendChild(status3);
+                    dropdownContent.appendChild(status4);
+                    dropdownContent.appendChild(status5);
+                }
+                else {
+                    dropdownContent.appendChild(statusOdobreno);
+                    dropdownContent.appendChild(statusZamechaniya);
+                }
                 dropdownDiv.appendChild(dropdownContent);
                 versionHeaderDiv.appendChild(dropdownDiv);
 
@@ -249,6 +289,21 @@ export default function SciAdvisorStudentsDocsPage() {
 
                 document.getElementById('file-div').appendChild(versionDiv);
             }
+        }
+    }
+
+    function getStatus(status) {
+        switch (status) {
+            case 'Неудовлетворительно':
+                return 'Неуд.';
+            case 'Удовлетворительно':
+                return 'Удовл.';
+            case 'Хорошо':
+                return 'Хор.';
+            case 'Отлично':
+                return 'Отл.';
+            default:
+                return status;
         }
     }
 
@@ -646,6 +701,38 @@ export default function SciAdvisorStudentsDocsPage() {
                             console.log('gradeError');
                     }
             }
+        });
+
+        $('.status-2').off().on('click', function () {
+            var documentId = $(this).parent().parent().parent().parent().attr('id');
+            var arrayID1 = documentId.split('-')[1];
+            var arrayID2 = documentId.split('-')[2];
+            var versionId = getVersionId(arrayID1, arrayID2);
+            gradeReport(versionId, 'Неудовлетворительно');
+        });
+
+        $('.status-3').off().on('click', function () {
+            var documentId = $(this).parent().parent().parent().parent().attr('id');
+            var arrayID1 = documentId.split('-')[1];
+            var arrayID2 = documentId.split('-')[2];
+            var versionId = getVersionId(arrayID1, arrayID2);
+            gradeReport(versionId, 'Удовлетворительно');
+        });
+
+        $('.status-4').off().on('click', function () {
+            var documentId = $(this).parent().parent().parent().parent().attr('id');
+            var arrayID1 = documentId.split('-')[1];
+            var arrayID2 = documentId.split('-')[2];
+            var versionId = getVersionId(arrayID1, arrayID2);
+            gradeReport(versionId, 'Хорошо');
+        });
+
+        $('.status-5').off().on('click', function () {
+            var documentId = $(this).parent().parent().parent().parent().attr('id');
+            var arrayID1 = documentId.split('-')[1];
+            var arrayID2 = documentId.split('-')[2];
+            var versionId = getVersionId(arrayID1, arrayID2);
+            gradeReport(versionId, 'Отлично');
         });
 
         // Удалить версию

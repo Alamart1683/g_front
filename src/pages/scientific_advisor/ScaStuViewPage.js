@@ -1731,7 +1731,7 @@ export default function ScaStuViewPage() {
                 sendButton.className = 'dark size-24 nir-version-header-button nir-version-send-button';
                 sendButton.innerText = 'Отправить студенту:';
                 sendButton.type = 'button';
-                if (item.status === 'Одобрено' || item.status === 'Замечания') {
+                if (item.status !== 'Не отправлено' && item.status !== 'Рассматривается') {
                     sendButton.disabled = true;
                 }
 
@@ -1886,7 +1886,7 @@ export default function ScaStuViewPage() {
             sendButton.className = 'dark size-24 nir-version-header-button nir-version-send-button';
             sendButton.innerText = 'Отправить студенту:';
             sendButton.type = 'button';
-            if (item.status === 'Одобрено' || item.status === 'Замечания') {
+            if (item.status !== 'Не отправлено' && item.status !== 'Рассматривается') {
                 sendButton.disabled = true;
             }
 
@@ -2040,7 +2040,7 @@ export default function ScaStuViewPage() {
             sendButton.className = 'dark size-24 nir-version-header-button nir-version-send-button';
             sendButton.innerText = 'Отправить студенту:';
             sendButton.type = 'button';
-            if (item.status === 'Одобрено' || item.status === 'Замечания') {
+            if (item.status !== 'Не отправлено' && item.status !== 'Рассматривается') {
                 sendButton.disabled = true;
             }
 
@@ -2194,7 +2194,7 @@ export default function ScaStuViewPage() {
             sendButton.className = 'dark size-24 nir-version-header-button nir-version-send-button';
             sendButton.innerText = 'Отправить студенту:';
             sendButton.type = 'button';
-            if (item.status === 'Одобрено' || item.status === 'Замечания') {
+            if (item.status !== 'Не отправлено' && item.status !== 'Рассматривается') {
                 sendButton.disabled = true;
             }
 
