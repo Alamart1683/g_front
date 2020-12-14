@@ -318,7 +318,7 @@ export default function AdminTemplatesPage() {
             <Modal centered show={show} onHide={(e) => { setShow(false); }} className='dark'>
                 <Modal.Header className='light-background sca-examples-modal1-header' closeButton>
                     <Modal.Title className='size-30'>
-                        <p style={{ height: '50px', marginBottom: '0px', marginLeft: '200px' }}>Загрузить шаблон</p>
+                        <p style={{ height: '50px', marginBottom: '0px', marginLeft: '260px' }}>Загрузить шаблон</p>
                     </Modal.Title>
                 </Modal.Header>
                 <Modal.Body className='light-background sca-examples-modal1-body'>
@@ -333,7 +333,7 @@ export default function AdminTemplatesPage() {
                         <option value='Шаблон задания на ПП'>Шаблон задания на ПП</option>
                         <option value='Шаблон задания на ВКР'>Шаблон задания на ВКР</option>
                     </select>
-                    <button type='button' id='create-template-button' disabled className='size-24 dark-background light sca-modal-button' style={{ marginLeft: '130px' }}>
+                    <button type='button' id='create-template-button' className='size-24 dark-background light sca-modal-button' style={{ marginLeft: '180px' }}>
                         Выбрать файл и<br />загрузить шаблон на сервер
                     </button>
                     <input id='template-file-input' type='file' style={{ display: 'none' }} onChange={(e) => {

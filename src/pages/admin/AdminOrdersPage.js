@@ -416,7 +416,7 @@ export default function AdminOrdersPage() {
             <Modal centered show={show} onHide={(e) => { setShow(false); }} className='dark'>
                 <Modal.Header className='light-background sca-examples-modal1-header' closeButton>
                     <Modal.Title className='size-30'>
-                        <p style={{ height: '50px', marginBottom: '0px', marginLeft: '200px' }}>Загрузить приказ</p>
+                        <p style={{ height: '50px', marginBottom: '0px', marginLeft: '260px' }}>Загрузить приказ</p>
                     </Modal.Title>
                 </Modal.Header>
                 <Modal.Body className='light-background sca-examples-modal1-body'>
@@ -449,7 +449,7 @@ export default function AdminOrdersPage() {
                         </div>
                     </div>
 
-                    <button type='button' id='create-order-button' disabled className='size-24 dark-background light sca-modal-button' style={{ marginLeft: '130px' }}>
+                    <button type='button' id='create-order-button' disabled className='size-24 dark-background light sca-modal-button' style={{ marginLeft: '180px' }}>
                         Выбрать файл и<br />загрузить приказ на сервер
                     </button>
                     <input id='order-file-input' type='file' style={{ display: 'none' }} onChange={(e) => {
