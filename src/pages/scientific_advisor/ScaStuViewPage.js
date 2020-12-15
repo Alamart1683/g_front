@@ -16,7 +16,7 @@ export default function ScaStuViewPage() {
     const [fetchedData, setFetchedData] = useState(false);
 
     const [students, setStudents] = useState([]);
-    const [studentData, setStudentData] = useState([]);
+    //const [studentData, setStudentData] = useState([]);
     const [studentTheme, setStudentTheme] = useState('');
     const [themeConfirmed, setThemeConfirmed] = useState('');
 
@@ -139,7 +139,7 @@ export default function ScaStuViewPage() {
 
     useEffect(() => {
         var id = findStudent(students, JSON.parse(sessionStorage.getItem('viewedStudentId')));
-        if (id != -1) {
+        if (id !== -1) {
             showStudent(students[id]);
         }
     }, [students]);
@@ -161,8 +161,8 @@ export default function ScaStuViewPage() {
 
     function findStudent(studentArray, studentId) {
         for (var i = 0; i < studentArray.length; i++) {
-            if (studentArray[i].systemStudentID == studentId) {
-                setStudentData(studentArray[i]);
+            if (studentArray[i].systemStudentID === studentId) {
+                //setStudentData(studentArray[i]);
                 return i;
             }
         }
@@ -180,7 +180,7 @@ export default function ScaStuViewPage() {
         var studentFio = document.createElement('th');
 
         var projectArea = 'Комплексный проект не назначен';
-        if (item.projectArea != 'Нет проектной области') {
+        if (item.projectArea !== 'Нет проектной области') {
             projectArea = item.projectArea;
         }
 
@@ -237,15 +237,6 @@ export default function ScaStuViewPage() {
             nirTaskCheckbox.checked = true;
         }
         nirTaskCheckbox.style.marginLeft = '22px';
-        nirTaskCheckbox.style.marginRight = '30px';
-
-        var nirTaskHocCheckbox = document.createElement('input');
-
-        nirTaskHocCheckbox.type = 'checkbox';
-        nirTaskHocCheckbox.className = 'sci-table-checkbox';
-        if (item.studentDocumentsStatusView.nirTaskHocRate) {
-            nirTaskHocCheckbox.checked = true;
-        }
 
         var nirTaskDiv = document.createElement('div');
 
@@ -256,13 +247,6 @@ export default function ScaStuViewPage() {
         var nirReportMark = document.createElement('p');
         nirReportMark.innerText = getStatus(item.studentDocumentsStatusView.nirReportStatus);
         nirReportMark.className = 'table-report-mark-text';
-
-        var nirReportHocCheckbox = document.createElement('input');
-        nirReportHocCheckbox.type = 'checkbox';
-        nirReportHocCheckbox.className = 'sci-table-checkbox';
-        if (item.studentDocumentsStatusView.nirReportHocRate) {
-            nirReportHocCheckbox.checked = true;
-        }
 
         var nirReportDiv = document.createElement('div');
 
@@ -281,15 +265,6 @@ export default function ScaStuViewPage() {
             longPPTaskCheckbox.checked = true;
         }
         longPPTaskCheckbox.style.marginLeft = '22px';
-        longPPTaskCheckbox.style.marginRight = '30px';
-
-        var longPPTaskHocCheckbox = document.createElement('input');
-
-        longPPTaskHocCheckbox.type = 'checkbox';
-        longPPTaskHocCheckbox.className = 'sci-table-checkbox';
-        if (item.studentDocumentsStatusView.ppppuipdTaskHocRate) {
-            longPPTaskHocCheckbox.checked = true;
-        }
 
         var longPPTaskDiv = document.createElement('div');
 
@@ -300,13 +275,6 @@ export default function ScaStuViewPage() {
         var longPPReportMark = document.createElement('p');
         longPPReportMark.innerText = getStatus(item.studentDocumentsStatusView.ppppuipdReportStatus);
         longPPReportMark.className = 'table-report-mark-text';
-
-        var longPPReportHocCheckbox = document.createElement('input');
-        longPPReportHocCheckbox.type = 'checkbox';
-        longPPReportHocCheckbox.className = 'sci-table-checkbox';
-        if (item.studentDocumentsStatusView.ppppuipdReportHocRate) {
-            longPPReportHocCheckbox.checked = true;
-        }
 
         var longPPReportDiv = document.createElement('div');
 
@@ -325,15 +293,6 @@ export default function ScaStuViewPage() {
             ppTaskCheckbox.checked = true;
         }
         ppTaskCheckbox.style.marginLeft = '22px';
-        ppTaskCheckbox.style.marginRight = '30px';
-
-        var ppTaskHocCheckbox = document.createElement('input');
-
-        ppTaskHocCheckbox.type = 'checkbox';
-        ppTaskHocCheckbox.className = 'sci-table-checkbox';
-        if (item.studentDocumentsStatusView.ppTaskHocRate) {
-            ppTaskHocCheckbox.checked = true;
-        }
 
         var ppTaskDiv = document.createElement('div');
 
@@ -344,14 +303,6 @@ export default function ScaStuViewPage() {
         var ppReportMark = document.createElement('p');
         ppReportMark.innerText = getStatus(item.studentDocumentsStatusView.ppReportStatus);
         ppReportMark.className = 'table-report-mark-text';
-
-        var ppReportHocCheckbox = document.createElement('input');
-
-        ppReportHocCheckbox.type = 'checkbox';
-        ppReportHocCheckbox.className = 'sci-table-checkbox';
-        if (item.studentDocumentsStatusView.ppReportHocRate) {
-            ppReportHocCheckbox.checked = true;
-        }
 
         var ppReportDiv = document.createElement('div');
 
@@ -401,15 +352,6 @@ export default function ScaStuViewPage() {
             vkrTaskCheckbox.checked = true;
         }
         vkrTaskCheckbox.style.marginLeft = '22px';
-        vkrTaskCheckbox.style.marginRight = '30px';
-
-        var vkrTaskHocCheckbox = document.createElement('input');
-
-        vkrTaskHocCheckbox.type = 'checkbox';
-        vkrTaskHocCheckbox.className = 'sci-table-checkbox';
-        if (item.studentDocumentsStatusView.vkrTaskHocRate) {
-            vkrTaskHocCheckbox.checked = true;
-        }
 
         var vkrTaskDiv = document.createElement('div');
 
@@ -420,15 +362,6 @@ export default function ScaStuViewPage() {
         var vkrRPZMark = document.createElement('p');
         vkrRPZMark.innerText = getStatus(item.studentDocumentsStatusView.vkrRPZ);
         vkrRPZMark.className = 'table-report-mark-text';
-
-        var vkrRPZHocCheckbox = document.createElement('input');
-
-        vkrRPZHocCheckbox.type = 'checkbox';
-        vkrRPZHocCheckbox.className = 'sci-table-checkbox';
-        if (item.studentDocumentsStatusView.vkrRPZHocRate) {
-            vkrRPZHocCheckbox.checked = true;
-        }
-
         var vkrRPZDiv = document.createElement('div');
 
         var vkrAntiplagiatCheckbox = document.createElement('input');
@@ -468,48 +401,40 @@ export default function ScaStuViewPage() {
 
         nirTaskDiv.appendChild(nirTaskStatus);
         nirTaskDiv.appendChild(nirTaskCheckbox);
-        nirTaskDiv.appendChild(nirTaskHocCheckbox);
         studentNir.appendChild(nirTaskDiv);
 
         nirReportDiv.appendChild(nirReportStatus);
         nirReportDiv.appendChild(nirReportMark);
-        nirReportDiv.appendChild(nirReportHocCheckbox);
         studentNir.appendChild(nirReportDiv);
 
         student.appendChild(studentNir);
 
         longPPTaskDiv.appendChild(longPPTaskStatus);
         longPPTaskDiv.appendChild(longPPTaskCheckbox);
-        longPPTaskDiv.appendChild(longPPTaskHocCheckbox);
         studentLongPP.appendChild(longPPTaskDiv);
 
         longPPReportDiv.appendChild(longPPReportStatus);
         longPPReportDiv.appendChild(longPPReportMark);
-        longPPReportDiv.appendChild(longPPReportHocCheckbox);
         studentLongPP.appendChild(longPPReportDiv);
 
         student.appendChild(studentLongPP);
 
         ppTaskDiv.appendChild(ppTaskStatus);
         ppTaskDiv.appendChild(ppTaskCheckbox);
-        ppTaskDiv.appendChild(ppTaskHocCheckbox);
         studentPP.appendChild(ppTaskDiv);
 
         ppReportDiv.appendChild(ppReportStatus);
         ppReportDiv.appendChild(ppReportMark);
-        ppReportDiv.appendChild(ppReportHocCheckbox);
         studentPP.appendChild(ppReportDiv);
 
         student.appendChild(studentPP);
 
         vkrTaskDiv.appendChild(vkrTaskStatus);
         vkrTaskDiv.appendChild(vkrTaskCheckbox);
-        vkrTaskDiv.appendChild(vkrTaskHocCheckbox);
         studentVkr.appendChild(vkrTaskDiv);
 
         vkrRPZDiv.appendChild(vkrRPZStatus);
         vkrRPZDiv.appendChild(vkrRPZMark);
-        vkrRPZDiv.appendChild(vkrRPZHocCheckbox);
         studentVkr.appendChild(vkrRPZDiv);
 
         vkrAdvisorFeedbackDiv.appendChild(vkrAdvisorFeedbackStatus);
@@ -3415,7 +3340,7 @@ export default function ScaStuViewPage() {
         $('.nir-copy').off().on('click', function () {
             var versionId = $(this).parent().parent().parent().parent().attr('id');
             var arrayID = versionId.split('-')[2];
-            if (themeConfirmed != 'Одобрена') {
+            if (themeConfirmed !== 'Одобрена') {
                 setStudentTheme(nirVersions[arrayID].theme);
             }
             setToExplore(nirVersions[arrayID].toExplore);
@@ -3429,7 +3354,7 @@ export default function ScaStuViewPage() {
             var versionId = $(this).parent().parent().parent().parent().attr('id');
             var arrayID = versionId.split('-')[3];
 
-            if (themeConfirmed != 'Одобрена') {
+            if (themeConfirmed !== 'Одобрена') {
                 setStudentTheme(longPPData[arrayID].theme);
             }
             setToExplore(longPPData[arrayID].toExplore);
@@ -3443,7 +3368,7 @@ export default function ScaStuViewPage() {
             var versionId = $(this).parent().parent().parent().parent().attr('id');
             var arrayID = versionId.split('-')[2];
 
-            if (themeConfirmed != 'Одобрена') {
+            if (themeConfirmed !== 'Одобрена') {
                 setStudentTheme(PPData[arrayID].theme);
             }
             setToExplore(PPData[arrayID].toExplore);
@@ -3481,7 +3406,7 @@ export default function ScaStuViewPage() {
             var versionId = $(this).parent().parent().attr('id');
             var arrayID = versionId.split('-')[2];
 
-            if (themeConfirmed != 'Одобрена') {
+            if (themeConfirmed !== 'Одобрена') {
                 setStudentTheme(vkrTaskVersions[arrayID].theme);
             }
             setVkrDocs(vkrTaskVersions[arrayID].vkrDocs);
@@ -3557,10 +3482,10 @@ export default function ScaStuViewPage() {
                         <tr>
                             <th>ФИО</th>
                             <th>Тема - {themeConfirmed}</th>
-                            <th style={{ minWidth: '273px' }}>НИР</th>
-                            <th style={{ minWidth: '348px' }}>ПпППУиОПД</th>
-                            <th style={{ minWidth: '263px' }}>ПП</th>
-                            <th style={{ minWidth: '313px' }}>ВКР</th>
+                            <th style={{ minWidth: '233px' }}>НИР</th>
+                            <th style={{ minWidth: '318px' }}>ПпППУиОПД</th>
+                            <th style={{ minWidth: '233px' }}>ПП</th>
+                            <th style={{ minWidth: '283px' }}>ВКР</th>
                         </tr>
                     </thead>
                     <tbody id='student-table-body' className='size-24 dark'>
@@ -3916,7 +3841,7 @@ export default function ScaStuViewPage() {
                                         </button>
                                         <input id='vkr-review-file-input' type='file' style={{ display: 'none' }} onChange={(e) => {
                                             if (e.target.files.length !== 0) {
-                                                if (vkrReviewVersions.length == 0) {
+                                                if (vkrReviewVersions.length === 0) {
                                                     //uploadDocument(e.target.files[0], 'ВКР', 'Отзыв');
                                                 }
                                                 else {
@@ -3950,7 +3875,7 @@ export default function ScaStuViewPage() {
                                     </button>
                                     <input id='vkr-dopusk-file-input' type='file' style={{ display: 'none' }} onChange={(e) => {
                                         if (e.target.files.length !== 0) {
-                                            if (vkrDopuskVersions.length == 0) {
+                                            if (vkrDopuskVersions.length === 0) {
                                                 //uploadDocument(e.target.files[0], 'ВКР', 'Допуск');
                                             }
                                             else {
@@ -4048,7 +3973,7 @@ export default function ScaStuViewPage() {
                                     </button>
                                     <input id='vkr-antiplagiat-file-input' type='file' style={{ display: 'none' }} onChange={(e) => {
                                         if (e.target.files.length !== 0) {
-                                            if (vkrAntiplagiatVersions.length == 0) {
+                                            if (vkrAntiplagiatVersions.length === 0) {
                                                 //uploadDocument(e.target.files[0], 'ВКР', 'Антиплагиат');
                                             }
                                             else {
@@ -4080,7 +4005,7 @@ export default function ScaStuViewPage() {
                                     </button>
                                     <input id='vkr-presentation-file-input' type='file' style={{ display: 'none' }} onChange={(e) => {
                                         if (e.target.files.length !== 0) {
-                                            if (vkrPrezentationVersions.length == 0) {
+                                            if (vkrPrezentationVersions.length === 0) {
                                                 //uploadDocument(e.target.files[0], 'ВКР', 'Презентация');
                                             }
                                             else {

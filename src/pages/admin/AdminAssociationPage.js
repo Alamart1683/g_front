@@ -121,14 +121,6 @@ export default function AdminAssociationPage() {
                 studentFio.innerText = student.studentFio;
                 studentFio.className = 'student-fio';
 
-                var studentStatus = document.createElement('th');
-                if (student.studentIsConfirmed) {
-                    studentStatus.innerText = 'Подтвержден';
-                }
-                else {
-                    studentStatus.innerText = 'Не подтвержден';
-                }
-
                 var assignDiv = document.createElement('div');
                 assignDiv.className = 'add-student-dropdown-div';
 
@@ -163,7 +155,6 @@ export default function AdminAssociationPage() {
                 studentRow.appendChild(studentSpeciality);
                 studentRow.appendChild(studentGroup);
                 studentRow.appendChild(studentScaFio);
-                studentRow.appendChild(studentStatus);
 
                 assignDiv.appendChild(assignButton);
                 assignDiv.appendChild(assignContent);
@@ -365,8 +356,7 @@ export default function AdminAssociationPage() {
                             <th>ФИО Студента</th>
                             <th>Направление</th>
                             <th style={{minWidth:'135px'}}>Группа</th>
-                            <th>ФИО Научного Руководителя</th>                            
-                            <th>Статус</th>
+                            <th>ФИО Научного Руководителя</th>
                             <th style={{minWidth:'190px'}}></th>
                         </tr>
                     </thead>

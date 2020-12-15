@@ -129,9 +129,9 @@ export default function StudentHeader() {
                 <Nav.Item style={{marginLeft:'3px', marginRight:'3px'}}>
                     <button type='button' className='student-navbar-button dark-background light size-30' data-toggle="popover"
                         data-placement="bottom" title="Данные научного руководителя:"
-                        data-content={scientificAdvisorData.length != [] ? "Имя: " + scientificAdvisorData.advsiorFio + "\nТелефон: " +
+                        data-content={scientificAdvisorData !== [] ? "Имя: " + scientificAdvisorData.advsiorFio + "\nТелефон: " +
                             scientificAdvisorData.advisorPhone + "\nПочта: " + scientificAdvisorData.advisorEmail : ''}>
-                        Научный руководитель: <br />{scientificAdvisorData.length != [] ? scientificAdvisorData.advsiorFio.split(' ')[0] + ' '
+                        Научный руководитель: <br />{scientificAdvisorData.length !== 0 ? scientificAdvisorData.advsiorFio.split(' ')[0] + ' '
                             + scientificAdvisorData.advsiorFio.split(' ')[1].charAt(0) + '. ' + scientificAdvisorData.advsiorFio.split(' ')[2].charAt(0) + '.' : ''}
                     </button>
 

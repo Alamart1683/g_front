@@ -61,7 +61,7 @@ export default function StudentThemePage() {
                     
                     <textarea style={{ marginLeft: '90px', height: '120px', textAlign: 'center', width:'1300px', maxHeight:'300px' }} maxLength='1023' id='theme' type='text' value={theme} onChange={(e) => {
                         setTheme(e.target.value);
-                        if ($('#theme').val() !== '' &&  document.getElementById('error-message').style.visibility != 'visible') {
+                        if ($('#theme').val() !== '' &&  document.getElementById('error-message').style.visibility !== 'visible') {
                             document.getElementById('change-theme-button').disabled = false;
                         }
                         else {

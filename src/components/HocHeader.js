@@ -21,8 +21,8 @@ export default function ScaStuHeader() {
     $(function () {
         $('.student-navbar-button').removeClass('student-navbar-button-selected');
         switch (window.location.pathname) {
-            case ('/hoc/association'):
-                document.getElementById('button-association').classList.add('student-navbar-button-selected');
+            case ('/hoc/performance'):
+                document.getElementById('button-performance').classList.add('student-navbar-button-selected');
                 break;
             case ('/hoc/orders'):
                 document.getElementById('button-orders').classList.add('student-navbar-button-selected');
@@ -41,10 +41,10 @@ export default function ScaStuHeader() {
     return (
         <div>
             <Navbar className='light-background light student-nav'>
-                <Nav.Link as={Link} to='/hoc/association'>
-                    <button id='button-association' type='button' className='student-navbar-button dark-background light size-30'>
-                        <Image src={iconStudents} thumbnail className='student-navbar-image dark-background' />
-                        Студенты и<br />научные руководители
+                <Nav.Link as={Link} to='/hoc/performance'>
+                    <button id='button-performance' type='button' className='student-navbar-button dark-background light size-30'>
+                        <Image src={iconNR} thumbnail className='student-navbar-image dark-background' />
+                        Успеваемость
                     </button>
                 </Nav.Link>
                 <Nav.Link as={Link} to='/hoc/orders'>
@@ -57,12 +57,6 @@ export default function ScaStuHeader() {
                     <button id='button-templates' type='button' className='student-navbar-button dark-background light size-30'>
                         <Image src={templateImage} thumbnail className='student-navbar-image dark-background' />
                         Шаблоны
-                    </button>
-                </Nav.Link>
-                <Nav.Link as={Link} to='/sca/students'>
-                    <button type='button' className='student-navbar-button dark-background light size-30'>
-                        <Image src={iconNR} thumbnail className='student-navbar-image dark-background' />
-                        Перейти в меню<br />научного руководителя
                     </button>
                 </Nav.Link>
                 <Nav.Link as={Link} to='/hoc/settings'>

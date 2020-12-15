@@ -17,6 +17,7 @@ import NoMatch from './components/NoMatch';
 import OrdersPage from './pages/common/OrdersPage';
 import TemplatesPage from './pages/common/TemplatesPage';
 import SettingsPage from './pages/common/SettingsPage';
+import PerformancePage from './pages/common/PerformancePage';
 
 import StudentHeader from './components/StudentHeader';
 import StudentInfoPage from './pages/student/StudentInfoPage';
@@ -38,7 +39,7 @@ import HocHeader from './components/HocHeader';
 //import HocDocumentooborotPage from './pages/head_of_cafedra/HocDocumentooborotPage';
 import HocOrdersPage from './pages/head_of_cafedra/HocOrdersPage';
 import HocTemplatesPage from './pages/head_of_cafedra/HocTemplatesPage';
-import HocStudentAssociationPage from './pages/head_of_cafedra/HocStudentAssociationPage';
+//import HocStudentAssociationPage from './pages/head_of_cafedra/HocStudentAssociationPage';
 
 import AdminHeader from './components/AdminHeader';
 import AdminAssociationPage from './pages/admin/AdminAssociationPage';
@@ -93,14 +94,15 @@ export default function App() {
 
           <AuthRoute exact path='/hoc/orders' component={HocOrdersPage} />
           <AuthRoute exact path='/hoc/templates' component={HocTemplatesPage} />
-          <AuthRoute exact path='/hoc/association' component={HocStudentAssociationPage} />
           <AuthRoute exact path='/hoc/settings' component={SettingsPage} />
+          <AuthRoute exact path='/hoc/performance' component={PerformancePage} />
 
           <AuthRoute exact path='/admin/association' component={AdminAssociationPage} />
           <AuthRoute exact path='/admin/orders' component={AdminOrdersPage} />
           <AuthRoute exact path='/admin/templates' component={AdminTemplatesPage} />
           <AuthRoute exact path='/admin/registration' component={AdminRegistrationPage} />
           <AuthRoute exact path='/admin/settings' component={SettingsPage} />
+          <AuthRoute exact path='/admin/performance' component={PerformancePage} />
 
           <Route path='*' component={NoMatch} />
         </Switch>

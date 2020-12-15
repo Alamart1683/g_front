@@ -51,7 +51,7 @@ export default function StudentThemePage() {
             var studentFio = document.createElement('th');
 
             var projectArea = 'Комплексный проект не назначен';
-            if (item.projectArea != 'Нет проектной области') {
+            if (item.projectArea !== 'Нет проектной области') {
                 projectArea = item.projectArea;
             }
 

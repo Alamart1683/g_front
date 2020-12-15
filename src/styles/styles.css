@@ -83,11 +83,11 @@ html, body {
 
 /* Форма логина */
 .loginForm {
-	margin-top: 195px;
+	margin-top: 175px;
 	margin-left: auto;
     margin-right: auto;
 	width: 405px;
-	height: 445px;
+	height: 485px;
 	text-align: center;
 	display: block;
 	border-radius: 7px;

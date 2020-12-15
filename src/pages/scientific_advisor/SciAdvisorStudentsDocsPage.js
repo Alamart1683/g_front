@@ -129,19 +129,12 @@ export default function SciAdvisorStudentsDocsPage() {
             for (var j = 0; j < documentItem.length; j++) {
                 var documentVersion = documentItem[j];
                 //console.log(documentVersion);
+                var documentStatus;
                 if (documentKind === 'Задание' || documentKind === 'Отчёт') {
-                    var documentStatus = getStatus(documentVersion.status);
-                    if (documentKind === 'Отчёт') {
-                        if (documentVersion.hocRate) {
-                            documentStatus += ' - Одобрено';
-                        }
-                        else {
-                            documentStatus += ' - Не одобрено';
-                        }
-                    }
+                    documentStatus = getStatus(documentVersion.status);
                 }
                 else {
-                    var documentStatus = documentVersion.documentStatus;
+                    documentStatus = documentVersion.documentStatus;
                 }
 
                 var versionDiv = document.createElement('div');
@@ -197,9 +190,6 @@ export default function SciAdvisorStudentsDocsPage() {
                 dropdownContent.className = 'sca-scu-version-status-dropdown-content';
 
                 if (documentKind === 'Отчёт') {
-                    var statusZamechaniya = document.createElement('p');
-                    statusZamechaniya.className = 'dark size-18 status-zamechaniya';
-                    statusZamechaniya.innerText = 'Замечания';
 
                     var status2 = document.createElement('p');
                     status2.className = 'dark size-18 status-2';
@@ -222,10 +212,11 @@ export default function SciAdvisorStudentsDocsPage() {
                     statusOdobreno.className = 'dark size-18 status-odobreno';
                     statusOdobreno.innerText = 'Одобрено';
 
-                    var statusZamechaniya = document.createElement('p');
-                    statusZamechaniya.className = 'dark size-18 status-zamechaniya';
-                    statusZamechaniya.innerText = 'Замечания';
                 }
+
+                var statusZamechaniya = document.createElement('p');
+                statusZamechaniya.className = 'dark size-18 status-zamechaniya';
+                statusZamechaniya.innerText = 'Замечания';
 
                 // Кнопка скачать документ
                 var downloadButton = document.createElement('button');

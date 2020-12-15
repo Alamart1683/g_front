@@ -213,15 +213,6 @@ export default function StudentTasksPage() {
             nirTaskCheckbox.checked = true;
         }
         nirTaskCheckbox.style.marginLeft = '22px';
-        nirTaskCheckbox.style.marginRight = '30px';
-
-        var nirTaskHocCheckbox = document.createElement('input');
-
-        nirTaskHocCheckbox.type = 'checkbox';
-        nirTaskHocCheckbox.className = 'sci-table-checkbox';
-        if (item.studentDocumentsStatusView.nirTaskHocRate) {
-            nirTaskHocCheckbox.checked = true;
-        }
 
         var nirTaskDiv = document.createElement('div');
 
@@ -232,13 +223,6 @@ export default function StudentTasksPage() {
         var nirReportMark = document.createElement('p');
         nirReportMark.innerText = getStatus(item.studentDocumentsStatusView.nirReportStatus);
         nirReportMark.className = 'table-report-mark-text';
-
-        var nirReportHocCheckbox = document.createElement('input');
-        nirReportHocCheckbox.type = 'checkbox';
-        nirReportHocCheckbox.className = 'sci-table-checkbox';
-        if (item.studentDocumentsStatusView.nirReportHocRate) {
-            nirReportHocCheckbox.checked = true;
-        }
 
         var nirReportDiv = document.createElement('div');
 
@@ -257,15 +241,6 @@ export default function StudentTasksPage() {
             longPPTaskCheckbox.checked = true;
         }
         longPPTaskCheckbox.style.marginLeft = '22px';
-        longPPTaskCheckbox.style.marginRight = '30px';
-
-        var longPPTaskHocCheckbox = document.createElement('input');
-
-        longPPTaskHocCheckbox.type = 'checkbox';
-        longPPTaskHocCheckbox.className = 'sci-table-checkbox';
-        if (item.studentDocumentsStatusView.ppppuipdTaskHocRate) {
-            longPPTaskHocCheckbox.checked = true;
-        }
 
         var longPPTaskDiv = document.createElement('div');
 
@@ -276,13 +251,6 @@ export default function StudentTasksPage() {
         var longPPReportMark = document.createElement('p');
         longPPReportMark.innerText = getStatus(item.studentDocumentsStatusView.ppppuipdReportStatus);
         longPPReportMark.className = 'table-report-mark-text';
-
-        var longPPReportHocCheckbox = document.createElement('input');
-        longPPReportHocCheckbox.type = 'checkbox';
-        longPPReportHocCheckbox.className = 'sci-table-checkbox';
-        if (item.studentDocumentsStatusView.ppppuipdReportHocRate) {
-            longPPReportHocCheckbox.checked = true;
-        }
 
         var longPPReportDiv = document.createElement('div');
 
@@ -301,15 +269,6 @@ export default function StudentTasksPage() {
             ppTaskCheckbox.checked = true;
         }
         ppTaskCheckbox.style.marginLeft = '22px';
-        ppTaskCheckbox.style.marginRight = '30px';
-
-        var ppTaskHocCheckbox = document.createElement('input');
-
-        ppTaskHocCheckbox.type = 'checkbox';
-        ppTaskHocCheckbox.className = 'sci-table-checkbox';
-        if (item.studentDocumentsStatusView.ppTaskHocRate) {
-            ppTaskHocCheckbox.checked = true;
-        }
 
         var ppTaskDiv = document.createElement('div');
 
@@ -320,14 +279,6 @@ export default function StudentTasksPage() {
         var ppReportMark = document.createElement('p');
         ppReportMark.innerText = getStatus(item.studentDocumentsStatusView.ppReportStatus);
         ppReportMark.className = 'table-report-mark-text';
-
-        var ppReportHocCheckbox = document.createElement('input');
-
-        ppReportHocCheckbox.type = 'checkbox';
-        ppReportHocCheckbox.className = 'sci-table-checkbox';
-        if (item.studentDocumentsStatusView.ppReportHocRate) {
-            ppReportHocCheckbox.checked = true;
-        }
 
         var ppReportDiv = document.createElement('div');
 
@@ -377,15 +328,6 @@ export default function StudentTasksPage() {
             vkrTaskCheckbox.checked = true;
         }
         vkrTaskCheckbox.style.marginLeft = '22px';
-        vkrTaskCheckbox.style.marginRight = '30px';
-
-        var vkrTaskHocCheckbox = document.createElement('input');
-
-        vkrTaskHocCheckbox.type = 'checkbox';
-        vkrTaskHocCheckbox.className = 'sci-table-checkbox';
-        if (item.studentDocumentsStatusView.vkrTaskHocRate) {
-            vkrTaskHocCheckbox.checked = true;
-        }
 
         var vkrTaskDiv = document.createElement('div');
 
@@ -396,14 +338,6 @@ export default function StudentTasksPage() {
         var vkrRPZMark = document.createElement('p');
         vkrRPZMark.innerText = getStatus(item.studentDocumentsStatusView.vkrRPZ);
         vkrRPZMark.className = 'table-report-mark-text';
-
-        var vkrRPZHocCheckbox = document.createElement('input');
-
-        vkrRPZHocCheckbox.type = 'checkbox';
-        vkrRPZHocCheckbox.className = 'sci-table-checkbox';
-        if (item.studentDocumentsStatusView.vkrRPZHocRate) {
-            vkrRPZHocCheckbox.checked = true;
-        }
 
         var vkrRPZDiv = document.createElement('div');
 
@@ -441,48 +375,40 @@ export default function StudentTasksPage() {
 
         nirTaskDiv.appendChild(nirTaskStatus);
         nirTaskDiv.appendChild(nirTaskCheckbox);
-        nirTaskDiv.appendChild(nirTaskHocCheckbox);
         studentNir.appendChild(nirTaskDiv);
 
         nirReportDiv.appendChild(nirReportStatus);
         nirReportDiv.appendChild(nirReportMark);
-        nirReportDiv.appendChild(nirReportHocCheckbox);
         studentNir.appendChild(nirReportDiv);
 
         student.appendChild(studentNir);
 
         longPPTaskDiv.appendChild(longPPTaskStatus);
         longPPTaskDiv.appendChild(longPPTaskCheckbox);
-        longPPTaskDiv.appendChild(longPPTaskHocCheckbox);
         studentLongPP.appendChild(longPPTaskDiv);
 
         longPPReportDiv.appendChild(longPPReportStatus);
         longPPReportDiv.appendChild(longPPReportMark);
-        longPPReportDiv.appendChild(longPPReportHocCheckbox);
         studentLongPP.appendChild(longPPReportDiv);
 
         student.appendChild(studentLongPP);
 
         ppTaskDiv.appendChild(ppTaskStatus);
         ppTaskDiv.appendChild(ppTaskCheckbox);
-        ppTaskDiv.appendChild(ppTaskHocCheckbox);
         studentPP.appendChild(ppTaskDiv);
 
         ppReportDiv.appendChild(ppReportStatus);
         ppReportDiv.appendChild(ppReportMark);
-        ppReportDiv.appendChild(ppReportHocCheckbox);
         studentPP.appendChild(ppReportDiv);
 
         student.appendChild(studentPP);
 
         vkrTaskDiv.appendChild(vkrTaskStatus);
         vkrTaskDiv.appendChild(vkrTaskCheckbox);
-        vkrTaskDiv.appendChild(vkrTaskHocCheckbox);
         studentVkr.appendChild(vkrTaskDiv);
 
         vkrRPZDiv.appendChild(vkrRPZStatus);
         vkrRPZDiv.appendChild(vkrRPZMark);
-        vkrRPZDiv.appendChild(vkrRPZHocCheckbox);
         studentVkr.appendChild(vkrRPZDiv);
 
         vkrAdvisorFeedbackDiv.appendChild(vkrAdvisorFeedbackStatus);
@@ -3376,10 +3302,10 @@ export default function StudentTasksPage() {
                         <thead className='size-24 dark'>
                             <tr>
                                 <th>Тема - {themeConfirmed}</th>
-                                <th style={{ minWidth: '203px' }}>НИР</th>
-                                <th style={{ minWidth: '278px' }}>ПпППУиОПД</th>
-                                <th style={{ minWidth: '193px' }}>ПП</th>
-                                <th style={{ minWidth: '243px' }}>ВКР</th>
+                                <th style={{ minWidth: '143px' }}>НИР</th>
+                                <th style={{ minWidth: '218px' }}>ПпППУиОПД</th>
+                                <th style={{ minWidth: '133px' }}>ПП</th>
+                                <th style={{ minWidth: '183px' }}>ВКР</th>
                             </tr>
                         </thead>
                         <tbody id='student-table-body'>

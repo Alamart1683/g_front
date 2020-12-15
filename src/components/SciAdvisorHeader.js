@@ -46,9 +46,9 @@ export default function SciAdvisorHeader() {
             case ('/sca/settings'):
                 document.getElementById('button-settings').classList.add('student-navbar-button-selected');
                 break;
-                case ('/sca/stu-themes'):
-                    document.getElementById('button-themes').classList.add('student-navbar-button-selected');
-                    break;
+            case ('/sca/stu-themes'):
+                document.getElementById('button-themes').classList.add('student-navbar-button-selected');
+                break;
             default:
                 console.log('url error');
         };
@@ -105,22 +105,12 @@ export default function SciAdvisorHeader() {
                         Личные<br />данные
                     </button>
                 </Nav.Link>
-                {authTokens.userRole === 'scientific_advisor' ? (
-                    <Nav.Link as={Link} to='#'>
-                        <button type='button' onClick={() => { logOut() }} className='student-navbar-button dark-background light size-30'>
-                            <Image src={exitImage} thumbnail className='student-navbar-image dark-background' />
+                <Nav.Link as={Link} to='#'>
+                    <button type='button' onClick={() => { logOut() }} className='student-navbar-button dark-background light size-30'>
+                        <Image src={exitImage} thumbnail className='student-navbar-image dark-background' />
                         Выйти
                     </button>
-                    </Nav.Link>
-                ) : null}
-                {authTokens.userRole === 'head_of_cathedra' ? (
-                    <Nav.Link as={Link} to='/hoc/association'>
-                        <button type='button' className='student-navbar-button dark-background light size-30'>
-                            <Image src={exitImage} thumbnail className='student-navbar-image dark-background' />
-                            Вернуться
-                        </button>
-                    </Nav.Link>
-                ) : null}
+                </Nav.Link>
             </Navbar>
         </div>
     );

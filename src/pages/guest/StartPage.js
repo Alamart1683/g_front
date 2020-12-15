@@ -22,11 +22,11 @@ export default function StartPage() {
     case 'scientific_advisor':
       return <Redirect to='/sca/students'/>;
     case 'head_of_cathedra':
-      return <Redirect to='/hoc/association' />;
+      return <Redirect to='/hoc/performance' />;
     case 'root':
-      return <Redirect to='/admin/association' />;
+      return <Redirect to='/admin/performance' />;
     case 'admin':
-      return <Redirect to='/admin/association' />;
+      return <Redirect to='/admin/performance' />;
     default:
       setAuthTokens(null);
       return <Redirect to="/guest/login" />;

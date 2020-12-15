@@ -1,49 +1,49 @@
-import React, { useEffect, useState } from 'react';
-import { Table } from 'react-bootstrap';
-import { Redirect } from 'react-router-dom';
-import axios from 'axios';
+import React, { useState, useEffect } from 'react';
+import { Table, Image } from 'react-bootstrap';
 import { useAuthContext } from '../../auth/AuthContext';
+import axios from 'axios';
 import { apiURL } from '../../Config';
 import $ from 'jquery';
 import 'bootstrap/dist/js/bootstrap.bundle.min';
 
-export default function SciAdvisorStudentsPage() {
+import iconLookingGlass from '../../images/icons/lookingglass.png';
+
+export default function PerformancePage() {
     const { authTokens } = useAuthContext();
     const [fetchedData, setFetchedData] = useState(false);
 
-    const [redirect, setRedirect] = useState(false);
-    const [students, setStudents] = useState([]);
+    const [performanceData, setPerformanceData] = useState([]);
 
     useEffect(() => {
-        showStudents(students);
-    });
-
+        showPerformanceData(performanceData);
+    }, [performanceData]);
+    
     if (!fetchedData) {
         setFetchedData(true);
-        getStudents();
+        getPerformanceData();
     }
 
-    // Получение данных о студентах
-    function getStudents() {
+    function getPerformanceData() {
         axios({
-            url: apiURL + '/scientific_advisor/student/active',
+            url: apiURL + '/scientific_advisor/student/active/for/',
             method: 'GET',
+            params: {
+                'key': 'all',
+            },
             headers: {
                 'Authorization': 'Bearer ' + authTokens.accessToken
             },
         }).then((response) => {
-            console.log(response);
-            setStudents(response.data);
+            //console.log(response);
+            setPerformanceData(response.data);
         }).catch(result => {
-            console.log(result.data);
+            console.log(result);
         });
     }
 
-    // Заполнение таблицы студентов
-    function showStudents(studentArray) {
-        for (var i = 0; i < studentArray.length; i++) {
-            var item = studentArray[i];
-            //console.log(item);
+    function showPerformanceData(dataArray) {
+        for (var i = 0; i < dataArray.length; i++) {
+            var item = dataArray[i];
 
             var student = document.createElement('tr');
             student.id = 'student' + i;
@@ -55,30 +55,25 @@ export default function SciAdvisorStudentsPage() {
             // Имя студента
             var studentFio = document.createElement('th');
 
-            var projectArea = 'Комплексный проект не назначен';
-            if (item.projectArea !== 'Нет проектной области') {
-                projectArea = item.projectArea;
-            }
-
             var popover = document.createElement('a');
             popover.href = '#';
             popover.onclick = 'return false;';
-            popover.className = 'student-popover dark size-24';
+            popover.className = 'student-popover dark';
             $(popover).attr('data-toggle', 'popover');
             $(popover).attr('title', 'Данные студента:');
             $(popover).attr('data-html', 'true');
             $(popover).attr('data-content', "Имя: " + item.fio +
-                "<br /> Группа: " + item.group +
                 "<br /> Телефон: " + item.phone +
-                "<br /> Почта: " + item.email +
-                "<br /> Комплексный проект: " + projectArea +
-                "<br /> Проект: " + item.projectName);
+                "<br /> Почта: " + item.email);
             popover.innerText = item.fio.split(' ')[0] +
                 ' ' +
                 item.fio.split(' ')[1].charAt(0) +
                 '. ' +
                 item.fio.split(' ')[2].charAt(0) +
                 '.';
+
+            var advisorFio = document.createElement('th');
+            advisorFio.innerText = item.advisorFIO;
 
             // Тема студента
             var studentTheme = document.createElement('th');
@@ -92,13 +87,19 @@ export default function SciAdvisorStudentsPage() {
             studentTheme.style.overflow = 'hidden';
             studentTheme.style.textOverflow = 'ellipsis';
             studentTheme.style.maxWidth = '300px';
+            
+            var studentGroup = document.createElement('th');
+            studentGroup.innerText = item.group;
+            
+            var studentSpeciality = document.createElement('th');
+            studentSpeciality.innerText = item.specialityCode;
 
             // НИР
             var studentNir = document.createElement('th');
 
             var nirTaskStatus = document.createElement('label');
             nirTaskStatus.innerText = 'Задание на НИР:';
-            nirTaskStatus.style.width = '148px';
+            nirTaskStatus.style.width = '223px';
 
             var nirTaskCheckbox = document.createElement('input');
             nirTaskCheckbox.type = 'checkbox';
@@ -112,16 +113,13 @@ export default function SciAdvisorStudentsPage() {
 
             var nirReportStatus = document.createElement('label');
             nirReportStatus.innerText = 'Отчет по НИР:';
-            nirReportStatus.style.width = '148px';
+            nirReportStatus.style.width = '223px';
 
             var nirReportMark = document.createElement('p');
             nirReportMark.innerText = getStatus(item.studentDocumentsStatusView.nirReportStatus);
             nirReportMark.className = 'table-report-mark-text';
 
             var nirReportDiv = document.createElement('div');
-
-            // ППП...
-            var studentLongPP = document.createElement('th');
 
             var longPPTaskStatus = document.createElement('label');
             longPPTaskStatus.innerText = 'Задание по ПпППУиОПД:';
@@ -148,12 +146,9 @@ export default function SciAdvisorStudentsPage() {
 
             var longPPReportDiv = document.createElement('div');
 
-            // ПП
-            var studentPP = document.createElement('th');
-
             var ppTaskStatus = document.createElement('label');
             ppTaskStatus.innerText = 'Задание по ПП:';
-            ppTaskStatus.style.width = '138px';
+            ppTaskStatus.style.width = '223px';
             
             var ppTaskCheckbox = document.createElement('input');
 
@@ -168,7 +163,7 @@ export default function SciAdvisorStudentsPage() {
 
             var ppReportStatus = document.createElement('label');
             ppReportStatus.innerText = 'Отчет по ПП:';
-            ppReportStatus.style.width = '138px';
+            ppReportStatus.style.width = '223px';
 
             var ppReportMark = document.createElement('p');
             ppReportMark.innerText = getStatus(item.studentDocumentsStatusView.ppReportStatus);
@@ -176,42 +171,9 @@ export default function SciAdvisorStudentsPage() {
 
             var ppReportDiv = document.createElement('div');
 
-            // ВКР
-            var studentVkr = document.createElement('th');
-
-            var vkrAdvisorFeedbackStatus = document.createElement('label');
-            vkrAdvisorFeedbackStatus.innerText = 'Отзыв руководителя:';
-            vkrAdvisorFeedbackStatus.style.width = '188px';
-
-            var vkrAdvisorFeedbackCheckbox = document.createElement('input');
-
-            vkrAdvisorFeedbackCheckbox.type = 'checkbox';
-            vkrAdvisorFeedbackCheckbox.className = 'sci-table-checkbox';
-            if (item.studentDocumentsStatusView.vkrAdvisorFeedback) {
-                vkrAdvisorFeedbackCheckbox.checked = true;
-            }
-            vkrAdvisorFeedbackCheckbox.style.marginLeft = '22px';
-
-            var vkrAdvisorFeedbackDiv = document.createElement('div');
-
-            var vkrAllowanceStatus = document.createElement('label');
-            vkrAllowanceStatus.innerText = 'Допуск к ВКР:';
-            vkrAllowanceStatus.style.width = '188px';
-
-            var vkrAllowanceCheckbox = document.createElement('input');
-
-            vkrAllowanceCheckbox.type = 'checkbox';
-            vkrAllowanceCheckbox.className = 'sci-table-checkbox';
-            if (item.studentDocumentsStatusView.vkrAllowance) {
-                vkrAllowanceCheckbox.checked = true;
-            }
-            vkrAllowanceCheckbox.style.marginLeft = '22px';
-
-            var vkrAllowanceStatusDiv = document.createElement('div');
-
             var vkrTaskStatus = document.createElement('label');
             vkrTaskStatus.innerText = 'Задание ВКР:';
-            vkrTaskStatus.style.width = '188px';
+            vkrTaskStatus.style.width = '223px';
 
             var vkrTaskCheckbox = document.createElement('input');
 
@@ -226,7 +188,7 @@ export default function SciAdvisorStudentsPage() {
 
             var vkrRPZStatus = document.createElement('label');
             vkrRPZStatus.innerText = 'РПЗ:';
-            vkrRPZStatus.style.width = '188px';
+            vkrRPZStatus.style.width = '223px';
 
             var vkrRPZMark = document.createElement('p');
             vkrRPZMark.innerText = getStatus(item.studentDocumentsStatusView.vkrRPZ);
@@ -242,111 +204,50 @@ export default function SciAdvisorStudentsPage() {
             
             var vkrRPZDiv = document.createElement('div');
 
-            var vkrAntiplagiatCheckbox = document.createElement('input');
-
-            var vkrAntiplagiatStatus = document.createElement('label');
-            vkrAntiplagiatStatus.innerText = 'Антиплагиат:';
-            vkrAntiplagiatStatus.style.width = '188px';
-
-            vkrAntiplagiatCheckbox.type = 'checkbox';
-            vkrAntiplagiatCheckbox.className = 'sci-table-checkbox';
-            if (item.studentDocumentsStatusView.vkrAntiplagiat) {
-                vkrAntiplagiatCheckbox.checked = true;
-            }
-            vkrAntiplagiatCheckbox.style.marginLeft = '22px';
-            
-            var vkrAntiplagiatDiv = document.createElement('div');
-
-            var vkrPresentationCheckbox = document.createElement('input');
-            
-            var vkrPresentationStatus = document.createElement('label');
-            vkrPresentationStatus.innerText = 'Презентация:';
-            vkrPresentationStatus.style.width = '188px';
-
-            vkrPresentationCheckbox.type = 'checkbox';
-            vkrPresentationCheckbox.className = 'sci-table-checkbox';
-            if (item.studentDocumentsStatusView.vkrPresentation) {
-                vkrPresentationCheckbox.checked = true;
-            }
-            vkrPresentationCheckbox.style.marginLeft = '22px';
-
-            var vkrPresentationDiv = document.createElement('div');
-
-            var studentButtonTh = document.createElement('th');
-            var studentButton = document.createElement('button');
-            //studentButton.style.minWidth = '100px';
-            studentButton.className = 'student-table-button';
-            studentButton.innerText = 'Перейти к студенту';
-            studentButton.id = 'student-table-button-' + i;
+            var studentPerformance = document.createElement('th');
 
             student.appendChild(studentNum);
             studentFio.appendChild(popover);
             student.appendChild(studentFio);
-
+            student.appendChild(advisorFio);
             student.appendChild(studentTheme);
+            student.appendChild(studentGroup);
+            student.appendChild(studentSpeciality);
 
             nirTaskDiv.appendChild(nirTaskStatus);
             nirTaskDiv.appendChild(nirTaskCheckbox);
-            studentNir.appendChild(nirTaskDiv);
-
+            studentPerformance.appendChild(nirTaskDiv);
             nirReportDiv.appendChild(nirReportStatus);
             nirReportDiv.appendChild(nirReportMark);
-            studentNir.appendChild(nirReportDiv);
-
-            student.appendChild(studentNir);
+            studentPerformance.appendChild(nirReportDiv);
 
             longPPTaskDiv.appendChild(longPPTaskStatus);
             longPPTaskDiv.appendChild(longPPTaskCheckbox);
-            studentLongPP.appendChild(longPPTaskDiv);
-
+            studentPerformance.appendChild(longPPTaskDiv);
             longPPReportDiv.appendChild(longPPReportStatus);
             longPPReportDiv.appendChild(longPPReportMark);
-            studentLongPP.appendChild(longPPReportDiv);
-
-            student.appendChild(studentLongPP);
+            studentPerformance.appendChild(longPPReportDiv);
 
             ppTaskDiv.appendChild(ppTaskStatus);
             ppTaskDiv.appendChild(ppTaskCheckbox);
-            studentPP.appendChild(ppTaskDiv);
-
+            studentPerformance.appendChild(ppTaskDiv);
             ppReportDiv.appendChild(ppReportStatus);
             ppReportDiv.appendChild(ppReportMark);
-            studentPP.appendChild(ppReportDiv);
-
-            student.appendChild(studentPP);
+            studentPerformance.appendChild(ppReportDiv);
 
             vkrTaskDiv.appendChild(vkrTaskStatus);
             vkrTaskDiv.appendChild(vkrTaskCheckbox);
-            studentVkr.appendChild(vkrTaskDiv);
-
+            studentPerformance.appendChild(vkrTaskDiv);
             vkrRPZDiv.appendChild(vkrRPZStatus);
             vkrRPZDiv.appendChild(vkrRPZMark);
-            studentVkr.appendChild(vkrRPZDiv);
+            studentPerformance.appendChild(vkrRPZDiv);
 
-            vkrAdvisorFeedbackDiv.appendChild(vkrAdvisorFeedbackStatus);
-            vkrAdvisorFeedbackDiv.appendChild(vkrAdvisorFeedbackCheckbox);
-            studentVkr.appendChild(vkrAdvisorFeedbackDiv);
+            student.appendChild(studentPerformance);
 
-            vkrAllowanceStatusDiv.appendChild(vkrAllowanceStatus);
-            vkrAllowanceStatusDiv.appendChild(vkrAllowanceCheckbox);
-            studentVkr.appendChild(vkrAllowanceStatusDiv);
-
-            vkrAntiplagiatDiv.appendChild(vkrAntiplagiatStatus);
-            vkrAntiplagiatDiv.appendChild(vkrAntiplagiatCheckbox);
-            studentVkr.appendChild(vkrAntiplagiatDiv);
-
-            vkrPresentationDiv.appendChild(vkrPresentationStatus);
-            vkrPresentationDiv.appendChild(vkrPresentationCheckbox);
-            studentVkr.appendChild(vkrPresentationDiv);
-
-            student.appendChild(studentVkr);
-
-            studentButtonTh.appendChild(studentButton);
-            student.appendChild(studentButtonTh);
-            document.getElementById('student-table-body').appendChild(student);
+            document.getElementById('performance-table-body').appendChild(student);
         }
     }
-
+    
     function getStatus(status) {
         switch (status) {
             case 0:
@@ -366,11 +267,28 @@ export default function SciAdvisorStudentsPage() {
 
     $(function () {
 
-        $('.student-table-button').off().on('click', function () {
-            var arrayId = $(this).attr('id').split('-')[3];
-            sessionStorage.setItem('viewedStudentId', students[arrayId].systemStudentID);
-            sessionStorage.setItem('viewedStudentName', students[arrayId].fio);
-            setRedirect(true);
+        $('#performance-button').off().on('click', function () {
+            axios({
+                url: apiURL + '/head_of_cathedra/document/download/cathedta_report/',
+                method: 'GET',
+                responseType: 'blob',
+                params: {
+                    'key': 'all',
+                },
+                headers: {
+                    'Authorization': 'Bearer ' + authTokens.accessToken
+                },
+            }).then((response) => {
+                const url = window.URL.createObjectURL(new Blob([response.data]));
+                const link = document.createElement('a');
+                link.href = url;
+                link.setAttribute('download', 'Отчет об успеваемости.xlsx');
+                document.body.appendChild(link);
+                link.click();
+
+            }).catch(result => {
+                console.log(result);
+            });
         });
 
         $('[data-toggle="popover"]').popover();
@@ -392,29 +310,48 @@ export default function SciAdvisorStudentsPage() {
         });
     });
 
-    return (
-        <div className='sci-advisor-students-form'>
+    return(
+        <div className='hoc-assoc-div'>
+            <div className='hoc-assoc-menu-div light-background'>
+                <input id='tableSearch' type='text' className='hoc-table-search dark size-32' />
+                <button type='button' onClick={() => {  }} className='hoc-table-search-button dark-background light size-32'>
+                    <Image src={iconLookingGlass} thumbnail className='icon-smaller dark-background' />
+                    Поиск
+                </button>
+                <div className='hoc-assoc-select-div'>
+                    <p className='dark size-24 hoc-assoc-select-div-title'>Направление:</p>
+                    <select id='speciality-select' className='dark size-30 hoc-assoc-select' defaultValue='' onChange={(e) => {  }}>
+                        <option value=''>Все</option>
+                    </select>
+                </div>
+                <div className='hoc-assoc-select-div' style={{ marginLeft: '28px' }}>
+                    <p className='dark size-24 hoc-assoc-select-div-title'>Группа:</p>
+                    <select id='group-select' className='dark size-30 hoc-assoc-select' defaultValue='' onChange={(e) => {  }}>
+                        <option value=''>Все</option>
+                    </select>
+                </div>
+                <button type='button' id='performance-button' className='dark-background light size-24 hoc-assoc-after-select hoc-assoc-button' style={{ marginLeft: '600px' }}>
+                    Сохранить отчёт<br />об успеваемости
+                </button>
+            </div>
             <div>
                 <Table striped bordered hover>
                     <thead className='size-24 dark'>
                         <tr>
                             <th>#</th>
-                            <th>ФИО</th>
-                            <th>Тема</th>
-                            <th style={{ minWidth: '241px' }}>НИР</th>
-                            <th style={{ minWidth: '316px' }}>ПпППУиОПД</th>
-                            <th style={{ minWidth: '231px' }}>ПП</th>
-                            <th style={{ minWidth: '281px' }}>ВКР</th>
-                            <th></th>
+                            <th>ФИО Студента</th>
+                            <th>ФИО Научного Руководителя</th>
+                            <th >Тема</th>
+                            <th style={{ minWidth: '140px' }}>Группа</th>
+                            <th >Направление</th>
+                            <th style={{ minWidth: '316px' }}>Успеваемость</th>                          
                         </tr>
                     </thead>
-                    <tbody id='student-table-body'>
+                    <tbody id='performance-table-body'>
 
                     </tbody>
                 </Table>
             </div>
-
-            { redirect ? (<Redirect push to='/sca-stu/view' />) : null}
         </div>
     );
 }

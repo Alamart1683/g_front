@@ -11,6 +11,14 @@ export default function ForgottenPasswordPage() {
 
   const [show, setShow] = useState(false);
   const [redirect, setRedirect] = useState(false);
+  const [fetchedData, setFetchedData] = useState(false);
+
+  if (!fetchedData) {
+    setFetchedData(true);
+    if (sessionStorage.getItem('loginEmail') != null) {
+      setEmail(sessionStorage.getItem('loginEmail'));
+    }
+  }
 
   function sendCode() {
     if (show) {
@@ -96,6 +104,7 @@ export default function ForgottenPasswordPage() {
           <Form.Label className="size-21 dark loginForm-label1">Логин</Form.Label>
           <Form.Control id='new-email' type="email" value={email} onChange={e => {
             setEmail(e.target.value);
+            sessionStorage.setItem('loginEmail', e.target.value); 
             document.getElementById('error-message').style.visibility = 'hidden';
             if ($('#new-email').val() !== '' && $('#new-password').val() !== '') {
               document.getElementById('change-password-button').disabled = false;

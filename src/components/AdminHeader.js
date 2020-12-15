@@ -10,6 +10,7 @@ import templateImage from '../images/icons/template.png';
 import exitImage from '../images/icons/exit.png';
 import iconNR from '../images/icons/NR.png';
 import iconMenu from '../images/icons/menu.png';
+import iconLk from '../images/icons/lk.png';
 
 export default function AdminHeader() {
 
@@ -22,6 +23,9 @@ export default function AdminHeader() {
     $(function () {
         $('.student-navbar-button').removeClass('student-navbar-button-selected');
         switch (window.location.pathname) {
+            case ('/admin/performance'):
+                document.getElementById('button-performance').classList.add('student-navbar-button-selected');
+                break;
             case ('/admin/association'):
                 document.getElementById('button-association').classList.add('student-navbar-button-selected');
                 break;
@@ -45,6 +49,12 @@ export default function AdminHeader() {
     return (
         <div>
             <Navbar className='light-background light student-nav'>
+                <Nav.Link as={Link} to='/admin/performance'>
+                    <button id='button-performance' type='button' className='student-navbar-button dark-background light size-30'>
+                        <Image src={iconNR} thumbnail className='student-navbar-image dark-background' />
+                        Успеваемость
+                    </button>
+                </Nav.Link>
                 <Nav.Link as={Link} to='/admin/association'>
                     <button id='button-association' type='button' className='student-navbar-button dark-background light size-30'>
                         <Image src={iconStudents} thumbnail className='student-navbar-image dark-background' />
@@ -65,7 +75,7 @@ export default function AdminHeader() {
                 </Nav.Link>
                 <Nav.Link as={Link} to='/admin/registration'>
                     <button id='button-registration' type='button' className='student-navbar-button dark-background light size-30'>
-                        <Image src={iconNR} thumbnail className='student-navbar-image dark-background' />
+                        <Image src={iconLk} thumbnail className='student-navbar-image dark-background' />
                         Регистрация<br />Пользователей
                     </button>
                 </Nav.Link>
