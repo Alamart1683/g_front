@@ -17,7 +17,7 @@ export default function PerformancePage() {
     useEffect(() => {
         showPerformanceData(performanceData);
     }, [performanceData]);
-    
+
     if (!fetchedData) {
         setFetchedData(true);
         getPerformanceData();
@@ -41,19 +41,46 @@ export default function PerformancePage() {
         });
     }
 
+    function fillSelects(studentArray) {
+        var groups = [];
+        var specialities = [];
+        for (var i = 0; i < studentArray.length; i++) {
+            var student = studentArray[i];
+            if (!groups.includes(student.group)) {
+                groups.push(student.group);
+
+                var group = document.createElement('option');
+                group.innerText = student.group;
+                document.value = student.group;
+                document.getElementById('group-select').appendChild(group);
+            }
+            if (!specialities.includes(student.specialityCode)) {
+                specialities.push(student.specialityCode);
+
+                var speciality = document.createElement('option');
+                speciality.innerText = student.specialityCode;
+                document.value = student.specialityCode;
+                document.getElementById('speciality-select').appendChild(speciality);
+            }
+        }
+    }
+
     function showPerformanceData(dataArray) {
+        fillSelects(dataArray);
         for (var i = 0; i < dataArray.length; i++) {
             var item = dataArray[i];
 
             var student = document.createElement('tr');
             student.id = 'student' + i;
-            student.className = 'size-20 dark';
+            student.className = 'size-20 dark table-row';
 
             var studentNum = document.createElement('th');
+            studentNum.className = 'row-num';
             studentNum.innerText = i + 1;
 
             // Имя студента
             var studentFio = document.createElement('th');
+            studentFio.className = 'student-fio';
 
             var popover = document.createElement('a');
             popover.href = '#';
@@ -74,6 +101,7 @@ export default function PerformancePage() {
 
             var advisorFio = document.createElement('th');
             advisorFio.innerText = item.advisorFIO;
+            advisorFio.className = 'advisor-fio';
 
             // Тема студента
             var studentTheme = document.createElement('th');
@@ -87,16 +115,16 @@ export default function PerformancePage() {
             studentTheme.style.overflow = 'hidden';
             studentTheme.style.textOverflow = 'ellipsis';
             studentTheme.style.maxWidth = '300px';
-            
+
             var studentGroup = document.createElement('th');
+            studentGroup.className = 'student-group';
             studentGroup.innerText = item.group;
-            
+
             var studentSpeciality = document.createElement('th');
+            studentSpeciality.className = 'student-speciality';
             studentSpeciality.innerText = item.specialityCode;
 
             // НИР
-            var studentNir = document.createElement('th');
-
             var nirTaskStatus = document.createElement('label');
             nirTaskStatus.innerText = 'Задание на НИР:';
             nirTaskStatus.style.width = '223px';
@@ -149,7 +177,7 @@ export default function PerformancePage() {
             var ppTaskStatus = document.createElement('label');
             ppTaskStatus.innerText = 'Задание по ПП:';
             ppTaskStatus.style.width = '223px';
-            
+
             var ppTaskCheckbox = document.createElement('input');
 
             ppTaskCheckbox.type = 'checkbox';
@@ -201,7 +229,7 @@ export default function PerformancePage() {
             if (item.studentDocumentsStatusView.vkrRPZHocRate) {
                 vkrRPZHocCheckbox.checked = true;
             }
-            
+
             var vkrRPZDiv = document.createElement('div');
 
             var studentPerformance = document.createElement('th');
@@ -247,7 +275,7 @@ export default function PerformancePage() {
             document.getElementById('performance-table-body').appendChild(student);
         }
     }
-    
+
     function getStatus(status) {
         switch (status) {
             case 0:
@@ -263,6 +291,63 @@ export default function PerformancePage() {
             default:
                 return '  ???';
         }
+    }
+
+    function setTableNums() {
+        $('.table-row:visible').each(function (index) {
+            $(this).find('.row-num')[0].innerText = index + 1;
+        })
+    }
+
+    // Поиск по таблице
+    function searchTable() {
+        var input = $('#tableSearch')[0].value.toUpperCase();
+        var rows = $('.table-row');
+
+        for (var i = 0; i < rows.length; i++) {
+            var rowText = rows[i].querySelector('.advisor-fio').textContent.toUpperCase() +
+                ' ' +
+                rows[i].querySelector('.student-fio').textContent.toUpperCase();
+            if (rowText.indexOf(input) > -1) {
+                rows[i].classList.remove('hoc-table-search-hidden');
+            }
+            else {
+                rows[i].classList.add('hoc-table-search-hidden');
+            }
+        }
+        setTableNums();
+    }
+
+    // Фильтрация по специальности
+    function filterSpecialty() {
+        var speciality = $('#speciality-select :selected').val();
+        var rows = $('.table-row');
+        for (var i = 0; i < rows.length; i++) {
+            var rowSpeciality = rows[i].querySelector('.student-speciality').textContent;
+            if (rowSpeciality === speciality || speciality === '') {
+                rows[i].classList.remove('hoc-table-speciality-hidden');
+            }
+            else {
+                rows[i].classList.add('hoc-table-speciality-hidden');
+            }
+        }
+        setTableNums();
+    }
+
+    // Фильтрация по группе
+    function filterGroups() {
+        var group = $('#group-select :selected').val();
+        var rows = $('.table-row');
+        for (var i = 0; i < rows.length; i++) {
+            var rowGroup = rows[i].querySelector('.student-group').textContent;
+            if (rowGroup === group || group === '') {
+                rows[i].classList.remove('hoc-table-group-hidden');
+            }
+            else {
+                rows[i].classList.add('hoc-table-group-hidden');
+            }
+        }
+        setTableNums();
     }
 
     $(function () {
@@ -310,23 +395,23 @@ export default function PerformancePage() {
         });
     });
 
-    return(
+    return (
         <div className='hoc-assoc-div'>
             <div className='hoc-assoc-menu-div light-background'>
                 <input id='tableSearch' type='text' className='hoc-table-search dark size-32' />
-                <button type='button' onClick={() => {  }} className='hoc-table-search-button dark-background light size-32'>
+                <button type='button' onClick={() => { searchTable(); }} className='hoc-table-search-button dark-background light size-32'>
                     <Image src={iconLookingGlass} thumbnail className='icon-smaller dark-background' />
                     Поиск
                 </button>
                 <div className='hoc-assoc-select-div'>
                     <p className='dark size-24 hoc-assoc-select-div-title'>Направление:</p>
-                    <select id='speciality-select' className='dark size-30 hoc-assoc-select' defaultValue='' onChange={(e) => {  }}>
+                    <select id='speciality-select' className='dark size-30 hoc-assoc-select' defaultValue='' onChange={(e) => { filterSpecialty(); }}>
                         <option value=''>Все</option>
                     </select>
                 </div>
                 <div className='hoc-assoc-select-div' style={{ marginLeft: '28px' }}>
                     <p className='dark size-24 hoc-assoc-select-div-title'>Группа:</p>
-                    <select id='group-select' className='dark size-30 hoc-assoc-select' defaultValue='' onChange={(e) => {  }}>
+                    <select id='group-select' className='dark size-30 hoc-assoc-select' defaultValue='' onChange={(e) => { filterGroups(); }}>
                         <option value=''>Все</option>
                     </select>
                 </div>
@@ -344,7 +429,7 @@ export default function PerformancePage() {
                             <th >Тема</th>
                             <th style={{ minWidth: '140px' }}>Группа</th>
                             <th >Направление</th>
-                            <th style={{ minWidth: '316px' }}>Успеваемость</th>                          
+                            <th style={{ minWidth: '316px' }}>Успеваемость</th>
                         </tr>
                     </thead>
                     <tbody id='performance-table-body'>
