@@ -53,7 +53,7 @@ export default function TemplatesPage() {
             templateNameText.className = 'template-name-text light size-24'
             templateNameText.innerText=template.documentName;
             templateNameText.style.maxHeight = '36px';
-            templateNameText.style.maxWidth = '1050px';
+            templateNameText.style.maxWidth = '800px';
             templateNameText.style.overflow = 'hidden';
             templateNameText.style.textOverflow = 'ellipsis';
             templateNameText.style.whiteSpace = 'nowrap';

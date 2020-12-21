@@ -55,7 +55,7 @@ export default function HocTemplatesPage() {
             templateNameText.className = 'hoc-order-template-name-text light size-22'
             templateNameText.innerText = template.documentName;
             templateNameText.style.maxHeight = '30px';
-            templateNameText.style.maxWidth = '450px';
+            templateNameText.style.maxWidth = '350px';
             templateNameText.style.overflow = 'hidden';
             templateNameText.style.textOverflow = 'ellipsis';
             templateNameText.style.whiteSpace = 'nowrap';
