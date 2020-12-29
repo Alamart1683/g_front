@@ -464,15 +464,15 @@ export default function ScaStuViewPage() {
             case 0:
                 return '     -';
             case 2:
-                return 'неуд.';
+                return '  НЕУД.';
             case 3:
-                return 'удовл.';
+                return 'УДОВЛ.';
             case 4:
-                return '  хор.';
+                return '  ХОР.';
             case 5:
-                return '  отл.';
+                return '  ОТЛ.';
             default:
-                return '  ???';
+                return '???';
         }
     }
     // Получение заданий НИР для студента
@@ -2409,7 +2409,7 @@ export default function ScaStuViewPage() {
     }
 
     $(function () {
-        
+
         $('[data-toggle="popover"]').popover();
 
         $(".student-popover").on('click', function (e) {
@@ -3498,7 +3498,7 @@ export default function ScaStuViewPage() {
                         <tr>
                             <th>ФИО</th>
                             <th>Тема - {themeConfirmed}</th>
-                            <th style={{ minWidth: '233px' }}>НИР</th>
+                            <th style={{ minWidth: '241px' }}>НИР</th>
                             <th style={{ minWidth: '318px' }}>ПпППУиОПД</th>
                             <th style={{ minWidth: '233px' }}>ПП</th>
                             <th style={{ minWidth: '283px' }}>ВКР</th>
@@ -3619,8 +3619,8 @@ export default function ScaStuViewPage() {
                                         <Image src={iconProject} thumbnail className='dark-background thumbnail-icon' />
                                         Сформировать и загрузить версию отчета
                                 </button>
-                                    <input id='nir-otchet-file-input' type='file' style={{ display: 'none' }} onChange={(e) => {
-                                        console.log(e.target.files);
+                                    <input id='nir-otchet-file-input' type='file'  style={{ display: 'none' }} accept='application/vnd.openxmlformats-officedocument.wordprocessingml.document' onChange={(e) => {
+                                        //console.log(e.target.files);
                                         if (e.target.files.length !== 0) {
                                             makeNirOtchet(e.target.files[0]);
                                         }
@@ -3721,8 +3721,8 @@ export default function ScaStuViewPage() {
                                         <Image src={iconProject} thumbnail className='dark-background thumbnail-icon' />
                                         Сформировать и загрузить версию отчета
                                 </button>
-                                    <input id='long-pp-otchet-file-input' type='file' style={{ display: 'none' }} onChange={(e) => {
-                                        console.log(e.target.files);
+                                    <input id='long-pp-otchet-file-input' type='file' style={{ display: 'none' }} accept='application/vnd.openxmlformats-officedocument.wordprocessingml.document' onChange={(e) => {
+                                        //console.log(e.target.files);
                                         if (e.target.files.length !== 0) {
                                             makeOtchetVersion(e.target.files[0], 'Практика по получению знаний и умений');
                                         }
@@ -3822,9 +3822,9 @@ export default function ScaStuViewPage() {
                                         <Image src={iconProject} thumbnail className='dark-background thumbnail-icon' />
                                         Сформировать и загрузить версию отчета
                                 </button>
-                                    <input id='pp-otchet-file-input' type='file' style={{ display: 'none' }} onChange={(e) => {
+                                    <input id='pp-otchet-file-input' type='file' style={{ display: 'none' }} accept='application/vnd.openxmlformats-officedocument.wordprocessingml.document' onChange={(e) => {
                                         if (e.target.files.length !== 0) {
-                                            //makeOtchetVersion(e.target.files[0], 'Преддипломная практика');
+                                            makeOtchetVersion(e.target.files[0], 'Преддипломная практика');
                                         }
                                     }} ></input>
                                 </div>
@@ -3962,7 +3962,7 @@ export default function ScaStuViewPage() {
                                         <Image src={iconDocument} thumbnail className='dark-background thumbnail-icon' style={{ position: 'relative', top: '-25px' }} />
                                         <div style={{ display: 'inline-block' }}><p style={{ marginBottom: '0px' }}>Загрузить<br />новую версию РПЗ</p></div>
                                     </button>
-                                    <input id='vkr-otchet-file-input' type='file' style={{ display: 'none' }} onChange={(e) => {
+                                    <input id='vkr-otchet-file-input' type='file' style={{ display: 'none' }} accept='application/vnd.openxmlformats-officedocument.wordprocessingml.document' onChange={(e) => {
                                         if (e.target.files.length !== 0) {
                                             makeOtchetVersion(e.target.files[0], 'ВКР');
                                         }
@@ -4019,7 +4019,7 @@ export default function ScaStuViewPage() {
                                         <Image src={iconDocument} thumbnail className='dark-background thumbnail-icon' style={{ position: 'relative', top: '-25px' }} />
                                         <div style={{ display: 'inline-block' }}><p style={{ marginBottom: '0px' }}>Загрузить новую версию<br />презентации</p></div>
                                     </button>
-                                    <input id='vkr-presentation-file-input' type='file' style={{ display: 'none' }} onChange={(e) => {
+                                    <input id='vkr-presentation-file-input' type='file' style={{ display: 'none' }} accept='application/vnd.openxmlformats-officedocument.presentationml.presentation' onChange={(e) => {
                                         if (e.target.files.length !== 0) {
                                             if (vkrPrezentationVersions.length === 0) {
                                                 //uploadDocument(e.target.files[0], 'ВКР', 'Презентация');

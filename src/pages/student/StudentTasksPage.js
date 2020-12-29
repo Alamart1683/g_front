@@ -438,15 +438,15 @@ export default function StudentTasksPage() {
             case 0:
                 return '     -';
             case 2:
-                return 'неуд.';
+                return '  НЕУД.';
             case 3:
-                return 'удовл.';
+                return 'УДОВЛ.';
             case 4:
-                return '  хор.';
+                return '  ХОР.';
             case 5:
-                return '  отл.';
+                return '  ОТЛ.';
             default:
-                return '  ???';
+                return '???';
         }
     }
 
@@ -3302,10 +3302,10 @@ export default function StudentTasksPage() {
                         <thead className='size-24 dark'>
                             <tr>
                                 <th>Тема - {themeConfirmed}</th>
-                                <th style={{ minWidth: '143px' }}>НИР</th>
-                                <th style={{ minWidth: '218px' }}>ПпППУиОПД</th>
-                                <th style={{ minWidth: '133px' }}>ПП</th>
-                                <th style={{ minWidth: '183px' }}>ВКР</th>
+                                <th style={{ minWidth: '241px' }}>НИР</th>
+                                <th style={{ minWidth: '318px' }}>ПпППУиОПД</th>
+                                <th style={{ minWidth: '233px' }}>ПП</th>
+                                <th style={{ minWidth: '283px' }}>ВКР</th>
                             </tr>
                         </thead>
                         <tbody id='student-table-body'>
@@ -3579,8 +3579,8 @@ export default function StudentTasksPage() {
                                         <Image src={iconProject} thumbnail className='dark-background thumbnail-icon' />
                                         Сформировать и загрузить версию отчета
                                 </button>
-                                    <input id='long-pp-otchet-file-input' type='file' style={{ display: 'none' }} onChange={(e) => {
-                                        console.log(e.target.files);
+                                    <input id='long-pp-otchet-file-input' type='file' style={{ display: 'none' }} accept='application/vnd.openxmlformats-officedocument.wordprocessingml.document' onChange={(e) => {
+                                        //console.log(e.target.files);
                                         if (e.target.files.length !== 0) {
                                             makeOtchetVersion(e.target.files[0], 'Практика по получению знаний и умений');
                                         }
@@ -3703,8 +3703,8 @@ export default function StudentTasksPage() {
                                         <Image src={iconProject} thumbnail className='dark-background thumbnail-icon' />
                                         Сформировать и загрузить версию отчета
                                 </button>
-                                    <input id='pp-otchet-file-input' type='file' style={{ display: 'none' }} onChange={(e) => {
-                                        console.log(e.target.files);
+                                    <input id='pp-otchet-file-input' type='file' style={{ display: 'none' }} accept='application/vnd.openxmlformats-officedocument.wordprocessingml.document' onChange={(e) => {
+                                        //console.log(e.target.files);
                                         if (e.target.files.length !== 0) {
                                             makeOtchetVersion(e.target.files[0], 'Преддипломная практика');
                                         }
@@ -3866,7 +3866,7 @@ export default function StudentTasksPage() {
                                         <Image src={iconDocument} thumbnail className='dark-background thumbnail-icon' style={{ position: 'relative', top: '-25px' }} />
                                         <div style={{ display: 'inline-block' }}><p style={{ marginBottom: '0px' }}>Загрузить<br />новую версию РПЗ</p></div>
                                     </button>
-                                    <input id='vkr-otchet-file-input' type='file' style={{ display: 'none' }} onChange={(e) => {
+                                    <input id='vkr-otchet-file-input' type='file' style={{ display: 'none' }} accept='application/vnd.openxmlformats-officedocument.wordprocessingml.document' onChange={(e) => {
                                         if (e.target.files.length !== 0) {
                                             makeOtchetVersion(e.target.files[0], 'ВКР');
                                         }
@@ -3923,7 +3923,7 @@ export default function StudentTasksPage() {
                                         <Image src={iconDocument} thumbnail className='dark-background thumbnail-icon' style={{ position: 'relative', top: '-25px' }} />
                                         <div style={{ display: 'inline-block' }}><p style={{ marginBottom: '0px' }}>Загрузить новую версию<br />презентации</p></div>
                                     </button>
-                                    <input id='vkr-presentation-file-input' type='file' style={{ display: 'none' }} onChange={(e) => {
+                                    <input id='vkr-presentation-file-input' type='file' style={{ display: 'none' }} accept='application/vnd.openxmlformats-officedocument.presentationml.presentation' onChange={(e) => {
                                         if (e.target.files.length !== 0) {
                                             if (vkrPrezentationVersions.length == 0) {
                                                 uploadDocument(e.target.files[0], 'ВКР', 'Презентация');

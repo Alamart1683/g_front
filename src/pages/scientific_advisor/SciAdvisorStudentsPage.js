@@ -412,9 +412,9 @@ export default function SciAdvisorStudentsPage() {
                             <th></th>
                             <th>Тема</th>
                             <th style={{ minWidth: '241px' }}>НИР</th>
-                            <th style={{ minWidth: '316px' }}>ПпППУиОПД</th>
-                            <th style={{ minWidth: '231px' }}>ПП</th>
-                            <th style={{ minWidth: '281px' }}>ВКР</th>
+                            <th style={{ minWidth: '318px' }}>ПпППУиОПД</th>
+                            <th style={{ minWidth: '233px' }}>ПП</th>
+                            <th style={{ minWidth: '283px' }}>ВКР</th>
                         </tr>
                     </thead>
                     <tbody id='student-table-body'>
