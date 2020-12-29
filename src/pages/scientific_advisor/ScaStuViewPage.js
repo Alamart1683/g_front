@@ -475,6 +475,7 @@ export default function ScaStuViewPage() {
                 return '???';
         }
     }
+
     // Получение заданий НИР для студента
     function getStudentTaskVersions(type) {
         axios({
@@ -615,10 +616,10 @@ export default function ScaStuViewPage() {
             versionStatus.className = 'light size-24 nir-header-text';
             versionStatus.innerText = 'Статус: ' + item.documentStatus;
 
-            // Кнопка отправить науч руку
+            // Кнопка оценить
             var sendButton = document.createElement('button');
             sendButton.className = 'dark size-24 nir-version-header-button nir-version-send-button';
-            sendButton.innerText = 'Отправить студенту:';
+            sendButton.innerText = 'Оценить';
             sendButton.type = 'button';
             if (item.documentStatus === 'Одобрено' || item.documentStatus === 'Замечания') {
                 sendButton.disabled = true;
@@ -631,11 +632,11 @@ export default function ScaStuViewPage() {
             dropdownContent.className = 'sci-advisor-status-dropdown-content';
 
             var statusOdobreno = document.createElement('p');
-            statusOdobreno.className = 'dark size-18 vkr-dopusk-status-odobreno';
+            statusOdobreno.className = 'dark size-24 vkr-dopusk-status-odobreno';
             statusOdobreno.innerText = 'Одобрено';
 
             var statusZamechaniya = document.createElement('p');
-            statusZamechaniya.className = 'dark size-18 vkr-dopusk-status-zamechaniya';
+            statusZamechaniya.className = 'dark size-24 vkr-dopusk-status-zamechaniya';
             statusZamechaniya.innerText = 'Замечания';
 
             // Кнопка скачать отчёт
@@ -704,10 +705,10 @@ export default function ScaStuViewPage() {
             versionStatus.className = 'light size-24 nir-header-text';
             versionStatus.innerText = 'Статус: ' + item.documentStatus;
 
-            // Кнопка отправить науч руку
+            // Кнопка оценить
             var sendButton = document.createElement('button');
             sendButton.className = 'dark size-24 nir-version-header-button nir-version-send-button';
-            sendButton.innerText = 'Отправить студенту:';
+            sendButton.innerText = 'Оценить';
             sendButton.type = 'button';
             if (item.documentStatus === 'Одобрено' || item.documentStatus === 'Замечания') {
                 sendButton.disabled = true;
@@ -720,11 +721,11 @@ export default function ScaStuViewPage() {
             dropdownContent.className = 'sci-advisor-status-dropdown-content';
 
             var statusOdobreno = document.createElement('p');
-            statusOdobreno.className = 'dark size-18 vkr-review-status-odobreno';
+            statusOdobreno.className = 'dark size-24 vkr-review-status-odobreno';
             statusOdobreno.innerText = 'Одобрено';
 
             var statusZamechaniya = document.createElement('p');
-            statusZamechaniya.className = 'dark size-18 vkr-review-status-zamechaniya';
+            statusZamechaniya.className = 'dark size-24 vkr-review-status-zamechaniya';
             statusZamechaniya.innerText = 'Замечания';
 
             // Кнопка скачать отчёт
@@ -794,10 +795,10 @@ export default function ScaStuViewPage() {
             versionStatus.className = 'light size-24 nir-header-text';
             versionStatus.innerText = 'Статус: ' + item.documentStatus;
 
-            // Кнопка отправить науч руку
+            // Кнопка оценить
             var sendButton = document.createElement('button');
             sendButton.className = 'dark size-24 nir-version-header-button nir-version-send-button';
-            sendButton.innerText = 'Отправить студенту:';
+            sendButton.innerText = 'Оценить';
             sendButton.type = 'button';
             if (item.documentStatus === 'Одобрено' || item.documentStatus === 'Замечания') {
                 sendButton.disabled = true;
@@ -810,11 +811,11 @@ export default function ScaStuViewPage() {
             dropdownContent.className = 'sci-advisor-status-dropdown-content';
 
             var statusOdobreno = document.createElement('p');
-            statusOdobreno.className = 'dark size-18 vkr-antiplagiat-status-odobreno';
+            statusOdobreno.className = 'dark size-24 vkr-antiplagiat-status-odobreno';
             statusOdobreno.innerText = 'Одобрено';
 
             var statusZamechaniya = document.createElement('p');
-            statusZamechaniya.className = 'dark size-18 vkr-antiplagiat-status-zamechaniya';
+            statusZamechaniya.className = 'dark size-24 vkr-antiplagiat-status-zamechaniya';
             statusZamechaniya.innerText = 'Замечания';
 
             // Кнопка скачать отчёт
@@ -884,10 +885,10 @@ export default function ScaStuViewPage() {
             versionStatus.className = 'light size-24 nir-header-text';
             versionStatus.innerText = 'Статус: ' + item.documentStatus;
 
-            // Кнопка отправить науч руку
+            // Кнопка оценить
             var sendButton = document.createElement('button');
             sendButton.className = 'dark size-24 nir-version-header-button nir-version-send-button';
-            sendButton.innerText = 'Отправить студенту:';
+            sendButton.innerText = 'Оценить';
             sendButton.type = 'button';
             if (item.documentStatus === 'Одобрено' || item.documentStatus === 'Замечания') {
                 sendButton.disabled = true;
@@ -900,11 +901,11 @@ export default function ScaStuViewPage() {
             dropdownContent.className = 'sci-advisor-status-dropdown-content';
 
             var statusOdobreno = document.createElement('p');
-            statusOdobreno.className = 'dark size-18 vkr-presentation-status-odobreno';
+            statusOdobreno.className = 'dark size-24 vkr-presentation-status-odobreno';
             statusOdobreno.innerText = 'Одобрено';
 
             var statusZamechaniya = document.createElement('p');
-            statusZamechaniya.className = 'dark size-18 vkr-presentation-status-zamechaniya';
+            statusZamechaniya.className = 'dark size-24 vkr-presentation-status-zamechaniya';
             statusZamechaniya.innerText = 'Замечания';
 
             // Кнопка скачать отчёт
@@ -974,10 +975,10 @@ export default function ScaStuViewPage() {
                 versionStatus.className = 'light size-24 nir-header-text';
                 versionStatus.innerText = 'Статус: ' + item.status;
 
-                // Кнопка отправить студенту
+                // Кнопка Оценить
                 var sendButton = document.createElement('button');
                 sendButton.className = 'dark size-24 nir-version-header-button nir-version-send-button';
-                sendButton.innerText = 'Отправить студенту:';
+                sendButton.innerText = 'Оценить';
                 sendButton.type = 'button';
                 // Запретить отсылку, если версия отправлена
                 if (item.status === 'Одобрено' || item.status === 'Замечания') {
@@ -991,11 +992,11 @@ export default function ScaStuViewPage() {
                 dropdownContent.className = 'sci-advisor-status-dropdown-content';
 
                 var statusOdobreno = document.createElement('p');
-                statusOdobreno.className = 'dark size-18 nir-status-odobreno';
+                statusOdobreno.className = 'dark size-24 nir-status-odobreno';
                 statusOdobreno.innerText = 'Одобрено';
 
                 var statusZamechaniya = document.createElement('p');
-                statusZamechaniya.className = 'dark size-18 nir-status-zamechaniya';
+                statusZamechaniya.className = 'dark size-24 nir-status-zamechaniya';
                 statusZamechaniya.innerText = 'Замечания';
 
                 // Кнопка скачать документ
@@ -1026,7 +1027,7 @@ export default function ScaStuViewPage() {
 
                 // Тема нир
                 var themeArea = document.createElement('textarea');
-                themeArea.className = 'dark size-18 nir-text-area'
+                themeArea.className = 'dark size-24 nir-text-area'
                 themeArea.disabled = true;
                 themeArea.value = item.theme;
 
@@ -1036,7 +1037,7 @@ export default function ScaStuViewPage() {
 
                 // Изучить
                 var exploreArea = document.createElement('textarea');
-                exploreArea.className = 'dark size-18 nir-text-area'
+                exploreArea.className = 'dark size-24 nir-text-area'
                 exploreArea.disabled = true;
                 exploreArea.value = item.toExplore;
 
@@ -1046,7 +1047,7 @@ export default function ScaStuViewPage() {
 
                 // Выполнить
                 var createArea = document.createElement('textarea');
-                createArea.className = 'dark size-18 nir-text-area'
+                createArea.className = 'dark size-24 nir-text-area'
                 createArea.disabled = true;
                 createArea.value = item.toCreate;
 
@@ -1056,7 +1057,7 @@ export default function ScaStuViewPage() {
 
                 // Ознакомиться
                 var familiarizeArea = document.createElement('textarea');
-                familiarizeArea.className = 'dark size-18 nir-text-area2'
+                familiarizeArea.className = 'dark size-24 nir-text-area2'
                 familiarizeArea.disabled = true;
                 familiarizeArea.value = item.toFamiliarize;
 
@@ -1066,13 +1067,13 @@ export default function ScaStuViewPage() {
 
                 // Доп задание
                 var taskArea = document.createElement('textarea');
-                taskArea.className = 'dark size-18 nir-text-area2'
+                taskArea.className = 'dark size-24 nir-text-area2'
                 taskArea.disabled = true;
                 taskArea.value = item.additionalTask;
 
                 var copyButton = document.createElement('button');
                 copyButton.className = 'light dark-background size-21 nir-copy-button nir-copy';
-                copyButton.innerText = 'Перенести значения в меню';
+                copyButton.innerText = 'Перенести значения в поля ниже';
                 copyButton.type = 'button';
 
                 var rowDiv = document.createElement('div');
@@ -1146,10 +1147,10 @@ export default function ScaStuViewPage() {
                 versionStatus.className = 'light size-24 nir-header-text';
                 versionStatus.innerText = 'Статус: ' + item.status;
 
-                // Кнопка отправить студенту
+                // Кнопка оценить
                 var sendButton = document.createElement('button');
                 sendButton.className = 'dark size-24 nir-version-header-button nir-version-send-button';
-                sendButton.innerText = 'Отправить студенту:';
+                sendButton.innerText = 'Оценить';
                 sendButton.type = 'button';
                 // Запретить отсылку, если версия отправлена
                 if (item.status === 'Одобрено' || item.status === 'Замечания') {
@@ -1163,11 +1164,11 @@ export default function ScaStuViewPage() {
                 dropdownContent.className = 'sci-advisor-status-dropdown-content';
 
                 var statusOdobreno = document.createElement('p');
-                statusOdobreno.className = 'dark size-18 long-pp-status-odobreno';
+                statusOdobreno.className = 'dark size-24 long-pp-status-odobreno';
                 statusOdobreno.innerText = 'Одобрено';
 
                 var statusZamechaniya = document.createElement('p');
-                statusZamechaniya.className = 'dark size-18 long-pp-status-zamechaniya';
+                statusZamechaniya.className = 'dark size-24 long-pp-status-zamechaniya';
                 statusZamechaniya.innerText = 'Замечания';
 
                 // Кнопка скачать документ
@@ -1198,7 +1199,7 @@ export default function ScaStuViewPage() {
 
                 // Тема нир
                 var themeArea = document.createElement('textarea');
-                themeArea.className = 'dark size-18 nir-text-area'
+                themeArea.className = 'dark size-24 nir-text-area'
                 themeArea.disabled = true;
                 themeArea.value = item.theme;
 
@@ -1208,7 +1209,7 @@ export default function ScaStuViewPage() {
 
                 // Изучить
                 var exploreArea = document.createElement('textarea');
-                exploreArea.className = 'dark size-18 nir-text-area'
+                exploreArea.className = 'dark size-24 nir-text-area'
                 exploreArea.disabled = true;
                 exploreArea.value = item.toExplore;
 
@@ -1218,7 +1219,7 @@ export default function ScaStuViewPage() {
 
                 // Выполнить
                 var createArea = document.createElement('textarea');
-                createArea.className = 'dark size-18 nir-text-area'
+                createArea.className = 'dark size-24 nir-text-area'
                 createArea.disabled = true;
                 createArea.value = item.toCreate;
 
@@ -1228,7 +1229,7 @@ export default function ScaStuViewPage() {
 
                 // Ознакомиться
                 var familiarizeArea = document.createElement('textarea');
-                familiarizeArea.className = 'dark size-18 nir-text-area2'
+                familiarizeArea.className = 'dark size-24 nir-text-area2'
                 familiarizeArea.disabled = true;
                 familiarizeArea.value = item.toFamiliarize;
 
@@ -1238,13 +1239,13 @@ export default function ScaStuViewPage() {
 
                 // Доп задание
                 var taskArea = document.createElement('textarea');
-                taskArea.className = 'dark size-18 nir-text-area2'
+                taskArea.className = 'dark size-24 nir-text-area2'
                 taskArea.disabled = true;
                 taskArea.value = item.additionalTask;
 
                 var copyButton = document.createElement('button');
                 copyButton.className = 'light dark-background size-21 nir-copy-button long-pp-copy';
-                copyButton.innerText = 'Перенести значения в меню';
+                copyButton.innerText = 'Перенести значения в поля ниже';
                 copyButton.type = 'button';
 
                 var rowDiv = document.createElement('div');
@@ -1318,10 +1319,10 @@ export default function ScaStuViewPage() {
                 versionStatus.className = 'light size-24 nir-header-text';
                 versionStatus.innerText = 'Статус: ' + item.status;
 
-                // Кнопка отправить студенту
+                // Кнопка оценить
                 var sendButton = document.createElement('button');
                 sendButton.className = 'dark size-24 nir-version-header-button nir-version-send-button';
-                sendButton.innerText = 'Отправить студенту:';
+                sendButton.innerText = 'Оценить';
                 sendButton.type = 'button';
                 // Запретить отсылку, если версия отправлена
                 if (item.status === 'Одобрено' || item.status === 'Замечания') {
@@ -1335,11 +1336,11 @@ export default function ScaStuViewPage() {
                 dropdownContent.className = 'sci-advisor-status-dropdown-content';
 
                 var statusOdobreno = document.createElement('p');
-                statusOdobreno.className = 'dark size-18 pp-status-odobreno';
+                statusOdobreno.className = 'dark size-24 pp-status-odobreno';
                 statusOdobreno.innerText = 'Одобрено';
 
                 var statusZamechaniya = document.createElement('p');
-                statusZamechaniya.className = 'dark size-18 pp-status-zamechaniya';
+                statusZamechaniya.className = 'dark size-24 pp-status-zamechaniya';
                 statusZamechaniya.innerText = 'Замечания';
 
                 // Кнопка скачать документ
@@ -1370,7 +1371,7 @@ export default function ScaStuViewPage() {
 
                 // Тема нир
                 var themeArea = document.createElement('textarea');
-                themeArea.className = 'dark size-18 nir-text-area'
+                themeArea.className = 'dark size-24 nir-text-area'
                 themeArea.disabled = true;
                 themeArea.value = item.theme;
 
@@ -1380,7 +1381,7 @@ export default function ScaStuViewPage() {
 
                 // Изучить
                 var exploreArea = document.createElement('textarea');
-                exploreArea.className = 'dark size-18 nir-text-area'
+                exploreArea.className = 'dark size-24 nir-text-area'
                 exploreArea.disabled = true;
                 exploreArea.value = item.toExplore;
 
@@ -1390,7 +1391,7 @@ export default function ScaStuViewPage() {
 
                 // Выполнить
                 var createArea = document.createElement('textarea');
-                createArea.className = 'dark size-18 nir-text-area'
+                createArea.className = 'dark size-24 nir-text-area'
                 createArea.disabled = true;
                 createArea.value = item.toCreate;
 
@@ -1400,7 +1401,7 @@ export default function ScaStuViewPage() {
 
                 // Ознакомиться
                 var familiarizeArea = document.createElement('textarea');
-                familiarizeArea.className = 'dark size-18 nir-text-area2'
+                familiarizeArea.className = 'dark size-24 nir-text-area2'
                 familiarizeArea.disabled = true;
                 familiarizeArea.value = item.toFamiliarize;
 
@@ -1410,13 +1411,13 @@ export default function ScaStuViewPage() {
 
                 // Доп задание
                 var taskArea = document.createElement('textarea');
-                taskArea.className = 'dark size-18 nir-text-area2'
+                taskArea.className = 'dark size-24 nir-text-area2'
                 taskArea.disabled = true;
                 taskArea.value = item.additionalTask;
 
                 var copyButton = document.createElement('button');
                 copyButton.className = 'light dark-background size-21 nir-copy-button pp-copy';
-                copyButton.innerText = 'Перенести значения в меню';
+                copyButton.innerText = 'Перенести значения в поля ниже';
                 copyButton.type = 'button';
 
                 var rowDiv = document.createElement('div');
@@ -1490,10 +1491,10 @@ export default function ScaStuViewPage() {
                 versionStatus.className = 'light size-24 nir-header-text';
                 versionStatus.innerText = 'Статус: ' + item.status;
 
-                // Кнопка отправить студенту
+                // Кнопка оценить
                 var sendButton = document.createElement('button');
                 sendButton.className = 'dark size-24 nir-version-header-button nir-version-send-button';
-                sendButton.innerText = 'Отправить студенту:';
+                sendButton.innerText = 'Оценить';
                 sendButton.type = 'button';
                 // Запретить отсылку, если версия отправлена
                 if (item.status === 'Одобрено' || item.status === 'Замечания') {
@@ -1507,11 +1508,11 @@ export default function ScaStuViewPage() {
                 dropdownContent.className = 'sci-advisor-status-dropdown-content';
 
                 var statusOdobreno = document.createElement('p');
-                statusOdobreno.className = 'dark size-18 vkr-status-odobreno';
+                statusOdobreno.className = 'dark size-24 vkr-status-odobreno';
                 statusOdobreno.innerText = 'Одобрено';
 
                 var statusZamechaniya = document.createElement('p');
-                statusZamechaniya.className = 'dark size-18 vkr-status-zamechaniya';
+                statusZamechaniya.className = 'dark size-24 vkr-status-zamechaniya';
                 statusZamechaniya.innerText = 'Замечания';
 
                 // Кнопка скачать документ
@@ -1542,7 +1543,7 @@ export default function ScaStuViewPage() {
 
                 // Тема
                 var themeArea = document.createElement('textarea');
-                themeArea.className = 'dark size-18 nir-text-area'
+                themeArea.className = 'dark size-24 nir-text-area'
                 themeArea.disabled = true;
                 themeArea.value = item.theme;
 
@@ -1552,7 +1553,7 @@ export default function ScaStuViewPage() {
 
                 // Цель
                 var aimArea = document.createElement('textarea');
-                aimArea.className = 'dark size-18 nir-text-area'
+                aimArea.className = 'dark size-24 nir-text-area'
                 aimArea.disabled = true;
                 aimArea.value = item.vkrAim;
 
@@ -1560,9 +1561,9 @@ export default function ScaStuViewPage() {
                 tasksLabel.className = 'dark size-21 nir-text-label';
                 tasksLabel.innerText = 'Задачи:';
 
-                // Ззадачи
+                // Задачи
                 var tasksArea = document.createElement('textarea');
-                tasksArea.className = 'dark size-18 nir-text-area'
+                tasksArea.className = 'dark size-24 nir-text-area'
                 tasksArea.disabled = true;
                 tasksArea.value = item.vkrTasks;
 
@@ -1572,13 +1573,13 @@ export default function ScaStuViewPage() {
 
                 // Ознакомиться
                 var docsArea = document.createElement('textarea');
-                docsArea.className = 'dark size-18 nir-text-area2'
+                docsArea.className = 'dark size-24 nir-text-area2'
                 docsArea.disabled = true;
                 docsArea.value = item.vkrDocs;
 
                 var copyButton = document.createElement('button');
                 copyButton.className = 'light dark-background size-21 nir-copy-button vkr-copy';
-                copyButton.innerText = 'Перенести значения в меню';
+                copyButton.innerText = 'Перенести значения в поля ниже';
                 copyButton.type = 'button';
                 copyButton.style.marginLeft = '500px';
 
@@ -1652,10 +1653,10 @@ export default function ScaStuViewPage() {
                 versionStatus.className = 'light size-24 nir-header-text';
                 versionStatus.innerText = 'Статус: ' + item.status;
 
-                // Кнопка отправить науч руку
+                // Кнопка оценить
                 var sendButton = document.createElement('button');
                 sendButton.className = 'dark size-24 nir-version-header-button nir-version-send-button';
-                sendButton.innerText = 'Отправить студенту:';
+                sendButton.innerText = 'Оценить';
                 sendButton.type = 'button';
                 if (item.status !== 'Не отправлено' && item.status !== 'Рассматривается') {
                     sendButton.disabled = true;
@@ -1668,23 +1669,23 @@ export default function ScaStuViewPage() {
                 dropdownContent.className = 'sci-advisor-status-dropdown-content';
 
                 var statusZamechaniya = document.createElement('p');
-                statusZamechaniya.className = 'dark size-18 nir-otchet-status-zamechaniya';
+                statusZamechaniya.className = 'dark size-24 nir-otchet-status-zamechaniya';
                 statusZamechaniya.innerText = 'Замечания';
 
                 var status2 = document.createElement('p');
-                status2.className = 'dark size-18 nir-otchet-status-2';
+                status2.className = 'dark size-24 nir-otchet-status-2';
                 status2.innerText = 'Неудовлетворительно';
 
                 var status3 = document.createElement('p');
-                status3.className = 'dark size-18 nir-otchet-status-3';
+                status3.className = 'dark size-24 nir-otchet-status-3';
                 status3.innerText = 'Удовлетворительно';
 
                 var status4 = document.createElement('p');
-                status4.className = 'dark size-18 nir-otchet-status-4';
+                status4.className = 'dark size-24 nir-otchet-status-4';
                 status4.innerText = 'Хорошо';
 
                 var status5 = document.createElement('p');
-                status5.className = 'dark size-18 nir-otchet-status-5';
+                status5.className = 'dark size-24 nir-otchet-status-5';
                 status5.innerText = 'Отлично';
 
                 // Кнопка скачать отчёт
@@ -1714,7 +1715,7 @@ export default function ScaStuViewPage() {
 
                 // Детальное содержание
                 var detailedArea = document.createElement('textarea');
-                detailedArea.className = 'dark size-18 nir-text-area'
+                detailedArea.className = 'dark size-24 nir-text-area'
                 detailedArea.disabled = true;
                 detailedArea.value = item.detailedContent;
 
@@ -1724,7 +1725,7 @@ export default function ScaStuViewPage() {
 
                 // Заключение
                 var conclusionArea = document.createElement('textarea');
-                conclusionArea.className = 'dark size-18 nir-text-area'
+                conclusionArea.className = 'dark size-24 nir-text-area'
                 conclusionArea.disabled = true;
                 conclusionArea.value = item.advisorConclusion;
 
@@ -1732,7 +1733,7 @@ export default function ScaStuViewPage() {
                 var copyButton = document.createElement('button');
                 copyButton.className = 'light dark-background size-21 nir-copy-button nir-otchet-copy';
                 copyButton.id = 'nir-otchet-copy-' + i;
-                copyButton.innerText = 'Перенести значения в меню';
+                copyButton.innerText = 'Перенести значения в поля ниже';
                 copyButton.type = 'button';
                 copyButton.style.marginBottom = '10px';
                 copyButton.style.marginTop = '10px';
@@ -1807,10 +1808,10 @@ export default function ScaStuViewPage() {
             versionStatus.className = 'light size-24 nir-header-text';
             versionStatus.innerText = 'Статус: ' + item.status;
 
-            // Кнопка отправить науч руку
+            // Кнопка оценить
             var sendButton = document.createElement('button');
             sendButton.className = 'dark size-24 nir-version-header-button nir-version-send-button';
-            sendButton.innerText = 'Отправить студенту:';
+            sendButton.innerText = 'Оценить';
             sendButton.type = 'button';
             if (item.status !== 'Не отправлено' && item.status !== 'Рассматривается') {
                 sendButton.disabled = true;
@@ -1823,23 +1824,23 @@ export default function ScaStuViewPage() {
             dropdownContent.className = 'sci-advisor-status-dropdown-content';
 
             var statusZamechaniya = document.createElement('p');
-            statusZamechaniya.className = 'dark size-18 long-pp-otchet-status-zamechaniya';
+            statusZamechaniya.className = 'dark size-24 long-pp-otchet-status-zamechaniya';
             statusZamechaniya.innerText = 'Замечания';
 
             var status2 = document.createElement('p');
-            status2.className = 'dark size-18 long-pp-otchet-status-2';
+            status2.className = 'dark size-24 long-pp-otchet-status-2';
             status2.innerText = 'Неудовлетворительно';
 
             var status3 = document.createElement('p');
-            status3.className = 'dark size-18 long-pp-otchet-status-3';
+            status3.className = 'dark size-24 long-pp-otchet-status-3';
             status3.innerText = 'Удовлетворительно';
 
             var status4 = document.createElement('p');
-            status4.className = 'dark size-18 long-pp-otchet-status-4';
+            status4.className = 'dark size-24 long-pp-otchet-status-4';
             status4.innerText = 'Хорошо';
 
             var status5 = document.createElement('p');
-            status5.className = 'dark size-18 long-pp-otchet-status-5';
+            status5.className = 'dark size-24 long-pp-otchet-status-5';
             status5.innerText = 'Отлично';
 
             // Кнопка скачать отчёт
@@ -1869,7 +1870,7 @@ export default function ScaStuViewPage() {
 
             // Детальное содержание
             var detailedArea = document.createElement('textarea');
-            detailedArea.className = 'dark size-18 nir-text-area'
+            detailedArea.className = 'dark size-24 nir-text-area'
             detailedArea.disabled = true;
             detailedArea.value = item.detailedContent;
 
@@ -1879,7 +1880,7 @@ export default function ScaStuViewPage() {
 
             // Заключение
             var conclusionArea = document.createElement('textarea');
-            conclusionArea.className = 'dark size-18 nir-text-area'
+            conclusionArea.className = 'dark size-24 nir-text-area'
             conclusionArea.disabled = true;
             conclusionArea.value = item.advisorConclusion;
 
@@ -1887,7 +1888,7 @@ export default function ScaStuViewPage() {
             var copyButton = document.createElement('button');
             copyButton.className = 'light dark-background size-21 nir-copy-button long-pp-otchet-copy';
             copyButton.id = 'long-pp-otchet-copy-' + i;
-            copyButton.innerText = 'Перенести значения в меню';
+            copyButton.innerText = 'Перенести значения в поля ниже';
             copyButton.type = 'button';
             copyButton.style.marginBottom = '10px';
             copyButton.style.marginTop = '10px';
@@ -1961,10 +1962,10 @@ export default function ScaStuViewPage() {
             versionStatus.className = 'light size-24 nir-header-text';
             versionStatus.innerText = 'Статус: ' + item.status;
 
-            // Кнопка отправить науч руку
+            // Кнопка оценить
             var sendButton = document.createElement('button');
             sendButton.className = 'dark size-24 nir-version-header-button nir-version-send-button';
-            sendButton.innerText = 'Отправить студенту:';
+            sendButton.innerText = 'Оценить';
             sendButton.type = 'button';
             if (item.status !== 'Не отправлено' && item.status !== 'Рассматривается') {
                 sendButton.disabled = true;
@@ -1977,23 +1978,23 @@ export default function ScaStuViewPage() {
             dropdownContent.className = 'sci-advisor-status-dropdown-content';
 
             var statusZamechaniya = document.createElement('p');
-            statusZamechaniya.className = 'dark size-18 pp-otchet-status-zamechaniya';
+            statusZamechaniya.className = 'dark size-24 pp-otchet-status-zamechaniya';
             statusZamechaniya.innerText = 'Замечания';
 
             var status2 = document.createElement('p');
-            status2.className = 'dark size-18 pp-otchet-status-2';
+            status2.className = 'dark size-24 pp-otchet-status-2';
             status2.innerText = 'Неудовлетворительно';
 
             var status3 = document.createElement('p');
-            status3.className = 'dark size-18 pp-otchet-status-3';
+            status3.className = 'dark size-24 pp-otchet-status-3';
             status3.innerText = 'Удовлетворительно';
 
             var status4 = document.createElement('p');
-            status4.className = 'dark size-18 pp-otchet-status-4';
+            status4.className = 'dark size-24 pp-otchet-status-4';
             status4.innerText = 'Хорошо';
 
             var status5 = document.createElement('p');
-            status5.className = 'dark size-18 pp-otchet-status-5';
+            status5.className = 'dark size-24 pp-otchet-status-5';
             status5.innerText = 'Отлично';
 
             // Кнопка скачать отчёт
@@ -2023,7 +2024,7 @@ export default function ScaStuViewPage() {
 
             // Детальное содержание
             var detailedArea = document.createElement('textarea');
-            detailedArea.className = 'dark size-18 nir-text-area'
+            detailedArea.className = 'dark size-24 nir-text-area'
             detailedArea.disabled = true;
             detailedArea.value = item.detailedContent;
 
@@ -2033,7 +2034,7 @@ export default function ScaStuViewPage() {
 
             // Заключение
             var conclusionArea = document.createElement('textarea');
-            conclusionArea.className = 'dark size-18 nir-text-area'
+            conclusionArea.className = 'dark size-24 nir-text-area'
             conclusionArea.disabled = true;
             conclusionArea.value = item.advisorConclusion;
 
@@ -2041,7 +2042,7 @@ export default function ScaStuViewPage() {
             var copyButton = document.createElement('button');
             copyButton.className = 'light dark-background size-21 nir-copy-button pp-otchet-copy';
             copyButton.id = 'pp-otchet-copy-' + i;
-            copyButton.innerText = 'Перенести значения в меню';
+            copyButton.innerText = 'Перенести значения в поля ниже';
             copyButton.type = 'button';
             copyButton.style.marginBottom = '10px';
             copyButton.style.marginTop = '10px';
@@ -2115,10 +2116,10 @@ export default function ScaStuViewPage() {
             versionStatus.className = 'light size-24 nir-header-text';
             versionStatus.innerText = 'Статус: ' + item.status;
 
-            // Кнопка отправить науч руку
+            // Кнопка оценить
             var sendButton = document.createElement('button');
             sendButton.className = 'dark size-24 nir-version-header-button nir-version-send-button';
-            sendButton.innerText = 'Отправить студенту:';
+            sendButton.innerText = 'Оценить';
             sendButton.type = 'button';
             if (item.status !== 'Не отправлено' && item.status !== 'Рассматривается') {
                 sendButton.disabled = true;
@@ -2131,23 +2132,23 @@ export default function ScaStuViewPage() {
             dropdownContent.className = 'sci-advisor-status-dropdown-content';
 
             var statusZamechaniya = document.createElement('p');
-            statusZamechaniya.className = 'dark size-18 vkr-otchet-status-zamechaniya';
+            statusZamechaniya.className = 'dark size-24 vkr-otchet-status-zamechaniya';
             statusZamechaniya.innerText = 'Замечания';
 
             var status2 = document.createElement('p');
-            status2.className = 'dark size-18 vkr-otchet-status-2';
+            status2.className = 'dark size-24 vkr-otchet-status-2';
             status2.innerText = 'Неудовлетворительно';
 
             var status3 = document.createElement('p');
-            status3.className = 'dark size-18 vkr-otchet-status-3';
+            status3.className = 'dark size-24 vkr-otchet-status-3';
             status3.innerText = 'Удовлетворительно';
 
             var status4 = document.createElement('p');
-            status4.className = 'dark size-18 vkr-otchet-status-4';
+            status4.className = 'dark size-24 vkr-otchet-status-4';
             status4.innerText = 'Хорошо';
 
             var status5 = document.createElement('p');
-            status5.className = 'dark size-18 vkr-otchet-status-5';
+            status5.className = 'dark size-24 vkr-otchet-status-5';
             status5.innerText = 'Отлично';
 
             // Кнопка скачать отчёт

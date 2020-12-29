@@ -908,7 +908,7 @@ export default function StudentTasksPage() {
 
             // Тема нир
             var themeArea = document.createElement('textarea');
-            themeArea.className = 'dark size-18 nir-text-area'
+            themeArea.className = 'dark size-24 nir-text-area'
             themeArea.disabled = true;
             themeArea.value = item.theme;
 
@@ -918,7 +918,7 @@ export default function StudentTasksPage() {
 
             // Изучить
             var exploreArea = document.createElement('textarea');
-            exploreArea.className = 'dark size-18 nir-text-area'
+            exploreArea.className = 'dark size-24 nir-text-area'
             exploreArea.disabled = true;
             exploreArea.value = item.toExplore;
 
@@ -928,7 +928,7 @@ export default function StudentTasksPage() {
 
             // Выполнить
             var createArea = document.createElement('textarea');
-            createArea.className = 'dark size-18 nir-text-area'
+            createArea.className = 'dark size-24 nir-text-area'
             createArea.disabled = true;
             createArea.value = item.toCreate;
 
@@ -938,7 +938,7 @@ export default function StudentTasksPage() {
 
             // Ознакомиться
             var familiarizeArea = document.createElement('textarea');
-            familiarizeArea.className = 'dark size-18 nir-text-area2'
+            familiarizeArea.className = 'dark size-24 nir-text-area2'
             familiarizeArea.disabled = true;
             familiarizeArea.value = item.toFamiliarize;
 
@@ -948,13 +948,13 @@ export default function StudentTasksPage() {
 
             // Доп задание
             var taskArea = document.createElement('textarea');
-            taskArea.className = 'dark size-18 nir-text-area2'
+            taskArea.className = 'dark size-24 nir-text-area2'
             taskArea.disabled = true;
             taskArea.value = item.additionalTask;
 
             var copyButton = document.createElement('button');
             copyButton.className = 'light dark-background size-21 nir-copy-button nir-copy';
-            copyButton.innerText = 'Перенести значения в меню';
+            copyButton.innerText = 'Перенести значения в поле ниже';
             copyButton.type = 'button';
 
             var rowDiv = document.createElement('div');
@@ -1060,7 +1060,7 @@ export default function StudentTasksPage() {
 
             // Тема нир
             var themeArea = document.createElement('textarea');
-            themeArea.className = 'dark size-18 nir-text-area'
+            themeArea.className = 'dark size-24 nir-text-area'
             themeArea.disabled = true;
             themeArea.value = item.theme;
 
@@ -1070,7 +1070,7 @@ export default function StudentTasksPage() {
 
             // Изучить
             var exploreArea = document.createElement('textarea');
-            exploreArea.className = 'dark size-18 nir-text-area'
+            exploreArea.className = 'dark size-24 nir-text-area'
             exploreArea.disabled = true;
             exploreArea.value = item.toExplore;
 
@@ -1080,7 +1080,7 @@ export default function StudentTasksPage() {
 
             // Выполнить
             var createArea = document.createElement('textarea');
-            createArea.className = 'dark size-18 nir-text-area'
+            createArea.className = 'dark size-24 nir-text-area'
             createArea.disabled = true;
             createArea.value = item.toCreate;
 
@@ -1090,7 +1090,7 @@ export default function StudentTasksPage() {
 
             // Ознакомиться
             var familiarizeArea = document.createElement('textarea');
-            familiarizeArea.className = 'dark size-18 nir-text-area2'
+            familiarizeArea.className = 'dark size-24 nir-text-area2'
             familiarizeArea.disabled = true;
             familiarizeArea.value = item.toFamiliarize;
 
@@ -1100,13 +1100,13 @@ export default function StudentTasksPage() {
 
             // Доп задание
             var taskArea = document.createElement('textarea');
-            taskArea.className = 'dark size-18 nir-text-area2'
+            taskArea.className = 'dark size-24 nir-text-area2'
             taskArea.disabled = true;
             taskArea.value = item.additionalTask;
 
             var copyButton = document.createElement('button');
             copyButton.className = 'light dark-background size-21 nir-copy-button long-pp-copy';
-            copyButton.innerText = 'Перенести значения в меню';
+            copyButton.innerText = 'Перенести значения в поля ниже';
             copyButton.type = 'button';
 
             var rowDiv = document.createElement('div');
@@ -1210,7 +1210,7 @@ export default function StudentTasksPage() {
 
             // Тема нир
             var themeArea = document.createElement('textarea');
-            themeArea.className = 'dark size-18 nir-text-area'
+            themeArea.className = 'dark size-24 nir-text-area'
             themeArea.disabled = true;
             themeArea.value = item.theme;
 
@@ -1220,7 +1220,7 @@ export default function StudentTasksPage() {
 
             // Изучить
             var exploreArea = document.createElement('textarea');
-            exploreArea.className = 'dark size-18 nir-text-area'
+            exploreArea.className = 'dark size-24 nir-text-area'
             exploreArea.disabled = true;
             exploreArea.value = item.toExplore;
 
@@ -1230,7 +1230,7 @@ export default function StudentTasksPage() {
 
             // Выполнить
             var createArea = document.createElement('textarea');
-            createArea.className = 'dark size-18 nir-text-area'
+            createArea.className = 'dark size-24 nir-text-area'
             createArea.disabled = true;
             createArea.value = item.toCreate;
 
@@ -1240,7 +1240,7 @@ export default function StudentTasksPage() {
 
             // Ознакомиться
             var familiarizeArea = document.createElement('textarea');
-            familiarizeArea.className = 'dark size-18 nir-text-area2'
+            familiarizeArea.className = 'dark size-24 nir-text-area2'
             familiarizeArea.disabled = true;
             familiarizeArea.value = item.toFamiliarize;
 
@@ -1250,13 +1250,13 @@ export default function StudentTasksPage() {
 
             // Доп задание
             var taskArea = document.createElement('textarea');
-            taskArea.className = 'dark size-18 nir-text-area2'
+            taskArea.className = 'dark size-24 nir-text-area2'
             taskArea.disabled = true;
             taskArea.value = item.additionalTask;
 
             var copyButton = document.createElement('button');
             copyButton.className = 'light dark-background size-21 nir-copy-button pp-copy';
-            copyButton.innerText = 'Перенести значения в меню';
+            copyButton.innerText = 'Перенести значения в поля ниже';
             copyButton.type = 'button';
 
             var rowDiv = document.createElement('div');
@@ -1360,7 +1360,7 @@ export default function StudentTasksPage() {
 
             // Тема
             var themeArea = document.createElement('textarea');
-            themeArea.className = 'dark size-18 nir-text-area'
+            themeArea.className = 'dark size-24 nir-text-area'
             themeArea.disabled = true;
             themeArea.value = item.theme;
 
@@ -1370,7 +1370,7 @@ export default function StudentTasksPage() {
 
             // Цель
             var aimArea = document.createElement('textarea');
-            aimArea.className = 'dark size-18 nir-text-area'
+            aimArea.className = 'dark size-24 nir-text-area'
             aimArea.disabled = true;
             aimArea.value = item.vkrAim;
 
@@ -1378,9 +1378,9 @@ export default function StudentTasksPage() {
             tasksLabel.className = 'dark size-21 nir-text-label';
             tasksLabel.innerText = 'Задачи:';
 
-            // Ззадачи
+            // Задачи
             var tasksArea = document.createElement('textarea');
-            tasksArea.className = 'dark size-18 nir-text-area'
+            tasksArea.className = 'dark size-24 nir-text-area'
             tasksArea.disabled = true;
             tasksArea.value = item.vkrTasks;
 
@@ -1390,13 +1390,13 @@ export default function StudentTasksPage() {
 
             // Ознакомиться
             var docsArea = document.createElement('textarea');
-            docsArea.className = 'dark size-18 nir-text-area2'
+            docsArea.className = 'dark size-24 nir-text-area2'
             docsArea.disabled = true;
             docsArea.value = item.vkrDocs;
 
             var copyButton = document.createElement('button');
             copyButton.className = 'light dark-background size-21 nir-copy-button vkr-copy';
-            copyButton.innerText = 'Перенести значения в меню';
+            copyButton.innerText = 'Перенести значения в поля ниже';
             copyButton.type = 'button';
             copyButton.style.marginLeft = '500px';
 
@@ -1501,7 +1501,7 @@ export default function StudentTasksPage() {
 
                 // Детальное содержание
                 var detailedArea = document.createElement('textarea');
-                detailedArea.className = 'dark size-18 nir-text-area'
+                detailedArea.className = 'dark size-24 nir-text-area'
                 detailedArea.disabled = true;
                 detailedArea.value = item.detailedContent;
 
@@ -1511,7 +1511,7 @@ export default function StudentTasksPage() {
 
                 // Заключение
                 var conclusionArea = document.createElement('textarea');
-                conclusionArea.className = 'dark size-18 nir-text-area'
+                conclusionArea.className = 'dark size-24 nir-text-area'
                 conclusionArea.disabled = true;
                 conclusionArea.value = item.advisorConclusion;
 
@@ -1519,7 +1519,7 @@ export default function StudentTasksPage() {
                 var copyButton = document.createElement('button');
                 copyButton.className = 'light dark-background size-21 nir-copy-button nir-otchet-copy';
                 copyButton.id = 'nir-otchet-copy-' + i;
-                copyButton.innerText = 'Перенести значения в меню';
+                copyButton.innerText = 'Перенести значения в поля ниже';
                 copyButton.type = 'button';
                 copyButton.style.marginBottom = '10px';
                 copyButton.style.marginTop = '10px';
@@ -1622,7 +1622,7 @@ export default function StudentTasksPage() {
 
                 // Детальное содержание
                 var detailedArea = document.createElement('textarea');
-                detailedArea.className = 'dark size-18 nir-text-area'
+                detailedArea.className = 'dark size-24 nir-text-area'
                 detailedArea.disabled = true;
                 detailedArea.value = item.detailedContent;
 
@@ -1632,7 +1632,7 @@ export default function StudentTasksPage() {
 
                 // Заключение
                 var conclusionArea = document.createElement('textarea');
-                conclusionArea.className = 'dark size-18 nir-text-area'
+                conclusionArea.className = 'dark size-24 nir-text-area'
                 conclusionArea.disabled = true;
                 conclusionArea.value = item.advisorConclusion;
 
@@ -1640,7 +1640,7 @@ export default function StudentTasksPage() {
                 var copyButton = document.createElement('button');
                 copyButton.className = 'light dark-background size-21 nir-copy-button long-pp-otchet-copy';
                 copyButton.id = 'long-pp-otchet-copy-' + i;
-                copyButton.innerText = 'Перенести значения в меню';
+                copyButton.innerText = 'Перенести значения в поля ниже';
                 copyButton.type = 'button';
                 copyButton.style.marginBottom = '10px';
                 copyButton.style.marginTop = '10px';
@@ -1743,7 +1743,7 @@ export default function StudentTasksPage() {
 
                 // Детальное содержание
                 var detailedArea = document.createElement('textarea');
-                detailedArea.className = 'dark size-18 nir-text-area'
+                detailedArea.className = 'dark size-24 nir-text-area'
                 detailedArea.disabled = true;
                 detailedArea.value = item.detailedContent;
 
@@ -1753,7 +1753,7 @@ export default function StudentTasksPage() {
 
                 // Заключение
                 var conclusionArea = document.createElement('textarea');
-                conclusionArea.className = 'dark size-18 nir-text-area'
+                conclusionArea.className = 'dark size-24 nir-text-area'
                 conclusionArea.disabled = true;
                 conclusionArea.value = item.advisorConclusion;
 
@@ -1761,7 +1761,7 @@ export default function StudentTasksPage() {
                 var copyButton = document.createElement('button');
                 copyButton.className = 'light dark-background size-21 nir-copy-button pp-otchet-copy';
                 copyButton.id = 'pp-otchet-copy-' + i;
-                copyButton.innerText = 'Перенести значения в меню';
+                copyButton.innerText = 'Перенести значения в поля ниже';
                 copyButton.type = 'button';
                 copyButton.style.marginBottom = '10px';
                 copyButton.style.marginTop = '10px';

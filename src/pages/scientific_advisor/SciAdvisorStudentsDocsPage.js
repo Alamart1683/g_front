@@ -176,12 +176,14 @@ export default function SciAdvisorStudentsDocsPage() {
                 // Кнопка отправить студенту
                 var sendButton = document.createElement('button');
                 sendButton.className = 'light dark-background size-24 sca-scu-version-button version-send-button';
-                sendButton.innerText = 'Отправить\nстуденту:';
+                sendButton.innerText = 'Оценить';
                 sendButton.type = 'button';
                 // Запретить отсылку, если версия отправлена
                 if (documentStatus !== 'Не отправлено' && documentStatus !== 'Рассматривается') {
                     sendButton.disabled = true;
                 }
+                sendButton.style.position = 'relative';
+                sendButton.style.top = '-54px';
 
                 var dropdownDiv = document.createElement('div');
                 dropdownDiv.className = 'sci-advisor-status-dropdown-div';
@@ -192,30 +194,30 @@ export default function SciAdvisorStudentsDocsPage() {
                 if (documentKind === 'Отчёт') {
 
                     var status2 = document.createElement('p');
-                    status2.className = 'dark size-18 status-2';
+                    status2.className = 'dark size-24 status-2';
                     status2.innerText = 'Неудовлетворительно';
 
                     var status3 = document.createElement('p');
-                    status3.className = 'dark size-18 status-3';
+                    status3.className = 'dark size-24 status-3';
                     status3.innerText = 'Удовлетворительно';
 
                     var status4 = document.createElement('p');
-                    status4.className = 'dark size-18 status-4';
+                    status4.className = 'dark size-24 status-4';
                     status4.innerText = 'Хорошо';
 
                     var status5 = document.createElement('p');
-                    status5.className = 'dark size-18 status-5';
+                    status5.className = 'dark size-24 status-5';
                     status5.innerText = 'Отлично';
                 }
                 else {
                     var statusOdobreno = document.createElement('p');
-                    statusOdobreno.className = 'dark size-18 status-odobreno';
+                    statusOdobreno.className = 'dark size-24 status-odobreno';
                     statusOdobreno.innerText = 'Одобрено';
 
                 }
 
                 var statusZamechaniya = document.createElement('p');
-                statusZamechaniya.className = 'dark size-18 status-zamechaniya';
+                statusZamechaniya.className = 'dark size-24 status-zamechaniya';
                 statusZamechaniya.innerText = 'Замечания';
 
                 // Кнопка скачать документ
