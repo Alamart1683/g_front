@@ -17,7 +17,7 @@ export default function SciAdvisorStudentsDocsPage() {
 
     useEffect(() => {
         showFiles(documentData);
-    });
+    }, [documentData]);
 
     if (!fetchedData) {
         setFetchedData(true);
@@ -33,9 +33,9 @@ export default function SciAdvisorStudentsDocsPage() {
             },
         }).then((response) => {
             setDocumentData(response.data);
-            console.log(response.data);
+            //console.log(response.data);
         }).catch(result => {
-            console.log(result.data);
+            //console.log(result.data);
         });
     }
 
@@ -286,13 +286,13 @@ export default function SciAdvisorStudentsDocsPage() {
     function getStatus(status) {
         switch (status) {
             case 'Неудовлетворительно':
-                return 'Неуд.';
+                return 'НЕУД.';
             case 'Удовлетворительно':
-                return 'Удовл.';
+                return 'УДОВЛ.';
             case 'Хорошо':
-                return 'Хор.';
+                return 'ХОР.';
             case 'Отлично':
-                return 'Отл.';
+                return 'ОТЛ.';
             default:
                 return status;
         }

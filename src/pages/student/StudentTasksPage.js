@@ -3455,7 +3455,7 @@ export default function StudentTasksPage() {
                                         <Image src={iconProject} thumbnail className='dark-background thumbnail-icon' />
                                         Сформировать и загрузить версию отчета
                                 </button>
-                                    <input id='nir-otchet-file-input' type='file' style={{ display: 'none' }} onChange={(e) => {
+                                    <input id='nir-otchet-file-input' type='file' style={{ display: 'none' }} accept='application/vnd.openxmlformats-officedocument.wordprocessingml.document' onChange={(e) => {
                                         console.log(e.target.files);
                                         if (e.target.files.length !== 0) {
                                             makeOtchetVersion(e.target.files[0], 'Научно-исследовательская работа');

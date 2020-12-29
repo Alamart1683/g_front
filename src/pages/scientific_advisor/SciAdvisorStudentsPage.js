@@ -32,10 +32,10 @@ export default function SciAdvisorStudentsPage() {
                 'Authorization': 'Bearer ' + authTokens.accessToken
             },
         }).then((response) => {
-            console.log(response);
+            //console.log(response);
             setStudents(response.data);
         }).catch(result => {
-            console.log(result.data);
+            //console.log(result.data);
         });
     }
 
