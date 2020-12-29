@@ -54,11 +54,25 @@ export default function SciAdvisorStudentsPage() {
 
             // Имя студента
             var studentFio = document.createElement('th');
+            var fioLink = document.createElement('a');
+            fioLink.href = '#';
+            fioLink.className = 'dark size-24 student-fio-link';
+            fioLink.id = 'student-fio-link-'+i;
+            fioLink.innerText = item.fio.split(' ')[0] +
+                ' ' +
+                item.fio.split(' ')[1].charAt(0) +
+                '. ' +
+                item.fio.split(' ')[2].charAt(0) +
+                '.';
 
             var projectArea = 'Комплексный проект не назначен';
             if (item.projectArea !== 'Нет проектной области') {
                 projectArea = item.projectArea;
             }
+
+            
+            // Данные студента
+            var studentData = document.createElement('th');
 
             var popover = document.createElement('a');
             popover.href = '#';
@@ -73,12 +87,7 @@ export default function SciAdvisorStudentsPage() {
                 "<br /> Почта: " + item.email +
                 "<br /> Комплексный проект: " + projectArea +
                 "<br /> Проект: " + item.projectName);
-            popover.innerText = item.fio.split(' ')[0] +
-                ' ' +
-                item.fio.split(' ')[1].charAt(0) +
-                '. ' +
-                item.fio.split(' ')[2].charAt(0) +
-                '.';
+            popover.innerText = '?';
 
             // Тема студента
             var studentTheme = document.createElement('th');
@@ -272,16 +281,11 @@ export default function SciAdvisorStudentsPage() {
 
             var vkrPresentationDiv = document.createElement('div');
 
-            var studentButtonTh = document.createElement('th');
-            var studentButton = document.createElement('button');
-            //studentButton.style.minWidth = '100px';
-            studentButton.className = 'student-table-button';
-            studentButton.innerText = 'Перейти к студенту';
-            studentButton.id = 'student-table-button-' + i;
-
             student.appendChild(studentNum);
-            studentFio.appendChild(popover);
+            studentFio.appendChild(fioLink);
             student.appendChild(studentFio);
+            studentData.appendChild(popover);
+            student.appendChild(studentData);
 
             student.appendChild(studentTheme);
 
@@ -341,8 +345,8 @@ export default function SciAdvisorStudentsPage() {
 
             student.appendChild(studentVkr);
 
-            studentButtonTh.appendChild(studentButton);
-            student.appendChild(studentButtonTh);
+            //studentButtonTh.appendChild(studentButton);
+            //student.appendChild(studentButtonTh);
             document.getElementById('student-table-body').appendChild(student);
         }
     }
@@ -352,21 +356,26 @@ export default function SciAdvisorStudentsPage() {
             case 0:
                 return '     -';
             case 2:
-                return 'неуд.';
+                return '  НЕУД.';
             case 3:
-                return 'удовл.';
+                return 'УДОВЛ.';
             case 4:
-                return '  хор.';
+                return '  ХОР.';
             case 5:
-                return '  отл.';
+                return '  ОТЛ.';
             default:
-                return '  ???';
+                return '???';
         }
     }
 
     $(function () {
 
-        $('.student-table-button').off().on('click', function () {
+        $('.student-fio-link').off().on('click', function (e) {
+            $('[data-toggle=popover]').each(function () {
+                if (!$(this).is(e.target) && $(this).has(e.target).length === 0 && $('.popover').has(e.target).length === 0) {
+                    $(this).popover('hide');
+                }
+            });
             var arrayId = $(this).attr('id').split('-')[3];
             sessionStorage.setItem('viewedStudentId', students[arrayId].systemStudentID);
             sessionStorage.setItem('viewedStudentName', students[arrayId].fio);
@@ -400,12 +409,12 @@ export default function SciAdvisorStudentsPage() {
                         <tr>
                             <th>#</th>
                             <th>ФИО</th>
+                            <th></th>
                             <th>Тема</th>
                             <th style={{ minWidth: '241px' }}>НИР</th>
                             <th style={{ minWidth: '316px' }}>ПпППУиОПД</th>
                             <th style={{ minWidth: '231px' }}>ПП</th>
                             <th style={{ minWidth: '281px' }}>ВКР</th>
-                            <th></th>
                         </tr>
                     </thead>
                     <tbody id='student-table-body'>

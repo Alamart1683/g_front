@@ -4,6 +4,7 @@ import axios from 'axios';
 import { useAuthContext } from '../../auth/AuthContext';
 import { apiURL } from '../../Config';
 import $ from 'jquery';
+import 'bootstrap/dist/js/bootstrap.bundle.min';
 
 import iconDocument from '../../images/icons/documents.png';
 import iconProject from '../../images/icons/myproject.png';
@@ -2408,6 +2409,21 @@ export default function ScaStuViewPage() {
     }
 
     $(function () {
+        
+        $('[data-toggle="popover"]').popover();
+
+        $(".student-popover").on('click', function (e) {
+            e.preventDefault();
+        });
+
+        $('body').on('click', function (e) {
+            $('[data-toggle=popover]').each(function () {
+                if (!$(this).is(e.target) && $(this).has(e.target).length === 0 && $('.popover').has(e.target).length === 0) {
+                    $(this).popover('hide');
+                }
+            });
+        });
+
         // Показ полей версии
         $(document).off().on('click', '.nir-version-clickable', function () {
             $(this).parent().parent().find('.nir-version-content').toggle();

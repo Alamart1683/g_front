@@ -4,6 +4,7 @@ import { Form, OverlayTrigger, Popover } from 'react-bootstrap';
 import axios from 'axios';
 import { useAuthContext } from '../../auth/AuthContext';
 import { apiURL } from '../../Config';
+import $ from 'jquery';
 
 export default function LoginPage() {
 
@@ -38,7 +39,7 @@ export default function LoginPage() {
 
   const errorPopover = (props) => (
     <Popover {...props} id='errorPopover' >
-      <Popover.Title style={popoverTitleStyle}>
+      <Popover.Title id='errorPopoverHeader' style={popoverTitleStyle}>
         Ошибка!
       </Popover.Title>
       <Popover.Content id='errorPopoverContent' style={popoverContentStyle}>
@@ -77,6 +78,19 @@ export default function LoginPage() {
         document.getElementById("errorPopoverContent").innerHTML = "Нет связи с сервером";
       });
   }
+
+  $(function () {
+    
+    $('body').on('click', function (e) {
+      if (popoverShow) {
+        //console.log(e.target.id);
+        if (e.target.id !== 'errorPopoverHeader' && e.target.id !== 'errorPopoverContent') {
+          setPopoverShow(false);
+        }
+      }
+    });
+
+  });
 
   return (
     <div>
