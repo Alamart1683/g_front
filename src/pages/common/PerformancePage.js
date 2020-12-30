@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Table, Image } from 'react-bootstrap';
 import { useAuthContext } from '../../auth/AuthContext';
 import axios from 'axios';
@@ -12,11 +12,7 @@ export default function PerformancePage() {
     const { authTokens } = useAuthContext();
     const [fetchedData, setFetchedData] = useState(false);
 
-    const [performanceData, setPerformanceData] = useState([]);
-
-    useEffect(() => {
-        showPerformanceData(performanceData);
-    }, [performanceData]);
+    //const [performanceData, setPerformanceData] = useState([]);
 
     if (!fetchedData) {
         setFetchedData(true);
@@ -35,7 +31,8 @@ export default function PerformancePage() {
             },
         }).then((response) => {
             //console.log(response);
-            setPerformanceData(response.data);
+            //setPerformanceData(response.data);
+            showPerformanceData(response.data);
         }).catch(result => {
             console.log(result);
         });

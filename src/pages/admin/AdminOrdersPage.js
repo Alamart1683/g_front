@@ -58,57 +58,46 @@ export default function AdminOrdersPage() {
             orderNameImage.className = 'hoc-order-template-name-image';
             orderNameImage.src = orderImage;
             orderNameImage.style.position = 'relative';
-            orderNameImage.style.top = '-65px';
+            orderNameImage.style.top = '-55px';
 
             var orderTitles = document.createElement('div');
             orderTitles.className = 'hoc-order-titles-div';
+            orderTitles.style.width = '647px';
 
             var orderNameText = document.createElement('p');
-            orderNameText.className = 'hoc-order-template-name-text light size-20';
+            orderNameText.className = 'hoc-order-template-name-text light size-24';
             orderNameText.innerText = order.documentName;
             orderNameText.style.maxWidth = '350px';
-            orderNameText.style.marginBottom = '0px';
+            orderNameText.style.marginBottom = '-5px';
 
             var orderNum = document.createElement('p');
-            orderNum.className = 'hoc-order-template-name-text light size-20';
+            orderNum.className = 'hoc-order-template-name-text light size-24';
             orderNum.innerText = 'Номер: ' + order.number;
             orderNum.style.display = 'inline-block';
-            orderNum.style.marginBottom = '0px';
+            orderNum.style.marginBottom = '-5px';
 
             var orderSpeciality = document.createElement('p');
-            orderSpeciality.className = 'hoc-order-template-name-text light size-20';
+            orderSpeciality.className = 'hoc-order-template-name-text light size-24';
             orderSpeciality.innerText = 'Направление: ' + order.speciality;
             orderSpeciality.style.display = 'block';
             orderSpeciality.style.marginBottom = '0px';
 
             var orderDate = document.createElement('p');
-            orderDate.className = 'hoc-order-template-name-text light size-20';
+            orderDate.className = 'hoc-order-template-name-text light size-22';
             orderDate.innerText = 'Дата: ' + order.orderDate;
             orderDate.style.marginBottom = '0px';
 
             var orderStartDate = document.createElement('p');
-            orderStartDate.className = 'hoc-order-template-name-text light size-20';
+            orderStartDate.className = 'hoc-order-template-name-text light size-22';
             orderStartDate.innerText = 'Дата начала: ' + order.startDate;
             orderStartDate.style.marginBottom = '0px';
-            orderStartDate.style.marginLeft = '10px';
+            orderStartDate.style.marginLeft = '5px';
 
             var orderEndDate = document.createElement('p');
-            orderEndDate.className = 'hoc-order-template-name-text light size-20';
+            orderEndDate.className = 'hoc-order-template-name-text light size-22';
             orderEndDate.innerText = 'Дата конца: ' + order.endDate;
             orderEndDate.style.marginBottom = '0px';
-            orderEndDate.style.marginLeft = '10px';
-
-            var orderStatus = document.createElement('p');
-            orderStatus.className = 'hoc-order-template-name-text light size-20';
-            if (order.approved) {
-                orderStatus.innerText = 'Статус: Одобрено';
-            }
-            else {
-                orderStatus.innerText = 'Статус: Не одобрено';
-            }
-            orderStatus.style.display = 'block';
-            orderStatus.style.marginTop = '-6px';
-            orderStatus.style.marginBottom = '0px';
+            orderEndDate.style.marginLeft = '5px';
 
             var orderDownload = document.createElement('button');
             orderDownload.className = 'hoc-order-template-download-button light size-22';
@@ -117,7 +106,7 @@ export default function AdminOrdersPage() {
             orderDownload.style.height = '120px'
             orderDownload.style.width = '105px';
             orderDownload.style.position = 'relative';
-            orderDownload.style.top = '-62px';
+            orderDownload.style.top = '-48px';
 
             var orderDelete = document.createElement('button');
             orderDelete.className = 'hoc-order-template-delete-button light size-22';
@@ -126,7 +115,7 @@ export default function AdminOrdersPage() {
             orderDelete.style.height = '120px'
             orderDelete.style.width = '100px';
             orderDelete.style.position = 'relative';
-            orderDelete.style.top = '-62px';
+            orderDelete.style.top = '-48px';
 
             // Кнопка просмотреть
             var viewButton = document.createElement('button');
@@ -137,7 +126,7 @@ export default function AdminOrdersPage() {
             viewButton.style.height = '120px';
             viewButton.style.width = '135px';
             viewButton.style.position = 'relative';
-            viewButton.style.top = '-62px';
+            viewButton.style.top = '-48px';
             viewButton.type = 'button';
 
             orderName.appendChild(orderNameImage);
@@ -148,7 +137,6 @@ export default function AdminOrdersPage() {
             orderTitles.appendChild(orderDate);
             orderTitles.appendChild(orderStartDate);
             orderTitles.appendChild(orderEndDate);
-            orderTitles.appendChild(orderStatus);
             orderName.appendChild(orderTitles);
 
             orderFile.appendChild(orderName);

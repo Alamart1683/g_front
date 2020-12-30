@@ -16,7 +16,7 @@ import iconSelected from '../images/icons/documents_selected.png';
 
 export default function SciAdvisorHeader() {
 
-    const { authTokens, setAuthTokens } = useAuthContext();
+    const { setAuthTokens } = useAuthContext();
 
     function logOut() {
         setAuthTokens(null);

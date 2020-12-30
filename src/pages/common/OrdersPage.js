@@ -60,51 +60,40 @@ export default function OrdersPage() {
 
             var orderTitles = document.createElement('div');
             orderTitles.className = 'hoc-order-titles-div';
+            orderTitles.style.width = '900px';
 
             var orderNameText = document.createElement('p');
-            orderNameText.className = 'hoc-order-template-name-text light size-20';
+            orderNameText.className = 'hoc-order-template-name-text light size-24';
             orderNameText.innerText = order.documentName;
             orderNameText.style.maxWidth = '350px';
             orderNameText.style.marginBottom = '0px';
 
             var orderNum = document.createElement('p');
-            orderNum.className = 'hoc-order-template-name-text light size-20';
+            orderNum.className = 'hoc-order-template-name-text light size-24';
             orderNum.innerText = 'Номер: ' + order.number;
             orderNum.style.display = 'inline-block';
             orderNum.style.marginBottom = '0px';
 
             var orderSpeciality = document.createElement('p');
-            orderSpeciality.className = 'hoc-order-template-name-text light size-20';
+            orderSpeciality.className = 'hoc-order-template-name-text light size-24';
             orderSpeciality.innerText = 'Направление: ' + order.speciality;
             orderSpeciality.style.display = 'block';
             orderSpeciality.style.marginBottom = '0px';
 
             var orderDate = document.createElement('p');
-            orderDate.className = 'hoc-order-template-name-text light size-20';
+            orderDate.className = 'hoc-order-template-name-text light size-24';
             orderDate.innerText = 'Дата: ' + order.orderDate;
             orderDate.style.marginBottom = '0px';
 
             var orderStartDate = document.createElement('p');
-            orderStartDate.className = 'hoc-order-template-name-text light size-20';
+            orderStartDate.className = 'hoc-order-template-name-text light size-24';
             orderStartDate.innerText = 'Дата начала: ' + order.startDate;
             orderStartDate.style.marginBottom = '0px';
 
             var orderEndDate = document.createElement('p');
-            orderEndDate.className = 'hoc-order-template-name-text light size-20';
+            orderEndDate.className = 'hoc-order-template-name-text light size-24';
             orderEndDate.innerText = 'Дата конца: ' + order.endDate;
             orderEndDate.style.marginBottom = '0px';
-
-            var orderStatus = document.createElement('p');
-            orderStatus.className = 'hoc-order-template-name-text light size-20';
-            if (order.approved) {
-                orderStatus.innerText = 'Статус: Одобрено';
-            }
-            else {
-                orderStatus.innerText = 'Статус: Не одобрено';
-            }
-            orderStatus.style.display = 'block';
-            orderStatus.style.marginTop = '-6px';
-            orderStatus.style.marginBottom = '0px';
 
             var orderDownload = document.createElement('button');
             orderDownload.className = 'hoc-order-template-download-button light size-22';
@@ -112,7 +101,7 @@ export default function OrdersPage() {
             orderDownload.innerText = "Сохранить";
             orderDownload.style.height = '120px'
             orderDownload.style.position = 'relative';
-            orderDownload.style.top = '-62px';
+            orderDownload.style.top = '-55px';
             //orderDownload.style.display = 'inline-block';
             orderDownload.style.width = '200px';
             
@@ -124,7 +113,7 @@ export default function OrdersPage() {
             viewButton.style.height = '120px';
             viewButton.style.width = '200px';
             viewButton.style.position = 'relative';
-            viewButton.style.top = '-62px';
+            viewButton.style.top = '-55px';
             viewButton.type = 'button';
 
             orderName.appendChild(orderNameImage);
@@ -135,7 +124,6 @@ export default function OrdersPage() {
             orderTitles.appendChild(orderDate);
             orderTitles.appendChild(orderStartDate);
             orderTitles.appendChild(orderEndDate);
-            orderTitles.appendChild(orderStatus);
             orderName.appendChild(orderTitles);
 
             orderFile.appendChild(orderName);

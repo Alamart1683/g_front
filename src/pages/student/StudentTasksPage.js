@@ -3156,7 +3156,7 @@ export default function StudentTasksPage() {
         $('.nir-copy').off().on('click', function () {
             var versionId = $(this).parent().parent().parent().parent().attr('id');
             var arrayID = versionId.split('-')[2];
-            if (themeConfirmed != 'Одобрена') {
+            if (themeConfirmed !== 'Одобрена') {
                 setStudentTheme(nirVersions[arrayID].theme);
             }
             setToExplore(nirVersions[arrayID].toExplore);
@@ -3170,7 +3170,7 @@ export default function StudentTasksPage() {
             var versionId = $(this).parent().parent().parent().parent().attr('id');
             var arrayID = versionId.split('-')[3];
 
-            if (themeConfirmed != 'Одобрена') {
+            if (themeConfirmed !== 'Одобрена') {
                 setStudentTheme(longPPData[arrayID].theme);
             }
             setToExplore(longPPData[arrayID].toExplore);
@@ -3184,7 +3184,7 @@ export default function StudentTasksPage() {
             var versionId = $(this).parent().parent().parent().parent().attr('id');
             var arrayID = versionId.split('-')[2];
 
-            if (themeConfirmed != 'Одобрена') {
+            if (themeConfirmed !== 'Одобрена') {
                 setStudentTheme(PPData[arrayID].theme);
             }
             setToExplore(PPData[arrayID].toExplore);
@@ -3198,7 +3198,7 @@ export default function StudentTasksPage() {
             var versionId = $(this).parent().parent().attr('id');
             var arrayID = versionId.split('-')[2];
 
-            if (themeConfirmed != 'Одобрена') {
+            if (themeConfirmed !== 'Одобрена') {
                 setStudentTheme(vkrTaskVersions[arrayID].theme);
             }
             setVkrDocs(vkrTaskVersions[arrayID].vkrDocs);
@@ -3761,7 +3761,7 @@ export default function StudentTasksPage() {
                                         </button>
                                         <input id='vkr-review-file-input' type='file' style={{ display: 'none' }} onChange={(e) => {
                                             if (e.target.files.length !== 0) {
-                                                if (vkrReviewVersions.length == 0) {
+                                                if (vkrReviewVersions.length === 0) {
                                                     uploadDocument(e.target.files[0], 'ВКР', 'Отзыв');
                                                 }
                                                 else {
@@ -3795,7 +3795,7 @@ export default function StudentTasksPage() {
                                     </button>
                                     <input id='vkr-dopusk-file-input' type='file' style={{ display: 'none' }} onChange={(e) => {
                                         if (e.target.files.length !== 0) {
-                                            if (vkrDopuskVersions.length == 0) {
+                                            if (vkrDopuskVersions.length === 0) {
                                                 uploadDocument(e.target.files[0], 'ВКР', 'Допуск');
                                             }
                                             else {
@@ -3893,7 +3893,7 @@ export default function StudentTasksPage() {
                                     </button>
                                     <input id='vkr-antiplagiat-file-input' type='file' style={{ display: 'none' }} onChange={(e) => {
                                         if (e.target.files.length !== 0) {
-                                            if (vkrAntiplagiatVersions.length == 0) {
+                                            if (vkrAntiplagiatVersions.length === 0) {
                                                 uploadDocument(e.target.files[0], 'ВКР', 'Антиплагиат');
                                             }
                                             else {
@@ -3925,7 +3925,7 @@ export default function StudentTasksPage() {
                                     </button>
                                     <input id='vkr-presentation-file-input' type='file' style={{ display: 'none' }} accept='application/vnd.openxmlformats-officedocument.presentationml.presentation' onChange={(e) => {
                                         if (e.target.files.length !== 0) {
-                                            if (vkrPrezentationVersions.length == 0) {
+                                            if (vkrPrezentationVersions.length === 0) {
                                                 uploadDocument(e.target.files[0], 'ВКР', 'Презентация');
                                             }
                                             else {

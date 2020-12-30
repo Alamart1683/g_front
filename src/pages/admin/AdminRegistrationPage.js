@@ -172,50 +172,6 @@ export default function AdminRegistrationPage() {
         });
     }
 
-    function checkIfCanRegisterHoc() {
-        if ($('#hoc-mail').val() !== '' &&
-            $('#hoc-name').val() !== '' &&
-            $('#hoc-surname').val() !== '' &&
-            $('#hoc-second-name').val() !== '' &&
-            $('#hoc-phone').val() !== '') {
-            document.getElementById('register-hoc-button').disabled = false;
-        }
-        else {
-            document.getElementById('register-hoc-button').disabled = true;
-        }
-    }
-
-    function registerHoc() {
-        //console.log('register hoc');
-        var email = $('#hoc-mail').val();
-        var name = $('#hoc-name').val();
-        var surname = $('#hoc-surname').val();
-        var secondName = $('#hoc-second-name').val();
-        var phone = $('#hoc-phone').val();
-        axios({
-            url: apiURL + '/admin/registration/head_of_cathedra',
-            method: 'POST',
-            params: {
-                'cathedra': 'МОСИТ',
-                'email': email,
-                'name': name,
-                'surname': surname,
-                'second_name': secondName,
-                'phone': phone,
-                'mailSendingAccepted': true,
-                'places': 10,
-            },
-            headers: {
-                'Authorization': 'Bearer ' + authTokens.accessToken
-            },
-        }).then((response) => {
-            //console.log(response);
-            window.location.reload(true);
-        }).catch(result => {
-            console.log(result);
-        });
-    }
-
     function checkIfCanRegisterAdmin() {
         if ($('#admin-mail').val() !== '' &&
             $('#admin-name').val() !== '' &&
@@ -263,10 +219,6 @@ export default function AdminRegistrationPage() {
             document.getElementById('button-4').disabled = true;
         }
 
-        if (authTokens.userRole !== 'root') {
-            document.getElementById('button-3').disabled = true;
-        }
-
         $('.contentButton').off().on('click', function (event) {
             $('.contentPanel').addClass('contentPanel-hidden');
             var buttonId = $(this).attr('id');
@@ -278,9 +230,6 @@ export default function AdminRegistrationPage() {
                     break;
                 case 'button-2':
                     $('#orderContentPanel2').removeClass('contentPanel-hidden');
-                    break;
-                case 'button-3':
-                    $('#orderContentPanel3').removeClass('contentPanel-hidden');
                     break;
                 case 'button-4':
                     $('#orderContentPanel4').removeClass('contentPanel-hidden');
@@ -306,10 +255,6 @@ export default function AdminRegistrationPage() {
             registerSca();
         });
 
-        $('#register-hoc-button').off().on('click', function() {
-            registerHoc();
-        });
-
         $('#register-admin-button').off().on('click', function() {
             registerAdmin();
         });
@@ -321,7 +266,6 @@ export default function AdminRegistrationPage() {
             <div className="typeButtonPanel">
                 <button type='submit' id='button-1' className="contentButton contentButton-selected light size-22">Регистрация<br />Студентов</button>
                 <button type='submit' id='button-2' className="contentButton light size-22">Регистрация<br />Научных Руководителей</button>
-                <button type='submit' id='button-3' className="contentButton light size-22">Регистрация<br />Заведующего Кафедрой</button>
                 <button type='submit' id='button-4' className="contentButton light size-22" style={{ marginRight: "0px" }}>Регистрация<br />Администраторов</button>
             </div>
 
@@ -424,30 +368,6 @@ export default function AdminRegistrationPage() {
                             registerScaFromFile(e.target.files[0]);
                         }
                     }} ></input>
-            </div>
-            <div id="orderContentPanel3" className="contentPanel contentPanel-hidden">
-                <div className='info-row' style={{ paddingTop: '20px' }}>
-                    <div className='info-column'>
-                        <p className='admin-registration-label dark size-24'>Почта:</p>
-                        <input maxLength='50' onChange={(e) => { checkIfCanRegisterHoc(); }} id='hoc-mail' type='text' placeholder='Введите почту' className='admin-registration-input dark size-24'></input>
-
-                        <p className='admin-registration-label dark size-24'>Телефон:</p>
-                        <input maxLength='12' onChange={(e) => { checkIfCanRegisterHoc(); }} id='hoc-phone' type='text' placeholder='Введите телефон' className='admin-registration-input dark size-24'></input>
-                        
-                    </div>
-                    <div className='info-column'>
-
-                        <p className='admin-registration-label dark size-24'>Фамилия:</p>
-                        <input maxLength='50' onChange={(e) => { checkIfCanRegisterHoc(); }} id='hoc-surname' type='text' placeholder='Введите фамилию' className='admin-registration-input dark size-24'></input>
-
-                        <p className='admin-registration-label dark size-24'>Имя:</p>
-                        <input maxLength='50' onChange={(e) => { checkIfCanRegisterHoc(); }} id='hoc-name' type='text' placeholder='Введите имя' className='admin-registration-input dark size-24'></input>
-
-                        <p className='admin-registration-label dark size-24'>Отчество:</p>
-                        <input maxLength='50' onChange={(e) => { checkIfCanRegisterHoc(); }} id='hoc-second-name' type='text' placeholder='Введите отчество' className='admin-registration-input dark size-24'></input>
-                    </div>
-                </div>
-                <button id='register-hoc-button' disabled className='admin-registration-button light size-30 dark-background' style={{ marginLeft: '400px', marginTop: '30px', width: '600px' }}>Зарегистрировать<br />Заведующего Кафедрой</button>
             </div>
             <div id="orderContentPanel4" className="contentPanel contentPanel-hidden">
                 <div className='info-row' style={{ paddingTop: '20px' }}>

@@ -7,7 +7,6 @@ import $ from 'jquery';
 import exitImage from '../images/icons/exit.png';
 import orderImage from '../images/icons/order.png';
 import templateImage from '../images/icons/template.png';
-import iconStudents from '../images/icons/students.png';
 import iconNR from '../images/icons/NR.png';
 import iconMenu from '../images/icons/menu.png';
 
