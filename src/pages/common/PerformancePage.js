@@ -12,6 +12,7 @@ export default function PerformancePage() {
     const { authTokens } = useAuthContext();
     const [fetchedData, setFetchedData] = useState(false);
 
+    const [lastSearch, setLastSearch] = useState('');
     //const [performanceData, setPerformanceData] = useState([]);
 
     if (!fetchedData) {
@@ -142,7 +143,7 @@ export default function PerformancePage() {
 
             var nirReportMark = document.createElement('p');
             nirReportMark.innerText = getStatus(item.studentDocumentsStatusView.nirReportStatus);
-            nirReportMark.className = 'table-report-mark-text';
+            nirReportMark.className = 'table-report-mark-text nir-report-status';
 
             var nirReportDiv = document.createElement('div');
 
@@ -167,7 +168,7 @@ export default function PerformancePage() {
 
             var longPPReportMark = document.createElement('p');
             longPPReportMark.innerText = getStatus(item.studentDocumentsStatusView.ppppuipdReportStatus);
-            longPPReportMark.className = 'table-report-mark-text';
+            longPPReportMark.className = 'table-report-mark-text longpp-report-status';
 
             var longPPReportDiv = document.createElement('div');
 
@@ -192,7 +193,7 @@ export default function PerformancePage() {
 
             var ppReportMark = document.createElement('p');
             ppReportMark.innerText = getStatus(item.studentDocumentsStatusView.ppReportStatus);
-            ppReportMark.className = 'table-report-mark-text';
+            ppReportMark.className = 'table-report-mark-text pp-report-status';
 
             var ppReportDiv = document.createElement('div');
 
@@ -217,7 +218,7 @@ export default function PerformancePage() {
 
             var vkrRPZMark = document.createElement('p');
             vkrRPZMark.innerText = getStatus(item.studentDocumentsStatusView.vkrRPZ);
-            vkrRPZMark.className = 'table-report-mark-text';
+            vkrRPZMark.className = 'table-report-mark-text vkr-report-status';
 
             var vkrRPZHocCheckbox = document.createElement('input');
 
@@ -300,6 +301,7 @@ export default function PerformancePage() {
     function searchTable() {
         var input = $('#tableSearch')[0].value.toUpperCase();
         var rows = $('.table-row');
+        setLastSearch(input);
 
         for (var i = 0; i < rows.length; i++) {
             var rowText = rows[i].querySelector('.advisor-fio').textContent.toUpperCase() +
@@ -347,9 +349,100 @@ export default function PerformancePage() {
         setTableNums();
     }
 
+    function filterStage() {
+        var stage = $('#stage-select :selected').val();
+        var rows = $('.table-row');
+        var status;
+        for (var i = 0; i < rows.length; i++) {
+            switch (stage) {
+                case 'Закрыт НИР':
+                    status = rows[i].querySelector('.nir-report-status').textContent;
+                    if (status !== '     -') {
+                        rows[i].classList.remove('hoc-table-stage-hidden');
+                    }
+                    else {
+                        rows[i].classList.add('hoc-table-stage-hidden');
+                    }
+                    break;
+                case 'Не закрыт НИР':
+                    status = rows[i].querySelector('.nir-report-status').textContent;
+                    if (status === '     -') {
+                        rows[i].classList.remove('hoc-table-stage-hidden');
+                    }
+                    else {
+                        rows[i].classList.add('hoc-table-stage-hidden');
+                    }
+                    break;
+                case 'Закрыт ПпППУиОПД':
+                    status = rows[i].querySelector('.longpp-report-status').textContent;
+                    if (status !== '     -') {
+                        rows[i].classList.remove('hoc-table-stage-hidden');
+                    }
+                    else {
+                        rows[i].classList.add('hoc-table-stage-hidden');
+                    }
+                    break;
+                case 'Не закрыт ПпППУиОПД':
+                    status = rows[i].querySelector('.longpp-report-status').textContent;
+                    if (status === '     -') {
+                        rows[i].classList.remove('hoc-table-stage-hidden');
+                    }
+                    else {
+                        rows[i].classList.add('hoc-table-stage-hidden');
+                    }
+                    break;
+                case 'Закрыт ПП':
+                    status = rows[i].querySelector('.pp-report-status').textContent;
+                    if (status !== '     -') {
+                        rows[i].classList.remove('hoc-table-stage-hidden');
+                    }
+                    else {
+                        rows[i].classList.add('hoc-table-stage-hidden');
+                    }
+                    break;
+                case 'Не закрыт ПП':
+                    status = rows[i].querySelector('.pp-report-status').textContent;
+                    if (status === '     -') {
+                        rows[i].classList.remove('hoc-table-stage-hidden');
+                    }
+                    else {
+                        rows[i].classList.add('hoc-table-stage-hidden');
+                    }
+                    break;
+                case 'Закрыт ВКР':
+                    status = rows[i].querySelector('.vkr-report-status').textContent;
+                    if (status !== '     -') {
+                        rows[i].classList.remove('hoc-table-stage-hidden');
+                    }
+                    else {
+                        rows[i].classList.add('hoc-table-stage-hidden');
+                    }
+                    break;
+                case 'Не закрыт ВКР':
+                    status = rows[i].querySelector('.vkr-report-status').textContent;
+                    if (status === '     -') {
+                        rows[i].classList.remove('hoc-table-stage-hidden');
+                    }
+                    else {
+                        rows[i].classList.add('hoc-table-stage-hidden');
+                    }
+                    break;
+                default:
+                    rows[i].classList.remove('hoc-table-stage-hidden');
+                    break;
+            }
+        }
+        setTableNums();
+    }
+
     $(function () {
 
         $('#performance-button').off().on('click', function () {
+            console.log(lastSearch);
+            console.log($('#speciality-select :selected').val());
+            console.log($('#group-select :selected').val());
+            console.log($('#stage-select :selected').val());
+
             axios({
                 url: apiURL + '/head_of_cathedra/document/download/cathedta_report/',
                 method: 'GET',
@@ -412,7 +505,21 @@ export default function PerformancePage() {
                         <option value=''>Все</option>
                     </select>
                 </div>
-                <button type='button' id='performance-button' className='dark-background light size-24 hoc-assoc-after-select hoc-assoc-button' style={{ marginLeft: '600px' }}>
+                <div className='hoc-assoc-select-div' style={{ marginLeft: '28px' }}>
+                    <p className='dark size-24 hoc-assoc-select-div-title'>Этап:</p>
+                    <select id='stage-select' className='dark size-30 hoc-assoc-select' style={{ width: '340px' }} defaultValue='' onChange={(e) => { filterStage(); }}>
+                        <option value=''>Все</option>
+                        <option value='Закрыт НИР'>Закрыт НИР</option>
+                        <option value='Не закрыт НИР'>Не закрыт НИР</option>
+                        <option value='Закрыт ПпППУиОПД'>Закрыт ПпППУиОПД</option>
+                        <option value='Не закрыт ПпППУиОПД'>Не закрыт ПпППУиОПД</option>
+                        <option value='Закрыт ПП'>Закрыт ПП</option>
+                        <option value='Не закрыт ПП'>Не закрыт ПП</option>
+                        <option value='Закрыт ВКР'>Закрыт ВКР</option>
+                        <option value='Не закрыт ВКР'>Не закрыт ВКР</option>
+                    </select>
+                </div>
+                <button type='button' id='performance-button' className='dark-background light size-24 hoc-assoc-after-select hoc-assoc-button' style={{ marginLeft: '272px' }}>
                     Сохранить отчёт<br />об успеваемости
                 </button>
             </div>

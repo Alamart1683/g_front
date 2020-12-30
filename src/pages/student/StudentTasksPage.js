@@ -179,13 +179,13 @@ export default function StudentTasksPage() {
 
         var student = document.createElement('tr');
         student.className = 'size-20 dark';
-        
+
         // Тема студента
         var studentTheme = document.createElement('th');
         studentTheme.innerText = item.studentVkrTheme;
         // Заполнить поля "Тема"
         setStudentTheme(item.studentVkrTheme);
-        if (item.studentVkrThemeEditable) {            
+        if (item.studentVkrThemeEditable) {
             setThemeConfirmed('Не одобрена');
         }
         else {
@@ -3315,7 +3315,7 @@ export default function StudentTasksPage() {
                 </div>
             </div>
 
-            <Form className='info-form light-background'>
+            <Form className='info-form '>
 
                 <Tabs defaultActiveKey='info1' className='info-form-main-tabs' onSelect={(firstTab) => {
                     $('#image1').attr('src', infoBlock1);
@@ -3341,7 +3341,7 @@ export default function StudentTasksPage() {
                 }}>
                     <Tab eventKey='info1' title={<Image id='image1' src={infoBlock11} thumbnail className='info-form-image' style={{ borderTopRightRadius: '0px', borderBottomRightRadius: '0px' }} />} className='info-form-tabs'>
 
-                        <div className='dark info-task-block'>
+                        <div className='dark info-task-block light-background' style={{ paddingBottom: '3px' }}>
                             <p className='size-24 info-text-block-title'>НАУЧНО-ИССЛЕДОВАТЕЛЬСКАЯ РАБОТА</p>
                             <div>
                                 <p id='NIRStart' className='size-20 info-text-block-start-date'><b>Начало: 1.09.2020</b></p>
@@ -3373,7 +3373,7 @@ export default function StudentTasksPage() {
                                 Задание на НИР
                             </p>
                             }>
-                                <div className='info-sub-tab-div'>
+                                <div className='info-sub-tab-div light-background'>
 
                                     <div className='info-break-div' style={{ marginBottom: '20px' }}>&nbsp;</div>
 
@@ -3415,13 +3415,14 @@ export default function StudentTasksPage() {
                                 Отчет о<br />прохождении НИР
                             </p>
                             }>
-                                <div className='info-break-div' style={{ marginBottom: '20px' }}>&nbsp;</div>
+                                <div className='info-sub-tab-div light-background'>
 
-                                <p className='size-30 dark info-sub-tab-title'>Отчет о прохождении НИР</p>
+                                    <div className='info-break-div' style={{ marginBottom: '20px' }}>&nbsp;</div>
 
-                                <div id='student-nir-otchet-version-div' className='student-nir-task-version-div light-background'></div>
+                                    <p className='size-30 dark info-sub-tab-title'>Отчет о прохождении НИР</p>
 
-                                <div className='info-sub-tab-div'>
+                                    <div id='student-nir-otchet-version-div' className='student-nir-task-version-div light-background'></div>
+
 
                                     <div className='info-row'>
                                         <div className='info-column'>
@@ -3454,7 +3455,7 @@ export default function StudentTasksPage() {
                                     <button type='button' disabled id='make-nir-otchet-button' className='size-30 light dark-background info-button-inline-block' style={{ marginLeft: '425px', marginTop: '20px' }}>
                                         <Image src={iconProject} thumbnail className='dark-background thumbnail-icon' />
                                         Сформировать и загрузить версию отчета
-                                </button>
+                                        </button>
                                     <input id='nir-otchet-file-input' type='file' style={{ display: 'none' }} accept='application/vnd.openxmlformats-officedocument.wordprocessingml.document' onChange={(e) => {
                                         console.log(e.target.files);
                                         if (e.target.files.length !== 0) {
@@ -3466,7 +3467,7 @@ export default function StudentTasksPage() {
                         </Tabs>
                     </Tab>
                     <Tab eventKey='info2' title={<Image id='image2' src={infoBlock2} thumbnail className='info-form-image' style={{ borderTopLeftRadius: '0px', borderTopRightRadius: '0px', borderBottomRightRadius: '0px', borderBottomLeftRadius: '0px' }} />}>
-                        <div className='dark info-task-block'>
+                        <div className='dark info-task-block' style={{ backgroundColor: '#89AFE0', paddingBottom: '3px' }}>
                             <p className='size-24 info-text-block-title'>ПРАКТИКА ПО ПОЛУЧЕНИЮ ПРОФЕССИОНАЛЬНЫХ УМЕНИЙ И ОПЫТА ПРОФЕССИОНАЛЬНОЙ ДЕЯТЕЛЬНОСТИ</p>
                             <div>
                                 <p className='size-20 info-text-block-start-date'><b>Начало: 09.02.2021</b></p>
@@ -3497,7 +3498,7 @@ export default function StudentTasksPage() {
                                 Задание на ПпППУиОПД
                             </p>
                             }>
-                                <div className='info-sub-tab-div'>
+                                <div className='info-sub-tab-div light-background'>
 
                                     <div className='info-break-div' style={{ marginBottom: '20px' }}>&nbsp;</div>
 
@@ -3539,13 +3540,15 @@ export default function StudentTasksPage() {
                                 Отчет о<br />прохождении ПпППУиОПД
                             </p>
                             }>
-                                <div className='info-break-div' style={{ marginBottom: '20px' }}>&nbsp;</div>
 
-                                <p className='size-30 dark info-sub-tab-title'>Отчет о прохождении ПпППУиОПД</p>
+                                <div className='info-sub-tab-div light-background'>
 
-                                <div id='student-long-pp-otchet-version-div' className='student-nir-task-version-div light-background'></div>
+                                    <div className='info-break-div' style={{ marginBottom: '20px' }}>&nbsp;</div>
 
-                                <div className='info-sub-tab-div'>
+                                    <p className='size-30 dark info-sub-tab-title'>Отчет о прохождении ПпППУиОПД</p>
+
+                                    <div id='student-long-pp-otchet-version-div' className='student-nir-task-version-div light-background'></div>
+
 
                                     <div className='info-row'>
                                         <div className='info-column'>
@@ -3590,7 +3593,7 @@ export default function StudentTasksPage() {
                         </Tabs>
                     </Tab>
                     <Tab eventKey='info3' title={<Image id='image3' src={infoBlock3} thumbnail className='info-form-image' style={{ borderTopLeftRadius: '0px', borderTopRightRadius: '0px', borderBottomRightRadius: '0px', borderBottomLeftRadius: '0px' }} />}>
-                        <div className='dark info-task-block'>
+                        <div className='dark info-task-block' style={{ backgroundColor: '#618FCA', color: '#F1F4FB', paddingBottom: '3px' }}>
                             <p className='size-24 info-text-block-title'>ПРЕДДИПЛОМНАЯ ПРАКТИКА</p>
                             <div>
                                 <p className='size-20 info-text-block-start-date'><b>Начало: 20.04.2021</b></p>
@@ -3621,7 +3624,7 @@ export default function StudentTasksPage() {
                                 Задание на ПП
                             </p>
                             }>
-                                <div className='info-sub-tab-div'>
+                                <div className='info-sub-tab-div light-background'>
 
                                     <div className='info-break-div' style={{ marginBottom: '20px' }}>&nbsp;</div>
 
@@ -3663,13 +3666,13 @@ export default function StudentTasksPage() {
                                 Отчет о<br />прохождении ПП
                             </p>
                             }>
-                                <div className='info-break-div' style={{ marginBottom: '20px' }}>&nbsp;</div>
+                                <div className='info-sub-tab-div light-background'>
 
-                                <p className='size-30 dark info-sub-tab-title'>Отчет о прохождении ПП</p>
+                                    <div className='info-break-div' style={{ marginBottom: '20px' }}>&nbsp;</div>
 
-                                <div id='student-pp-otchet-version-div' className='student-nir-task-version-div light-background'></div>
+                                    <p className='size-30 dark info-sub-tab-title'>Отчет о прохождении ПП</p>
 
-                                <div className='info-sub-tab-div'>
+                                    <div id='student-pp-otchet-version-div' className='student-nir-task-version-div light-background'></div>
 
                                     <div className='info-row'>
                                         <div className='info-column'>
@@ -3714,7 +3717,7 @@ export default function StudentTasksPage() {
                         </Tabs>
                     </Tab>
                     <Tab eventKey='info4' title={<Image id='image4' src={infoBlock4} thumbnail className='info-form-image' style={{ borderTopLeftRadius: '0px', borderBottomLeftRadius: '0px' }} />}>
-                        <div className='dark info-task-block'>
+                        <div className='dark info-task-block' style={{ backgroundColor: '#3A5985', color: '#F1F4FB', paddingBottom: '3px' }}>
                             <p className='size-24 info-text-block-title'>ПОДГОТОВКА И ЗАЩИТА ВКР</p>
                             <div>
                                 <p className='size-20 info-text-block-start-date'><b>Начало: 25.05.2021</b></p>
@@ -3745,15 +3748,13 @@ export default function StudentTasksPage() {
                                 Отзыв научного<br />руководителя
                             </p>
                             }>
-                                <div className='info-sub-tab-div'>
+                                <div className='info-sub-tab-div light-background'>
 
                                     <div className='info-break-div' style={{ marginBottom: '20px' }}>&nbsp;</div>
 
                                     <p className='size-30 dark info-sub-tab-title'>Отзыв научного руководителя</p>
 
                                     <div id='student-vkr-review-version-div' className='student-nir-task-version-div light-background'></div>
-
-                                    <div className='info-sub-tab-div'>
 
                                         <button type='button' id='make-vkr-review-button' className='size-30 light dark-background info-button-1' style={{ height: '100px', width: '670px', marginLeft: '410px' }}>
                                             <Image src={iconDocument} thumbnail className='dark-background thumbnail-icon' style={{ position: 'relative', top: '-25px' }} />
@@ -3772,7 +3773,6 @@ export default function StudentTasksPage() {
                                             }
                                         }} ></input>
 
-                                    </div>
                                 </div>
                             </Tab>
                             <Tab eventKey='info42' title={
@@ -3781,13 +3781,14 @@ export default function StudentTasksPage() {
                                 Допуск к<br />защите
                             </p>
                             }>
-                                <div className='info-break-div' style={{ marginBottom: '20px' }}>&nbsp;</div>
+                                <div className='info-sub-tab-div light-background'>
 
-                                <p className='size-30 dark info-sub-tab-title'>Допуск к защите</p>
+                                    <div className='info-break-div' style={{ marginBottom: '20px' }}>&nbsp;</div>
 
-                                <div id='student-vkr-dopusk-version-div' className='student-nir-task-version-div light-background'></div>
+                                    <p className='size-30 dark info-sub-tab-title'>Допуск к защите</p>
 
-                                <div className='info-sub-tab-div'>
+                                    <div id='student-vkr-dopusk-version-div' className='student-nir-task-version-div light-background'></div>
+
 
                                     <button type='button' id='make-vkr-dopusk-button' className='size-30 light dark-background info-button-1' style={{ height: '100px', width: '670px', marginLeft: '410px' }}>
                                         <Image src={iconDocument} thumbnail className='dark-background thumbnail-icon' style={{ position: 'relative', top: '-25px' }} />
@@ -3813,13 +3814,13 @@ export default function StudentTasksPage() {
                                 Задание<br />на ВКР
                             </p>
                             }>
-                                <div className='info-break-div' style={{ marginBottom: '20px' }}>&nbsp;</div>
+                                <div className='info-sub-tab-div light-background'>
 
-                                <p className='size-30 dark info-sub-tab-title'>Задание на ВКР</p>
+                                    <div className='info-break-div' style={{ marginBottom: '20px' }}>&nbsp;</div>
 
-                                <div id='student-vkr-task-version-div' className='student-nir-task-version-div light-background'></div>
+                                    <p className='size-30 dark info-sub-tab-title'>Задание на ВКР</p>
 
-                                <div className='info-sub-tab-div'>
+                                    <div id='student-vkr-task-version-div' className='student-nir-task-version-div light-background'></div>
 
                                     <div className='info-row'>
                                         <div className='info-column'>
@@ -3854,13 +3855,13 @@ export default function StudentTasksPage() {
                                 РПЗ
                             </p>
                             }>
-                                <div className='info-break-div' style={{ marginBottom: '20px' }}>&nbsp;</div>
+                                <div className='info-sub-tab-div light-background'>
 
-                                <p className='size-30 dark info-sub-tab-title'>РПЗ</p>
+                                    <div className='info-break-div' style={{ marginBottom: '20px' }}>&nbsp;</div>
 
-                                <div id='student-vkr-otchet-version-div' className='student-nir-task-version-div light-background'></div>
+                                    <p className='size-30 dark info-sub-tab-title'>РПЗ</p>
 
-                                <div className='info-sub-tab-div'>
+                                    <div id='student-vkr-otchet-version-div' className='student-nir-task-version-div light-background'></div>
 
                                     <button type='button' id='make-vkr-otchet-button' className='size-30 light dark-background info-button-1' style={{ height: '100px', width: '480px', marginLeft: '505px' }}>
                                         <Image src={iconDocument} thumbnail className='dark-background thumbnail-icon' style={{ position: 'relative', top: '-25px' }} />
@@ -3879,13 +3880,13 @@ export default function StudentTasksPage() {
                                 Проверка на<br />антиплагиат
                             </p>
                             }>
-                                <div className='info-break-div' style={{ marginBottom: '20px' }}>&nbsp;</div>
+                                <div className='info-sub-tab-div light-background'>
 
-                                <p className='size-30 dark info-sub-tab-title'>Проверка на антиплагиат</p>
+                                    <div className='info-break-div' style={{ marginBottom: '20px' }}>&nbsp;</div>
 
-                                <div id='student-vkr-antiplagiat-version-div' className='student-nir-task-version-div light-background'></div>
+                                    <p className='size-30 dark info-sub-tab-title'>Проверка на антиплагиат</p>
 
-                                <div className='info-sub-tab-div'>
+                                    <div id='student-vkr-antiplagiat-version-div' className='student-nir-task-version-div light-background'></div>
 
                                     <button type='button' id='make-vkr-antiplagiat-button' className='size-30 light dark-background info-button-1' style={{ height: '100px', width: '670px', marginLeft: '410px' }}>
                                         <Image src={iconDocument} thumbnail className='dark-background thumbnail-icon' style={{ position: 'relative', top: '-25px' }} />
@@ -3911,13 +3912,13 @@ export default function StudentTasksPage() {
                                 Презентация<br />к защите
                             </p>
                             }>
-                                <div className='info-break-div' style={{ marginBottom: '20px' }}>&nbsp;</div>
+                                <div className='info-sub-tab-div light-background'>
 
-                                <p className='size-30 dark info-sub-tab-title'>Презентация к защите</p>
+                                    <div className='info-break-div' style={{ marginBottom: '20px' }}>&nbsp;</div>
 
-                                <div id='student-vkr-presentation-version-div' className='student-nir-task-version-div light-background'></div>
+                                    <p className='size-30 dark info-sub-tab-title'>Презентация к защите</p>
 
-                                <div className='info-sub-tab-div'>
+                                    <div id='student-vkr-presentation-version-div' className='student-nir-task-version-div light-background'></div>
 
                                     <button type='button' id='make-vkr-presentation-button' className='size-30 light dark-background info-button-1' style={{ height: '100px', width: '670px', marginLeft: '410px' }}>
                                         <Image src={iconDocument} thumbnail className='dark-background thumbnail-icon' style={{ position: 'relative', top: '-25px' }} />

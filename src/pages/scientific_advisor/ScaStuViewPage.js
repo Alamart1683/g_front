@@ -1016,7 +1016,7 @@ export default function ScaStuViewPage() {
                 }
 
                 var clickableArea = document.createElement('div');
-                clickableArea.className = 'nir-version-clickable';
+                clickableArea.className = 'nir-version-clickable2';
 
                 var nirVersionContent = document.createElement('div');
                 nirVersionContent.className = 'nir-version-content light-background';
@@ -1188,7 +1188,7 @@ export default function ScaStuViewPage() {
                 }
 
                 var clickableArea = document.createElement('div');
-                clickableArea.className = 'nir-version-clickable';
+                clickableArea.className = 'nir-version-clickable2';
 
                 var nirVersionContent = document.createElement('div');
                 nirVersionContent.className = 'nir-version-content light-background';
@@ -1360,7 +1360,7 @@ export default function ScaStuViewPage() {
                 }
 
                 var clickableArea = document.createElement('div');
-                clickableArea.className = 'nir-version-clickable';
+                clickableArea.className = 'nir-version-clickable2';
 
                 var nirVersionContent = document.createElement('div');
                 nirVersionContent.className = 'nir-version-content light-background';
@@ -1532,7 +1532,7 @@ export default function ScaStuViewPage() {
                 }
 
                 var clickableArea = document.createElement('div');
-                clickableArea.className = 'nir-version-clickable';
+                clickableArea.className = 'nir-version-clickable2';
 
                 var nirVersionContent = document.createElement('div');
                 nirVersionContent.className = 'nir-version-content light-background';
@@ -1704,7 +1704,7 @@ export default function ScaStuViewPage() {
                 }
 
                 var clickableArea = document.createElement('div');
-                clickableArea.className = 'nir-version-clickable';
+                clickableArea.className = 'nir-version-clickable2';
 
                 var nirVersionContent = document.createElement('div');
                 nirVersionContent.className = 'nir-version-content light-background';
@@ -1859,7 +1859,7 @@ export default function ScaStuViewPage() {
             }
 
             var clickableArea = document.createElement('div');
-            clickableArea.className = 'nir-version-clickable';
+            clickableArea.className = 'nir-version-clickable2';
 
             var nirVersionContent = document.createElement('div');
             nirVersionContent.className = 'nir-version-content light-background';
@@ -2013,7 +2013,7 @@ export default function ScaStuViewPage() {
             }
 
             var clickableArea = document.createElement('div');
-            clickableArea.className = 'nir-version-clickable';
+            clickableArea.className = 'nir-version-clickable2';
 
             var nirVersionContent = document.createElement('div');
             nirVersionContent.className = 'nir-version-content light-background';

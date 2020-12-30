@@ -76,7 +76,7 @@ export default function StudentInfoPage(){
                     </div>
                 </Tab>
                 <Tab eventKey='info2' title={<Image id='image2' src={infoBlock2} thumbnail className='info-form-image' style={{borderTopLeftRadius:'0px', borderTopRightRadius:'0px',borderBottomRightRadius:'0px',borderBottomLeftRadius:'0px'}}/>}>
-                    <div className='dark info-text-block'>
+                    <div className='dark info-text-block' style={{backgroundColor:'#89AFE0'}}>
                         <p className='size-24 info-text-block-title'>ПРАКТИКА ПО ПОЛУЧЕНИЮ ПРОФЕССИОНАЛЬНЫХ УМЕНИЙ И ОПЫТА ПРОФЕССИОНАЛЬНОЙ ДЕЯТЕЛЬНОСТИ</p>
                         <div>
                             <p id='NIRStart' className='size-20 info-text-block-start-date'><b>Начало: 09.02.2021</b></p>
@@ -106,14 +106,14 @@ export default function StudentInfoPage(){
                     </div>
                 </Tab>
                 <Tab eventKey='info3' title={<Image id='image3' src={infoBlock3} thumbnail className='info-form-image' style={{borderTopLeftRadius:'0px', borderTopRightRadius:'0px',borderBottomRightRadius:'0px',borderBottomLeftRadius:'0px'}}/>}>
-                    <div className='dark info-text-block'>
+                    <div className='dark info-text-block' style={{backgroundColor:'#618FCA', color: '#F1F4FB'}}>
                         <p className='size-24 info-text-block-title'>ПРЕДДИПЛОМНАЯ ПРАКТИКА</p>
                         <div>
                             <p id='NIRStart' className='size-20 info-text-block-start-date'><b>Начало: 20.04.2021</b></p>
                             <p id='NIREnd' className='size-20 info-text-block-end-date'><b>Конец: 17.05.2021</b></p>
                         </div>
                         <div style={{clear: 'both'}}></div>
-                        <div className='size-20 info-text-block-content'>
+                        <div className='size-20 info-text-block-content' style={{columnRuleColor: '#F1F4FB'}}>
                             Данная практика относится к реализации программного продукта. Её суть –<br/>
                             реализация спроектированного программного продукта студентом, на<br/>
                             основе полученных им в ходе выполнения предыдущей практики<br/>
@@ -135,14 +135,14 @@ export default function StudentInfoPage(){
                     </div>
                 </Tab>
                 <Tab eventKey='info4' title={<Image id='image4' src={infoBlock4} thumbnail className='info-form-image' style={{borderTopLeftRadius:'0px',borderBottomLeftRadius:'0px'}}/>}>
-                    <div className='dark info-text-block'>
+                    <div className='dark info-text-block' style={{backgroundColor:'#3A5985', color: '#F1F4FB'}}>
                         <p className='size-24 info-text-block-title'>ПОДГОТОВКА И ЗАЩИТА ВКР</p>
                         <div>
                             <p id='NIRStart' className='size-20 info-text-block-start-date'><b>Начало: 25.05.2021</b></p>
                             <p id='NIREnd' className='size-20 info-text-block-end-date'><b>Конец: 05.07.2021</b></p>
                         </div>
                         <div style={{clear: 'both'}}></div>
-                        <div className='size-20 info-text-block-content'>
+                        <div className='size-20 info-text-block-content' style={{columnRuleColor: '#F1F4FB'}}>
                             Данная фаза состоит из двух частей. В первой части студентом<br/>
                             совершаются действия по подготовке ВКР к сдаче, а именно:<br/>
                             1) Подготовка следующих документов:<br/>

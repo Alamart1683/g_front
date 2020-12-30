@@ -716,7 +716,20 @@ html, body {
 }
 
 .nir-version-clickable {
-	width: 795px;
+	width: 665px;
+	/*width: 810px; */
+	height: 50px;
+	border-radius: 7px;
+	cursor: pointer;
+	display: inline-block;
+	position: relative;
+	top: -2px;
+	padding-left: 15px;
+	padding-top: 8px;
+}
+
+.nir-version-clickable2 {
+	width: 800px;
 	/*width: 810px; */
 	height: 50px;
 	border-radius: 7px;
@@ -1541,6 +1554,10 @@ html, body {
 }
 
 .hoc-table-speciality-hidden {
+	display: none;
+}
+
+.hoc-table-group-hidden {
 	display: none;
 }
 
