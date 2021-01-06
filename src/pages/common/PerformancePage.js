@@ -279,13 +279,13 @@ export default function PerformancePage() {
             case 0:
                 return '     -';
             case 2:
-                return 'неуд.';
+                return 'НЕУД.';
             case 3:
-                return 'удовл.';
+                return 'УДОВЛ.';
             case 4:
-                return '  хор.';
+                return '  ХОР.';
             case 5:
-                return '  отл.';
+                return '  ОТЛ.';
             default:
                 return '  ???';
         }
@@ -357,7 +357,7 @@ export default function PerformancePage() {
             switch (stage) {
                 case 'Закрыт НИР':
                     status = rows[i].querySelector('.nir-report-status').textContent;
-                    if (status !== '     -') {
+                    if (status !== '     -' && status !== 'НЕУД.') {
                         rows[i].classList.remove('hoc-table-stage-hidden');
                     }
                     else {
@@ -366,7 +366,7 @@ export default function PerformancePage() {
                     break;
                 case 'Не закрыт НИР':
                     status = rows[i].querySelector('.nir-report-status').textContent;
-                    if (status === '     -') {
+                    if (status === '     -' || status !== 'НЕУД.') {
                         rows[i].classList.remove('hoc-table-stage-hidden');
                     }
                     else {
@@ -375,7 +375,7 @@ export default function PerformancePage() {
                     break;
                 case 'Закрыт ПпППУиОПД':
                     status = rows[i].querySelector('.longpp-report-status').textContent;
-                    if (status !== '     -') {
+                    if (status !== '     -' && status !== 'НЕУД.') {
                         rows[i].classList.remove('hoc-table-stage-hidden');
                     }
                     else {
@@ -384,7 +384,7 @@ export default function PerformancePage() {
                     break;
                 case 'Не закрыт ПпППУиОПД':
                     status = rows[i].querySelector('.longpp-report-status').textContent;
-                    if (status === '     -') {
+                    if (status === '     -' || status !== 'НЕУД.') {
                         rows[i].classList.remove('hoc-table-stage-hidden');
                     }
                     else {
@@ -393,7 +393,7 @@ export default function PerformancePage() {
                     break;
                 case 'Закрыт ПП':
                     status = rows[i].querySelector('.pp-report-status').textContent;
-                    if (status !== '     -') {
+                    if (status !== '     -' && status !== 'НЕУД.') {
                         rows[i].classList.remove('hoc-table-stage-hidden');
                     }
                     else {
@@ -402,7 +402,7 @@ export default function PerformancePage() {
                     break;
                 case 'Не закрыт ПП':
                     status = rows[i].querySelector('.pp-report-status').textContent;
-                    if (status === '     -') {
+                    if (status === '     -' || status !== 'НЕУД.') {
                         rows[i].classList.remove('hoc-table-stage-hidden');
                     }
                     else {
@@ -411,7 +411,7 @@ export default function PerformancePage() {
                     break;
                 case 'Закрыт ВКР':
                     status = rows[i].querySelector('.vkr-report-status').textContent;
-                    if (status !== '     -') {
+                    if (status !== '     -' && status !== 'НЕУД.') {
                         rows[i].classList.remove('hoc-table-stage-hidden');
                     }
                     else {
@@ -420,7 +420,7 @@ export default function PerformancePage() {
                     break;
                 case 'Не закрыт ВКР':
                     status = rows[i].querySelector('.vkr-report-status').textContent;
-                    if (status === '     -') {
+                    if (status === '     -' || status !== 'НЕУД.') {
                         rows[i].classList.remove('hoc-table-stage-hidden');
                     }
                     else {
@@ -438,17 +438,53 @@ export default function PerformancePage() {
     $(function () {
 
         $('#performance-button').off().on('click', function () {
-            console.log(lastSearch);
+            //console.log(lastSearch);
             console.log($('#speciality-select :selected').val());
-            console.log($('#group-select :selected').val());
-            console.log($('#stage-select :selected').val());
+            var studentGroup;
+            if ($('#speciality-select :selected').val() === '') {
+                studentGroup = 'all';
+            }
+            else {
+                studentGroup = $('#group-select :selected').val();
+            }
+            //console.log($('#stage-select :selected').val());
+            var stageKey;
+            switch ($('#stage-select :selected').val()) {
+                case 'Закрыт НИР':
+                    stageKey = 1;
+                    break;
+                case 'Не закрыт НИР':
+                    stageKey = 1;
+                    break;
+                case 'Закрыт ПпППУиОПД':
+                    stageKey = 2;
+                    break;
+                case 'Не закрыт ПпППУиОПД':
+                    stageKey = 2;
+                    break;
+                case 'Закрыт ПП':
+                    stageKey = 3;
+                    break;
+                case 'Не закрыт ПП':
+                    stageKey = 3;
+                    break;
+                case 'Закрыт ВКР':
+                    stageKey = 4;
+                    break;
+                case 'Не закрыт ВКР':
+                    stageKey = 4;
+                    break;
+                default:
+                    stageKey = 0;
+            }
 
             axios({
                 url: apiURL + '/head_of_cathedra/document/download/cathedta_report/',
                 method: 'GET',
                 responseType: 'blob',
                 params: {
-                    'key': 'all',
+                    'studentKey': studentGroup,
+                    'stageKey': stageKey,
                 },
                 headers: {
                     'Authorization': 'Bearer ' + authTokens.accessToken
