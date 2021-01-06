@@ -365,9 +365,8 @@ export default function PerformancePage() {
                     }
                     break;
                 case 'Не закрыт НИР':
-                    console.log('2');
                     status = rows[i].querySelector('.nir-report-status').textContent;
-                    if (status === '     -' || status !== 'НЕУД.') {
+                    if (status === '     -' || status === 'НЕУД.') {
                         rows[i].classList.remove('hoc-table-stage-hidden');
                     }
                     else {
@@ -385,7 +384,7 @@ export default function PerformancePage() {
                     break;
                 case 'Не закрыт ПпППУиОПД':
                     status = rows[i].querySelector('.longpp-report-status').textContent;
-                    if (status === '     -' || status !== 'НЕУД.') {
+                    if (status === '     -' || status === 'НЕУД.') {
                         rows[i].classList.remove('hoc-table-stage-hidden');
                     }
                     else {
@@ -403,7 +402,7 @@ export default function PerformancePage() {
                     break;
                 case 'Не закрыт ПП':
                     status = rows[i].querySelector('.pp-report-status').textContent;
-                    if (status === '     -' || status !== 'НЕУД.') {
+                    if (status === '     -' || status === 'НЕУД.') {
                         rows[i].classList.remove('hoc-table-stage-hidden');
                     }
                     else {
@@ -421,7 +420,7 @@ export default function PerformancePage() {
                     break;
                 case 'Не закрыт ВКР':
                     status = rows[i].querySelector('.vkr-report-status').textContent;
-                    if (status === '     -' || status !== 'НЕУД.') {
+                    if (status === '     -' || status === 'НЕУД.') {
                         rows[i].classList.remove('hoc-table-stage-hidden');
                     }
                     else {
@@ -442,12 +441,13 @@ export default function PerformancePage() {
             //console.log(lastSearch);
             //console.log($('#speciality-select :selected').val());
             var studentGroup;
-            if ($('#speciality-select :selected').val() === '') {
+            if ($('#group-select :selected').val() === '') {
                 studentGroup = 'all';
             }
             else {
                 studentGroup = $('#group-select :selected').val();
             }
+            console.log(studentGroup);
             //console.log($('#stage-select :selected').val());
             var stageKey;
             switch ($('#stage-select :selected').val()) {
