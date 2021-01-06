@@ -1885,3 +1885,7 @@ html, body {
 	margin-bottom: 0px;
 	width: 65px;
 }
+
+.hoc-table-stage-hidden {
+	display: none;
+}

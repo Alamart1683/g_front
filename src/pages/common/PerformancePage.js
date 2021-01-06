@@ -365,6 +365,7 @@ export default function PerformancePage() {
                     }
                     break;
                 case 'Не закрыт НИР':
+                    console.log('2');
                     status = rows[i].querySelector('.nir-report-status').textContent;
                     if (status === '     -' || status !== 'НЕУД.') {
                         rows[i].classList.remove('hoc-table-stage-hidden');
@@ -439,7 +440,7 @@ export default function PerformancePage() {
 
         $('#performance-button').off().on('click', function () {
             //console.log(lastSearch);
-            console.log($('#speciality-select :selected').val());
+            //console.log($('#speciality-select :selected').val());
             var studentGroup;
             if ($('#speciality-select :selected').val() === '') {
                 studentGroup = 'all';
