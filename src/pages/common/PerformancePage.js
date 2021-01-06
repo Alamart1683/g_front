@@ -447,7 +447,7 @@ export default function PerformancePage() {
             else {
                 studentGroup = $('#group-select :selected').val();
             }
-            console.log(studentGroup);
+            //console.log(studentGroup);
             //console.log($('#stage-select :selected').val());
             var stageKey;
             switch ($('#stage-select :selected').val()) {
