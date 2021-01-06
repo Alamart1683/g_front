@@ -2430,6 +2430,11 @@ export default function ScaStuViewPage() {
             $(this).parent().parent().find('.nir-version-content').toggle();
         });
 
+        // Показ полей версии
+        $(document).off().on('click', '.nir-version-clickable2', function () {
+            $(this).parent().parent().find('.nir-version-content').toggle();
+        });
+
         // Показать поля для оценки
         $('.nir-version-send-button').off().on('click', function () {
             $(this).parent().find('.sci-advisor-status-dropdown-content').toggle();
