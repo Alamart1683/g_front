@@ -1889,3 +1889,8 @@ html, body {
 .hoc-table-stage-hidden {
 	display: none;
 }
+
+.sca-student-table th {
+	padding-left: 6px;
+	padding-right: 2px;
+}

@@ -13,7 +13,7 @@ export default function PerformancePage() {
     const [fetchedData, setFetchedData] = useState(false);
 
     const [lastSearch, setLastSearch] = useState('');
-    //const [performanceData, setPerformanceData] = useState([]);
+    const [performanceData, setPerformanceData] = useState([]);
 
     if (!fetchedData) {
         setFetchedData(true);
@@ -32,7 +32,7 @@ export default function PerformancePage() {
             },
         }).then((response) => {
             //console.log(response);
-            //setPerformanceData(response.data);
+            setPerformanceData(response.data);
             showPerformanceData(response.data);
         }).catch(result => {
             console.log(result);
@@ -69,7 +69,7 @@ export default function PerformancePage() {
             var item = dataArray[i];
 
             var student = document.createElement('tr');
-            student.id = 'student' + i;
+            student.id = 'student-' + i;
             student.className = 'size-20 dark table-row';
 
             var studentNum = document.createElement('th');
@@ -478,6 +478,13 @@ export default function PerformancePage() {
                 default:
                     stageKey = 0;
             }
+
+            var outgoingJson = [];
+            $('.table-row:visible').each(function () {
+                var studentId = $(this).attr('id').split('-')[1];
+                outgoingJson.push(performanceData[studentId]);
+            });
+            console.log( JSON.stringify(outgoingJson) );
 
             axios({
                 url: apiURL + '/head_of_cathedra/document/download/cathedta_report/',

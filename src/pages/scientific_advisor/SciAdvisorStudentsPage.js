@@ -146,6 +146,7 @@ export default function SciAdvisorStudentsPage() {
             longPPTaskCheckbox.style.marginLeft = '22px';
 
             var longPPTaskDiv = document.createElement('div');
+            //longPPTaskDiv.style.maxWidth = '288px';
 
             var longPPReportStatus = document.createElement('label');
             longPPReportStatus.innerText = 'Отчет по ПпППУиОПД:';
@@ -156,6 +157,7 @@ export default function SciAdvisorStudentsPage() {
             longPPReportMark.className = 'table-report-mark-text';
 
             var longPPReportDiv = document.createElement('div');
+            //longPPReportDiv.style.maxWidth = '288px';
 
             // ПП
             var studentPP = document.createElement('th');
@@ -404,17 +406,17 @@ export default function SciAdvisorStudentsPage() {
     return (
         <div className='sci-advisor-students-form'>
             <div>
-                <Table striped bordered hover>
+                <Table striped bordered hover className='sca-student-table'>
                     <thead className='size-24 dark'>
                         <tr>
                             <th>#</th>
                             <th>ФИО</th>
                             <th></th>
                             <th>Тема</th>
-                            <th style={{ minWidth: '241px' }}>НИР</th>
-                            <th style={{ minWidth: '318px' }}>ПпППУиОПД</th>
-                            <th style={{ minWidth: '233px' }}>ПП</th>
-                            <th style={{ minWidth: '283px' }}>ВКР</th>
+                            <th style={{ width: '231px' }}>НИР</th>
+                            <th style={{ width: '298px' }}>ПпППУиОПД</th>
+                            <th style={{ width: '213px' }}>ПП</th>
+                            <th style={{ width: '263px' }}>ВКР</th>
                         </tr>
                     </thead>
                     <tbody id='student-table-body'>

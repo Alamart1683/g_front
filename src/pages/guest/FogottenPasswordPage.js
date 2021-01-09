@@ -46,6 +46,7 @@ export default function ForgottenPasswordPage() {
 
   $(function () {
     $('#change-password-button').off().on('click', function () {
+      document.getElementById('change-password-button').disabled = true;
       axios({
         url: apiURL + '/authorization/get/password/code/byemail',
         method: 'GET',
@@ -56,6 +57,7 @@ export default function ForgottenPasswordPage() {
         //console.log(response.data);
         if (response.data === 'Ошибка: пользователь не найден') {
           document.getElementById('error-message').style.visibility = 'visible';
+          document.getElementById('change-password-button').disabled = false;
         }
         else {
           document.getElementById('error-message').style.visibility = 'hidden';
@@ -63,6 +65,7 @@ export default function ForgottenPasswordPage() {
         }
       }).catch(result => {
         console.log(result.data);
+        document.getElementById('change-password-button').disabled = false;
       });
 
     });
@@ -138,7 +141,7 @@ export default function ForgottenPasswordPage() {
           <button type='button' style={{ marginTop: '20px' }} className="size-32 dark-background light loginForm-button">Назад</button>
         </Link>
 
-        <Modal centered show={show} onEnter={(e) => { }} onHide={(e) => { setShow(false); }} className='dark' >
+        <Modal centered show={show} onEnter={(e) => { }} onHide={(e) => { setShow(false); document.getElementById('change-password-button').disabled = false;}} className='dark' >
           <Modal.Header className='light-background forgotten-password-modal-header' closeButton>
             <Modal.Title className='size-36 '>
               <p style={{ height: '50px', marginBottom: '0px', marginLeft: '130px' }}>Введите код</p>

@@ -114,6 +114,7 @@ export default function SettingsPage() {
 
     $(function () {
         $('#change-password-button').off().on('click', function () {
+            document.getElementById('change-password-button').disabled = true;
             axios({
                 url: apiURL + '/authorization/get/password/code',
                 method: 'GET',
@@ -125,6 +126,7 @@ export default function SettingsPage() {
                 setShow(true);
             }).catch(result => {
                 console.log(result.data);
+                document.getElementById('change-password-button').disabled = false;
             });
 
         });
@@ -211,7 +213,7 @@ export default function SettingsPage() {
                 </div>
             </div>
 
-            <Modal centered show={show} onEnter={(e) => { }} onHide={(e) => { setShow(false); }} className='dark' >
+            <Modal centered show={show} onEnter={(e) => { }} onHide={(e) => { setShow(false); document.getElementById('change-password-button').disabled = false;}} className='dark' >
                 <Modal.Header className='light-background forgotten-password-modal-header' closeButton>
                     <Modal.Title className='size-36 '>
                         <p style={{ height: '50px', marginBottom: '0px', marginLeft: '130px' }}>Введите код</p>
