@@ -129,7 +129,7 @@ export default function PerformancePage() {
 
             var nirTaskCheckbox = document.createElement('input');
             nirTaskCheckbox.type = 'checkbox';
-            nirTaskCheckbox.className = 'sci-table-checkbox';
+            nirTaskCheckbox.className = 'sci-table-checkbox nir-task-checkbox';
             if (item.studentDocumentsStatusView.nirTaskStatus) {
                 nirTaskCheckbox.checked = true;
             }
@@ -154,7 +154,7 @@ export default function PerformancePage() {
             var longPPTaskCheckbox = document.createElement('input');
 
             longPPTaskCheckbox.type = 'checkbox';
-            longPPTaskCheckbox.className = 'sci-table-checkbox';
+            longPPTaskCheckbox.className = 'sci-table-checkbox longpp-task-checkbox';
             if (item.studentDocumentsStatusView.ppppuipdTaskStatus) {
                 longPPTaskCheckbox.checked = true;
             }
@@ -179,7 +179,7 @@ export default function PerformancePage() {
             var ppTaskCheckbox = document.createElement('input');
 
             ppTaskCheckbox.type = 'checkbox';
-            ppTaskCheckbox.className = 'sci-table-checkbox';
+            ppTaskCheckbox.className = 'sci-table-checkbox pp-task-checkbox';
             if (item.studentDocumentsStatusView.ppTaskStatus) {
                 ppTaskCheckbox.checked = true;
             }
@@ -204,7 +204,7 @@ export default function PerformancePage() {
             var vkrTaskCheckbox = document.createElement('input');
 
             vkrTaskCheckbox.type = 'checkbox';
-            vkrTaskCheckbox.className = 'sci-table-checkbox';
+            vkrTaskCheckbox.className = 'sci-table-checkbox vkr-task-checkbox';
             if (item.studentDocumentsStatusView.vkrTask) {
                 vkrTaskCheckbox.checked = true;
             }
@@ -355,7 +355,32 @@ export default function PerformancePage() {
         var status;
         for (var i = 0; i < rows.length; i++) {
             switch (stage) {
-                case 'Закрыт НИР':
+                case 'НИР - Задание не сдано':
+                    if (!rows[i].querySelector('.nir-task-checkbox').checked) {
+                        rows[i].classList.remove('hoc-table-stage-hidden');
+                    }
+                    else {
+                        rows[i].classList.add('hoc-table-stage-hidden');
+                    }
+                    break;
+                case 'НИР - Задание сдано':
+                    if (rows[i].querySelector('.nir-task-checkbox').checked) {
+                        rows[i].classList.remove('hoc-table-stage-hidden');
+                    }
+                    else {
+                        rows[i].classList.add('hoc-table-stage-hidden');
+                    }
+                    break;
+                case 'НИР - Отчет не сдан':
+                    status = rows[i].querySelector('.nir-report-status').textContent;
+                    if (status === '     -' || status === 'НЕУД.') {
+                        rows[i].classList.remove('hoc-table-stage-hidden');
+                    }
+                    else {
+                        rows[i].classList.add('hoc-table-stage-hidden');
+                    }
+                    break;
+                case 'НИР - Отчет сдан':
                     status = rows[i].querySelector('.nir-report-status').textContent;
                     if (status !== '     -' && status !== 'НЕУД.') {
                         rows[i].classList.remove('hoc-table-stage-hidden');
@@ -364,25 +389,23 @@ export default function PerformancePage() {
                         rows[i].classList.add('hoc-table-stage-hidden');
                     }
                     break;
-                case 'Не закрыт НИР':
-                    status = rows[i].querySelector('.nir-report-status').textContent;
-                    if (status === '     -' || status === 'НЕУД.') {
+                case 'ПпППУиОПД - Задание не сдано':
+                    if (!rows[i].querySelector('.longpp-task-checkbox').checked) {
                         rows[i].classList.remove('hoc-table-stage-hidden');
                     }
                     else {
                         rows[i].classList.add('hoc-table-stage-hidden');
                     }
                     break;
-                case 'Закрыт ПпППУиОПД':
-                    status = rows[i].querySelector('.longpp-report-status').textContent;
-                    if (status !== '     -' && status !== 'НЕУД.') {
+                case 'ПпППУиОПД - Задание сдано':
+                    if (rows[i].querySelector('.longpp-task-checkbox').checked) {
                         rows[i].classList.remove('hoc-table-stage-hidden');
                     }
                     else {
                         rows[i].classList.add('hoc-table-stage-hidden');
                     }
                     break;
-                case 'Не закрыт ПпППУиОПД':
+                case 'ПпППУиОПД - Отчет не сдан':
                     status = rows[i].querySelector('.longpp-report-status').textContent;
                     if (status === '     -' || status === 'НЕУД.') {
                         rows[i].classList.remove('hoc-table-stage-hidden');
@@ -391,8 +414,8 @@ export default function PerformancePage() {
                         rows[i].classList.add('hoc-table-stage-hidden');
                     }
                     break;
-                case 'Закрыт ПП':
-                    status = rows[i].querySelector('.pp-report-status').textContent;
+                case 'ПпППУиОПД - Отчет сдан':
+                    status = rows[i].querySelector('.longpp-report-status').textContent;
                     if (status !== '     -' && status !== 'НЕУД.') {
                         rows[i].classList.remove('hoc-table-stage-hidden');
                     }
@@ -400,7 +423,23 @@ export default function PerformancePage() {
                         rows[i].classList.add('hoc-table-stage-hidden');
                     }
                     break;
-                case 'Не закрыт ПП':
+                case 'ПП - Задание не сдано':
+                    if (!rows[i].querySelector('.pp-task-checkbox').checked) {
+                        rows[i].classList.remove('hoc-table-stage-hidden');
+                    }
+                    else {
+                        rows[i].classList.add('hoc-table-stage-hidden');
+                    }
+                    break;
+                case 'ПП - Задание сдано':
+                    if (rows[i].querySelector('.pp-task-checkbox').checked) {
+                        rows[i].classList.remove('hoc-table-stage-hidden');
+                    }
+                    else {
+                        rows[i].classList.add('hoc-table-stage-hidden');
+                    }
+                    break;
+                case 'ПП - Отчет не сдан':
                     status = rows[i].querySelector('.pp-report-status').textContent;
                     if (status === '     -' || status === 'НЕУД.') {
                         rows[i].classList.remove('hoc-table-stage-hidden');
@@ -409,8 +448,8 @@ export default function PerformancePage() {
                         rows[i].classList.add('hoc-table-stage-hidden');
                     }
                     break;
-                case 'Закрыт ВКР':
-                    status = rows[i].querySelector('.vkr-report-status').textContent;
+                case 'ПП - Отчет сдан':
+                    status = rows[i].querySelector('.pp-report-status').textContent;
                     if (status !== '     -' && status !== 'НЕУД.') {
                         rows[i].classList.remove('hoc-table-stage-hidden');
                     }
@@ -418,9 +457,34 @@ export default function PerformancePage() {
                         rows[i].classList.add('hoc-table-stage-hidden');
                     }
                     break;
-                case 'Не закрыт ВКР':
+                case 'ВКР - Задание не сдано':
+                    if (!rows[i].querySelector('.vkr-task-checkbox').checked) {
+                        rows[i].classList.remove('hoc-table-stage-hidden');
+                    }
+                    else {
+                        rows[i].classList.add('hoc-table-stage-hidden');
+                    }
+                    break;
+                case 'ВКР - Задание сдано':
+                    if (rows[i].querySelector('.vkr-task-checkbox').checked) {
+                        rows[i].classList.remove('hoc-table-stage-hidden');
+                    }
+                    else {
+                        rows[i].classList.add('hoc-table-stage-hidden');
+                    }
+                    break;
+                case 'ВКР - Отчет не сдан':
                     status = rows[i].querySelector('.vkr-report-status').textContent;
                     if (status === '     -' || status === 'НЕУД.') {
+                        rows[i].classList.remove('hoc-table-stage-hidden');
+                    }
+                    else {
+                        rows[i].classList.add('hoc-table-stage-hidden');
+                    }
+                    break;
+                case 'ВКР - Отчет сдан':
+                    status = rows[i].querySelector('.vkr-report-status').textContent;
+                    if (status !== '     -' && status !== 'НЕУД.') {
                         rows[i].classList.remove('hoc-table-stage-hidden');
                     }
                     else {
@@ -451,28 +515,52 @@ export default function PerformancePage() {
             //console.log($('#stage-select :selected').val());
             var stageKey;
             switch ($('#stage-select :selected').val()) {
-                case 'Закрыт НИР':
+                case 'НИР - Задание не сдано':
                     stageKey = 1;
                     break;
-                case 'Не закрыт НИР':
+                case 'НИР - Задание сдано':
                     stageKey = 1;
                     break;
-                case 'Закрыт ПпППУиОПД':
+                case 'НИР - Отчет не сдан':
+                    stageKey = 1;
+                    break;
+                case 'НИР - Отчет сдан':
+                    stageKey = 1;
+                    break;
+                case 'ПпППУиОПД - Задание не сдано':
                     stageKey = 2;
                     break;
-                case 'Не закрыт ПпППУиОПД':
+                case 'ПпППУиОПД - Задание сдано':
                     stageKey = 2;
                     break;
-                case 'Закрыт ПП':
+                case 'ПпППУиОПД - Отчет не сдан':
+                    stageKey = 2;
+                    break;
+                case 'ПпППУиОПД - Отчет сдан':
+                    stageKey = 2;
+                    break;
+                case 'ПП - Задание не сдано':
                     stageKey = 3;
                     break;
-                case 'Не закрыт ПП':
+                case 'ПП - Задание сдано':
                     stageKey = 3;
                     break;
-                case 'Закрыт ВКР':
+                case 'ПП - Отчет не сдан':
+                    stageKey = 3;
+                    break;
+                case 'ПП - Отчет сдан':
+                    stageKey = 3;
+                    break;
+                case 'ВКР - Задание не сдано':
                     stageKey = 4;
                     break;
-                case 'Не закрыт ВКР':
+                case 'ВКР - Задание сдано':
+                    stageKey = 4;
+                    break;
+                case 'ВКР - Отчет не сдан':
+                    stageKey = 4;
+                    break;
+                case 'ВКР - Отчет сдан':
                     stageKey = 4;
                     break;
                 default:
@@ -484,7 +572,7 @@ export default function PerformancePage() {
                 var studentId = $(this).attr('id').split('-')[1];
                 outgoingJson.push(performanceData[studentId]);
             });
-            console.log( JSON.stringify(outgoingJson) );
+            console.log(JSON.stringify(outgoingJson));
 
             axios({
                 url: apiURL + '/head_of_cathedra/document/download/cathedta_report/',
@@ -551,16 +639,24 @@ export default function PerformancePage() {
                 </div>
                 <div className='hoc-assoc-select-div' style={{ marginLeft: '28px' }}>
                     <p className='dark size-24 hoc-assoc-select-div-title'>Этап:</p>
-                    <select id='stage-select' className='dark size-30 hoc-assoc-select' style={{ width: '340px' }} defaultValue='' onChange={(e) => { filterStage(); }}>
+                    <select id='stage-select' className='dark size-30 hoc-assoc-select' style={{ width: '450px' }} defaultValue='' onChange={(e) => { filterStage(); }}>
                         <option value=''>Все</option>
-                        <option value='Закрыт НИР'>Закрыт НИР</option>
-                        <option value='Не закрыт НИР'>Не закрыт НИР</option>
-                        <option value='Закрыт ПпППУиОПД'>Закрыт ПпППУиОПД</option>
-                        <option value='Не закрыт ПпППУиОПД'>Не закрыт ПпППУиОПД</option>
-                        <option value='Закрыт ПП'>Закрыт ПП</option>
-                        <option value='Не закрыт ПП'>Не закрыт ПП</option>
-                        <option value='Закрыт ВКР'>Закрыт ВКР</option>
-                        <option value='Не закрыт ВКР'>Не закрыт ВКР</option>
+                        <option value='НИР - Задание не сдано'>НИР - Задание не сдано</option>
+                        <option value='НИР - Задание сдано'>НИР - Задание сдано</option>
+                        <option value='НИР - Отчет не сдан'>НИР - Отчет не сдан</option>
+                        <option value='НИР - Отчет сдан'>НИР - Отчет сдан</option>
+                        <option value='ПпППУиОПД - Задание не сдано'>ПпППУиОПД - Задание не сдано</option>
+                        <option value='ПпППУиОПД - Задание сдано'>ПпППУиОПД - Задание сдано</option>
+                        <option value='ПпППУиОПД - Отчет не сдан'>ПпППУиОПД - Отчет не сдан</option>
+                        <option value='ПпППУиОПД - Отчет сдан'>ПпППУиОПД - Отчет сдан</option>
+                        <option value='ПП - Задание не сдано'>ПП - Задание не сдано</option>
+                        <option value='ПП - Задание сдано'>ПП - Задание сдано</option>
+                        <option value='ПП - Отчет не сдан'>ПП - Отчет не сдан</option>
+                        <option value='ПП - Отчет сдан'>ПП - Отчет сдан</option>
+                        <option value='ВКР - Задание не сдано'>ВКР - Задание не сдано</option>
+                        <option value='ВКР - Задание сдано'>ВКР - Задание сдано</option>
+                        <option value='ВКР - Отчет не сдан'>ВКР - Отчет не сдан</option>
+                        <option value='ВКР - Отчет сдан'>ВКР - Отчет сдан</option>
                     </select>
                 </div>
                 <button type='button' id='performance-button' className='dark-background light size-24 hoc-assoc-after-select hoc-assoc-button' style={{ marginLeft: '272px' }}>
