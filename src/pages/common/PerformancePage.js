@@ -565,7 +565,7 @@ export default function PerformancePage() {
             }
             */
 
-            var outgoingJson = [];
+            var outgoingJson = {};
 
             var columnJson = [];
             columnJson.push('ФИО Научного Руководителя');
@@ -574,7 +574,6 @@ export default function PerformancePage() {
             columnJson.push('Группа');
             columnJson.push('Телефон');
             columnJson.push('Тема');
-
             columnJson.push('Задание на НИР');
             columnJson.push('Отчет по НИР');
             columnJson.push('Задание по ПпППУиОПД');
@@ -584,13 +583,15 @@ export default function PerformancePage() {
             columnJson.push('Задание ВКР');
             columnJson.push('РПЗ');
 
-            outgoingJson.push(columnJson);
+            //outgoingJson.push(columnJson);
+            outgoingJson.columnsHeaders = columnJson;
             var dataJson = [];
 
             $('.table-row:visible').each(function () {
                 var studentId = $(this).attr('id').split('-')[1];
                 var student = performanceData[studentId];
                 //console.log(student);
+
                 var studentJson = [];
                 studentJson.push(student.advisorFIO);
                 studentJson.push(student.email);
@@ -609,20 +610,21 @@ export default function PerformancePage() {
                 dataJson.push(studentJson);
             });
 
-            outgoingJson.push(dataJson);
-            console.log(outgoingJson);
+            outgoingJson.rowsContent = dataJson;
+            //console.log(outgoingJson);
             console.log(JSON.stringify(outgoingJson));
 
-            /*
+            //var formData = new FormData();
+            //formData.append('dynamicForm', JSON.stringify(outgoingJson));
             axios({
-                url: apiURL + '/head_of_cathedra/document/download/cathedta_report/',
-                method: 'GET',
+                url: apiURL + '/head_of_cathedra/document/download/dynamic_report/',
+                method: 'POST',
                 responseType: 'blob',
-                params: {
-                    'studentKey': studentGroup,
-                    'stageKey': stageKey,
-                },
+                //data: formData,
+                data: JSON.stringify(outgoingJson),
                 headers: {
+                    //'Content-Type': 'multipart/form-data',
+                    'Content-Type': 'application/json',
                     'Authorization': 'Bearer ' + authTokens.accessToken
                 },
             }).then((response) => {
@@ -631,12 +633,11 @@ export default function PerformancePage() {
                 link.href = url;
                 link.setAttribute('download', 'Отчет об успеваемости.xlsx');
                 document.body.appendChild(link);
-                //link.click();
+                link.click();
 
             }).catch(result => {
                 console.log(result);
             });
-            */
         });
 
         $('[data-toggle="popover"]').popover();
