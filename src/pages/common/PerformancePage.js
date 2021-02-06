@@ -510,6 +510,7 @@ export default function PerformancePage() {
             else {
                 studentGroup = $('#group-select :selected').val();
             }
+            */
             var stageKey;
             switch ($('#stage-select :selected').val()) {
                 case 'НИР - Задание не сдано':
@@ -563,25 +564,42 @@ export default function PerformancePage() {
                 default:
                     stageKey = 0;
             }
-            */
 
             var outgoingJson = {};
 
             var columnJson = [];
             columnJson.push('ФИО Научного Руководителя');
-            columnJson.push('Почта');
             columnJson.push('ФИО Студента');
             columnJson.push('Группа');
-            columnJson.push('Телефон');
-            columnJson.push('Тема');
-            columnJson.push('Задание на НИР');
-            columnJson.push('Отчет по НИР');
-            columnJson.push('Задание по ПпППУиОПД');
-            columnJson.push('Отчет по ПпППУиОПД');
-            columnJson.push('Задание по ПП');
-            columnJson.push('Отчет по ПП');
-            columnJson.push('Задание ВКР');
-            columnJson.push('РПЗ');
+            switch (stageKey) {
+                case 1:
+                    columnJson.push('Задание на НИР');
+                    columnJson.push('Отчет по НИР');
+                    break;
+                case 2:
+                    columnJson.push('Задание по ПпППУиОПД');
+                    columnJson.push('Отчет по ПпППУиОПД');
+                    break;
+                case 3:
+                    columnJson.push('Задание по ПП');
+                    columnJson.push('Отчет по ПП');
+                    break;
+                case 4:
+                    columnJson.push('Задание ВКР');
+                    columnJson.push('РПЗ');
+                    break;
+                default:
+                    columnJson.push('Задание на НИР');
+                    columnJson.push('Отчет по НИР');
+                    columnJson.push('Задание по ПпППУиОПД');
+                    columnJson.push('Отчет по ПпППУиОПД');
+                    columnJson.push('Задание по ПП');
+                    columnJson.push('Отчет по ПП');
+                    columnJson.push('Задание ВКР');
+                    columnJson.push('РПЗ');
+            }
+
+
 
             //outgoingJson.push(columnJson);
             outgoingJson.columnsHeaders = columnJson;
@@ -594,19 +612,36 @@ export default function PerformancePage() {
 
                 var studentJson = [];
                 studentJson.push(student.advisorFIO);
-                studentJson.push(student.email);
                 studentJson.push(student.fio);
                 studentJson.push(student.group);
-                studentJson.push(student.phone);
-                studentJson.push(student.studentDocumentsStatusView.nirTaskStatus);
-                studentJson.push(student.studentDocumentsStatusView.nirReportStatus);
-                studentJson.push(student.studentDocumentsStatusView.ppppuipdTaskStatus);
-                studentJson.push(student.studentDocumentsStatusView.ppppuipdReportStatus);
-                studentJson.push(student.studentDocumentsStatusView.ppTaskStatus);
-                studentJson.push(student.studentDocumentsStatusView.ppReportStatus);
-                studentJson.push(student.studentDocumentsStatusView.vkrTask);
-                studentJson.push(student.studentDocumentsStatusView.vkrRPZ);
-
+                switch (stageKey) {
+                    case 1:
+                        studentJson.push(student.studentDocumentsStatusView.nirTaskStatus);
+                        studentJson.push(student.studentDocumentsStatusView.nirReportStatus);
+                        break;
+                    case 2:
+                        studentJson.push(student.studentDocumentsStatusView.ppppuipdTaskStatus);
+                        studentJson.push(student.studentDocumentsStatusView.ppppuipdReportStatus);
+                        break;
+                    case 3:
+                        studentJson.push(student.studentDocumentsStatusView.ppTaskStatus);
+                        studentJson.push(student.studentDocumentsStatusView.ppReportStatus);
+                        break;
+                    case 4:
+                        studentJson.push(student.studentDocumentsStatusView.vkrTask);
+                        studentJson.push(student.studentDocumentsStatusView.vkrRPZ);
+                        break;
+                    default:
+                        studentJson.push(student.studentDocumentsStatusView.nirTaskStatus);
+                        studentJson.push(student.studentDocumentsStatusView.nirReportStatus);
+                        studentJson.push(student.studentDocumentsStatusView.ppppuipdTaskStatus);
+                        studentJson.push(student.studentDocumentsStatusView.ppppuipdReportStatus);
+                        studentJson.push(student.studentDocumentsStatusView.ppTaskStatus);
+                        studentJson.push(student.studentDocumentsStatusView.ppReportStatus);
+                        studentJson.push(student.studentDocumentsStatusView.vkrTask);
+                        studentJson.push(student.studentDocumentsStatusView.vkrRPZ);
+                }
+                
                 dataJson.push(studentJson);
             });
 
