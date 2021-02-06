@@ -502,8 +502,7 @@ export default function PerformancePage() {
     $(function () {
 
         $('#performance-button').off().on('click', function () {
-            //console.log(lastSearch);
-            //console.log($('#speciality-select :selected').val());
+            /*
             var studentGroup;
             if ($('#group-select :selected').val() === '') {
                 studentGroup = 'all';
@@ -511,8 +510,6 @@ export default function PerformancePage() {
             else {
                 studentGroup = $('#group-select :selected').val();
             }
-            //console.log(studentGroup);
-            //console.log($('#stage-select :selected').val());
             var stageKey;
             switch ($('#stage-select :selected').val()) {
                 case 'НИР - Задание не сдано':
@@ -566,14 +563,57 @@ export default function PerformancePage() {
                 default:
                     stageKey = 0;
             }
+            */
 
             var outgoingJson = [];
+
+            var columnJson = [];
+            columnJson.push('ФИО Научного Руководителя');
+            columnJson.push('Почта');
+            columnJson.push('ФИО Студента');
+            columnJson.push('Группа');
+            columnJson.push('Телефон');
+            columnJson.push('Тема');
+
+            columnJson.push('Задание на НИР');
+            columnJson.push('Отчет по НИР');
+            columnJson.push('Задание по ПпППУиОПД');
+            columnJson.push('Отчет по ПпППУиОПД');
+            columnJson.push('Задание по ПП');
+            columnJson.push('Отчет по ПП');
+            columnJson.push('Задание ВКР');
+            columnJson.push('РПЗ');
+
+            outgoingJson.push(columnJson);
+            var dataJson = [];
+
             $('.table-row:visible').each(function () {
                 var studentId = $(this).attr('id').split('-')[1];
-                outgoingJson.push(performanceData[studentId]);
+                var student = performanceData[studentId];
+                //console.log(student);
+                var studentJson = [];
+                studentJson.push(student.advisorFIO);
+                studentJson.push(student.email);
+                studentJson.push(student.fio);
+                studentJson.push(student.group);
+                studentJson.push(student.phone);
+                studentJson.push(student.studentDocumentsStatusView.nirTaskStatus);
+                studentJson.push(student.studentDocumentsStatusView.nirReportStatus);
+                studentJson.push(student.studentDocumentsStatusView.ppppuipdTaskStatus);
+                studentJson.push(student.studentDocumentsStatusView.ppppuipdReportStatus);
+                studentJson.push(student.studentDocumentsStatusView.ppTaskStatus);
+                studentJson.push(student.studentDocumentsStatusView.ppReportStatus);
+                studentJson.push(student.studentDocumentsStatusView.vkrTask);
+                studentJson.push(student.studentDocumentsStatusView.vkrRPZ);
+
+                dataJson.push(studentJson);
             });
+
+            outgoingJson.push(dataJson);
+            console.log(outgoingJson);
             console.log(JSON.stringify(outgoingJson));
 
+            /*
             axios({
                 url: apiURL + '/head_of_cathedra/document/download/cathedta_report/',
                 method: 'GET',
@@ -591,11 +631,12 @@ export default function PerformancePage() {
                 link.href = url;
                 link.setAttribute('download', 'Отчет об успеваемости.xlsx');
                 document.body.appendChild(link);
-                link.click();
+                //link.click();
 
             }).catch(result => {
                 console.log(result);
             });
+            */
         });
 
         $('[data-toggle="popover"]').popover();
