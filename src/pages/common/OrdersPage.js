@@ -29,7 +29,7 @@ export default function OrdersPage() {
                 'Authorization': 'Bearer ' + authTokens.accessToken
             },
         }).then((response) => {
-            console.log(response.data);
+            //console.log(response.data);
             setOrders(response.data);
         }).catch(result => {
             console.log(result.data);

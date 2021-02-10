@@ -1263,6 +1263,14 @@ html, body {
 .sca-projects-table-button {
 	display: block;
 	margin: auto;
+	width: 115px;
+	height: 73px;
+	border-radius: 7px;
+}
+
+.sca-projects-table-button:hover {
+	background: #618FCA;
+	color: #f1f1f1;
 }
 
 .sca-projects-title {

@@ -29,7 +29,7 @@ export default function StudentThemePage() {
                 'Authorization': 'Bearer ' + authTokens.accessToken
             },
         }).then((response) => {
-            console.log(response);
+            //console.log(response);
             setStudents(response.data);
         }).catch(result => {
             console.log(result.data);
@@ -92,14 +92,11 @@ export default function StudentThemePage() {
             
             var confirmButtonTh = document.createElement('th');
             var confirmButton = document.createElement('button');
-            //studentButton.style.minWidth = '100px';
             confirmButton.className = 'sca-projects-table-button confirm-button';
             confirmButton.innerText = 'Одобрить';
             confirmButton.id = 'confirm-button-' + i;
-            confirmButton.style.marginTop = '10px';
             
             var unconfirmButton = document.createElement('button');
-            //studentButton.style.minWidth = '100px';
             unconfirmButton.className = 'sca-projects-table-button unconfirm-button';
             unconfirmButton.innerText = 'Разрешить изменять тему';
             unconfirmButton.id = 'unconfirm-button-' + i;
