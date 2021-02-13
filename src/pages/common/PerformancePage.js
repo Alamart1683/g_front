@@ -272,6 +272,7 @@ export default function PerformancePage() {
 
             document.getElementById('performance-table-body').appendChild(student);
         }
+        document.getElementById('performance-button').disabled = false;
     }
 
     function getStatus(status) {
@@ -502,15 +503,7 @@ export default function PerformancePage() {
     $(function () {
 
         $('#performance-button').off().on('click', function () {
-            /*
-            var studentGroup;
-            if ($('#group-select :selected').val() === '') {
-                studentGroup = 'all';
-            }
-            else {
-                studentGroup = $('#group-select :selected').val();
-            }
-            */
+            document.getElementById('performance-button').disabled = true;
             var stageKey;
             switch ($('#stage-select :selected').val()) {
                 case 'НИР - Задание не сдано':
@@ -599,16 +592,12 @@ export default function PerformancePage() {
                     columnJson.push('РПЗ');
             }
 
-
-
-            //outgoingJson.push(columnJson);
             outgoingJson.columnsHeaders = columnJson;
             var dataJson = [];
 
             $('.table-row:visible').each(function () {
                 var studentId = $(this).attr('id').split('-')[1];
                 var student = performanceData[studentId];
-                //console.log(student);
 
                 var studentJson = [];
                 studentJson.push(student.advisorFIO);
@@ -646,19 +635,14 @@ export default function PerformancePage() {
             });
 
             outgoingJson.rowsContent = dataJson;
-            //console.log(outgoingJson);
             console.log(JSON.stringify(outgoingJson));
 
-            //var formData = new FormData();
-            //formData.append('dynamicForm', JSON.stringify(outgoingJson));
             axios({
                 url: apiURL + '/head_of_cathedra/document/download/dynamic_report/',
                 method: 'POST',
                 responseType: 'blob',
-                //data: formData,
                 data: JSON.stringify(outgoingJson),
                 headers: {
-                    //'Content-Type': 'multipart/form-data',
                     'Content-Type': 'application/json',
                     'Authorization': 'Bearer ' + authTokens.accessToken
                 },
@@ -673,6 +657,7 @@ export default function PerformancePage() {
             }).catch(result => {
                 console.log(result);
             });
+            document.getElementById('performance-button').disabled = false;
         });
 
         $('[data-toggle="popover"]').popover();
@@ -736,7 +721,7 @@ export default function PerformancePage() {
                         <option value='ВКР - Отчет сдан'>ВКР - Отчет сдан</option>
                     </select>
                 </div>
-                <button type='button' id='performance-button' className='dark-background light size-24 hoc-assoc-after-select hoc-assoc-button' style={{ marginLeft: '272px' }}>
+                <button disabled type='button' id='performance-button' className='dark-background light size-24 hoc-assoc-after-select hoc-assoc-button' style={{ marginLeft: '272px' }}>
                     Сохранить отчёт<br />об успеваемости
                 </button>
             </div>
