@@ -2073,3 +2073,7 @@ html, body {
 .expanded-message-button:hover {
 	background-color: #618FCA;
 }
+
+.message-search-filter {
+	display:none;
+}

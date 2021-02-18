@@ -62,7 +62,7 @@ export default function MessagesPage() {
     function showReceivedMessages(messageArray) {
         for (var i = 0; i< messageArray.length; i++) {
             var message = messageArray[i];
-            console.log(message);
+            //console.log(message);
             
             var smallMessageDiv = document.createElement('div');
             smallMessageDiv.className = 'message-compact-div dark-background light';
@@ -102,7 +102,7 @@ export default function MessagesPage() {
                 message.sender.email;
 
             var expandedReceivers = document.createElement('textarea');
-            expandedReceivers.className = 'size-24 dark expanded-message-sender';
+            expandedReceivers.className = 'size-24 dark expanded-message-receivers';
             expandedReceivers.disabled = true;
 
             var receiverString = 'Кому: ';
@@ -195,7 +195,7 @@ export default function MessagesPage() {
                 message.sender.email;
 
             var expandedReceivers = document.createElement('textarea');
-            expandedReceivers.className = 'size-24 dark expanded-message-sender';
+            expandedReceivers.className = 'size-24 dark expanded-message-receivers';
             expandedReceivers.disabled = true;
 
             expandedReceivers.value = expandedReceiverString;
@@ -225,6 +225,54 @@ export default function MessagesPage() {
 
             document.getElementById('messages-message-div').appendChild(expandedMessageDiv);
         }
+    }
+
+    function searchMessages() {
+        var input = $('#messageSearch')[0].value.toUpperCase();
+
+        var messages = $('.message-expanded-div');
+        for (var i = 0; i < messages.length; i++) {
+            //console.log(messages[i].id);
+
+            var messageTheme = messages[i].querySelector('.expanded-message-theme').value.toUpperCase();
+            var messageSender = messages[i].querySelector('.expanded-message-sender').value.toUpperCase().substring(4);
+            var messageReceivers = messages[i].querySelector('.expanded-message-receivers').value.toUpperCase().substring(6);
+
+            if (messageTheme.indexOf(input) > -1 || messageSender.indexOf(input) > -1 || messageReceivers.indexOf(input) > -1) {
+                //console.log(messageTheme);
+                //console.log(messageSender);
+                //console.log(messageReceivers);
+
+                if (messages[i].id.split('-')[1] === 'sent') {
+                    $('#compact-sent-'+messages[i].id.split('-')[2]).removeClass('message-search-filter');
+                }
+                else {
+                    $('#compact-received-'+messages[i].id.split('-')[2]).removeClass('message-search-filter');
+                }
+            }
+            else {
+                if (messages[i].id.split('-')[1] === 'sent') {
+                    $('#compact-sent-'+messages[i].id.split('-')[2]).addClass('message-search-filter');
+                }
+                else {
+                    $('#compact-received-'+messages[i].id.split('-')[2]).addClass('message-search-filter');
+                }
+            }
+        }
+
+        /*
+        var files = $('.sca-scu-version-div');
+        for (var i = 0; i < files.length; i++) {
+            var fileText = files[i].querySelector('.sca-scu-version-titles-div').textContent.toUpperCase();
+            //console.log(fileText);
+            if (fileText.indexOf(input) > -1) {
+                files[i].classList.remove('student-file-search-hidden');
+            }
+            else {
+                files[i].classList.add('student-file-search-hidden');
+            }
+        }
+        */
     }
 
     $(function () {
@@ -273,8 +321,8 @@ export default function MessagesPage() {
             </div>
 
             <div className='messages-search-div light-background'>
-                <input id='fileSearch' type='text' className='messages-search dark size-32' />
-                <button onClick={() => {; }} className='messages-search-button dark-background light size-32'>
+                <input id='messageSearch' type='text' className='messages-search dark size-32' />
+                <button onClick={() => { searchMessages(); }} className='messages-search-button dark-background light size-32'>
                     <Image src={iconLookingGlass} thumbnail className='icon-smaller dark-background' />
                     Поиск
                 </button>

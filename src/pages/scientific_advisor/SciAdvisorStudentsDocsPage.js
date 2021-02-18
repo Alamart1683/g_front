@@ -304,7 +304,6 @@ export default function SciAdvisorStudentsDocsPage() {
     function searchFiles() {
         //console.log('search');
         var input = $('#fileSearch')[0].value.toUpperCase();
-        console.log(input);
         var files = $('.sca-scu-version-div');
         for (var i = 0; i < files.length; i++) {
             var fileText = files[i].querySelector('.sca-scu-version-titles-div').textContent.toUpperCase();
