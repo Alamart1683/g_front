@@ -1263,12 +1263,12 @@ html, body {
 .sca-projects-table-button {
 	display: block;
 	margin: auto;
-	width: 115px;
+	width: 185px;
 	height: 73px;
 	border-radius: 7px;
 }
 
-.sca-projects-table-button:hover {
+.sca-projects-table-button:hover:enabled {
 	background: #618FCA;
 	color: #f1f1f1;
 }
@@ -1901,4 +1901,175 @@ html, body {
 .sca-student-table th {
 	padding-left: 6px;
 	padding-right: 2px;
+}
+
+.messages-big-div {
+	margin-top: 20px;
+	margin-left: auto;
+    margin-right: auto;
+	width: 1480px;
+	height: 810px;
+	display: block;
+}
+
+.messages-switch-div {
+	width: 600px;
+	height: 88px;
+	border-radius: 7px;
+	float: left;
+
+}
+
+.messages-search-div {
+	width: 870px;
+	height: 88px;
+	border-radius: 7px;
+	float: left;
+	margin-left: 10px;
+}
+
+.messages-sent-div {	
+	display: none;
+	margin-top: 10px;
+	width: 600px;
+	height: 712px;
+	border-radius: 7px;
+	float: left;
+	overflow-y: scroll;
+}
+
+.messages-received-div {
+	margin-top: 10px;
+	width: 600px;
+	height: 712px;
+	border-radius: 7px;
+	float: left;
+	overflow-y: scroll;
+}
+
+.messages-message-div {
+	margin-top: 10px;
+	margin-left: 10px;
+	width: 870px;
+	height: 712px;
+	border-radius: 7px;
+	float: left;
+}
+
+.messages-button {
+	border-radius: 7px;
+	margin-top: 6px;
+	margin-left: 10px;
+	height: 76px;
+	padding-left: 6px;
+	padding-right: 6px;
+	margin-left: 10px;
+	white-space: nowrap;
+	overflow: hidden;
+}
+
+.messages-button:hover {
+	background-color: #618FCA;
+}
+
+.messages-button:disabled {
+	/*background-color:  #859dbb; */
+	background-color: #618FCA;
+}
+
+.messages-search {
+	margin-top: 10px;
+	margin-left: 10px;
+	width: 670px;
+	border-radius: 7px;
+	border-width: 0;
+	height: 68px;
+	padding-left: 6px;
+}
+
+.messages-search-button {
+	width: 172px;
+	height: 68px;
+	border-radius: 7px;
+	border-width: 0;
+	padding: 5px 5px;
+	margin-left: 690px;
+	margin-top: -67px;
+	display: table;
+}
+
+.messages-search-button:hover, .messages-search-button:hover .icon-smaller {
+    background-color: #618FCA;
+}
+
+.message-compact-div {
+	margin-left: 10px;
+	margin-top: 3px;
+	width: 560px;
+	height: 90px;
+	border-radius: 7px;
+	padding-top: 5px;
+	padding-left: 10px;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	display: inline-block;
+}
+
+.message-compact-div:hover {
+	cursor: pointer;
+	background-color: #618FCA;
+}
+
+.message-compact-div-selected {
+	background-color: #618FCA !important;
+}
+
+.message-expanded-div {
+	display: none;
+	height: 100%;
+	padding: 10px 10px;
+}
+
+.expanded-message-theme {
+	border-radius: 7px;
+	width: 850px;
+	height: 72px;
+	resize: none;
+	padding-left: 6px;
+}
+
+.expanded-message-sender {
+	border-radius: 7px;
+	width: 850px;
+	height: 52px;
+	resize: none;
+	padding-left: 6px;
+}
+
+.expanded-message-receivers {
+	border-radius: 7px;
+	width: 850px;
+	height: 52px;
+	resize: none;
+	padding-left: 6px;
+}
+
+.expanded-message-message {	
+	border-radius: 7px;
+	width: 850px;
+	height: 430px;
+	resize: none;
+	padding-left: 6px;
+}
+
+.expanded-message-button {
+	border-radius: 7px;
+	height: 65px;
+	padding-left: 6px;
+	padding-right: 6px;
+}
+
+.expanded-message-button:hover {
+	background-color: #618FCA;
 }

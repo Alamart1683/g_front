@@ -11,6 +11,7 @@ import exitImage from '../images/icons/exit.png';
 import iconNR from '../images/icons/NR.png';
 import iconMenu from '../images/icons/menu.png';
 import iconLk from '../images/icons/lk.png';
+import iconChat from '../images/icons/chat.png';
 
 export default function AdminHeader() {
 
@@ -40,6 +41,9 @@ export default function AdminHeader() {
                 break;
             case ('/admin/settings'):
                 document.getElementById('button-settings').classList.add('student-navbar-button-selected');
+                break;                
+            case ('/admin/messages'):
+                document.getElementById('button-messages').classList.add('student-navbar-button-selected');
                 break;
             default:
                 console.log('url error');
@@ -83,6 +87,12 @@ export default function AdminHeader() {
                     <button id='button-settings' type='button' className='student-navbar-button dark-background light size-30'>
                         <Image src={iconMenu} thumbnail className='student-navbar-image dark-background' />
                         Личные<br />данные
+                    </button>
+                </Nav.Link>                
+                <Nav.Link as={Link} to='/sca/messages'>
+                    <button id='button-messages' type='button' className='student-navbar-button dark-background light size-30'>
+                        <Image src={iconChat} thumbnail className='student-navbar-image dark-background' />
+                        Сообщения
                     </button>
                 </Nav.Link>
                 <Nav.Link as={Link} to='#'>

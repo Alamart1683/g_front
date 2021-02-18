@@ -14,11 +14,13 @@ import GuestHeader from './components/GuestHeader';
 import Footer from './components/Footer';
 import NoMatch from './components/NoMatch';
 import TokenProlonger from './components/TokenProlonger';
+import MessageRedirect from './components/MessageRedirect';
 
 import OrdersPage from './pages/common/OrdersPage';
 import TemplatesPage from './pages/common/TemplatesPage';
 import SettingsPage from './pages/common/SettingsPage';
 import PerformancePage from './pages/common/PerformancePage';
+import MessagesPage from './pages/common/MessagesPage';
 
 import StudentHeader from './components/StudentHeader';
 import StudentInfoPage from './pages/student/StudentInfoPage';
@@ -65,6 +67,7 @@ export default function App() {
       <div className='wrapper'>
 
         <Route path='/guest' component={GuestHeader} />
+        <AuthRoute path='/messages' component={MessageRedirect} />
 
         <AuthRoute path='/stu' component={TokenProlonger} />
         <AuthRoute path='/sca' component={TokenProlonger} />
@@ -74,8 +77,9 @@ export default function App() {
         <AuthRoute path='/stu' component={StudentHeader} />
         <AuthRoute path='/sca' component={SciAdvisorHeader} />
         <AuthRoute path='/sca-stu' component={ScaStuViewHeader} />
-        <AuthRoute path='/hoc' component={HocHeader} />
         <AuthRoute path='/admin' component={AdminHeader} />
+        
+        <AuthRoute path='/hoc' component={HocHeader} />
 
         <Switch>
           <Route exact path='/' component={StartPage} />
@@ -89,6 +93,7 @@ export default function App() {
           <AuthRoute exact path='/stu/examples' component={StudentExamplesPage} />
           <AuthRoute exact path='/stu/settings' component={SettingsPage} />
           <AuthRoute exact path='/stu/theme' component={StudentThemePage} />
+          <AuthRoute exact path='/stu/messages' component={MessagesPage} />
 
           <AuthRoute exact path='/sca/students' component={SciAdvisorStudentsPage} />
           <AuthRoute exact path='/sca/stu-docs' component={SciAdvisorStudentsDocsPage} />
@@ -99,6 +104,7 @@ export default function App() {
           <AuthRoute exact path='/sca/examples' component={ScaExamplesPage} />
           <AuthRoute exact path='/sca/settings' component={SettingsPage} />
           <AuthRoute exact path='/sca/stu-themes' component={ScaThemesPage} />
+          <AuthRoute exact path='/sca/messages' component={MessagesPage} />
 
           <AuthRoute exact path='/hoc/orders' component={HocOrdersPage} />
           <AuthRoute exact path='/hoc/templates' component={HocTemplatesPage} />
@@ -111,6 +117,7 @@ export default function App() {
           <AuthRoute exact path='/admin/registration' component={AdminRegistrationPage} />
           <AuthRoute exact path='/admin/settings' component={SettingsPage} />
           <AuthRoute exact path='/admin/performance' component={PerformancePage} />
+          <AuthRoute exact path='/admin/messages' component={MessagesPage} />
 
           <Route path='*' component={NoMatch} />
         </Switch>

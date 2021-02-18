@@ -43,7 +43,7 @@ export default function SettingsPage() {
                 'Authorization': 'Bearer ' + authTokens.accessToken
             },
         }).then((response) => {
-            console.log(response);
+            //console.log(response);
             switch (tokenRole) {
                 case 'student':
                     document.getElementById('student-mail').value = response.data.studentEmail;
@@ -183,7 +183,6 @@ export default function SettingsPage() {
 
                         </div>
                         <div className='info-column'>
-
 
                             <p className='admin-registration-label dark size-24'>Фамилия:</p>
                             <input disabled id='student-surname' type='text' className='admin-registration-input dark size-24'></input>

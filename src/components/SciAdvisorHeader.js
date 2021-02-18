@@ -13,6 +13,7 @@ import templateImage from '../images/icons/template.png';
 import exitImage from '../images/icons/exit.png';
 import iconMenu from '../images/icons/menu.png';
 import iconSelected from '../images/icons/documents_selected.png';
+import iconChat from '../images/icons/chat.png';
 
 export default function SciAdvisorHeader() {
 
@@ -48,6 +49,9 @@ export default function SciAdvisorHeader() {
                 break;
             case ('/sca/stu-themes'):
                 document.getElementById('button-themes').classList.add('student-navbar-button-selected');
+                break;
+            case ('/sca/messages'):
+                document.getElementById('button-messages').classList.add('student-navbar-button-selected');
                 break;
             default:
                 console.log('url error');
@@ -103,6 +107,12 @@ export default function SciAdvisorHeader() {
                     <button id='button-settings' type='button' className='student-navbar-button dark-background light size-30'>
                         <Image src={iconMenu} thumbnail className='student-navbar-image dark-background' />
                         Личные<br />данные
+                    </button>
+                </Nav.Link>
+                <Nav.Link as={Link} to='/sca/messages'>
+                    <button id='button-messages' type='button' className='student-navbar-button dark-background light size-30'>
+                        <Image src={iconChat} thumbnail className='student-navbar-image dark-background' />
+                        Сообщения
                     </button>
                 </Nav.Link>
                 <Nav.Link as={Link} to='#'>

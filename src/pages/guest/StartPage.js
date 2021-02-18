@@ -21,8 +21,10 @@ export default function StartPage() {
       return <Redirect to="/stu/info" />;
     case 'scientific_advisor':
       return <Redirect to='/sca/students'/>;
+    /*
     case 'head_of_cathedra':
       return <Redirect to='/hoc/performance' />;
+    */
     case 'root':
       return <Redirect to='/admin/performance' />;
     case 'admin':

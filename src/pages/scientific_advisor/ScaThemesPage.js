@@ -86,18 +86,18 @@ export default function StudentThemePage() {
             var changeButtonTh = document.createElement('th');
             var changeButton = document.createElement('button');
             //studentButton.style.minWidth = '100px';
-            changeButton.className = 'sca-projects-table-button change-button';
+            changeButton.className = 'sca-projects-table-button change-button dark';
             changeButton.innerText = 'Изменить тему';
             changeButton.id = 'change-button-' + i;
             
             var confirmButtonTh = document.createElement('th');
             var confirmButton = document.createElement('button');
-            confirmButton.className = 'sca-projects-table-button confirm-button';
+            confirmButton.className = 'sca-projects-table-button confirm-button dark';
             confirmButton.innerText = 'Одобрить';
             confirmButton.id = 'confirm-button-' + i;
             
             var unconfirmButton = document.createElement('button');
-            unconfirmButton.className = 'sca-projects-table-button unconfirm-button';
+            unconfirmButton.className = 'sca-projects-table-button unconfirm-button dark';
             unconfirmButton.innerText = 'Разрешить изменять тему';
             unconfirmButton.id = 'unconfirm-button-' + i;
 
@@ -134,6 +134,15 @@ export default function StudentThemePage() {
     }
 
     $(function () {
+        $('[data-toggle="popover"]').popover();
+
+        $('body').on('click', function (e) {
+            $('[data-toggle=popover]').each(function () {
+                if (!$(this).is(e.target) && $(this).has(e.target).length === 0 && $('.popover').has(e.target).length === 0) {
+                    $(this).popover('hide');
+                }
+            });
+        });
 
         $('.change-button').off().on('click', function() {
             var id = $(this).attr('id').split('-')[2];

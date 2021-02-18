@@ -13,6 +13,7 @@ import exitImage from '../images/icons/exit.png';
 import iconExamples from '../images/icons/samples.png';
 import iconTasks from '../images/icons/tasks.png';
 import iconMenu from '../images/icons/menu.png';
+import iconChat from '../images/icons/chat.png';
 
 export default function StudentHeader() {
     const { authTokens, setAuthTokens } = useAuthContext();
@@ -80,9 +81,12 @@ export default function StudentHeader() {
             case ('/stu/settings'):
                 document.getElementById('button-settings').classList.add('student-navbar-button-selected');
                 break;
-                case ('/stu/theme'):
-                    document.getElementById('button-theme').classList.add('student-navbar-button-selected');
-                    break;
+            case ('/stu/theme'):
+                document.getElementById('button-theme').classList.add('student-navbar-button-selected');
+                break;
+            case ('/stu/messages'):
+                document.getElementById('button-messages').classList.add('student-navbar-button-selected');
+                break;
             default:
                 console.log('url error');
         };
@@ -126,7 +130,7 @@ export default function StudentHeader() {
                     </button>
                 </Nav.Link>
 
-                <Nav.Item style={{marginLeft:'3px', marginRight:'3px'}}>
+                <Nav.Item style={{ marginLeft: '3px', marginRight: '3px' }}>
                     <button type='button' className='student-navbar-button dark-background light size-30' data-toggle="popover"
                         data-placement="bottom" title="Данные научного руководителя:"
                         data-content={scientificAdvisorData !== [] ? "Имя: " + scientificAdvisorData.advsiorFio + "\nТелефон: " +
@@ -139,7 +143,7 @@ export default function StudentHeader() {
 
                 <Nav.Link as={Link} to='/stu/theme'>
                     <button type='button' id='button-theme' className='student-navbar-button dark-background light size-30'>
-                        Тема ВКР: <br />{ theme }
+                        Тема ВКР: <br />{theme}
                     </button>
                 </Nav.Link>
 
@@ -147,6 +151,13 @@ export default function StudentHeader() {
                     <button id='button-settings' type='button' className='student-navbar-button dark-background light size-30'>
                         <Image src={iconMenu} thumbnail className='student-navbar-image dark-background' />
                         Личные<br />данные
+                    </button>
+                </Nav.Link>
+
+                <Nav.Link as={Link} to='/stu/messages'>
+                    <button id='button-messages' type='button' className='student-navbar-button dark-background light size-30'>
+                        <Image src={iconChat} thumbnail className='student-navbar-image dark-background' />
+                        Сообщения
                     </button>
                 </Nav.Link>
 
