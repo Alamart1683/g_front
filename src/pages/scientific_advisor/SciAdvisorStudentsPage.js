@@ -16,7 +16,7 @@ export default function SciAdvisorStudentsPage() {
 
     useEffect(() => {
         showStudents(students);
-    });
+    }, [students]);
 
     if (!fetchedData) {
         setFetchedData(true);

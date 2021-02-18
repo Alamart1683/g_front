@@ -28,7 +28,7 @@ export default function TemplatesPage() {
                 'Authorization': 'Bearer ' + authTokens.accessToken 
             },
           }).then((response) => {
-            console.log(response);
+            //console.log(response);
             setTemplates(response.data);
           }).catch(result => {
             console.log(result.data);

@@ -13,6 +13,7 @@ import AuthRoute from './auth/AuthRoute';
 import GuestHeader from './components/GuestHeader';
 import Footer from './components/Footer';
 import NoMatch from './components/NoMatch';
+import TokenProlonger from './components/TokenProlonger';
 
 import OrdersPage from './pages/common/OrdersPage';
 import TemplatesPage from './pages/common/TemplatesPage';
@@ -53,6 +54,7 @@ export default function App() {
   const [authTokens, setAuthTokens] = useState(existingTokens);
 
   const setTokens = (data) => {
+    //console.log(data);
     localStorage.setItem('tokens', JSON.stringify(data));
     setAuthTokens(data);
   }
@@ -63,6 +65,12 @@ export default function App() {
       <div className='wrapper'>
 
         <Route path='/guest' component={GuestHeader} />
+
+        <AuthRoute path='/stu' component={TokenProlonger} />
+        <AuthRoute path='/sca' component={TokenProlonger} />
+        <AuthRoute path='/sca-stu' component={TokenProlonger} />
+        <AuthRoute path='/admin' component={TokenProlonger} />
+
         <AuthRoute path='/stu' component={StudentHeader} />
         <AuthRoute path='/sca' component={SciAdvisorHeader} />
         <AuthRoute path='/sca-stu' component={ScaStuViewHeader} />

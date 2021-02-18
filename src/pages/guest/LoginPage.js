@@ -96,7 +96,7 @@ export default function LoginPage() {
     <div>
       <Form className="loginForm light-background" onSubmit={e => {
         e.preventDefault();
-        //sessionStorage.setItem('loginEmail', email); 
+        //e.stopImmediatePropagation();
         postLogin();
       }}>
         <p className="size-48 dark loginForm-topLabel">Вход</p>
@@ -121,7 +121,7 @@ export default function LoginPage() {
           </Link>
         </Form.Group>
 
-        <Form.Group controlId="formLoginSubmit" onClick={postLogin} className='loginForm-formGroup'>
+        <Form.Group controlId="formLoginSubmit" className='loginForm-formGroup'>
 
           <OverlayTrigger trigger='click' placement='right' show={popoverShow} overlay={errorPopover}>
             <button type='submit' className="size-32 dark-background light loginForm-button">Войти в систему</button>
