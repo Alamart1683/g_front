@@ -2031,6 +2031,12 @@ html, body {
 	white-space: nowrap;
 }
 
+.compact-message-sender {
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
 .message-expanded-div {
 	display: none;
 	height: 100%;
