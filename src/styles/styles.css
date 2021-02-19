@@ -2025,6 +2025,12 @@ html, body {
 	background-color: #618FCA !important;
 }
 
+.compact-message-theme {
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
 .message-expanded-div {
 	display: none;
 	height: 100%;

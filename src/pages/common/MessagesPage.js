@@ -60,7 +60,8 @@ export default function MessagesPage() {
     }
 
     function showReceivedMessages(messageArray) {
-        for (var i = 0; i< messageArray.length; i++) {
+        //for (var i = 0; i < messageArray.length; i++) {
+        for (var i = messageArray.length - 1; i >= 0; i--) {
             var message = messageArray[i];
             //console.log(message);
             
@@ -73,7 +74,7 @@ export default function MessagesPage() {
             smallMessageTitle.className = 'compact-message-theme size-24';
 
             var smallMessageSenders = document.createElement('p');
-            smallMessageSenders.innerText = 'От: ' + 
+            smallMessageSenders.innerText = message.messageDate + ', от: ' + 
                 message.sender.fio.split(' ')[0] + ' ' + 
                 message.sender.fio.split(' ')[1].charAt(0) + '. ' + 
                 message.sender.fio.split(' ')[2].charAt(0) + '.';
@@ -99,7 +100,8 @@ export default function MessagesPage() {
                 message.sender.fio.split(' ')[0] + ' ' + 
                 message.sender.fio.split(' ')[1].charAt(0) + '. ' + 
                 message.sender.fio.split(' ')[2].charAt(0) + '., ' +
-                message.sender.email;
+                message.sender.email + ', ' +
+                message.messageDate;
 
             var expandedReceivers = document.createElement('textarea');
             expandedReceivers.className = 'size-24 dark expanded-message-receivers';
@@ -143,7 +145,8 @@ export default function MessagesPage() {
     }
 
     function showSentMessages(messageArray) {
-        for (var i = 0; i< messageArray.length; i++) {
+        //for (var i = 0; i< messageArray.length; i++) {
+        for (var i = messageArray.length - 1; i >= 0; i--) {
             var message = messageArray[i];
             //console.log(message);
             
@@ -154,11 +157,11 @@ export default function MessagesPage() {
             var smallMessageTitle = document.createElement('p');
             smallMessageTitle.innerText = message.messageTheme;
             smallMessageTitle.className = 'compact-message-theme size-24';
-
+            
             var smallMessageSenders = document.createElement('p');
             smallMessageSenders.className = 'compact-message-sender size-20';
 
-            var receiverString = 'Кому: ';
+            var receiverString = 'кому: ';
             var expandedReceiverString = 'Кому: ';
             var receiver;
             for (var j = 0; j < message.receivers.length - 1; j++) {
@@ -170,7 +173,7 @@ export default function MessagesPage() {
             receiverString = receiverString + receiver.fio.split(' ')[0] + ' ' + receiver.fio.split(' ')[1].charAt(0) + '. ' + receiver.fio.split(' ')[2].charAt(0) + '.';
             expandedReceiverString = expandedReceiverString + receiver.fio.split(' ')[0] + ' ' + receiver.fio.split(' ')[1].charAt(0) + '. ' + receiver.fio.split(' ')[2].charAt(0) + '., ' + receiver.email;
 
-            smallMessageSenders.innerText = receiverString;
+            smallMessageSenders.innerText = message.messageDate + ', ' + receiverString;
 
             smallMessageDiv.appendChild(smallMessageTitle);
             smallMessageDiv.appendChild(smallMessageSenders);
@@ -192,7 +195,8 @@ export default function MessagesPage() {
                 message.sender.fio.split(' ')[0] + ' ' + 
                 message.sender.fio.split(' ')[1].charAt(0) + '. ' + 
                 message.sender.fio.split(' ')[2].charAt(0) + '., ' +
-                message.sender.email;
+                message.sender.email + ', ' +
+                message.messageDate;
 
             var expandedReceivers = document.createElement('textarea');
             expandedReceivers.className = 'size-24 dark expanded-message-receivers';
