@@ -317,7 +317,7 @@ export default function MessagesPage() {
             <div className='messages-switch-div light-background'>
                 <button type='button' id='received-button' className='light size-24 dark-background messages-button' disabled style={{width:'145px'}}>Получено</button>
                 <button type='button' id='sent-button' className='light size-24 dark-background messages-button' style={{width:'145px'}}>Отправлено</button>
-                <button type='button' className='light size-24 dark-background messages-button' style={{ marginLeft: '98px', position: 'relative', top: '-18px' }}>Написать новое<br />сообщение</button>
+                <button type='button' className='light size-24 dark-background messages-button' style={{width:'250px', marginLeft: '30px', position: 'relative', top: '-18px' }}>Написать новое<br />сообщение</button>
             </div>
 
             <div className='messages-search-div light-background'>
