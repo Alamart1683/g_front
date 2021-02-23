@@ -43,6 +43,8 @@ export default function TokenProlonger() {
                     else {
                         //console.log('prolonged');
                         setAuthTokens(response.data);
+                        // Временное решение проблемы гонки состояний
+                        window.location.reload();
                     }
                 }).catch(result => {
                     console.log(result);
