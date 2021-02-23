@@ -26,7 +26,7 @@ export default function TokenProlonger() {
 
         var cur_date = Math.round((new Date()).getTime() / 1000);
 
-        if (authTokens.accessExpireDate - cur_date < 10800000 || authTokens.refreshExpireDate - cur_date < 259200000) {
+        if (authTokens.accessExpireDate - cur_date < 32000 || authTokens.refreshExpireDate - cur_date < 1036792) {
             if (authTokens.accessExpireDate - cur_date > 0 || authTokens.refreshExpireDate - cur_date > 0) {
                 axios({
                     url: apiURL + '/authorization/prolongation',
@@ -41,10 +41,10 @@ export default function TokenProlonger() {
                         return <Redirect to="/guest/login" />;
                     }
                     else {
-                        //console.log('prolonged');
+                        console.log('prolonged');
                         setAuthTokens(response.data);
                         // Временное решение проблемы гонки состояний
-                        window.location.reload();
+                        //window.location.reload();
                     }
                 }).catch(result => {
                     console.log(result);

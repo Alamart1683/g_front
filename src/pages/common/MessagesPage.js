@@ -6,6 +6,11 @@ import $ from 'jquery';
 import { Image } from 'react-bootstrap';
 
 import iconLookingGlass from '../../images/icons/lookingglass.png';
+import iconMessage from '../../images/icons/msg.png';
+import iconSent from '../../images/icons/sent.png';
+import iconReceived from '../../images/icons/recieved.png';
+import iconUnraveled from '../../images/icons/unraveled.png';
+import iconDelete from '../../images/icons/delete.png';
 
 export default function MessagesPage() {
     const { authTokens } = useAuthContext();
@@ -53,7 +58,7 @@ export default function MessagesPage() {
             },
         }).then((response) => {
             setReceivedMessages(response.data);
-            //console.log(response.data);
+            console.log(response.data);
         }).catch(result => {
             console.log(result.data);
         });
@@ -68,6 +73,10 @@ export default function MessagesPage() {
             var smallMessageDiv = document.createElement('div');
             smallMessageDiv.className = 'message-compact-div dark-background light';
             smallMessageDiv.id = 'compact-received-'+i;
+
+            var smallMessageImage = document.createElement('img');
+            smallMessageImage.className = 'small-message-image';
+            smallMessageImage.src = iconUnraveled;
             
             var smallMessageTitle = document.createElement('p');
             smallMessageTitle.innerText = message.messageTheme;
@@ -80,6 +89,7 @@ export default function MessagesPage() {
                 message.sender.fio.split(' ')[2].charAt(0) + '.';
             smallMessageSenders.className = 'compact-message-sender size-20';
 
+            smallMessageDiv.appendChild(smallMessageImage);
             smallMessageDiv.appendChild(smallMessageTitle);
             smallMessageDiv.appendChild(smallMessageSenders);
             document.getElementById('messages-received-div').appendChild(smallMessageDiv);
@@ -121,24 +131,34 @@ export default function MessagesPage() {
             expandedMessage.className = 'size-24 dark expanded-message-message';
             expandedMessage.disabled = true;
             expandedMessage.value = message.messageText;
+            
+            var respondImage = document.createElement('img');
+            respondImage.className = 'expanded-message-image';
+            respondImage.src = iconMessage;
 
             var respondButton = document.createElement('button');
             respondButton.type = 'button';
             respondButton.innerText = 'Ответить на сообщение';
             respondButton.className = 'respond-button expanded-message-button size-24 light dark-background';
+            
+            var deleteImage = document.createElement('img');
+            deleteImage.className = 'expanded-message-image';
+            deleteImage.src = iconDelete;
 
-            var historyButton = document.createElement('button');
-            historyButton.type = 'button';
-            historyButton.innerText = 'Открыть историю переписок';
-            historyButton.className = 'history-button expanded-message-button size-24 light dark-background';
-            historyButton.style.marginLeft = '270px';
+            var deleteButton = document.createElement('button');
+            deleteButton.type = 'button';
+            deleteButton.innerText = 'Удалить сообщение';
+            deleteButton.className = 'delete-button expanded-message-button size-24 light dark-background';
+            deleteButton.style.marginLeft = '235px';
 
             expandedMessageDiv.appendChild(expandedTheme);
             expandedMessageDiv.appendChild(expandedSender);
             expandedMessageDiv.appendChild(expandedReceivers);
             expandedMessageDiv.appendChild(expandedMessage);
+            respondButton.insertBefore(respondImage, respondButton.firstChild)
             expandedMessageDiv.appendChild(respondButton);
-            expandedMessageDiv.appendChild(historyButton);
+            deleteButton.insertBefore(deleteImage, deleteButton.firstChild);
+            expandedMessageDiv.appendChild(deleteButton);
 
             document.getElementById('messages-message-div').appendChild(expandedMessageDiv);
         }
@@ -153,6 +173,10 @@ export default function MessagesPage() {
             var smallMessageDiv = document.createElement('div');
             smallMessageDiv.className = 'message-compact-div dark-background light';
             smallMessageDiv.id = 'compact-sent-'+i;
+            
+            var smallMessageImage = document.createElement('img');
+            smallMessageImage.className = 'small-message-image';
+            smallMessageImage.src = iconUnraveled;
             
             var smallMessageTitle = document.createElement('p');
             smallMessageTitle.innerText = message.messageTheme;
@@ -175,6 +199,7 @@ export default function MessagesPage() {
 
             smallMessageSenders.innerText = message.messageDate + ', ' + receiverString;
 
+            smallMessageDiv.appendChild(smallMessageImage);
             smallMessageDiv.appendChild(smallMessageTitle);
             smallMessageDiv.appendChild(smallMessageSenders);
             document.getElementById('messages-sent-div').appendChild(smallMessageDiv);
@@ -209,23 +234,33 @@ export default function MessagesPage() {
             expandedMessage.disabled = true;
             expandedMessage.value = message.messageText;
 
+            var respondImage = document.createElement('img');
+            respondImage.className = 'expanded-message-image';
+            respondImage.src = iconMessage;
+
             var respondButton = document.createElement('button');
             respondButton.type = 'button';
             respondButton.innerText = 'Ответить на сообщение';
             respondButton.className = 'respond-button expanded-message-button size-24 light dark-background';
+            
+            var deleteImage = document.createElement('img');
+            deleteImage.className = 'expanded-message-image';
+            deleteImage.src = iconDelete;
 
-            var historyButton = document.createElement('button');
-            historyButton.type = 'button';
-            historyButton.innerText = 'Открыть историю переписок';
-            historyButton.className = 'history-button expanded-message-button size-24 light dark-background';
-            historyButton.style.marginLeft = '270px';
+            var deleteButton = document.createElement('button');
+            deleteButton.type = 'button';
+            deleteButton.innerText = 'Удалить сообщение';
+            deleteButton.className = 'delete-button expanded-message-button size-24 light dark-background';
+            deleteButton.style.marginLeft = '235px';
 
             expandedMessageDiv.appendChild(expandedTheme);
             expandedMessageDiv.appendChild(expandedSender);
             expandedMessageDiv.appendChild(expandedReceivers);
             expandedMessageDiv.appendChild(expandedMessage);
+            respondButton.insertBefore(respondImage, respondButton.firstChild)
             expandedMessageDiv.appendChild(respondButton);
-            expandedMessageDiv.appendChild(historyButton);
+            deleteButton.insertBefore(deleteImage, deleteButton.firstChild);
+            expandedMessageDiv.appendChild(deleteButton);
 
             document.getElementById('messages-message-div').appendChild(expandedMessageDiv);
         }
@@ -319,9 +354,18 @@ export default function MessagesPage() {
         <div className='messages-big-div'>
 
             <div className='messages-switch-div light-background'>
-                <button type='button' id='received-button' className='light size-24 dark-background messages-button' disabled style={{width:'145px'}}>Получено</button>
-                <button type='button' id='sent-button' className='light size-24 dark-background messages-button' style={{width:'145px'}}>Отправлено</button>
-                <button type='button' className='light size-24 dark-background messages-button' style={{width:'250px', marginLeft: '30px', position: 'relative', top: '-18px' }}>Написать новое<br />сообщение</button>
+                <button type='button' id='received-button' className='light size-23 dark-background messages-button' disabled style={{width:'162px', position:'relative', top:'-18px'}}>
+                    <Image src={iconReceived} thumbnail className='message-icon-small dark-background' />
+                    Получено
+                </button>
+                <button type='button' id='sent-button' className='light size-23 dark-background messages-button' style={{width:'187px', position:'relative', top:'-18px'}}>
+                    <Image src={iconSent} thumbnail className='message-icon-small dark-background' />
+                    Отправлено
+                </button>
+                <button type='button' className='light size-23 dark-background messages-button' style={{width:'230px', marginLeft: '5px' }}>
+                    <Image src={iconMessage} thumbnail className='message-icon-small dark-background' style={{position:'relative', top:'-18px'}}/>
+                    <p style={{display:'inline-block'}}>Написать новое<br />сообщение</p>
+                </button>
             </div>
 
             <div className='messages-search-div light-background'>
