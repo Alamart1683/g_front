@@ -58,20 +58,32 @@ export default function MessagesPage() {
             },
         }).then((response) => {
             setReceivedMessages(response.data);
-            console.log(response.data);
+            //console.log(response.data);
         }).catch(result => {
             console.log(result.data);
         });
     }
-
+    
     function showReceivedMessages(messageArray) {
         //for (var i = 0; i < messageArray.length; i++) {
         for (var i = messageArray.length - 1; i >= 0; i--) {
             var message = messageArray[i];
             //console.log(message);
+
+            var isRead = false;
+            for (var j = 0; j < message.receivers.length; j++) {
+                if (message.receivers[j].email === authTokens.email && message.isRedList[j] === 1) {
+                    isRead = true;
+                }
+            }
             
             var smallMessageDiv = document.createElement('div');
-            smallMessageDiv.className = 'message-compact-div dark-background light';
+            if (!isRead) {
+                smallMessageDiv.className = 'message-compact-div dark-background light compact-received-unread';
+            } 
+            else {
+                smallMessageDiv.className = 'message-compact-div dark-background light';
+            }
             smallMessageDiv.id = 'compact-received-'+i;
 
             var smallMessageImage = document.createElement('img');
@@ -341,11 +353,68 @@ export default function MessagesPage() {
                 $(this).removeClass('message-expanded-selected');
             });
 
-            //console.log( '.expanded-' + $(this).attr('id').split('-')[1] + '-' + $(this).attr('id').split('-')[2] );
-
             $('#expanded-' + $(this).attr('id').split('-')[1] + '-' + $(this).attr('id').split('-')[2]).addClass('message-expanded-selected');
             $('#expanded-' + $(this).attr('id').split('-')[1] + '-' + $(this).attr('id').split('-')[2]).toggle();
-            //console.log( $(this).attr('id') );
+
+            if ($(this).hasClass('compact-received-unread')) {
+
+                var arrayId = $(this).attr('id').split('-')[2];
+                var message = receivedMessages[arrayId];
+                var receiverId;
+                for (var j = 0; j < message.receivers.length; j++) {
+                    if (message.receivers[j].email === authTokens.email) {
+                        receiverId = message.receivers[j].receiverId;
+                    }
+                }
+
+                axios({
+                    url: apiURL + '/messages/read/',
+                    method: 'POST',
+                    params: {
+                        'messageID': message.messageId,
+                        'receiverID': receiverId,
+                    },
+                    headers: {
+                        'Authorization': 'Bearer ' + authTokens.accessToken
+                    },
+                }).then((response) => {
+                    //console.log(response.data);
+                    $(this).removeClass('compact-received-unread');
+                }).catch(result => {
+                    console.log(result.data);
+                });
+            }
+        });
+
+        $('.delete-button').off().on('click', function () {
+            //console.log( $(this).parent().attr('id') );
+            $(this).attr('disabled', true);
+            var messageType = $(this).parent().attr('id').split('-')[1];
+            var arrayId = $(this).parent().attr('id').split('-')[2];
+            var message;
+            if ( messageType === 'received') {
+                message = receivedMessages[arrayId];
+            }
+            else {
+                message = sentMessages[arrayId];
+            }
+            axios({
+                url: apiURL + '/messages/delete/',
+                method: 'DELETE',
+                params: {
+                    'messageID': message.messageId,
+                },
+                headers: {
+                    'Authorization': 'Bearer ' + authTokens.accessToken
+                },
+            }).then((response) => {
+                //console.log(response.data);
+                $(this).parent().addClass('message-deleted');
+                $('#compact-' + messageType + '-' + arrayId).addClass('message-deleted');
+            }).catch(result => {
+                console.log(result.data);
+                $(this).attr('disabled', false);
+            });
         });
 
     });

@@ -2096,8 +2096,12 @@ html, body {
 	padding-right: 6px;
 }
 
-.expanded-message-button:hover {
+.expanded-message-button:active:hover {
 	background-color: #618FCA;
+}
+
+.expanded-message-button:disabled {
+	background-color:  #859dbb;
 }
 
 .message-search-filter {
@@ -2123,4 +2127,13 @@ html, body {
 
 .small-message-image {
 	display:inline-block;
+}
+
+.compact-received-unread {
+	/*background-color: lime !important; */
+	background-color: #437ecc;
+}
+
+.message-deleted {
+	display: none !important;
 }
