@@ -151,7 +151,7 @@ export default function MessagesPage() {
             var respondButton = document.createElement('button');
             respondButton.type = 'button';
             respondButton.innerText = 'Ответить на сообщение';
-            respondButton.className = 'respond-button expanded-message-button size-24 light dark-background';
+            respondButton.className = 'respond-button dark-background expanded-message-button size-24 light';
             
             var deleteImage = document.createElement('img');
             deleteImage.className = 'expanded-message-image';
@@ -160,7 +160,7 @@ export default function MessagesPage() {
             var deleteButton = document.createElement('button');
             deleteButton.type = 'button';
             deleteButton.innerText = 'Удалить сообщение';
-            deleteButton.className = 'delete-button expanded-message-button size-24 light dark-background';
+            deleteButton.className = 'delete-button dark-background expanded-message-button size-24 light';
             deleteButton.style.marginLeft = '235px';
 
             expandedMessageDiv.appendChild(expandedTheme);
@@ -253,7 +253,7 @@ export default function MessagesPage() {
             var respondButton = document.createElement('button');
             respondButton.type = 'button';
             respondButton.innerText = 'Ответить на сообщение';
-            respondButton.className = 'respond-button expanded-message-button size-24 light dark-background';
+            respondButton.className = 'respond-button size-24 light dark-background expanded-message-button';
             
             var deleteImage = document.createElement('img');
             deleteImage.className = 'expanded-message-image';
@@ -262,7 +262,7 @@ export default function MessagesPage() {
             var deleteButton = document.createElement('button');
             deleteButton.type = 'button';
             deleteButton.innerText = 'Удалить сообщение';
-            deleteButton.className = 'delete-button expanded-message-button size-24 light dark-background';
+            deleteButton.className = 'delete-button size-24 light dark-background expanded-message-button';
             deleteButton.style.marginLeft = '235px';
 
             expandedMessageDiv.appendChild(expandedTheme);

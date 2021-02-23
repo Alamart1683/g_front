@@ -2096,7 +2096,7 @@ html, body {
 	padding-right: 6px;
 }
 
-.expanded-message-button:active:hover {
+.expanded-message-button:hover {
 	background-color: #618FCA;
 }
 
