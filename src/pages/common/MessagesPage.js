@@ -494,8 +494,8 @@ export default function MessagesPage() {
                 $(this).remove();
             });
 
-            $('.recommended-contact-item').each(function () { 
-                if ($(this).is(e.target)) { 
+            $('.recommended-contact-item').each(function () {
+                if ($(this).is(e.target)) {
                     //console.log($(this).attr('id').split('-')[2]);
 
                     if (!newMessageReceiversId.includes($(this).attr('id').split('-')[2])) {
@@ -516,7 +516,7 @@ export default function MessagesPage() {
                         document.getElementById('new-receivers-div').appendChild(compactReceiverDiv);
 
                         newMessageReceiversId.push($(this).attr('id').split('-')[2]);
-                        checkValidity();                        
+                        checkValidity();
                     }
                 }
             });
@@ -680,10 +680,42 @@ export default function MessagesPage() {
                         contact.innerText = response.data[i].fio + ', ' + response.data[i].email;
                         document.getElementById('recommended-contact-content').appendChild(contact);
                     }
-                    document.getElementById('recommended-contacts').disabled = false;
                 }).catch(result => {
                     console.log(result);
+                }).then(() => {
+                    axios({
+                        url: apiURL + '/messages/find/recent/contacts/',
+                        method: 'GET',
+                        params: {
+                            'limit': 5,
+                        },
+                        headers: {
+                            'Authorization': 'Bearer ' + authTokens.accessToken
+                        },
+                    }).then((response) => {
+                        console.log(response.data);
+
+                        if (response.data.length > 0) {
+                            var contact = document.createElement('p');
+                            contact.innerText = 'Недавние контакты:';
+                            document.getElementById('recommended-contact-content').appendChild(contact);
+
+                            for (var i = 0; i < response.data.length; i++) {
+                                var contact = document.createElement('p');
+                                contact.className = 'recommended-contact-item';
+                                contact.id = 'recommended-contact-' + response.data[i].receiverId;
+                                contact.innerText = response.data[i].fio + ', ' + response.data[i].email;
+                                document.getElementById('recommended-contact-content').appendChild(contact);
+                            }
+                        }
+
+                    }).catch(result => {
+                        console.log(result);
+                    });
                 });
+
+
+                document.getElementById('recommended-contacts').disabled = false;
 
             }} onHide={(e) => { setShowCreate(false); }} className='dark'>
                 <Modal.Header className='light-background messages-modal-header' closeButton>
@@ -694,7 +726,7 @@ export default function MessagesPage() {
                 <Modal.Body className='light-background messages-modal-body'>
                     <div className='messages-search-div light-background' style={{ marginLeft: '0px', width: '1370px' }}>
                         <div className='contact-search-dropdown-div'>
-                            <input id='contacts-input' type='text' className='messages-search dark size-32' placeholder='Поиск по сообщениям' style={{ marginLeft: '0px', width: '745px' }} />
+                            <input id='contacts-input' type='text' className='messages-search dark size-32' placeholder='Поиск по контактам' style={{ marginLeft: '0px', width: '745px' }} />
                             <div id='contact-search-content' className='contact-search-dropdown-content size-24 dark'>
 
                             </div>
@@ -705,7 +737,7 @@ export default function MessagesPage() {
                             Поиск
                         </button>
                         <div className='contact-search-dropdown-div'>
-                            <button id='recommended-contacts' disabled className='messages-contacts-button dark-background light size-32' style={{position:'relative', top:'-43px'}}>
+                            <button id='recommended-contacts' disabled className='messages-contacts-button dark-background light size-32' style={{ position: 'relative', top: '-43px' }}>
                                 <Image src={iconStudents} thumbnail className='icon-smaller dark-background' />
                                 Рекомендуемые контакты
                             </button>

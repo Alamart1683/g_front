@@ -2218,11 +2218,14 @@ html, body {
 	position: absolute;
 	background-color: #f1f1f1;
 	min-width: 745px;
-	overflow: auto;
+	/*overflow: auto;*/
 	box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
 	z-index: 1;
 	top: 78px;
 	border-radius: 7px;
+
+	max-height: 600px;
+	overflow-y: scroll;
 }
 
 .recommended-contact-dropdown-content {
@@ -2230,12 +2233,15 @@ html, body {
 	position: absolute;
 	background-color: #f1f1f1;
 	min-width: 745px;
-	overflow: auto;
+	/*overflow: auto;*/
 	box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
 	z-index: 1;
 	top: -42px;
 	left: 625px;
 	border-radius: 7px;
+
+	max-height: 600px;
+	overflow-y: scroll;
 }
 
 .contact-search-dropdown-content p, .recommended-contact-dropdown-content p {
