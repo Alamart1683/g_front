@@ -264,9 +264,9 @@ export default function AdminRegistrationPage() {
     return (
         <div className="ordersPanel">
             <div className="typeButtonPanel">
-                <button type='submit' id='button-1' className="contentButton contentButton-selected light size-22">Регистрация<br />Студентов</button>
-                <button type='submit' id='button-2' className="contentButton light size-22">Регистрация<br />Научных Руководителей</button>
-                <button type='submit' id='button-4' className="contentButton light size-22" style={{ marginRight: "0px" }}>Регистрация<br />Администраторов</button>
+                <button type='submit' id='button-1' className="contentButton contentButton-selected light size-22" style={{width:'486px'}}>Регистрация<br />Студентов</button>
+                <button type='submit' id='button-2' className="contentButton light size-22" style={{width:'486px'}}>Регистрация<br />Научных Руководителей</button>
+                <button type='submit' id='button-4' className="contentButton light size-22" style={{ marginRight: "0px",width:'486px' }}>Регистрация<br />Администраторов</button>
             </div>
 
             <div id="orderContentPanel1" className="contentPanel">
