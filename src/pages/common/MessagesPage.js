@@ -23,6 +23,12 @@ export default function MessagesPage() {
 
     const [showCreate, setShowCreate] = useState(false);
 
+    //const [newMessageReceiversId, setNewMessageReceiversId] = useState([]);
+    //const [newMessageReceiversFio, setNewMessageReceiversFio] = useState([]);
+
+    var newMessageReceiversId = [];
+    var responding = false;
+
     useEffect(() => {
         showReceivedMessages(receivedMessages);
     }, [receivedMessages]);
@@ -330,6 +336,15 @@ export default function MessagesPage() {
         */
     }
 
+    function checkValidity() {
+        if (newMessageReceiversId.length > 0 && $('#new-message-theme').val() !== '' && $('#new-message-text').val() !== '') {
+            document.getElementById('send-new-message-button').disabled = false;
+        }
+        else {
+            document.getElementById('send-new-message-button').disabled = true;
+        }
+    }
+
     $(function () {
 
         $('#received-button').off().on('click', function () {
@@ -422,24 +437,139 @@ export default function MessagesPage() {
         });
 
         $('#contacts-search').off().on('click', function () {
-            console.log($('#contacts-input').val());
             axios({
                 url: apiURL + '/messages/find/receivers/',
                 method: 'GET',
                 params: {
-                    'inputString': $('#contacts-input').val(),
+                    'inputString': $('#contacts-input').val().trim(),
                 },
                 headers: {
                     'Authorization': 'Bearer ' + authTokens.accessToken
                 },
             }).then((response) => {
-                console.log(response);
-                
+                //console.log(response);
+                for (var i = 0; i < response.data.length; i++) {
+                    var contact = document.createElement('p');
+                    contact.className = 'contact-search-item';
+                    contact.id = 'contact-search-' + response.data[i].receiverId;
+                    contact.innerText = response.data[i].fio + ', ' + response.data[i].email;
+                    document.getElementById('contact-search-content').appendChild(contact);
+                }
             }).catch(result => {
                 console.log(result);
-
             });
 
+        });
+
+        $('#recommended-contacts').off().on('click', function () {
+            $('#recommended-contact-content').toggle();
+        });
+
+        $('body').off().on('click', function (e) {
+            $('.contact-search-item').each(function () {
+                if ($(this).is(e.target)) {
+                    //console.log($(this).attr('id').split('-')[2]);
+
+                    if (!newMessageReceiversId.includes($(this).attr('id').split('-')[2])) {
+                        var compactReceiverDiv = document.createElement('div');
+                        compactReceiverDiv.className = 'new-message-compact-receiver-div size-24 dark';
+
+                        var compactReceiverText = document.createElement('span');
+                        compactReceiverText.innerText = $(this).text();
+
+                        var compactCloseButton = document.createElement('button');
+                        compactCloseButton.type = 'button';
+                        compactCloseButton.className = 'new-message-compact-receiver-button';
+                        compactCloseButton.innerText = 'X';
+                        compactCloseButton.id = 'close-button-' + $(this).attr('id').split('-')[2];
+
+                        compactReceiverDiv.appendChild(compactReceiverText);
+                        compactReceiverDiv.appendChild(compactCloseButton);
+                        document.getElementById('new-receivers-div').appendChild(compactReceiverDiv);
+
+                        newMessageReceiversId.push($(this).attr('id').split('-')[2]);
+                        checkValidity();
+                    }
+                }
+                $(this).remove();
+            });
+
+            $('.recommended-contact-item').each(function () { 
+                if ($(this).is(e.target)) { 
+                    //console.log($(this).attr('id').split('-')[2]);
+
+                    if (!newMessageReceiversId.includes($(this).attr('id').split('-')[2])) {
+                        var compactReceiverDiv = document.createElement('div');
+                        compactReceiverDiv.className = 'new-message-compact-receiver-div size-24 dark';
+
+                        var compactReceiverText = document.createElement('span');
+                        compactReceiverText.innerText = $(this).text();
+
+                        var compactCloseButton = document.createElement('button');
+                        compactCloseButton.type = 'button';
+                        compactCloseButton.className = 'new-message-compact-receiver-button';
+                        compactCloseButton.innerText = 'X';
+                        compactCloseButton.id = 'close-button-' + $(this).attr('id').split('-')[2];
+
+                        compactReceiverDiv.appendChild(compactReceiverText);
+                        compactReceiverDiv.appendChild(compactCloseButton);
+                        document.getElementById('new-receivers-div').appendChild(compactReceiverDiv);
+
+                        newMessageReceiversId.push($(this).attr('id').split('-')[2]);
+                        checkValidity();                        
+                    }
+                }
+            });
+
+            if ($('#recommended-contact-content').is(':visible') && e.target.id !== 'recommended-contacts') {
+                $('#recommended-contact-content').toggle();
+            }
+
+            $('.new-message-compact-receiver-button').each(function () {
+                if ($(this).is(e.target)) {
+                    //console.log($(this).parent());
+                    var receiverId = $(this).attr('id').split('-')[2];
+                    newMessageReceiversId.splice(newMessageReceiversId.indexOf(receiverId), 1);
+                    //console.log(newMessageReceiversId);
+                    $(this).parent().remove();
+                    checkValidity();
+                }
+            });
+
+        });
+
+        $('#send-new-message-button').off().on('click', function () {
+            $(this).attr('disabled', 'true');
+            var receiversString = '';
+            for (var i = 0; i < newMessageReceiversId.length - 1; i++) {
+                receiversString += newMessageReceiversId[i] + ',';
+            }
+            receiversString += newMessageReceiversId[newMessageReceiversId.length - 1];
+
+            var formData = new FormData();
+            formData.append('messageTheme', $('#new-message-theme').val());
+            formData.append('messageText', $('#new-message-text').val());
+            formData.append('receivers', receiversString);
+
+            axios({
+                url: apiURL + '/messages/send',
+                method: 'POST',
+                data: formData,
+                headers: {
+                    'Authorization': 'Bearer ' + authTokens.accessToken
+                },
+            }).then((response) => {
+                //console.log(response);
+                window.location.reload();
+            }).catch(result => {
+                console.log(result.data);
+            });
+            $(this).attr('disabled', 'false');
+        });
+
+        $('.respond-button').off().on('click', function () {
+            window.responding = true;
+            setShowCreate(true);
         });
 
     });
@@ -484,7 +614,78 @@ export default function MessagesPage() {
 
             </div>
 
-            <Modal centered show={showCreate} onEnter={(e) => { ; }} onHide={(e) => { setShowCreate(false); }} className='dark'>
+            <Modal centered show={showCreate} onEnter={(e) => {
+                newMessageReceiversId = [];
+                if (window.responding) {
+                    //console.log( $('.message-expanded-selected .expanded-message-theme').val());
+                    document.getElementById('new-message-theme').value = 'Re: ' + $('.message-expanded-selected .expanded-message-theme').val();
+                    //console.log( $('.message-expanded-selected .expanded-message-sender').val().split(',')[1].trim() );
+                    var senderEmail = $('.message-expanded-selected .expanded-message-sender').val().split(',')[1].trim();
+
+                    axios({
+                        url: apiURL + '/messages/find/receivers/',
+                        method: 'GET',
+                        params: {
+                            'inputString': senderEmail,
+                        },
+                        headers: {
+                            'Authorization': 'Bearer ' + authTokens.accessToken
+                        },
+                    }).then((response) => {
+                        //console.log(response);
+                        var sender = response.data[0];
+                        //console.log(sender);
+
+                        var compactReceiverDiv = document.createElement('div');
+                        compactReceiverDiv.className = 'new-message-compact-receiver-div size-24 dark';
+
+                        var compactReceiverText = document.createElement('span');
+                        compactReceiverText.innerText = sender.fio + ', ' + sender.email;
+
+                        var compactCloseButton = document.createElement('button');
+                        compactCloseButton.type = 'button';
+                        compactCloseButton.className = 'new-message-compact-receiver-button';
+                        compactCloseButton.innerText = 'X';
+                        compactCloseButton.id = 'close-button-' + sender.receiverId;
+
+                        compactReceiverDiv.appendChild(compactReceiverText);
+                        compactReceiverDiv.appendChild(compactCloseButton);
+                        document.getElementById('new-receivers-div').appendChild(compactReceiverDiv);
+
+                        newMessageReceiversId.push(sender.receiverId.toString());
+                        checkValidity();
+
+                    }).catch(result => {
+                        console.log(result);
+                    });
+
+                }
+                window.responding = false;
+
+                axios({
+                    url: apiURL + '/messages/find/receivers/associated',
+                    method: 'GET',
+                    params: {
+                        'inputString': senderEmail,
+                    },
+                    headers: {
+                        'Authorization': 'Bearer ' + authTokens.accessToken
+                    },
+                }).then((response) => {
+                    //console.log(response);
+                    for (var i = 0; i < response.data.length; i++) {
+                        var contact = document.createElement('p');
+                        contact.className = 'recommended-contact-item';
+                        contact.id = 'recommended-contact-' + response.data[i].receiverId;
+                        contact.innerText = response.data[i].fio + ', ' + response.data[i].email;
+                        document.getElementById('recommended-contact-content').appendChild(contact);
+                    }
+                    document.getElementById('recommended-contacts').disabled = false;
+                }).catch(result => {
+                    console.log(result);
+                });
+
+            }} onHide={(e) => { setShowCreate(false); }} className='dark'>
                 <Modal.Header className='light-background messages-modal-header' closeButton>
                     <Modal.Title className='size-30'>
                         <p style={{ height: '50px', marginBottom: '0px', marginLeft: '580px' }}>Новое сообщение</p>
@@ -492,31 +693,39 @@ export default function MessagesPage() {
                 </Modal.Header>
                 <Modal.Body className='light-background messages-modal-body'>
                     <div className='messages-search-div light-background' style={{ marginLeft: '0px', width: '1370px' }}>
-                        <input id='contacts-input' type='text' className='messages-search dark size-32' placeholder='Поиск по сообщениям' style={{ marginLeft: '0px', width: '745px' }} />
+                        <div className='contact-search-dropdown-div'>
+                            <input id='contacts-input' type='text' className='messages-search dark size-32' placeholder='Поиск по сообщениям' style={{ marginLeft: '0px', width: '745px' }} />
+                            <div id='contact-search-content' className='contact-search-dropdown-content size-24 dark'>
+
+                            </div>
+                        </div>
+
                         <button id='contacts-search' className='messages-search-button dark-background light size-32' style={{ marginLeft: '750px' }}>
                             <Image src={iconLookingGlass} thumbnail className='icon-smaller dark-background' />
                             Поиск
                         </button>
-                        <button onClick={() => { ; }} className='messages-contacts-button dark-background light size-32'>
-                            <Image src={iconStudents} thumbnail className='icon-smaller dark-background' />
-                            Рекомендуемые контакты
-                        </button>
-                    </div>
-                    <div className='new-message-receivers-div'>
-                        <p className='new-message-receivers-text size-24 dark'>Кому:</p>
-                        <div className='new-message-compact-receiver-div size-24 dark'>
-                            <span>Григорьев В.К., vkgrig490@mail.ru</span>
-                            <button className='new-message-compact-receiver-button'>X</button>
+                        <div className='contact-search-dropdown-div'>
+                            <button id='recommended-contacts' disabled className='messages-contacts-button dark-background light size-32' style={{position:'relative', top:'-43px'}}>
+                                <Image src={iconStudents} thumbnail className='icon-smaller dark-background' />
+                                Рекомендуемые контакты
+                            </button>
+                            <div id='recommended-contact-content' className='recommended-contact-dropdown-content size-24 dark'>
+
+                            </div>
                         </div>
                     </div>
+                    <div id='new-receivers-div' className='new-message-receivers-div'>
+                        <p className='new-message-receivers-text size-24 dark'>Кому:</p>
+
+                    </div>
                     <div>
-                        <textarea className='expanded-message-theme dark size-24' style={{ width: '1370px' }} placeholder='Тема сообщения'>
+                        <textarea id='new-message-theme' className='expanded-message-theme dark size-24' style={{ width: '1370px' }} placeholder='Тема сообщения' onChange={() => { checkValidity(); }}>
 
                         </textarea>
-                        <textarea className='expanded-message-message dark size-24' style={{ width: '1370px' }} placeholder='Текст сообщения'>
+                        <textarea id='new-message-text' className='expanded-message-message dark size-24' style={{ width: '1370px' }} placeholder='Текст сообщения' onChange={() => { checkValidity(); }}>
 
                         </textarea>
-                        <button type='button' className='size-32 light dark-background expanded-message-button' style={{ marginLeft: '572px', paddingLeft: '10px', paddingRight: '10px' }}>
+                        <button disabled id='send-new-message-button' type='button' className='size-32 light dark-background expanded-message-button' style={{ marginLeft: '572px', paddingLeft: '10px', paddingRight: '10px' }}>
                             <Image src={iconMessage} thumbnail className='message-icon-small dark-background' style={{ position: 'relative', width: '70px', height: '70px' }} />
                             <p style={{ display: 'inline-block' }}>Отправить</p>
                         </button>

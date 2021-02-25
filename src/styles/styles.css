@@ -2100,7 +2100,7 @@ html, body {
 	background-color: #618FCA;
 }
 
-.expanded-message-button:disabled {
+.expanded-message-button:disabled, .expanded-message-button:disabled .message-icon-small {
 	background-color:  #859dbb;
 }
 
@@ -2169,6 +2169,10 @@ html, body {
     background-color: #618FCA;
 }
 
+.messages-contacts-button:disabled, .messages-contacts-button:disabled .icon-smaller {
+    background-color:  #859dbb;
+}
+
 .new-message-receivers-div {
 	width: 1370px;
 	height: 120px;
@@ -2202,4 +2206,45 @@ html, body {
 	margin-left: 3px;
 	border-radius: 7px;
 	width: 25px;
+}
+
+.contact-search-dropdown-div {
+	position: relative;
+	display: inline-block;
+}
+
+.contact-search-dropdown-content {
+	/*display: none;*/
+	position: absolute;
+	background-color: #f1f1f1;
+	min-width: 745px;
+	overflow: auto;
+	box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+	z-index: 1;
+	top: 78px;
+	border-radius: 7px;
+}
+
+.recommended-contact-dropdown-content {
+	display: none;
+	position: absolute;
+	background-color: #f1f1f1;
+	min-width: 745px;
+	overflow: auto;
+	box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+	z-index: 1;
+	top: -42px;
+	left: 625px;
+	border-radius: 7px;
+}
+
+.contact-search-dropdown-content p, .recommended-contact-dropdown-content p {
+	padding: 0px 16px;
+	text-decoration: none;
+	display: block;
+}
+  
+.contact-search-dropdown-content p:hover, .recommended-contact-dropdown-content p:hover {
+	background-color: #ddd;
+	cursor: pointer;
 }
