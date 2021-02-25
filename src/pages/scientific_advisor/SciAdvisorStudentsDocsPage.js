@@ -860,7 +860,7 @@ export default function SciAdvisorStudentsDocsPage() {
     return (
         <div className='student-document-form'>
             <div className='student-document-search-div light-background'>
-                <input id='fileSearch' type='text' className='student-document-search dark size-32' />
+                <input id='fileSearch' type='text' className='student-document-search dark size-32' placeholder='Поиск по документам' />
                 <button onClick={() => { searchFiles(); }} className='student-document-search-button dark-background light size-32'>
                     <Image src={iconLookingGlass} thumbnail className='icon-smaller dark-background' />
                     Поиск

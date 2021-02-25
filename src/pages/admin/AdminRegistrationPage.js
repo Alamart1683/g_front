@@ -328,9 +328,9 @@ export default function AdminRegistrationPage() {
                                             
                     </div>
                 </div>
-                <button id='register-student-button' disabled className='admin-registration-button light size-30 dark-background' style={{ marginLeft: '400px', marginTop: '30px', width: '600px' }}>Зарегистрировать студента</button>
+                <button id='register-student-button' disabled className='admin-registration-button light size-30 dark-background' style={{ marginLeft: '440px', marginTop: '30px', width: '600px' }}>Зарегистрировать студента</button>
 
-                <button id='register-students-from-file-button' className='admin-registration-button light size-30 dark-background' style={{ marginLeft: '400px', marginTop: '30px', width: '600px' }}>Зарегистрировать студентов<br />из файла</button>
+                <button id='register-students-from-file-button' className='admin-registration-button light size-30 dark-background' style={{ marginLeft: '440px', marginTop: '30px', width: '600px' }}>Зарегистрировать студентов<br />из файла</button>
                 <input id='student-file-input' type='file' style={{ display: 'none' }} onChange={(e) => {
                         if (e.target.files.length !== 0) {
                             registerStudentsFromFile(e.target.files[0]);
@@ -360,9 +360,9 @@ export default function AdminRegistrationPage() {
 
                     </div>
                 </div>
-                <button id='register-sca-button' disabled className='admin-registration-button light size-30 dark-background' style={{ marginLeft: '400px', marginTop: '30px', width: '600px' }}>Зарегистрировать<br />Научного Руководителя</button>
+                <button id='register-sca-button' disabled className='admin-registration-button light size-30 dark-background' style={{ marginLeft: '440px', marginTop: '30px', width: '600px' }}>Зарегистрировать<br />Научного Руководителя</button>
 
-                <button id='register-sca-from-file-button' className='admin-registration-button light size-30 dark-background' style={{ marginLeft: '400px', marginTop: '30px', width: '600px' }}>Зарегистрировать<br />Научных Руководителей из файла</button>
+                <button id='register-sca-from-file-button' className='admin-registration-button light size-30 dark-background' style={{ marginLeft: '440px', marginTop: '30px', width: '600px' }}>Зарегистрировать<br />Научных Руководителей из файла</button>
                 <input id='sca-file-input' type='file' style={{ display: 'none' }} onChange={(e) => {
                         if (e.target.files.length !== 0) {
                             registerScaFromFile(e.target.files[0]);
@@ -392,7 +392,7 @@ export default function AdminRegistrationPage() {
                         <input maxLength='50' onChange={(e) => { checkIfCanRegisterAdmin(); }} id='admin-second-name' type='text' placeholder='Введите отчество' className='admin-registration-input dark size-24'></input>
                     </div>
                 </div>
-                <button id='register-admin-button' disabled className='admin-registration-button light size-30 dark-background' style={{ marginLeft: '400px', marginTop: '30px', width: '600px' }}>Зарегистрировать<br />Администратора</button>
+                <button id='register-admin-button' disabled className='admin-registration-button light size-30 dark-background' style={{ marginLeft: '440px', marginTop: '30px', width: '600px' }}>Зарегистрировать<br />Администратора</button>
             </div>
         </div>
     );

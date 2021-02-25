@@ -1045,7 +1045,7 @@ html, body {
 }
 
 .contentButton {
-	width: 362px;
+	width: 486px;
 	height: 88px;
 	margin-right: 10px;
 	background: #89AFE0;
@@ -2096,7 +2096,7 @@ html, body {
 	padding-right: 6px;
 }
 
-.expanded-message-button:hover {
+.expanded-message-button:hover, .expanded-message-button:hover .message-icon-small {
 	background-color: #618FCA;
 }
 
@@ -2136,4 +2136,70 @@ html, body {
 
 .message-deleted {
 	display: none !important;
+}
+
+.messages-modal-header {
+	border-top-left-radius: 7px;
+	border-top-right-radius: 7px;
+}
+
+.messages-modal-body {
+	border-bottom-left-radius: 7px;
+	border-bottom-right-radius: 7px;
+}
+
+.messages-modal-header, .messages-modal-body {
+	width: 1400px;
+	position: relative;
+	left: -450px;
+}
+
+.messages-contacts-button {
+	width: 443px;
+	height: 68px;
+	border-radius: 7px;
+	border-width: 0;
+	padding: 5px 5px;
+	margin-left: 927px;
+	margin-top: -67px;
+	display: table;
+}
+
+.messages-contacts-button:hover, .messages-contacts-button:hover .icon-smaller {
+    background-color: #618FCA;
+}
+
+.new-message-receivers-div {
+	width: 1370px;
+	height: 120px;
+	border-radius: 7px;
+	background-color: white;
+	margin-top: 88px;
+	margin-bottom: 5px;
+	padding-top: 3px;
+	overflow-y: scroll;
+}
+
+.new-message-receivers-text {
+	margin-left: 10px;
+	display: inline-block;
+	width: 90px;
+}
+
+.new-message-compact-receiver-div {
+	border-radius: 7px;
+	border-color: gray;
+	background-color: rgb(241, 241, 241);
+	border-width: 1px;
+	display: inline-block;
+	border-style: solid;
+	padding-left: 3px;
+	margin-bottom: 10px;
+	margin-left: 5px;
+}
+
+.new-message-compact-receiver-button {
+	margin-left: 3px;
+	border-radius: 7px;
+	width: 25px;
 }

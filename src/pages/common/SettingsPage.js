@@ -197,8 +197,8 @@ export default function SettingsPage() {
                             <input disabled id='student-group' type='text' className='admin-registration-input dark size-24'></input>
                         </div>
                     </div>
-                    <p style={{ marginLeft: '590px', marginTop: '20px' }} className='dark size-36'>Смена пароля</p>
-                    <input style={{ marginLeft: '400px', height: '45px', textAlign: 'center' }} maxLength='50' id='new-password' type='password' value={newPassword} onChange={(e) => {
+                    <p style={{ marginLeft: '630px', marginTop: '20px' }} className='dark size-36'>Смена пароля</p>
+                    <input style={{ marginLeft: '440px', height: '45px', textAlign: 'center' }} maxLength='50' id='new-password' type='password' value={newPassword} onChange={(e) => {
                         setNewPassword(e.target.value);
                         if ($('#new-password').val() !== '') {
                             document.getElementById('change-password-button').disabled = false;
@@ -208,7 +208,7 @@ export default function SettingsPage() {
                         }
                     }} className='admin-registration-input dark size-36' placeholder='Введите новый пароль'></input>
                     <button id='change-password-button' disabled className='admin-registration-button light size-30 dark-background'
-                        style={{ marginLeft: '400px', marginTop: '30px', width: '600px' }}>Отправить на почту код<br />для смены пароля</button>
+                        style={{ marginLeft: '440px', marginTop: '30px', width: '600px' }}>Отправить на почту код<br />для смены пароля</button>
                 </div>
             </div>
 
