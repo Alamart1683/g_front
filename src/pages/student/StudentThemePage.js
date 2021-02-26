@@ -26,6 +26,7 @@ export default function StudentThemePage() {
             setTheme(response.data.vkrTheme);
             if ( !response.data.vkrThemeEditable) {
                 document.getElementById('error-message').style.visibility = 'visible';
+                document.getElementById('theme').disabled = true;
             }
         }).catch(result => {
             console.log(result.data);
