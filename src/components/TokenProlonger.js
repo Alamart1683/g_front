@@ -41,13 +41,16 @@ export default function TokenProlonger() {
                         return <Redirect to="/guest/login" />;
                     }
                     else {
-                        console.log('prolonged');
+                        //console.log('prolonged');
                         setAuthTokens(response.data);
                         // Временное решение проблемы гонки состояний
-                        //window.location.reload();
+                        window.location.reload();
                     }
                 }).catch(result => {
-                    console.log(result);
+                    // console.log(result);
+                    // Если нет сети и запрос сделал timeout?
+                    setAuthTokens(null);
+                    return <Redirect to="/guest/login" />;
                 });
             }
             else {
