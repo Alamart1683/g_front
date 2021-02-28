@@ -23,11 +23,7 @@ export default function MessagesPage() {
 
     const [showCreate, setShowCreate] = useState(false);
 
-    //const [newMessageReceiversId, setNewMessageReceiversId] = useState([]);
-    //const [newMessageReceiversFio, setNewMessageReceiversFio] = useState([]);
-
     var newMessageReceiversId = [];
-    var responding = false;
 
     useEffect(() => {
         showReceivedMessages(receivedMessages);
@@ -75,7 +71,6 @@ export default function MessagesPage() {
     }
 
     function showReceivedMessages(messageArray) {
-        //for (var i = 0; i < messageArray.length; i++) {
         for (var i = messageArray.length - 1; i >= 0; i--) {
             var message = messageArray[i];
             //console.log(message);
@@ -141,8 +136,8 @@ export default function MessagesPage() {
 
             var receiverString = 'Кому: ';
             var receiver;
-            for (var j = 0; j < message.receivers.length - 1; j++) {
-                receiver = message.receivers[j];
+            for (var k = 0; k < message.receivers.length - 1; k++) {
+                receiver = message.receivers[k];
                 receiverString = receiverString + receiver.fio.split(' ')[0] + ' ' + receiver.fio.split(' ')[1].charAt(0) + '. ' + receiver.fio.split(' ')[2].charAt(0) + '., ' + receiver.email + '; ';
             }
             receiver = message.receivers[message.receivers.length - 1];
@@ -187,7 +182,6 @@ export default function MessagesPage() {
     }
 
     function showSentMessages(messageArray) {
-        //for (var i = 0; i< messageArray.length; i++) {
         for (var i = messageArray.length - 1; i >= 0; i--) {
             var message = messageArray[i];
             //console.log(message);
@@ -696,9 +690,9 @@ export default function MessagesPage() {
                         console.log(response.data);
 
                         if (response.data.length > 0) {
-                            var contact = document.createElement('p');
-                            contact.innerText = 'Недавние контакты:';
-                            document.getElementById('recommended-contact-content').appendChild(contact);
+                            var contactMessage = document.createElement('p');
+                            contactMessage.innerText = 'Недавние контакты:';
+                            document.getElementById('recommended-contact-content').appendChild(contactMessage);
 
                             for (var i = 0; i < response.data.length; i++) {
                                 var contact = document.createElement('p');
