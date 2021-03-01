@@ -2008,9 +2008,11 @@ export default function StudentTasksPage() {
                         case 'Практика по получению знаний и умений':
                             showLongPPVersionSingle(taskVersion, longPPData.length);
                             setLongPPData(longPPData.concat(taskVersion));
+                            break;
                         case 'Преддипломная практика':
                             showPPVersionSingle(taskVersion, PPData.length);
                             setPPData(PPData.concat(taskVersion));
+                            break;
                         default:
                             console.log('task version creation error')
                     }
@@ -2073,28 +2075,23 @@ export default function StudentTasksPage() {
                 'Authorization': 'Bearer ' + authTokens.accessToken
             },
         }).then((response) => {
+            console.log(response);
+            reportVersion['systemVersionID'] = response.data[0].split(',')[0]
+            reportVersion['versionEditionDate'] = response.data[0].split(',')[1]
             switch (type) {
                 case 'Научно-исследовательская работа':
-                    reportVersion['systemVersionID'] = response.data[1].split(',')[0]
-                    reportVersion['versionEditionDate'] = response.data[1].split(',')[1]
                     showNirOtchetVersionSingle(reportVersion, nirOtchetVersions.length);
                     setNirOtchetVersions(nirOtchetVersions.concat(reportVersion));
                     break;
                 case 'Практика по получению знаний и умений':
-                    reportVersion['systemVersionID'] = response.data[1].split(',')[0]
-                    reportVersion['versionEditionDate'] = response.data[1].split(',')[1]
                     showLongPPOtchetVersionSingle(reportVersion, longPPOtchetVersions.length);
                     setLongPPOtchetVersions(longPPOtchetVersions.concat(reportVersion));
                     break;
                 case 'Преддипломная практика':
-                    reportVersion['systemVersionID'] = response.data[0].split(',')[0]
-                    reportVersion['versionEditionDate'] = response.data[0].split(',')[1]
                     showPPOtchetVersionSingle(reportVersion, PPOtchetVersions.length);
                     setPPOtchetVersions(PPOtchetVersions.concat(reportVersion));
                     break;
                 case 'ВКР':
-                    reportVersion['systemVersionID'] = response.data[1].split(',')[0]
-                    reportVersion['versionEditionDate'] = response.data[1].split(',')[1]
                     showVkrOtchetVersionSingle(reportVersion, vkrOtchetVersions.length);
                     setVkrOtchetVersions(vkrOtchetVersions.concat(reportVersion));
                     break;
@@ -2146,7 +2143,7 @@ export default function StudentTasksPage() {
                 'Authorization': 'Bearer ' + authTokens.accessToken
             },
         }).then((response) => {
-            console.log(response);
+            //console.log(response);
             stuffVersion['systemVersionID'] = response.data[0].split(',')[0]
             stuffVersion['versionEditionDate'] = response.data[0].split(',')[1]
             switch (kind) {
@@ -2200,7 +2197,7 @@ export default function StudentTasksPage() {
                 'Authorization': 'Bearer ' + authTokens.accessToken
             },
         }).then((response) => {
-            console.log(response);
+            //console.log(response);
             stuffVersion['systemVersionID'] = response.data[0].split(',')[0]
             stuffVersion['versionEditionDate'] = response.data[0].split(',')[1]
             switch (kind) {
@@ -2396,7 +2393,7 @@ export default function StudentTasksPage() {
     }
 
     async function sendVkrStuff(versionId) {
-        axios({
+        await axios({
             url: apiURL + '/student/document/management/vkr/stuff/send',
             method: 'POST',
             params: {
@@ -2438,7 +2435,7 @@ export default function StudentTasksPage() {
     }
 
     async function deleteVkrStuffVersion(versionId) {
-        axios({
+        await axios({
             url: apiURL + '/student/document/vkr/stuff/version/delete',
             method: 'DELETE',
             params: {
@@ -2448,7 +2445,7 @@ export default function StudentTasksPage() {
                 'Authorization': 'Bearer ' + authTokens.accessToken
             },
         }).then((response) => {
-            return true;
+            return false;
         }).catch(result => {
             console.log(result);
             return false;
@@ -2456,7 +2453,7 @@ export default function StudentTasksPage() {
     }
 
     async function deleteVkrStuffKind(kind) {
-        axios({
+        await axios({
             url: apiURL + '/document/delete/',
             method: 'DELETE',
             params: {
@@ -2579,7 +2576,6 @@ export default function StudentTasksPage() {
 
         // Удалить отчёт НИР
         $('.nir-otchet-delete-button').off().on('click', function () {
-            console.log('delete otchet');
             var versionId = $(this).parent().parent().attr('id');
             var arrayID = versionId.split('-')[3];
             $(this).attr('disabled', true);
@@ -2639,8 +2635,9 @@ export default function StudentTasksPage() {
         $('.long-pp-otchet-send-button').off().on('click', function () {
             var versionId = $(this).parent().parent().attr('id');
             var arrayID = versionId.split('-')[4];
+            console.log(longPPOtchetVersions[arrayID]);
             $(this).attr('disabled', true);
-            if (sendTask(longPPOtchetVersions[arrayID].systemVersionID)) {
+            if (sendReport(longPPOtchetVersions[arrayID].systemVersionID)) {
                 $(this).parent().find('.long-pp-otchet-delete-button').attr('disabled', true);
                 $(this).parent().find('.nir-header-text:contains("Статус: Не отправлено")').text('Статус: Рассматривается');
             }
@@ -2914,6 +2911,7 @@ export default function StudentTasksPage() {
         $('.vkr-dopusk-delete-button').off().on('click', function () {
             var versionId = $(this).parent().parent().attr('id');
             var arrayID = versionId.split('-')[3];
+            console.log(vkrDopuskVersions);
             if (vkrDopuskVersions.length > 1) {
                 $(this).attr('disabled', true);
                 if (deleteVkrStuffVersion(vkrDopuskVersions[arrayID].systemVersionID)) {
@@ -3341,8 +3339,10 @@ export default function StudentTasksPage() {
                                         Сформировать и загрузить версию отчета
                                         </button>
                                     <input id='nir-otchet-file-input' type='file' style={{ display: 'none' }} accept='application/vnd.openxmlformats-officedocument.wordprocessingml.document' onChange={(e) => {
+                                        //console.log(e.target.files);
                                         if (e.target.files.length !== 0) {
                                             makeOtchetVersion(e.target.files[0], 'Научно-исследовательская работа');
+                                            $('#nir-otchet-file-input[type="file"]').val(null);
                                         }
                                     }} ></input>
                                 </div>
@@ -3468,6 +3468,7 @@ export default function StudentTasksPage() {
                                     <input id='long-pp-otchet-file-input' type='file' style={{ display: 'none' }} accept='application/vnd.openxmlformats-officedocument.wordprocessingml.document' onChange={(e) => {
                                         if (e.target.files.length !== 0) {
                                             makeOtchetVersion(e.target.files[0], 'Практика по получению знаний и умений');
+                                            $('#long-pp-otchet-file-input[type="file"]').val(null);
                                         }
                                     }} ></input>
                                 </div>
@@ -3592,6 +3593,7 @@ export default function StudentTasksPage() {
                                         //console.log(e.target.files);
                                         if (e.target.files.length !== 0) {
                                             makeOtchetVersion(e.target.files[0], 'Преддипломная практика');
+                                            $('#pp-otchet-file-input[type="file"]').val(null);
                                         }
                                     }} ></input>
                                 </div>
@@ -3650,7 +3652,7 @@ export default function StudentTasksPage() {
                                             else {
                                                 uploadDocumentVersion(e.target.files[0], vkrReviewVersions[0].systemDocumentID, 'Отзыв версия', 'Отзыв')
                                             }
-
+                                            $('#vkr-review-file-input[type="file"]').val(null);
                                         }
                                     }} ></input>
 
@@ -3683,7 +3685,7 @@ export default function StudentTasksPage() {
                                             else {
                                                 uploadDocumentVersion(e.target.files[0], vkrDopuskVersions[0].systemDocumentID, 'Допуск версия', 'Допуск')
                                             }
-
+                                            $('#vkr-dopusk-file-input[type="file"]').val(null);
                                         }
                                     }} ></input>
                                 </div>
@@ -3750,6 +3752,7 @@ export default function StudentTasksPage() {
                                     <input id='vkr-otchet-file-input' type='file' style={{ display: 'none' }} accept='application/vnd.openxmlformats-officedocument.wordprocessingml.document' onChange={(e) => {
                                         if (e.target.files.length !== 0) {
                                             makeOtchetVersion(e.target.files[0], 'ВКР');
+                                            $('#vkr-otchet-file-input[type="file"]').val(null);
                                         }
                                     }} ></input>
                                 </div>
@@ -3780,6 +3783,7 @@ export default function StudentTasksPage() {
                                             else {
                                                 uploadDocumentVersion(e.target.files[0], vkrAntiplagiatVersions[0].systemDocumentID, 'Антиплагиат версия', 'Антиплагиат')
                                             }
+                                            $('#vkr-antiplagiat-file-input[type="file"]').val(null);
                                         }
 
                                     }} ></input>
@@ -3811,7 +3815,7 @@ export default function StudentTasksPage() {
                                             else {
                                                 uploadDocumentVersion(e.target.files[0], vkrPrezentationVersions[0].systemDocumentID, 'Презентация версия', 'Презентация')
                                             }
-                                            //uploadDocument(e.target.files[0], 'ВКР', 'Презентация');
+                                            $('#vkr-presentation-file-input[type="file"]').val(null);
                                         }
                                     }} ></input>
                                 </div>

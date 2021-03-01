@@ -656,6 +656,7 @@ export default function ScaStuViewPage() {
 
             var clickableArea = document.createElement('div');
             clickableArea.className = 'nir-version-titles';
+            clickableArea.style.width = '795px';
 
             // Кнопка просмотреть
             var viewButton = document.createElement('button');
@@ -745,6 +746,8 @@ export default function ScaStuViewPage() {
 
             var clickableArea = document.createElement('div');
             clickableArea.className = 'nir-version-titles';
+            clickableArea.style.width = '795px';
+
 
             // Кнопка просмотреть
             var viewButton = document.createElement('button');
@@ -835,6 +838,8 @@ export default function ScaStuViewPage() {
 
             var clickableArea = document.createElement('div');
             clickableArea.className = 'nir-version-titles';
+            clickableArea.style.width = '795px';
+
 
             // Кнопка просмотреть
             var viewButton = document.createElement('button');
@@ -925,6 +930,8 @@ export default function ScaStuViewPage() {
 
             var clickableArea = document.createElement('div');
             clickableArea.className = 'nir-version-titles';
+            clickableArea.style.width = '795px';
+
 
             // Кнопка просмотреть
             var viewButton = document.createElement('button');
@@ -2168,6 +2175,7 @@ export default function ScaStuViewPage() {
 
             var clickableArea = document.createElement('div');
             clickableArea.className = 'nir-version-titles';
+            clickableArea.style.width = '795px';
 
             // Кнопка просмотреть
             var viewButton = document.createElement('button');
