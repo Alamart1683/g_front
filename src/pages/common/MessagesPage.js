@@ -490,7 +490,7 @@ export default function MessagesPage() {
 
             $('.recommended-contact-item').each(function () {
                 if ($(this).is(e.target)) {
-                    //console.log($(this).attr('id').split('-')[2]);
+                    //console.log($(this).attr('id'));
 
                     if (!newMessageReceiversId.includes($(this).attr('id').split('-')[2])) {
                         var compactReceiverDiv = document.createElement('div');
@@ -544,7 +544,6 @@ export default function MessagesPage() {
             formData.append('messageTheme', $('#new-message-theme').val());
             formData.append('messageText', $('#new-message-text').val());
             formData.append('receivers', receiversString);
-
             axios({
                 url: apiURL + '/messages/send',
                 method: 'POST',
@@ -687,8 +686,7 @@ export default function MessagesPage() {
                             'Authorization': 'Bearer ' + authTokens.accessToken
                         },
                     }).then((response) => {
-                        console.log(response.data);
-
+                        //console.log(response.data);
                         if (response.data.length > 0) {
                             var contactMessage = document.createElement('p');
                             contactMessage.innerText = 'Недавние контакты:';
@@ -697,7 +695,12 @@ export default function MessagesPage() {
                             for (var i = 0; i < response.data.length; i++) {
                                 var contact = document.createElement('p');
                                 contact.className = 'recommended-contact-item';
-                                contact.id = 'recommended-contact-' + response.data[i].receiverId;
+                                if (response.data[i].status === 'sender') {
+                                    contact.id = 'recent-contact-' + response.data[i].senderId;
+                                }
+                                else {
+                                    contact.id = 'recent-contact-' + response.data[i].receiverId;
+                                }
                                 contact.innerText = response.data[i].fio + ', ' + response.data[i].email;
                                 document.getElementById('recommended-contact-content').appendChild(contact);
                             }
