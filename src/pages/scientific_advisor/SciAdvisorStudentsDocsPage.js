@@ -4,6 +4,7 @@ import axios from 'axios';
 import { useAuthContext } from '../../auth/AuthContext';
 import { apiURL } from '../../Config';
 import $ from 'jquery';
+import { Modal } from 'react-bootstrap';
 
 import iconDocuments from '../../images/icons/documents.png';
 import iconLookingGlass from '../../images/icons/lookingglass.png';
@@ -11,6 +12,9 @@ import iconLookingGlass from '../../images/icons/lookingglass.png';
 export default function SciAdvisorStudentsDocsPage() {
     const { authTokens } = useAuthContext();
     const [fetchedData, setFetchedData] = useState(false);
+    
+    const [showError, setShowError] = useState(false);
+    const [errorMessage, setErrorMessage] = useState('Неопределенная ошибка');
 
     const [documentData, setDocumentData] = useState([]);
 
@@ -393,7 +397,7 @@ export default function SciAdvisorStudentsDocsPage() {
     }
 
     async function deleteTask(studentId, versionId) {
-        axios({
+        return axios({
             url: apiURL + '/scientific_advisor/document/task/version/delete',
             method: 'DELETE',
             params: {
@@ -407,13 +411,14 @@ export default function SciAdvisorStudentsDocsPage() {
             return true;
         }).catch(result => {
             console.log(result);
+            setErrorMessage('Ошибка при удалении задания!');
+            setShowError(true);
             return false;
         });
     }
 
     async function deleteReport(studentId, versionId) {
-        console.log('delete nir report');
-        axios({
+        return axios({
             url: apiURL + '/scientific_advisor/document/report/version/delete',
             method: 'DELETE',
             params: {
@@ -427,12 +432,14 @@ export default function SciAdvisorStudentsDocsPage() {
             return true;
         }).catch(result => {
             console.log(result);
+            setErrorMessage('Ошибка при удалении отчета!');
+            setShowError(true);
             return false;
         });
     }
 
     async function gradeTask(versionId, status) {
-        axios({
+        return axios({
             url: apiURL + '/scientific_advisor/document/management/task/nir/check',
             method: 'POST',
             params: {
@@ -446,14 +453,14 @@ export default function SciAdvisorStudentsDocsPage() {
             return true;
         }).catch(result => {
             console.log(result);
+            setErrorMessage('Ошибка при выставлении оценки!');
+            setShowError(true);
             return false;
         });
     }
 
     async function gradeReport(versionId, status) {
-        //console.log(versionId);
-        //console.log(status);
-        axios({
+        return axios({
             url: apiURL + '/scientific_advisor/document/management/report/nir/check',
             method: 'POST',
             params: {
@@ -468,6 +475,8 @@ export default function SciAdvisorStudentsDocsPage() {
             return true;
         }).catch(result => {
             console.log(result);
+            setErrorMessage('Ошибка при выставлении оценки!');
+            setShowError(true);
             return false;
         });
     }
@@ -538,12 +547,14 @@ export default function SciAdvisorStudentsDocsPage() {
             return true;
         }).catch(result => {
             console.log(result);
+            setErrorMessage('Ошибка при выставлении оценки!');
+            setShowError(true);
             return false;
         });
     }
 
     async function deleteVkrStuff(studentId, versionId) {
-        axios({
+        return axios({
             url: apiURL + '/scientific_advisor/document/vkr/stuff/version/delete',
             method: 'DELETE',
             params: {
@@ -557,6 +568,8 @@ export default function SciAdvisorStudentsDocsPage() {
             return true;
         }).catch(result => {
             console.log(result);
+            setErrorMessage('Ошибка при удалении документа ВКР!');
+            setShowError(true);
             return false;
         });
     }
@@ -634,20 +647,24 @@ export default function SciAdvisorStudentsDocsPage() {
             $(this).parent().toggle();
             switch (documentData[arrayID1].documentKind) {
                 case 'Задание':
-                    if (gradeTask(versionId, 'Одобрено')) {
-                        $(this).parent().parent().parent().find('.order-name-text:contains("Статус: Рассматривается")').text('Статус: Одобрено');
-                    }
-                    else {
-                        $(this).parent().parent().find('.version-send-button').attr('disabled', false);
-                    }
+                    gradeTask(versionId, 'Одобрено').then((result)=>{
+                        if (result) {
+                            $(this).parent().parent().parent().find('.order-name-text:contains("Статус: Рассматривается")').text('Статус: Одобрено');
+                        }
+                        else {
+                            $(this).parent().parent().find('.version-send-button').attr('disabled', false);
+                        }
+                    });
                     break;
                 default:
-                    if (gradeVkrStuff(versionId, 'Одобрено')) {
-                        $(this).parent().parent().parent().find('.order-name-text:contains("Статус: Рассматривается")').text('Статус: Одобрено');
-                    }
-                    else {
-                        $(this).parent().parent().find('.version-send-button').attr('disabled', false);
-                    }
+                    gradeVkrStuff(versionId, 'Одобрено').then((result)=>{
+                        if (result) {
+                            $(this).parent().parent().parent().find('.order-name-text:contains("Статус: Рассматривается")').text('Статус: Одобрено');
+                        }
+                        else {
+                            $(this).parent().parent().find('.version-send-button').attr('disabled', false);
+                        }
+                    });
             }
         });
 
@@ -663,52 +680,62 @@ export default function SciAdvisorStudentsDocsPage() {
                 case 'ВКР':
                     switch (documentData[arrayID1].documentKind) {
                         case 'Задание':
-                            if (gradeTask(versionId, 'Замечания')) {
-                                $(this).parent().parent().parent().find('.order-name-text:contains("Статус: Рассматривается")').text('Статус: Замечания');
-                                $(this).parent().parent().parent().find('.version-delete-button').attr('disabled', false);
-                            }
-                            else {
-                                $(this).parent().parent().find('.version-send-button').attr('disabled', false);
-                            }
+                            gradeTask(versionId, 'Замечания').then((result)=>{
+                                if (result) {
+                                    $(this).parent().parent().parent().find('.order-name-text:contains("Статус: Рассматривается")').text('Статус: Замечания');
+                                    $(this).parent().parent().parent().find('.version-delete-button').attr('disabled', false);
+                                }
+                                else {
+                                    $(this).parent().parent().find('.version-send-button').attr('disabled', false);
+                                }
+                            });
                             break;
                         case 'Отчёт':
-                            if (gradeReport(versionId, 'Замечания')) {
-                                $(this).parent().parent().parent().find('.order-name-text:contains("Статус: Рассматривается")').text('Статус: Замечания');
-                                $(this).parent().parent().parent().find('.version-delete-button').attr('disabled', false);
-                            }
-                            else {
-                                $(this).parent().parent().find('.version-send-button').attr('disabled', false);
-                            }
+                            gradeReport(versionId, 'Замечания').then((result)=>{
+                                if (result) {
+                                    $(this).parent().parent().parent().find('.order-name-text:contains("Статус: Рассматривается")').text('Статус: Замечания');
+                                    $(this).parent().parent().parent().find('.version-delete-button').attr('disabled', false);
+                                }
+                                else {
+                                    $(this).parent().parent().find('.version-send-button').attr('disabled', false);
+                                }
+                            });
                             break;
                         default:
-                            if (gradeVkrStuff(versionId, 'Замечания')) {
-                                $(this).parent().parent().parent().find('.order-name-text:contains("Статус: Рассматривается")').text('Статус: Замечания');
-                                $(this).parent().parent().parent().find('.version-delete-button').attr('disabled', false);
-                            }
-                            else {
-                                $(this).parent().parent().find('.version-send-button').attr('disabled', false);
-                            }
+                            gradeVkrStuff(versionId, 'Замечания').then((result)=>{
+                                if (result) {
+                                    $(this).parent().parent().parent().find('.order-name-text:contains("Статус: Рассматривается")').text('Статус: Замечания');
+                                    $(this).parent().parent().parent().find('.version-delete-button').attr('disabled', false);
+                                }
+                                else {
+                                    $(this).parent().parent().find('.version-send-button').attr('disabled', false);
+                                }
+                            });
                     }
                     break;
                 default:
                     switch (documentData[arrayID1].documentKind) {
                         case 'Задание':
-                            if (gradeTask(versionId, 'Замечания')) {
-                                $(this).parent().parent().parent().find('.order-name-text:contains("Статус: Рассматривается")').text('Статус: Замечания');
-                                $(this).parent().parent().parent().find('.version-delete-button').attr('disabled', false);
-                            }
-                            else {
-                                $(this).parent().parent().find('.version-send-button').attr('disabled', false);
-                            }
+                            gradeTask(versionId, 'Замечания').then((result)=>{
+                                if (result) {
+                                    $(this).parent().parent().parent().find('.order-name-text:contains("Статус: Рассматривается")').text('Статус: Замечания');
+                                    $(this).parent().parent().parent().find('.version-delete-button').attr('disabled', false);
+                                }
+                                else {
+                                    $(this).parent().parent().find('.version-send-button').attr('disabled', false);
+                                }
+                            });
                             break;
                         case 'Отчёт':
-                            if (gradeReport(versionId, 'Замечания')) {
-                                $(this).parent().parent().parent().find('.order-name-text:contains("Статус: Рассматривается")').text('Статус: Замечания');
-                                $(this).parent().parent().parent().find('.version-delete-button').attr('disabled', false);
-                            }
-                            else {
-                                $(this).parent().parent().find('.version-send-button').attr('disabled', false);
-                            }
+                            gradeReport(versionId, 'Замечания').then((result)=>{
+                                if (result) {
+                                    $(this).parent().parent().parent().find('.order-name-text:contains("Статус: Рассматривается")').text('Статус: Замечания');
+                                    $(this).parent().parent().parent().find('.version-delete-button').attr('disabled', false);
+                                }
+                                else {
+                                    $(this).parent().parent().find('.version-send-button').attr('disabled', false);
+                                }
+                            });
                             break;
                         default:
                             console.log('gradeError');
@@ -723,13 +750,15 @@ export default function SciAdvisorStudentsDocsPage() {
             var versionId = getVersionId(arrayID1, arrayID2);
             $(this).parent().parent().find('.version-send-button').attr('disabled', true);
             $(this).parent().toggle();
-            if (gradeReport(versionId, 'Неудовлетворительно')) {
-                $(this).parent().parent().parent().find('.order-name-text:contains("Статус: Рассматривается")').text('Статус: НЕУД.');
-                $(this).parent().parent().parent().find('.version-delete-button').attr('disabled', true);
-            }
-            else {
-                $(this).parent().parent().find('.version-send-button').attr('disabled', false);
-            }
+            gradeReport(versionId, 'Неудовлетворительно').then((result)=>{
+                if (result) {
+                    $(this).parent().parent().parent().find('.order-name-text:contains("Статус: Рассматривается")').text('Статус: НЕУД.');
+                    $(this).parent().parent().parent().find('.version-delete-button').attr('disabled', true);
+                }
+                else {
+                    $(this).parent().parent().find('.version-send-button').attr('disabled', false);
+                }
+            });
         });
 
         $('.status-3').off().on('click', function () {
@@ -739,13 +768,15 @@ export default function SciAdvisorStudentsDocsPage() {
             var versionId = getVersionId(arrayID1, arrayID2);
             $(this).parent().parent().find('.version-send-button').attr('disabled', true);
             $(this).parent().toggle();
-            if (gradeReport(versionId, 'Удовлетворительно')) {
-                $(this).parent().parent().parent().find('.order-name-text:contains("Статус: Рассматривается")').text('Статус: УДОВЛ.');
-                $(this).parent().parent().parent().find('.version-delete-button').attr('disabled', true);
-            }
-            else {
-                $(this).parent().parent().find('.version-send-button').attr('disabled', false);
-            }
+            gradeReport(versionId, 'Удовлетворительно').then((result)=>{
+                if (result) {
+                    $(this).parent().parent().parent().find('.order-name-text:contains("Статус: Рассматривается")').text('Статус: УДОВЛ.');
+                    $(this).parent().parent().parent().find('.version-delete-button').attr('disabled', true);
+                }
+                else {
+                    $(this).parent().parent().find('.version-send-button').attr('disabled', false);
+                }
+            });
         });
 
         $('.status-4').off().on('click', function () {
@@ -755,13 +786,15 @@ export default function SciAdvisorStudentsDocsPage() {
             var versionId = getVersionId(arrayID1, arrayID2);
             $(this).parent().parent().find('.version-send-button').attr('disabled', true);
             $(this).parent().toggle();
-            if (gradeReport(versionId, 'Хорошо')) {
-                $(this).parent().parent().parent().find('.order-name-text:contains("Статус: Рассматривается")').text('Статус: ХОР.');
-                $(this).parent().parent().parent().find('.version-delete-button').attr('disabled', true);
-            }
-            else {
-                $(this).parent().parent().find('.version-send-button').attr('disabled', false);
-            }
+            gradeReport(versionId, 'Хорошо').then((result)=>{
+                if (result) {
+                    $(this).parent().parent().parent().find('.order-name-text:contains("Статус: Рассматривается")').text('Статус: ХОР.');
+                    $(this).parent().parent().parent().find('.version-delete-button').attr('disabled', true);
+                }
+                else {
+                    $(this).parent().parent().find('.version-send-button').attr('disabled', false);
+                }
+            });
         });
 
         $('.status-5').off().on('click', function () {
@@ -771,13 +804,15 @@ export default function SciAdvisorStudentsDocsPage() {
             var versionId = getVersionId(arrayID1, arrayID2);
             $(this).parent().parent().find('.version-send-button').attr('disabled', true);
             $(this).parent().toggle();
-            if (gradeReport(versionId, 'Отлично')) {
-                $(this).parent().parent().parent().find('.order-name-text:contains("Статус: Рассматривается")').text('Статус: ОТЛ.');
-                $(this).parent().parent().parent().find('.version-delete-button').attr('disabled', true);
-            }
-            else {
-                $(this).parent().parent().find('.version-send-button').attr('disabled', false);
-            }
+            gradeReport(versionId, 'Отлично').then((result)=>{
+                if (result) {
+                    $(this).parent().parent().parent().find('.order-name-text:contains("Статус: Рассматривается")').text('Статус: ОТЛ.');
+                    $(this).parent().parent().parent().find('.version-delete-button').attr('disabled', true);
+                }
+                else {
+                    $(this).parent().parent().find('.version-send-button').attr('disabled', false);
+                }
+            });
         });
 
         // Удалить версию
@@ -790,28 +825,34 @@ export default function SciAdvisorStudentsDocsPage() {
             $(this).attr('disabled', 'true');
             switch (documentData[arrayID1].documentKind) {
                 case 'Задание':
-                    if (deleteTask(studentId, versionId)) {
-                        $(this).parent().parent().remove();
-                    }
-                    else {
-                        $(this).attr('disabled', 'false');
-                    }
+                    deleteTask(studentId, versionId).then((result)=>{
+                        if (result) {
+                            $(this).parent().parent().remove();
+                        }
+                        else {
+                            $(this).attr('disabled', 'false');
+                        }
+                    });
                     break;
                 case 'Отчёт':
-                    if (deleteReport(studentId, versionId)) {
-                        $(this).parent().parent().remove();
-                    }
-                    else {
-                        $(this).attr('disabled', 'false');
-                    }
+                    deleteReport(studentId, versionId).then((result)=>{
+                        if (result) {
+                            $(this).parent().parent().remove();
+                        }
+                        else {
+                            $(this).attr('disabled', 'false');
+                        }
+                    });
                     break;
                 default:
-                    if (deleteVkrStuff(studentId, versionId)) {
-                        $(this).parent().parent().remove();
-                    }
-                    else {
-                        $(this).attr('disabled', 'false');
-                    }
+                    deleteVkrStuff(studentId, versionId).then((result)=>{
+                        if (result) {
+                            $(this).parent().parent().remove();
+                        }
+                        else {
+                            $(this).attr('disabled', 'false');
+                        }
+                    });
             }
 
         });
@@ -944,6 +985,13 @@ export default function SciAdvisorStudentsDocsPage() {
             <div id='file-div' className='student-document-form-docs light-background'>
 
             </div>
+            <Modal centered show={showError} onHide={() => { setShowError(false) }} className='dark'>
+                <Modal.Header className='light-background' closeButton>
+                    <Modal.Title className='size-30'>
+                        {errorMessage}
+                    </Modal.Title>
+                </Modal.Header>
+            </Modal>
         </div>
     );
 }
