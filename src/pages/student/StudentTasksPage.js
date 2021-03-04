@@ -1976,14 +1976,20 @@ export default function StudentTasksPage() {
                         'Authorization': 'Bearer ' + authTokens.accessToken
                     },
                 }).then((response) => {
-                    taskVersion['systemVersionID'] = response.data.split(',')[0]
-                    taskVersion['versionEditionDate'] = response.data.split(',')[1]
-                    showVkrTaskVersionSingle(taskVersion, vkrTaskVersions.length);
-                    if (vkrTaskVersions.length > 0) {
-                        setVkrTaskVersions(vkrTaskVersions.concat(taskVersion));
+                    if (response.data.indexOf('Приказ еще не был загружен') > -1) {
+                        setErrorMessage('Ошибка при создании версии задания: приказ ещё не был загружен!');
+                        setShowError(true);
                     }
                     else {
-                        setVkrTaskVersions([...vkrTaskVersions, taskVersion]);
+                        taskVersion['systemVersionID'] = response.data.split(',')[0]
+                        taskVersion['versionEditionDate'] = response.data.split(',')[1]
+                        showVkrTaskVersionSingle(taskVersion, vkrTaskVersions.length);
+                        if (vkrTaskVersions.length > 0) {
+                            setVkrTaskVersions(vkrTaskVersions.concat(taskVersion));
+                        }
+                        else {
+                            setVkrTaskVersions([...vkrTaskVersions, taskVersion]);
+                        }
                     }
                     document.getElementById('make-nir-task-button').disabled = false;
                     document.getElementById('make-long-pp-task-button').disabled = false;
@@ -2015,44 +2021,50 @@ export default function StudentTasksPage() {
                         'Authorization': 'Bearer ' + authTokens.accessToken
                     },
                 }).then((response) => {
-                    taskVersion['systemVersionID'] = response.data.split(',')[0]
-                    taskVersion['versionEditionDate'] = response.data.split(',')[1]
-                    switch (type) {
-                        case 'Научно-исследовательская работа':
-                            showNirVersionSingle(taskVersion, nirVersions.length);
-                            if (nirVersions.length > 0) {
-                                setNirVersions(nirVersions.concat(taskVersion));
-                            }
-                            else {
-                                setNirVersions( [...nirVersions, taskVersion] );
-                            }
-                            break;
-                        case 'Практика по получению знаний и умений':
-                            showLongPPVersionSingle(taskVersion, longPPData.length);
-                            if (longPPData.length > 0) {
-                                setLongPPData(longPPData.concat(taskVersion));
-                            }
-                            else {
-                                setLongPPData([...longPPData, taskVersion]);
-                            }
-                            break;
-                        case 'Преддипломная практика':
-                            showPPVersionSingle(taskVersion, PPData.length);
-                            if (PPData.length > 0) {
-                                setPPData(PPData.concat(taskVersion));
-                            }
-                            else {
-                                setPPData([...PPData, taskVersion]);
-                            }
-                            break;
-                        default:
-                            console.log('task version creation error')
+                    //console.log(response);
+                    if (response.data.indexOf('Приказ еще не был загружен') > -1) {
+                        setErrorMessage('Ошибка при создании версии задания: приказ ещё не был загружен!');
+                        setShowError(true);
+                    }
+                    else {
+                        taskVersion['systemVersionID'] = response.data.split(',')[0]
+                        taskVersion['versionEditionDate'] = response.data.split(',')[1]
+                        switch (type) {
+                            case 'Научно-исследовательская работа':
+                                showNirVersionSingle(taskVersion, nirVersions.length);
+                                if (nirVersions.length > 0) {
+                                    setNirVersions(nirVersions.concat(taskVersion));
+                                }
+                                else {
+                                    setNirVersions([...nirVersions, taskVersion]);
+                                }
+                                break;
+                            case 'Практика по получению знаний и умений':
+                                showLongPPVersionSingle(taskVersion, longPPData.length);
+                                if (longPPData.length > 0) {
+                                    setLongPPData(longPPData.concat(taskVersion));
+                                }
+                                else {
+                                    setLongPPData([...longPPData, taskVersion]);
+                                }
+                                break;
+                            case 'Преддипломная практика':
+                                showPPVersionSingle(taskVersion, PPData.length);
+                                if (PPData.length > 0) {
+                                    setPPData(PPData.concat(taskVersion));
+                                }
+                                else {
+                                    setPPData([...PPData, taskVersion]);
+                                }
+                                break;
+                            default:
+                                console.log('task version creation error')
+                        }
                     }
                     document.getElementById('make-nir-task-button').disabled = false;
                     document.getElementById('make-long-pp-task-button').disabled = false;
                     document.getElementById('make-long-pp-task-button').disabled = false;
                     document.getElementById('make-vkr-task-button').disabled = false;
-
                     //console.log(response);
                 }).catch(result => {
                     document.getElementById('make-nir-task-button').disabled = false;
@@ -2115,8 +2127,12 @@ export default function StudentTasksPage() {
                 'Authorization': 'Bearer ' + authTokens.accessToken
             },
         }).then((response) => {
-            //console.log(response);            
-            if (/\d/.test(response.data[0]) ) {
+            //console.log(response);
+            if (response.data.indexOf('При поиске последней версии задания произошло что-то необъяснимое') > -1) {
+                setErrorMessage('Ошибка при создании отчета: не удалось найти одобренную версию задания!');
+                setShowError(true);
+            }
+            else if (/\d/.test(response.data[0])) {
                 reportVersion['systemVersionID'] = response.data[0].split(',')[0]
                 reportVersion['versionEditionDate'] = response.data[0].split(',')[1]
                 switch (type) {
@@ -2212,32 +2228,38 @@ export default function StudentTasksPage() {
             },
         }).then((response) => {
             //console.log(response);
-            stuffVersion['systemVersionID'] = response.data[0].split(',')[0]
-            stuffVersion['versionEditionDate'] = response.data[0].split(',')[1]
-            stuffVersion['systemDocumentID'] = response.data[0].split(',')[2]
-            switch (kind) {
-                case 'Отзыв':
-                    showReviewVersionSingle(stuffVersion, vkrReviewVersions.length);
-                    setVkrReviewVersions([...vkrReviewVersions,stuffVersion]);
-                    break;
-                case 'Допуск':
-                    showDopuskVersionSingle(stuffVersion, vkrDopuskVersions.length);
-                    setVkrDopuskVersions([...vkrDopuskVersions,stuffVersion]);
-                    break;
-                case 'Антиплагиат':
-                    showAntiplagiatVersionSingle(stuffVersion, vkrAntiplagiatVersions.length);
-                    setAntiplagiatVersions([...vkrAntiplagiatVersions,stuffVersion]);
-                    break;
-                case 'Презентация':
-                    showPresentationVersionsSingle(stuffVersion, vkrPrezentationVersions.length);
-                    setPrezentationVersions([...vkrPrezentationVersions,stuffVersion]);
-                    break;
-                default:
-                    console.log('stuff creation error')
+            if (response.data.indexOf('Файл с таким именем уже существует') > -1) {
+                setErrorMessage('Ошибка при создании документа ВКР: файл с таким именем уже существует!');
+                setShowError(true);
+            }
+            else {
+                stuffVersion['systemVersionID'] = response.data[0].split(',')[0]
+                stuffVersion['versionEditionDate'] = response.data[0].split(',')[1]
+                stuffVersion['systemDocumentID'] = response.data[0].split(',')[2]
+                switch (kind) {
+                    case 'Отзыв':
+                        showReviewVersionSingle(stuffVersion, vkrReviewVersions.length);
+                        setVkrReviewVersions([...vkrReviewVersions, stuffVersion]);
+                        break;
+                    case 'Допуск':
+                        showDopuskVersionSingle(stuffVersion, vkrDopuskVersions.length);
+                        setVkrDopuskVersions([...vkrDopuskVersions, stuffVersion]);
+                        break;
+                    case 'Антиплагиат':
+                        showAntiplagiatVersionSingle(stuffVersion, vkrAntiplagiatVersions.length);
+                        setAntiplagiatVersions([...vkrAntiplagiatVersions, stuffVersion]);
+                        break;
+                    case 'Презентация':
+                        showPresentationVersionsSingle(stuffVersion, vkrPrezentationVersions.length);
+                        setPrezentationVersions([...vkrPrezentationVersions, stuffVersion]);
+                        break;
+                    default:
+                        console.log('stuff creation error')
+                }
             }
         }).catch(result => {
             console.log(result);
-            switch(kind) {
+            switch (kind) {
                 case 'Отзыв':
                     setErrorMessage('Ошибка при создании отзыва для ВКР!');
                     break;
@@ -2309,7 +2331,7 @@ export default function StudentTasksPage() {
         }).catch(result => {
             console.log(result);
             console.log(vkrPrezentationVersions);
-            switch(kind) {
+            switch (kind) {
                 case 'Отзыв':
                     setErrorMessage('Ошибка при создании отзыва для ВКР!');
                     break;
@@ -2483,6 +2505,8 @@ export default function StudentTasksPage() {
 
         }).catch(result => {
             console.log(result.data);
+            setErrorMessage('Ошибка при скачивании версии документа!');
+            setShowError(true);
         });
     }
 
@@ -2547,6 +2571,8 @@ export default function StudentTasksPage() {
             link.click();
         }).catch(result => {
             console.log(result.data);
+            setErrorMessage('Ошибка при скачивании версии документа!');
+            setShowError(true);
         });
     }
 
@@ -2682,7 +2708,7 @@ export default function StudentTasksPage() {
             var versionId = $(this).parent().parent().attr('id');
             var arrayID = versionId.split('-')[3];
             $(this).attr('disabled', true);
-            sendReport(nirOtchetVersions[arrayID].systemVersionID).then((result)=> {
+            sendReport(nirOtchetVersions[arrayID].systemVersionID).then((result) => {
                 if (result) {
                     $(this).parent().find('.nir-otchet-delete-button').attr('disabled', true);
                     $(this).parent().find('.nir-header-text:contains("Статус: Не отправлено")').text('Статус: Рассматривается');
@@ -2706,7 +2732,7 @@ export default function StudentTasksPage() {
             var versionId = $(this).parent().parent().attr('id');
             var arrayID = versionId.split('-')[3];
             $(this).attr('disabled', true);
-            deleteReportVersion(nirOtchetVersions[arrayID].systemVersionID).then((result)=>{
+            deleteReportVersion(nirOtchetVersions[arrayID].systemVersionID).then((result) => {
                 if (result) {
                     $(this).parent().parent().remove();
                 }
@@ -2769,7 +2795,7 @@ export default function StudentTasksPage() {
             var versionId = $(this).parent().parent().attr('id');
             var arrayID = versionId.split('-')[4];
             $(this).attr('disabled', true);
-            sendReport(longPPOtchetVersions[arrayID].systemVersionID).then((result)=> {
+            sendReport(longPPOtchetVersions[arrayID].systemVersionID).then((result) => {
                 if (result) {
                     $(this).parent().find('.long-pp-otchet-delete-button').attr('disabled', true);
                     $(this).parent().find('.nir-header-text:contains("Статус: Не отправлено")').text('Статус: Рассматривается');
@@ -2794,7 +2820,7 @@ export default function StudentTasksPage() {
             var versionId = $(this).parent().parent().attr('id');
             var arrayID = versionId.split('-')[4];
             $(this).attr('disabled', true);
-            deleteReportVersion(longPPOtchetVersions[arrayID].systemVersionID).then((result)=>{
+            deleteReportVersion(longPPOtchetVersions[arrayID].systemVersionID).then((result) => {
                 if (result) {
                     $(this).parent().parent().remove();
                 }
@@ -2837,7 +2863,7 @@ export default function StudentTasksPage() {
             var versionId = $(this).parent().parent().attr('id');
             var arrayID = versionId.split('-')[2];
             $(this).attr('disabled', true);
-            deleteTaskVersion(PPData[arrayID].systemVersionID).then((result)=>{
+            deleteTaskVersion(PPData[arrayID].systemVersionID).then((result) => {
                 if (result) {
                     $(this).parent().parent().remove();
                 }
@@ -2857,7 +2883,7 @@ export default function StudentTasksPage() {
             var versionId = $(this).parent().parent().attr('id');
             var arrayID = versionId.split('-')[3];
             $(this).attr('disabled', true);
-            sendReport(PPOtchetVersions[arrayID].systemVersionID).then((result)=>{
+            sendReport(PPOtchetVersions[arrayID].systemVersionID).then((result) => {
                 if (result) {
                     $(this).parent().find('.pp-otchet-delete-button').attr('disabled', true);
                     $(this).parent().find('.nir-header-text:contains("Статус: Не отправлено")').text('Статус: Рассматривается');
@@ -2882,7 +2908,7 @@ export default function StudentTasksPage() {
             var versionId = $(this).parent().parent().attr('id');
             var arrayID = versionId.split('-')[3];
             $(this).attr('disabled', true);
-            deleteReportVersion(PPOtchetVersions[arrayID].systemVersionID).then((result)=>{
+            deleteReportVersion(PPOtchetVersions[arrayID].systemVersionID).then((result) => {
                 if (result) {
                     $(this).parent().parent().remove();
                 }
@@ -2925,7 +2951,7 @@ export default function StudentTasksPage() {
             var versionId = $(this).parent().parent().attr('id');
             var arrayID = versionId.split('-')[2];
             $(this).attr('disabled', true);
-            deleteTaskVersion(vkrTaskVersions[arrayID].systemVersionID).then((result)=> {
+            deleteTaskVersion(vkrTaskVersions[arrayID].systemVersionID).then((result) => {
                 if (result) {
                     $(this).parent().parent().remove();
                 }
@@ -2945,7 +2971,7 @@ export default function StudentTasksPage() {
             var versionId = $(this).parent().parent().attr('id');
             var arrayID = versionId.split('-')[3];
             $(this).attr('disabled', true);
-            sendReport(vkrOtchetVersions[arrayID].systemVersionID).then((result)=>{
+            sendReport(vkrOtchetVersions[arrayID].systemVersionID).then((result) => {
                 if (result) {
                     $(this).parent().find('.vkr-otchet-delete-button').attr('disabled', true);
                     $(this).parent().find('.nir-header-text:contains("Статус: Не отправлено")').text('Статус: Рассматривается');
@@ -2970,7 +2996,7 @@ export default function StudentTasksPage() {
             var versionId = $(this).parent().parent().attr('id');
             var arrayID = versionId.split('-')[3];
             $(this).attr('disabled', true);
-            deleteReportVersion(vkrOtchetVersions[arrayID].systemVersionID).then((result)=>{
+            deleteReportVersion(vkrOtchetVersions[arrayID].systemVersionID).then((result) => {
                 if (result) {
                     $(this).parent().parent().remove();
                 }
@@ -2990,7 +3016,7 @@ export default function StudentTasksPage() {
             var versionId = $(this).parent().parent().attr('id');
             var arrayID = versionId.split('-')[3];
             $(this).attr('disabled', true);
-            sendVkrStuff(vkrReviewVersions[arrayID].systemVersionID).then((result)=>{
+            sendVkrStuff(vkrReviewVersions[arrayID].systemVersionID).then((result) => {
                 if (result) {
                     $(this).parent().find('.vkr-review-delete-button').attr('disabled', true);
                     $(this).parent().find('.nir-header-text:contains("Статус: Не отправлено")').text('Статус: Рассматривается');
@@ -3016,7 +3042,7 @@ export default function StudentTasksPage() {
             var arrayID = versionId.split('-')[3];
             if (vkrReviewVersions.length > 1) {
                 $(this).attr('disabled', true);
-                deleteVkrStuffVersion(vkrReviewVersions[arrayID].systemVersionID).then((result)=>{
+                deleteVkrStuffVersion(vkrReviewVersions[arrayID].systemVersionID).then((result) => {
                     if (result) {
                         $(this).parent().parent().remove();
                     }
@@ -3027,7 +3053,7 @@ export default function StudentTasksPage() {
             }
             else {
                 $(this).attr('disabled', true);
-                deleteVkrStuffKind('Отзыв').then((result)=>{
+                deleteVkrStuffKind('Отзыв').then((result) => {
                     if (result) {
                         $(this).parent().parent().remove();
                         setVkrReviewVersions([]);
@@ -3049,7 +3075,7 @@ export default function StudentTasksPage() {
             var versionId = $(this).parent().parent().attr('id');
             var arrayID = versionId.split('-')[3];
             $(this).attr('disabled', true);
-            sendVkrStuff(vkrDopuskVersions[arrayID].systemVersionID).then((result)=>{
+            sendVkrStuff(vkrDopuskVersions[arrayID].systemVersionID).then((result) => {
                 if (result) {
                     $(this).parent().find('.vkr-dopusk-delete-button').attr('disabled', true);
                     $(this).parent().find('.nir-header-text:contains("Статус: Не отправлено")').text('Статус: Рассматривается');
@@ -3075,7 +3101,7 @@ export default function StudentTasksPage() {
             console.log(vkrDopuskVersions);
             if (vkrDopuskVersions.length > 1) {
                 $(this).attr('disabled', true);
-                deleteVkrStuffVersion(vkrDopuskVersions[arrayID].systemVersionID).then((result)=>{
+                deleteVkrStuffVersion(vkrDopuskVersions[arrayID].systemVersionID).then((result) => {
                     if (result) {
                         $(this).parent().parent().remove();
                     }
@@ -3086,7 +3112,7 @@ export default function StudentTasksPage() {
             }
             else {
                 $(this).attr('disabled', true);
-                deleteVkrStuffKind('Допуск').then((result)=>{
+                deleteVkrStuffKind('Допуск').then((result) => {
                     if (result) {
                         $(this).parent().parent().remove();
                         setVkrDopuskVersions([]);
@@ -3108,7 +3134,7 @@ export default function StudentTasksPage() {
             var versionId = $(this).parent().parent().attr('id');
             var arrayID = versionId.split('-')[3];
             $(this).attr('disabled', true);
-            sendVkrStuff(vkrAntiplagiatVersions[arrayID].systemVersionID).then((result)=>{
+            sendVkrStuff(vkrAntiplagiatVersions[arrayID].systemVersionID).then((result) => {
                 if (result) {
                     $(this).parent().find('.vkr-antiplagiat-delete-button').attr('disabled', true);
                     $(this).parent().find('.nir-header-text:contains("Статус: Не отправлено")').text('Статус: Рассматривается');
@@ -3133,7 +3159,7 @@ export default function StudentTasksPage() {
             var arrayID = versionId.split('-')[3];
             if (vkrAntiplagiatVersions.length > 1) {
                 $(this).attr('disabled', true);
-                deleteVkrStuffVersion(vkrAntiplagiatVersions[arrayID].systemVersionID).then((result)=>{
+                deleteVkrStuffVersion(vkrAntiplagiatVersions[arrayID].systemVersionID).then((result) => {
                     if (result) {
                         $(this).parent().parent().remove();
                     }
@@ -3144,7 +3170,7 @@ export default function StudentTasksPage() {
             }
             else {
                 $(this).attr('disabled', true);
-                deleteVkrStuffKind('Антиплагиат').then((result)=>{
+                deleteVkrStuffKind('Антиплагиат').then((result) => {
                     if (result) {
                         $(this).parent().parent().remove();
                         setAntiplagiatVersions([]);
@@ -3166,7 +3192,7 @@ export default function StudentTasksPage() {
             var versionId = $(this).parent().parent().attr('id');
             var arrayID = versionId.split('-')[3];
             $(this).attr('disabled', true);
-            sendVkrStuff(vkrPrezentationVersions[arrayID].systemVersionID).then((result)=>{
+            sendVkrStuff(vkrPrezentationVersions[arrayID].systemVersionID).then((result) => {
                 if (result) {
                     $(this).parent().find('.vkr-presentation-delete-button').attr('disabled', true);
                     $(this).parent().find('.nir-header-text:contains("Статус: Не отправлено")').text('Статус: Рассматривается');
@@ -3191,7 +3217,7 @@ export default function StudentTasksPage() {
             var arrayID = versionId.split('-')[3];
             if (vkrPrezentationVersions.length > 1) {
                 $(this).attr('disabled', true);
-                deleteVkrStuffVersion(vkrPrezentationVersions[arrayID].systemVersionID).then((result)=>{
+                deleteVkrStuffVersion(vkrPrezentationVersions[arrayID].systemVersionID).then((result) => {
                     if (result) {
                         $(this).parent().parent().remove();
                     }
@@ -3203,7 +3229,7 @@ export default function StudentTasksPage() {
             else {
                 console.log('deleting kind');
                 $(this).attr('disabled', true);
-                deleteVkrStuffKind('Презентация').then((result)=>{
+                deleteVkrStuffKind('Презентация').then((result) => {
                     if (result) {
                         $(this).parent().parent().remove();
                         setPrezentationVersions([]);

@@ -12,7 +12,6 @@ export default function PerformancePage() {
     const { authTokens } = useAuthContext();
     const [fetchedData, setFetchedData] = useState(false);
 
-    const [lastSearch, setLastSearch] = useState('');
     const [performanceData, setPerformanceData] = useState([]);
 
     if (!fetchedData) {
@@ -302,7 +301,6 @@ export default function PerformancePage() {
     function searchTable() {
         var input = $('#tableSearch')[0].value.toUpperCase();
         var rows = $('.table-row');
-        setLastSearch(input);
 
         for (var i = 0; i < rows.length; i++) {
             var rowText = rows[i].querySelector('.advisor-fio').textContent.toUpperCase() +

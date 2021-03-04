@@ -321,6 +321,7 @@ export default function AdminOrdersPage() {
         $('.hoc-order-template-delete-button').off().on('click', function () {
             var systemDocumentId = $(this).parent().attr('id');
             var arrayId = systemDocumentId.split('-')[4];
+            //console.log(orders[arrayId].documentName);
             axios({
                 url: apiURL + '/scientific_advisor/document/delete/',
                 method: 'DELETE',
