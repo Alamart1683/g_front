@@ -2128,7 +2128,7 @@ export default function StudentTasksPage() {
             },
         }).then((response) => {
             //console.log(response);
-            if (response.data.indexOf('При поиске последней версии задания произошло что-то необъяснимое') > -1) {
+            if (response.data.indexOf('При поиске последней версии задания произошло что-то необъяснимое') > -1 || response.data.indexOf('Не найдено одобренное задание') > -1) {
                 setErrorMessage('Ошибка при создании отчета: не удалось найти одобренную версию задания!');
                 setShowError(true);
             }

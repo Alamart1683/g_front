@@ -271,6 +271,7 @@ export default function ScaProjectsPage() {
                     deleteAreaButton.type = 'button';
                     deleteAreaButton.innerText = 'Удалить комплексный проект';
                     deleteAreaButton.className = 'sca-projects-table-button delete-project-area-button';
+                    deleteAreaButton.style.height = '95px';
 
                     studentRowEmpty.appendChild(rowNumEmpty);
                     studentRowEmpty.appendChild(rowAreaEmpty);
