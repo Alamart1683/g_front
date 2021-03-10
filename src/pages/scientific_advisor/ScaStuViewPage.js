@@ -2436,6 +2436,7 @@ export default function ScaStuViewPage() {
                 formData.append('advisorConclusion', conclusion);
                 reportVersion['detailedContent'] = detailedDescription;
                 reportVersion['advisorConclusion'] = conclusion;
+                formData.append('nowMerge', $('#nir-merge-checkbox').prop('checked'));
                 break;
             case 'Практика по получению знаний и умений':
                 document.getElementById('make-long-pp-otchet-button').disabled = true;
@@ -2443,6 +2444,7 @@ export default function ScaStuViewPage() {
                 formData.append('advisorConclusion', conclusionLongPP);
                 reportVersion['detailedContent'] = detailedDescriptionLongPP;
                 reportVersion['advisorConclusion'] = conclusionLongPP;
+                formData.append('nowMerge', $('#long-pp-merge-checkbox').prop('checked'));
                 break;
             case 'Преддипломная практика':
                 document.getElementById('make-pp-otchet-button').disabled = true;
@@ -2450,8 +2452,10 @@ export default function ScaStuViewPage() {
                 formData.append('advisorConclusion', conclusionPP);
                 reportVersion['detailedContent'] = detailedDescriptionPP;
                 reportVersion['advisorConclusion'] = conclusionPP;
+                formData.append('nowMerge', $('#pp-merge-checkbox').prop('checked'));
                 break;
             case 'ВКР':
+                formData.append('nowMerge', $('#vkr-merge-checkbox').prop('checked'));
                 break;
             default:
                 console.log('Неопознанный тип отчета');
@@ -2467,7 +2471,7 @@ export default function ScaStuViewPage() {
                 'Authorization': 'Bearer ' + authTokens.accessToken
             },
         }).then((response) => {
-            //console.log(response);
+            console.log(response);
             if (response.data.indexOf('При поиске последней версии задания произошло что-то необъяснимое') > -1) {
                 setErrorMessage('Ошибка при создании версии отчета: не удалось найти одобренную версию задания!');
                 setShowError(true);
@@ -4054,7 +4058,10 @@ export default function ScaStuViewPage() {
                                             $('#nir-otchet-file-input[type="file"]').val(null);
                                         }
                                     }} ></input>
-
+                                    <div className='report-attach-div'>
+                                        <input type='checkbox' defaultChecked id='nir-merge-checkbox' className='report-attach-checkbox'></input>
+                                        <label htmlFor='nir-merge-checkbox' className='size-24 dark attach-checkbox-text'>Присоединить к загруженному файлу одобренное задание?</label>
+                                    </div>
                                 </div>
                             </Tab>
                         </Tabs>
@@ -4157,6 +4164,10 @@ export default function ScaStuViewPage() {
                                             $('#long-pp-otchet-file-input[type="file"]').val(null);
                                         }
                                     }} ></input>
+                                    <div className='report-attach-div'>
+                                        <input type='checkbox' defaultChecked id='long-pp-merge-checkbox' className='report-attach-checkbox'></input>
+                                        <label htmlFor='long-pp-merge-checkbox' className='size-24 dark attach-checkbox-text'>Присоединить к загруженному файлу одобренное задание?</label>
+                                    </div>
                                 </div>
                             </Tab>
                         </Tabs>
@@ -4258,6 +4269,10 @@ export default function ScaStuViewPage() {
                                             $('#pp-otchet-file-input[type="file"]').val(null);
                                         }
                                     }} ></input>
+                                    <div className='report-attach-div'>
+                                        <input type='checkbox' defaultChecked id='pp-merge-checkbox' className='report-attach-checkbox'></input>
+                                        <label htmlFor='pp-merge-checkbox' className='size-24 dark attach-checkbox-text'>Присоединить к загруженному файлу одобренное задание?</label>
+                                    </div>
                                 </div>
                             </Tab>
                         </Tabs>
@@ -4399,6 +4414,10 @@ export default function ScaStuViewPage() {
                                             $('#vkr-otchet-file-input[type="file"]').val(null);
                                         }
                                     }} ></input>
+                                    <div className='report-attach-div'>
+                                        <input disabled type='checkbox' defaultChecked id='vkr-merge-checkbox' className='report-attach-checkbox'></input>
+                                        <label htmlFor='vkr-merge-checkbox' className='size-24 dark attach-checkbox-text'>Присоединить к загруженному файлу одобренное задание?</label>
+                                    </div>
                                 </div>
                             </Tab>
                             <Tab eventKey='info45' title={

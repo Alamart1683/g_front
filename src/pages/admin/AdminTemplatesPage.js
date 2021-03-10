@@ -33,7 +33,7 @@ export default function AdminTemplatesPage() {
                 'Authorization': 'Bearer ' + authTokens.accessToken
             },
         }).then((response) => {
-            console.log(response);
+            //console.log(response);
             setTemplates(response.data);
         }).catch(result => {
             console.log(result.data);
@@ -53,7 +53,7 @@ export default function AdminTemplatesPage() {
             templateName.className = 'dark-background hoc-order-template-name';
             templateName.id = 'hoc-order-template-name';
             templateName.style.top = '-5px';
-            templateName.style.width = '684px';
+            templateName.style.width = '715px';
 
             var templateNameText = document.createElement('p');
             templateNameText.className = 'hoc-order-template-name-text light size-22'
@@ -74,12 +74,14 @@ export default function AdminTemplatesPage() {
             var templateDownload = document.createElement('button');
             templateDownload.className = 'hoc-order-template-download-button light size-22';
             templateDownload.id = 'hoc-template-download-button';
-            templateDownload.innerText = "Сохранить"
+            templateDownload.innerText = "Сохранить";
+            templateDownload.style.width = '120px';
 
             var templateDelete = document.createElement('button');
             templateDelete.className = 'hoc-order-template-delete-button light size-22';
             templateDelete.id = 'hoc-template-delete-button';
             templateDelete.innerText = "Удалить";
+            templateDelete.style.width = '90px';
 
             // Кнопка просмотреть
             var viewButton = document.createElement('button');
@@ -87,6 +89,7 @@ export default function AdminTemplatesPage() {
             viewButton.id = 'template-view-' + i;
             viewButton.innerText = 'Просмотреть';
             viewButton.type = 'button';
+            viewButton.style.width = '142px';
 
             documentFile.appendChild(templateName);
             documentFile.appendChild(viewButton);

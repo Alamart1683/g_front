@@ -519,17 +519,22 @@ export default function MessagesPage() {
                 $('#recommended-contact-content').toggle();
             }
 
+            if (e.target.id === 'add-all-recommended') {
+                $('.recommended-contact-item').each(function () {
+                    $(this).trigger('click');
+                });
+            }
+
             $('.new-message-compact-receiver-button').each(function () {
                 if ($(this).is(e.target)) {
-                    //console.log($(this).parent());
                     var receiverId = $(this).attr('id').split('-')[2];
                     newMessageReceiversId.splice(newMessageReceiversId.indexOf(receiverId), 1);
-                    //console.log(newMessageReceiversId);
                     $(this).parent().remove();
                     checkValidity();
                 }
             });
 
+            
         });
 
         $('#send-new-message-button').off().on('click', function () {
@@ -666,6 +671,16 @@ export default function MessagesPage() {
                     },
                 }).then((response) => {
                     //console.log(response);
+
+                    var recommendedMessage = document.createElement('p');
+                    recommendedMessage.innerText = 'Рекомендуемые контакты:';
+                    document.getElementById('recommended-contact-content').appendChild(recommendedMessage);
+                    
+                    var addRecommendedMessage = document.createElement('p');
+                    addRecommendedMessage.innerText = 'Добавить все рекомендуемые контакты';
+                    addRecommendedMessage.id = 'add-all-recommended';
+                    document.getElementById('recommended-contact-content').appendChild(addRecommendedMessage);
+
                     for (var i = 0; i < response.data.length; i++) {
                         var contact = document.createElement('p');
                         contact.className = 'recommended-contact-item';

@@ -2254,3 +2254,20 @@ html, body {
 	background-color: #ddd;
 	cursor: pointer;
 }
+
+.report-attach-div {
+	white-space: nowrap;
+	margin-top: 20px;
+}
+
+.report-attach-checkbox {
+	width: 30px;
+	height: 30px;
+	margin-left: 410px;
+	position: relative;
+	top: 5px;
+}
+
+.attach-checkbox-text {
+	margin-left: 10px;
+}
