@@ -2230,19 +2230,19 @@ export default function ScaStuViewPage() {
             taskVersion['additionalTask'] = additionalTask;
         }
         if (vkrAims === '') {
-            taskVersion['vkrAim'] = null
+            taskVersion['vkrAim'] = 'Цель'
         }
         else {
             taskVersion['vkrAim'] = vkrAims
         }
         if (vkrDocs === '') {
-            taskVersion['vkrDocs'] = null
+            taskVersion['vkrDocs'] = '– Документы и графические материалы'
         }
         else {
             taskVersion['vkrDocs'] = vkrDocs
         }
         if (vkrTasks === '') {
-            taskVersion['vkrTasks'] = null
+            taskVersion['vkrTasks'] = 'Задачи'
         }
         else {
             taskVersion['vkrTasks'] = vkrTasks
@@ -2264,7 +2264,11 @@ export default function ScaStuViewPage() {
                         'Authorization': 'Bearer ' + authTokens.accessToken
                     },
                 }).then((response) => {
-                    if (response.data === 'Вы не можете добавлять версии заданию студенту, пока он его не сгенерирует') {
+                    if (response.data.indexOf('Приказ еще не был загружен') > -1) {
+                        setErrorMessage('Ошибка при создании версии задания: приказ ещё не был загружен!');
+                        setShowError(true);
+                    }
+                    else if (response.data === 'Вы не можете добавлять версии заданию студенту, пока он его не сгенерирует') {
                         console.log(response.data);
                         setErrorMessage('Нельзя создать версию задания, пока студент не создаст хотя бы одну версию!');
                         setShowError(true);
@@ -2308,7 +2312,11 @@ export default function ScaStuViewPage() {
                         'Authorization': 'Bearer ' + authTokens.accessToken
                     },
                 }).then((response) => {
-                    if (response.data === 'Вы не можете добавлять версии заданию студента, пока он его не сгенерирует') {
+                    if (response.data.indexOf('Приказ еще не был загружен') > -1) {
+                        setErrorMessage('Ошибка при создании версии задания: приказ ещё не был загружен!');
+                        setShowError(true);
+                    }
+                    else if (response.data === 'Вы не можете добавлять версии заданию студента, пока он его не сгенерирует') {
                         console.log(response.data);
                         setErrorMessage('Нельзя создать версию задания, пока студент не создаст хотя бы одну версию!');
                         setShowError(true);
@@ -2387,39 +2395,6 @@ export default function ScaStuViewPage() {
         });
     }
 
-    /*
-    function makeNirOtchet(file) {
-        var formData = new FormData();
-        formData.append('documentFormType', 'Научно-исследовательская работа');
-        formData.append('documentFormKind', 'Отчёт');
-        formData.append('documentFormDescription', 'Пример отчёта');
-        formData.append('documentFormViewRights', 'Я и мой научный руководитель');
-        formData.append('detailedContent', detailedDescription);
-        formData.append('advisorConclusion', conclusion);
-        formData.append('file', file);
-        formData.append('studentID', sessionStorage.getItem('viewedStudentId'));
-        axios({
-            url: apiURL + '/scientific_advisor/document/report/upload/version',
-            method: 'POST',
-            data: formData,
-            headers: {
-                'Content-Type': 'multipart/form-data',
-                'Authorization': 'Bearer ' + authTokens.accessToken
-            },
-        }).then((response) => {
-            if (response.data === 'Вы не можете загрузить версию отчёта студента пока он его не загрузит') {
-                console.log(response);
-            }
-            else {
-                console.log(response);
-                window.location.reload();
-            }
-        }).catch(result => {
-            console.log(result);
-        });
-    }
-    */
-
     function makeOtchetVersion(file, type) {
         var reportVersion = {};
         reportVersion['editorName'] = authTokens.fio;
@@ -2455,6 +2430,7 @@ export default function ScaStuViewPage() {
                 formData.append('nowMerge', $('#pp-merge-checkbox').prop('checked'));
                 break;
             case 'ВКР':
+                document.getElementById('make-vkr-otchet-button').disabled = true;
                 formData.append('nowMerge', $('#vkr-merge-checkbox').prop('checked'));
                 break;
             default:
@@ -2472,7 +2448,11 @@ export default function ScaStuViewPage() {
             },
         }).then((response) => {
             console.log(response);
-            if (response.data.indexOf('При поиске последней версии задания произошло что-то необъяснимое') > -1) {
+            if (response.data.indexOf('Попытка загрузить документ с некорректным разрешением') > -1) {
+                setErrorMessage('Ошибка при создании документа: расширение файлов должно совпадать!');
+                setShowError(true);
+            }
+            else if (response.data.indexOf('При поиске последней версии задания произошло что-то необъяснимое') > -1) {
                 setErrorMessage('Ошибка при создании версии отчета: не удалось найти одобренную версию задания!');
                 setShowError(true);
             }
@@ -2547,6 +2527,8 @@ export default function ScaStuViewPage() {
             }
         }).catch(result => {
             console.log(result);
+            setErrorMessage('Ошибка при создании версии отчета!');
+            setShowError(true);
         });
     }
 
@@ -2728,6 +2710,89 @@ export default function ScaStuViewPage() {
         });
     }
 
+    function uploadDocumentVersion(file, id, description, kind) {
+        document.getElementById('make-vkr-review-button').disabled = true;
+        document.getElementById('make-vkr-dopusk-button').disabled = true;
+        document.getElementById('make-vkr-antiplagiat-button').disabled = true;
+        document.getElementById('make-vkr-presentation-button').disabled = true;
+        var stuffVersion = {};
+        stuffVersion['editorName'] = authTokens.fio;
+        stuffVersion['documentStatus'] = 'Не отправлено';
+        var formData = new FormData();
+        formData.append('documentID', id);
+        formData.append('editionDescription', description);
+        formData.append('versionFile', file);
+        axios({
+            url: apiURL + '/document/upload/version',
+            method: 'POST',
+            data: formData,
+            headers: {
+                'Content-Type': 'multipart/form-data',
+                'Authorization': 'Bearer ' + authTokens.accessToken
+            },
+        }).then((response) => {
+            //console.log(response);
+            if (response.data.indexOf('Запрещено загружать версию документа с иным разрешением, для этого следует загрузить новый документ') > -1) {
+                setErrorMessage('Ошибка при создании документа: расширение файлов должно совпадать!');
+                setShowError(true);
+            }
+            else if (/\d/.test(response.data[0])) {
+                stuffVersion['systemVersionID'] = response.data[0].split(',')[0]
+                stuffVersion['versionEditionDate'] = response.data[0].split(',')[1]
+                stuffVersion['systemDocumentID'] = response.data[0].split(',')[2]
+                switch (kind) {
+                    case 'Отзыв':
+                        showVkrReviewVersionSingle(stuffVersion, vkrReviewVersions.length);
+                        setVkrReviewVersions(vkrReviewVersions.concat(stuffVersion));
+                        break;
+                    case 'Допуск':
+                        showDopuskVersionSingle(stuffVersion, vkrDopuskVersions.length);
+                        setVkrDopuskVersions(vkrDopuskVersions.concat(stuffVersion));
+                        break;
+                    case 'Антиплагиат':
+                        showVkrAntiplagiatVersionSingle(stuffVersion, vkrAntiplagiatVersions.length);
+                        setAntiplagiatVersions(vkrAntiplagiatVersions.concat(stuffVersion));
+                        break;
+                    case 'Презентация':
+                        showVkrPresentationVersionSingle(stuffVersion, vkrPrezentationVersions.length);
+                        setPrezentationVersions(vkrPrezentationVersions.concat(stuffVersion));
+                        break;
+                    default:
+                        console.log('stuff version creation error')
+                }
+            }
+            else {
+                setErrorMessage('Ошибка при создании документа ВКР!');
+                setShowError(true);
+            }   
+        }).catch(result => {
+            console.log(result);
+            console.log(vkrPrezentationVersions);
+            switch (kind) {
+                case 'Отзыв':
+                    setErrorMessage('Ошибка при создании отзыва для ВКР!');
+                    break;
+                case 'Допуск':
+                    setErrorMessage('Ошибка при создании допуска для ВКР!');
+                    break;
+                case 'Антиплагиат':
+                    setErrorMessage('Ошибка при создании антиплагиата для ВКР!');
+                    break;
+                case 'Презентация':
+                    setErrorMessage('Ошибка при создании презентации для ВКР!');
+                    break;
+                default:
+                    setErrorMessage('Ошибка при создании документа для ВКР!');
+            }
+            setShowError(true);
+        }).then(() => {
+            document.getElementById('make-vkr-review-button').disabled = false;
+            document.getElementById('make-vkr-dopusk-button').disabled = false;
+            document.getElementById('make-vkr-antiplagiat-button').disabled = false;
+            document.getElementById('make-vkr-presentation-button').disabled = false;
+        });
+    }
+
     $(function () {
 
         $('[data-toggle="popover"]').popover();
@@ -2770,7 +2835,7 @@ export default function ScaStuViewPage() {
             var arrayID = versionId.split('-')[2];
             $(this).parent().parent().find('.nir-version-send-button').attr('disabled', true);
             $(this).parent().toggle();
-            gradeTask(nirVersions, arrayID, 'Одобрено').then((result)=>{
+            gradeTask(nirVersions, arrayID, 'Одобрено').then((result) => {
                 if (result) {
                     $(this).parent().parent().parent().find('.nir-header-text:contains("Статус: Рассматривается")').text('Статус: Одобрено');
                     $(this).parent().parent().parent().find('.nir-header-text:contains("Статус: Не отправлено")').text('Статус: Одобрено');
@@ -2789,7 +2854,7 @@ export default function ScaStuViewPage() {
             var arrayID = versionId.split('-')[2];
             $(this).parent().parent().find('.nir-version-send-button').attr('disabled', true);
             $(this).parent().toggle();
-            gradeTask(nirVersions, arrayID, 'Замечания').then((result)=>{
+            gradeTask(nirVersions, arrayID, 'Замечания').then((result) => {
                 if (result) {
                     $(this).parent().parent().parent().find('.nir-header-text:contains("Статус: Рассматривается")').text('Статус: Замечания');
                     $(this).parent().parent().parent().find('.nir-header-text:contains("Статус: Не отправлено")').text('Статус: Замечания');
@@ -2813,7 +2878,7 @@ export default function ScaStuViewPage() {
             var versionId = $(this).parent().parent().attr('id');
             var arrayID = versionId.split('-')[2];
             $(this).attr('disabled', true);
-            deleteTask(nirVersions[arrayID].systemVersionID).then((result)=>{
+            deleteTask(nirVersions[arrayID].systemVersionID).then((result) => {
                 if (result) {
                     $(this).parent().parent().remove();
                 }
@@ -2834,7 +2899,7 @@ export default function ScaStuViewPage() {
             var arrayID = versionId.split('-')[3];
             $(this).parent().parent().find('.nir-version-send-button').attr('disabled', true);
             $(this).parent().toggle();
-            gradeOtchet(nirOtchetVersions, arrayID, 'Замечания').then((result)=>{
+            gradeOtchet(nirOtchetVersions, arrayID, 'Замечания').then((result) => {
                 if (result) {
                     $(this).parent().parent().parent().find('.nir-header-text:contains("Статус: Рассматривается")').text('Статус: Замечания');
                     $(this).parent().parent().parent().find('.nir-header-text:contains("Статус: Не отправлено")').text('Статус: Замечания');
@@ -2851,7 +2916,7 @@ export default function ScaStuViewPage() {
             var arrayID = versionId.split('-')[3];
             $(this).parent().parent().find('.nir-version-send-button').attr('disabled', true);
             $(this).parent().toggle();
-            gradeOtchet(nirOtchetVersions, arrayID, 'Неудовлетворительно').then((result)=>{
+            gradeOtchet(nirOtchetVersions, arrayID, 'Неудовлетворительно').then((result) => {
                 if (result) {
                     $(this).parent().parent().parent().find('.nir-header-text:contains("Статус: Рассматривается")').text('Статус: НЕУД.');
                     $(this).parent().parent().parent().find('.nir-header-text:contains("Статус: Не отправлено")').text('Статус: НЕУД.');
@@ -2871,7 +2936,7 @@ export default function ScaStuViewPage() {
             var arrayID = versionId.split('-')[3];
             $(this).parent().parent().find('.nir-version-send-button').attr('disabled', true);
             $(this).parent().toggle();
-            gradeOtchet(nirOtchetVersions, arrayID, 'Удовлетворительно').then((result)=>{
+            gradeOtchet(nirOtchetVersions, arrayID, 'Удовлетворительно').then((result) => {
                 if (result) {
                     $(this).parent().parent().parent().find('.nir-header-text:contains("Статус: Рассматривается")').text('Статус: УДОВЛ.');
                     $(this).parent().parent().parent().find('.nir-header-text:contains("Статус: Не отправлено")').text('Статус: УДОВЛ.');
@@ -2891,7 +2956,7 @@ export default function ScaStuViewPage() {
             var arrayID = versionId.split('-')[3];
             $(this).parent().parent().find('.nir-version-send-button').attr('disabled', true);
             $(this).parent().toggle();
-            gradeOtchet(nirOtchetVersions, arrayID, 'Хорошо').then((result)=>{
+            gradeOtchet(nirOtchetVersions, arrayID, 'Хорошо').then((result) => {
                 if (result) {
                     $(this).parent().parent().parent().find('.nir-header-text:contains("Статус: Рассматривается")').text('Статус: ХОР.');
                     $(this).parent().parent().parent().find('.nir-header-text:contains("Статус: Не отправлено")').text('Статус: ХОР.');
@@ -2911,7 +2976,7 @@ export default function ScaStuViewPage() {
             var arrayID = versionId.split('-')[3];
             $(this).parent().parent().find('.nir-version-send-button').attr('disabled', true);
             $(this).parent().toggle();
-            gradeOtchet(nirOtchetVersions, arrayID, 'Отлично').then((result)=>{
+            gradeOtchet(nirOtchetVersions, arrayID, 'Отлично').then((result) => {
                 if (result) {
                     $(this).parent().parent().parent().find('.nir-header-text:contains("Статус: Рассматривается")').text('Статус: ОТЛ.');
                     $(this).parent().parent().parent().find('.nir-header-text:contains("Статус: Не отправлено")').text('Статус: ОТЛ.');
@@ -2931,7 +2996,7 @@ export default function ScaStuViewPage() {
             var versionId = $(this).parent().parent().attr('id');
             var arrayID = versionId.split('-')[3];
             $(this).attr('disabled', true);
-            deleteReport(nirOtchetVersions[arrayID].systemVersionID).then((result)=>{
+            deleteReport(nirOtchetVersions[arrayID].systemVersionID).then((result) => {
                 if (result) {
                     $(this).parent().parent().remove();
                 }
@@ -2959,7 +3024,7 @@ export default function ScaStuViewPage() {
             var arrayID = versionId.split('-')[3];
             $(this).parent().parent().find('.nir-version-send-button').attr('disabled', true);
             $(this).parent().toggle();
-            gradeTask(longPPData, arrayID, 'Одобрено').then((result)=>{
+            gradeTask(longPPData, arrayID, 'Одобрено').then((result) => {
                 if (result) {
                     $(this).parent().parent().parent().find('.nir-header-text:contains("Статус: Рассматривается")').text('Статус: Одобрено');
                     $(this).parent().parent().parent().find('.nir-header-text:contains("Статус: Не отправлено")').text('Статус: Одобрено');
@@ -2978,7 +3043,7 @@ export default function ScaStuViewPage() {
             var arrayID = versionId.split('-')[3];
             $(this).parent().parent().find('.nir-version-send-button').attr('disabled', true);
             $(this).parent().toggle();
-            gradeTask(longPPData, arrayID, 'Замечания').then((result)=>{
+            gradeTask(longPPData, arrayID, 'Замечания').then((result) => {
                 if (result) {
                     $(this).parent().parent().parent().find('.nir-header-text:contains("Статус: Рассматривается")').text('Статус: Замечания');
                     $(this).parent().parent().parent().find('.nir-header-text:contains("Статус: Не отправлено")').text('Статус: Замечания');
@@ -3002,7 +3067,7 @@ export default function ScaStuViewPage() {
             var versionId = $(this).parent().parent().attr('id');
             var arrayID = versionId.split('-')[3];
             $(this).attr('disabled', true);
-            deleteTask(longPPData[arrayID].systemVersionID).then((result)=>{
+            deleteTask(longPPData[arrayID].systemVersionID).then((result) => {
                 if (result) {
                     $(this).parent().parent().remove();
                 }
@@ -3023,7 +3088,7 @@ export default function ScaStuViewPage() {
             var arrayID = versionId.split('-')[4];
             $(this).parent().parent().find('.nir-version-send-button').attr('disabled', true);
             $(this).parent().toggle();
-            gradeOtchet(longPPOtchetVersions, arrayID, 'Замечания').then((result)=>{
+            gradeOtchet(longPPOtchetVersions, arrayID, 'Замечания').then((result) => {
                 if (result) {
                     $(this).parent().parent().parent().find('.nir-header-text:contains("Статус: Рассматривается")').text('Статус: Замечания');
                     $(this).parent().parent().parent().find('.nir-header-text:contains("Статус: Не отправлено")').text('Статус: Замечания');
@@ -3040,7 +3105,7 @@ export default function ScaStuViewPage() {
             var arrayID = versionId.split('-')[4];
             $(this).parent().parent().find('.nir-version-send-button').attr('disabled', true);
             $(this).parent().toggle();
-            gradeOtchet(longPPOtchetVersions, arrayID, 'Неудовлетворительно').then((result)=>{
+            gradeOtchet(longPPOtchetVersions, arrayID, 'Неудовлетворительно').then((result) => {
                 if (result) {
                     $(this).parent().parent().parent().find('.nir-header-text:contains("Статус: Рассматривается")').text('Статус: НЕУД.');
                     $(this).parent().parent().parent().find('.nir-header-text:contains("Статус: Не отправлено")').text('Статус: НЕУД.');
@@ -3060,7 +3125,7 @@ export default function ScaStuViewPage() {
             var arrayID = versionId.split('-')[4];
             $(this).parent().parent().find('.nir-version-send-button').attr('disabled', true);
             $(this).parent().toggle();
-            gradeOtchet(longPPOtchetVersions, arrayID, 'Удовлетворительно').then((result)=>{
+            gradeOtchet(longPPOtchetVersions, arrayID, 'Удовлетворительно').then((result) => {
                 if (result) {
                     $(this).parent().parent().parent().find('.nir-header-text:contains("Статус: Рассматривается")').text('Статус: УДОВЛ.');
                     $(this).parent().parent().parent().find('.nir-header-text:contains("Статус: Не отправлено")').text('Статус: УДОВЛ.');
@@ -3080,7 +3145,7 @@ export default function ScaStuViewPage() {
             var arrayID = versionId.split('-')[4];
             $(this).parent().parent().find('.nir-version-send-button').attr('disabled', true);
             $(this).parent().toggle();
-            gradeOtchet(longPPOtchetVersions, arrayID, 'Хорошо').then((result)=>{
+            gradeOtchet(longPPOtchetVersions, arrayID, 'Хорошо').then((result) => {
                 if (result) {
                     $(this).parent().parent().parent().find('.nir-header-text:contains("Статус: Рассматривается")').text('Статус: ХОР.');
                     $(this).parent().parent().parent().find('.nir-header-text:contains("Статус: Не отправлено")').text('Статус: ХОР.');
@@ -3100,7 +3165,7 @@ export default function ScaStuViewPage() {
             var arrayID = versionId.split('-')[4];
             $(this).parent().parent().find('.nir-version-send-button').attr('disabled', true);
             $(this).parent().toggle();
-            gradeOtchet(longPPOtchetVersions, arrayID, 'Отлично').then((result)=>{
+            gradeOtchet(longPPOtchetVersions, arrayID, 'Отлично').then((result) => {
                 if (result) {
                     $(this).parent().parent().parent().find('.nir-header-text:contains("Статус: Рассматривается")').text('Статус: ОТЛ.');
                     $(this).parent().parent().parent().find('.nir-header-text:contains("Статус: Не отправлено")').text('Статус: ОТЛ.');
@@ -3120,7 +3185,7 @@ export default function ScaStuViewPage() {
             var versionId = $(this).parent().parent().attr('id');
             var arrayID = versionId.split('-')[4];
             $(this).attr('disabled', true);
-            deleteReport(longPPOtchetVersions[arrayID].systemVersionID).then((result)=>{
+            deleteReport(longPPOtchetVersions[arrayID].systemVersionID).then((result) => {
                 if (result) {
                     $(this).parent().parent().remove();
                 }
@@ -3149,7 +3214,7 @@ export default function ScaStuViewPage() {
             var arrayID = versionId.split('-')[2];
             $(this).parent().parent().find('.nir-version-send-button').attr('disabled', true);
             $(this).parent().toggle();
-            gradeTask(PPData, arrayID, 'Одобрено').then((result)=>{
+            gradeTask(PPData, arrayID, 'Одобрено').then((result) => {
                 if (result) {
                     $(this).parent().parent().parent().find('.nir-header-text:contains("Статус: Рассматривается")').text('Статус: Одобрено');
                     $(this).parent().parent().parent().find('.nir-header-text:contains("Статус: Не отправлено")').text('Статус: Одобрено');
@@ -3168,7 +3233,7 @@ export default function ScaStuViewPage() {
             var arrayID = versionId.split('-')[2];
             $(this).parent().parent().find('.nir-version-send-button').attr('disabled', true);
             $(this).parent().toggle();
-            gradeTask(PPData, arrayID, 'Замечания').then((result)=>{
+            gradeTask(PPData, arrayID, 'Замечания').then((result) => {
                 if (result) {
                     $(this).parent().parent().parent().find('.nir-header-text:contains("Статус: Рассматривается")').text('Статус: Замечания');
                     $(this).parent().parent().parent().find('.nir-header-text:contains("Статус: Не отправлено")').text('Статус: Замечания');
@@ -3192,7 +3257,7 @@ export default function ScaStuViewPage() {
             var versionId = $(this).parent().parent().attr('id');
             var arrayID = versionId.split('-')[2];
             $(this).attr('disabled', true);
-            deleteTask(PPData[arrayID].systemVersionID).then((result)=>{
+            deleteTask(PPData[arrayID].systemVersionID).then((result) => {
                 if (result) {
                     $(this).parent().parent().remove();
                 }
@@ -3213,7 +3278,7 @@ export default function ScaStuViewPage() {
             var arrayID = versionId.split('-')[3];
             $(this).parent().parent().find('.nir-version-send-button').attr('disabled', true);
             $(this).parent().toggle();
-            gradeOtchet(PPOtchetVersions, arrayID, 'Замечания').then((result)=>{
+            gradeOtchet(PPOtchetVersions, arrayID, 'Замечания').then((result) => {
                 if (result) {
                     $(this).parent().parent().parent().find('.nir-header-text:contains("Статус: Рассматривается")').text('Статус: Замечания');
                     $(this).parent().parent().parent().find('.nir-header-text:contains("Статус: Не отправлено")').text('Статус: Замечания');
@@ -3230,7 +3295,7 @@ export default function ScaStuViewPage() {
             var arrayID = versionId.split('-')[3];
             $(this).parent().parent().find('.nir-version-send-button').attr('disabled', true);
             $(this).parent().toggle();
-            gradeOtchet(PPOtchetVersions, arrayID, 'Неудовлетворительно').then((result)=>{
+            gradeOtchet(PPOtchetVersions, arrayID, 'Неудовлетворительно').then((result) => {
                 if (result) {
                     $(this).parent().parent().parent().find('.nir-header-text:contains("Статус: Рассматривается")').text('Статус: НЕУД.');
                     $(this).parent().parent().parent().find('.nir-header-text:contains("Статус: Не отправлено")').text('Статус: НЕУД.');
@@ -3250,7 +3315,7 @@ export default function ScaStuViewPage() {
             var arrayID = versionId.split('-')[3];
             $(this).parent().parent().find('.nir-version-send-button').attr('disabled', true);
             $(this).parent().toggle();
-            gradeOtchet(PPOtchetVersions, arrayID, 'Удовлетворительно').then((result)=>{
+            gradeOtchet(PPOtchetVersions, arrayID, 'Удовлетворительно').then((result) => {
                 if (result) {
                     $(this).parent().parent().parent().find('.nir-header-text:contains("Статус: Рассматривается")').text('Статус: УДОВЛ.');
                     $(this).parent().parent().parent().find('.nir-header-text:contains("Статус: Не отправлено")').text('Статус: УДОВЛ.');
@@ -3270,7 +3335,7 @@ export default function ScaStuViewPage() {
             var arrayID = versionId.split('-')[3];
             $(this).parent().parent().find('.nir-version-send-button').attr('disabled', true);
             $(this).parent().toggle();
-            gradeOtchet(PPOtchetVersions, arrayID, 'Хорошо').then((result)=>{
+            gradeOtchet(PPOtchetVersions, arrayID, 'Хорошо').then((result) => {
                 if (result) {
                     $(this).parent().parent().parent().find('.nir-header-text:contains("Статус: Рассматривается")').text('Статус: ХОР.');
                     $(this).parent().parent().parent().find('.nir-header-text:contains("Статус: Не отправлено")').text('Статус: ХОР.');
@@ -3290,7 +3355,7 @@ export default function ScaStuViewPage() {
             var arrayID = versionId.split('-')[3];
             $(this).parent().parent().find('.nir-version-send-button').attr('disabled', true);
             $(this).parent().toggle();
-            gradeOtchet(PPOtchetVersions, arrayID, 'Отлично').then((result)=>{
+            gradeOtchet(PPOtchetVersions, arrayID, 'Отлично').then((result) => {
                 if (result) {
                     $(this).parent().parent().parent().find('.nir-header-text:contains("Статус: Рассматривается")').text('Статус: ОТЛ.');
                     $(this).parent().parent().parent().find('.nir-header-text:contains("Статус: Не отправлено")').text('Статус: ОТЛ.');
@@ -3310,7 +3375,7 @@ export default function ScaStuViewPage() {
             var versionId = $(this).parent().parent().attr('id');
             var arrayID = versionId.split('-')[3];
             $(this).attr('disabled', true);
-            deleteReport(PPOtchetVersions[arrayID].systemVersionID).then((result)=>{
+            deleteReport(PPOtchetVersions[arrayID].systemVersionID).then((result) => {
                 if (result) {
                     $(this).parent().parent().remove();
                 }
@@ -3338,7 +3403,7 @@ export default function ScaStuViewPage() {
             var arrayID = versionId.split('-')[2];
             $(this).parent().parent().find('.nir-version-send-button').attr('disabled', true);
             $(this).parent().toggle();
-            gradeTask(vkrTaskVersions, arrayID, 'Одобрено').then((result)=>{
+            gradeTask(vkrTaskVersions, arrayID, 'Одобрено').then((result) => {
                 if (result) {
                     $(this).parent().parent().parent().find('.nir-header-text:contains("Статус: Рассматривается")').text('Статус: Одобрено');
                     $(this).parent().parent().parent().find('.nir-header-text:contains("Статус: Не отправлено")').text('Статус: Одобрено');
@@ -3357,7 +3422,7 @@ export default function ScaStuViewPage() {
             var arrayID = versionId.split('-')[2];
             $(this).parent().parent().find('.nir-version-send-button').attr('disabled', true);
             $(this).parent().toggle();
-            gradeTask(vkrTaskVersions, arrayID, 'Замечания').then((result)=>{
+            gradeTask(vkrTaskVersions, arrayID, 'Замечания').then((result) => {
                 if (result) {
                     $(this).parent().parent().parent().find('.nir-header-text:contains("Статус: Рассматривается")').text('Статус: Замечания');
                     $(this).parent().parent().parent().find('.nir-header-text:contains("Статус: Не отправлено")').text('Статус: Замечания');
@@ -3381,7 +3446,7 @@ export default function ScaStuViewPage() {
             var versionId = $(this).parent().parent().attr('id');
             var arrayID = versionId.split('-')[2];
             $(this).attr('disabled', true);
-            deleteTask(vkrTaskVersions[arrayID].systemVersionID).then((result)=>{
+            deleteTask(vkrTaskVersions[arrayID].systemVersionID).then((result) => {
                 if (result) {
                     $(this).parent().parent().remove();
                 }
@@ -3402,7 +3467,7 @@ export default function ScaStuViewPage() {
             var arrayID = versionId.split('-')[3];
             $(this).parent().parent().find('.nir-version-send-button').attr('disabled', true);
             $(this).parent().toggle();
-            gradeOtchet(vkrOtchetVersions, arrayID, 'Замечания').then((result)=>{
+            gradeOtchet(vkrOtchetVersions, arrayID, 'Замечания').then((result) => {
                 if (result) {
                     $(this).parent().parent().parent().find('.nir-header-text:contains("Статус: Рассматривается")').text('Статус: Замечания');
                     $(this).parent().parent().parent().find('.nir-header-text:contains("Статус: Не отправлено")').text('Статус: Замечания');
@@ -3419,7 +3484,7 @@ export default function ScaStuViewPage() {
             var arrayID = versionId.split('-')[3];
             $(this).parent().parent().find('.nir-version-send-button').attr('disabled', true);
             $(this).parent().toggle();
-            gradeOtchet(vkrOtchetVersions, arrayID, 'Неудовлетворительно').then((result)=>{
+            gradeOtchet(vkrOtchetVersions, arrayID, 'Неудовлетворительно').then((result) => {
                 if (result) {
                     $(this).parent().parent().parent().find('.nir-header-text:contains("Статус: Рассматривается")').text('Статус: НЕУД.');
                     $(this).parent().parent().parent().find('.nir-header-text:contains("Статус: Не отправлено")').text('Статус: НЕУД.');
@@ -3439,7 +3504,7 @@ export default function ScaStuViewPage() {
             var arrayID = versionId.split('-')[3];
             $(this).parent().parent().find('.nir-version-send-button').attr('disabled', true);
             $(this).parent().toggle();
-            gradeOtchet(vkrOtchetVersions, arrayID, 'Удовлетворительно').then((result)=>{
+            gradeOtchet(vkrOtchetVersions, arrayID, 'Удовлетворительно').then((result) => {
                 if (result) {
                     $(this).parent().parent().parent().find('.nir-header-text:contains("Статус: Рассматривается")').text('Статус: УДОВЛ.');
                     $(this).parent().parent().parent().find('.nir-header-text:contains("Статус: Не отправлено")').text('Статус: УДОВЛ.');
@@ -3459,7 +3524,7 @@ export default function ScaStuViewPage() {
             var arrayID = versionId.split('-')[3];
             $(this).parent().parent().find('.nir-version-send-button').attr('disabled', true);
             $(this).parent().toggle();
-            gradeOtchet(vkrOtchetVersions, arrayID, 'Хорошо').then((result)=>{
+            gradeOtchet(vkrOtchetVersions, arrayID, 'Хорошо').then((result) => {
                 if (result) {
                     $(this).parent().parent().parent().find('.nir-header-text:contains("Статус: Рассматривается")').text('Статус: ХОР.');
                     $(this).parent().parent().parent().find('.nir-header-text:contains("Статус: Не отправлено")').text('Статус: ХОР.');
@@ -3473,13 +3538,13 @@ export default function ScaStuViewPage() {
                 }
             });
         });
-        
+
         $('.vkr-otchet-status-5').off().on('click', function () {
             var versionId = $(this).parent().parent().parent().parent().attr('id');
             var arrayID = versionId.split('-')[3];
             $(this).parent().parent().find('.nir-version-send-button').attr('disabled', true);
             $(this).parent().toggle();
-            gradeOtchet(vkrOtchetVersions, arrayID, 'Отлично').then((result)=>{
+            gradeOtchet(vkrOtchetVersions, arrayID, 'Отлично').then((result) => {
                 if (result) {
                     $(this).parent().parent().parent().find('.nir-header-text:contains("Статус: Рассматривается")').text('Статус: ОТЛ.');
                     $(this).parent().parent().parent().find('.nir-header-text:contains("Статус: Не отправлено")').text('Статус: ОТЛ.');
@@ -3499,7 +3564,7 @@ export default function ScaStuViewPage() {
             var versionId = $(this).parent().parent().attr('id');
             var arrayID = versionId.split('-')[3];
             $(this).attr('disabled', true);
-            deleteReport(vkrOtchetVersions[arrayID].systemVersionID).then((result)=>{
+            deleteReport(vkrOtchetVersions[arrayID].systemVersionID).then((result) => {
                 if (result) {
                     $(this).parent().parent().remove();
                 }
@@ -3516,12 +3581,10 @@ export default function ScaStuViewPage() {
             downloadReport(vkrOtchetVersions[arrayID].systemVersionID, 'Научно-исследовательская работа', 'РПЗ.docx');
         });
 
-        /*
         // Создание отзыва ВКР
         $('#make-vkr-review-button').off().on('click', function () {
             $('#vkr-review-file-input').trigger('click');
         });
-        */
 
         // Оценка отзыва ВКР - одобрено
         $('.vkr-review-status-odobreno').off().on('click', function (event) {
@@ -3529,7 +3592,7 @@ export default function ScaStuViewPage() {
             var arrayID = versionId.split('-')[3];
             $(this).parent().parent().find('.nir-version-send-button').attr('disabled', true);
             $(this).parent().toggle();
-            gradeVkrStuff(vkrReviewVersions[arrayID].systemVersionID, 'Одобрено').then((result)=>{
+            gradeVkrStuff(vkrReviewVersions[arrayID].systemVersionID, 'Одобрено').then((result) => {
                 if (result) {
                     $(this).parent().parent().parent().find('.nir-header-text:contains("Статус: Рассматривается")').text('Статус: Одобрено');
                     $(this).parent().parent().parent().find('.nir-header-text:contains("Статус: Не отправлено")').text('Статус: Одобрено');
@@ -3548,7 +3611,7 @@ export default function ScaStuViewPage() {
             var arrayID = versionId.split('-')[3];
             $(this).parent().parent().find('.nir-version-send-button').attr('disabled', true);
             $(this).parent().toggle();
-            gradeVkrStuff(vkrReviewVersions[arrayID].systemVersionID, 'Замечания').then((result)=>{
+            gradeVkrStuff(vkrReviewVersions[arrayID].systemVersionID, 'Замечания').then((result) => {
                 if (result) {
                     $(this).parent().parent().parent().find('.nir-header-text:contains("Статус: Рассматривается")').text('Статус: Замечания');
                     $(this).parent().parent().parent().find('.nir-header-text:contains("Статус: Не отправлено")').text('Статус: Замечания');
@@ -3572,7 +3635,7 @@ export default function ScaStuViewPage() {
             var versionId = $(this).parent().parent().attr('id');
             var arrayID = versionId.split('-')[3];
             $(this).attr('disabled', true);
-            deleteVkrStuff(vkrReviewVersions[arrayID].systemVersionID).then((result)=>{
+            deleteVkrStuff(vkrReviewVersions[arrayID].systemVersionID).then((result) => {
                 if (result) {
                     $(this).parent().parent().remove();
                 }
@@ -3582,12 +3645,10 @@ export default function ScaStuViewPage() {
             });
         });
 
-        /*
         // Создание допуска ВКР
-        $('#make-vkr-review-button').off().on('click', function () {
-            $('#vkr-review-file-input').trigger('click');
+        $('#make-vkr-dopusk-button').off().on('click', function () {
+            $('#vkr-dopusk-file-input').trigger('click');
         });
-        */
 
         // Оценка допуска ВКР - одобрено
         $('.vkr-dopusk-status-odobreno').off().on('click', function (event) {
@@ -3595,7 +3656,7 @@ export default function ScaStuViewPage() {
             var arrayID = versionId.split('-')[3];
             $(this).parent().parent().find('.nir-version-send-button').attr('disabled', true);
             $(this).parent().toggle();
-            gradeVkrStuff(vkrDopuskVersions[arrayID].systemVersionID, 'Одобрено').then((result)=>{
+            gradeVkrStuff(vkrDopuskVersions[arrayID].systemVersionID, 'Одобрено').then((result) => {
                 if (result) {
                     $(this).parent().parent().parent().find('.nir-header-text:contains("Статус: Рассматривается")').text('Статус: Одобрено');
                     $(this).parent().parent().parent().find('.nir-header-text:contains("Статус: Не отправлено")').text('Статус: Одобрено');
@@ -3615,7 +3676,7 @@ export default function ScaStuViewPage() {
             var arrayID = versionId.split('-')[3];
             $(this).parent().parent().find('.nir-version-send-button').attr('disabled', true);
             $(this).parent().toggle();
-            gradeVkrStuff(vkrDopuskVersions[arrayID].systemVersionID, 'Замечания').then((result)=>{
+            gradeVkrStuff(vkrDopuskVersions[arrayID].systemVersionID, 'Замечания').then((result) => {
                 if (result) {
                     $(this).parent().parent().parent().find('.nir-header-text:contains("Статус: Рассматривается")').text('Статус: Замечания');
                     $(this).parent().parent().parent().find('.nir-header-text:contains("Статус: Не отправлено")').text('Статус: Замечания');
@@ -3639,7 +3700,7 @@ export default function ScaStuViewPage() {
             var versionId = $(this).parent().parent().attr('id');
             var arrayID = versionId.split('-')[3];
             $(this).attr('disabled', true);
-            deleteVkrStuff(vkrDopuskVersions[arrayID].systemVersionID).then((result)=>{
+            deleteVkrStuff(vkrDopuskVersions[arrayID].systemVersionID).then((result) => {
                 if (result) {
                     $(this).parent().parent().remove();
                 }
@@ -3649,12 +3710,10 @@ export default function ScaStuViewPage() {
             });
         });
 
-        /*
-        // Создание антиплагиата ВКР
-        $('#make-vkr-review-button').off().on('click', function () {
-            $('#vkr-review-file-input').trigger('click');
+        // Создание антиплагиата ВКР 
+        $('#make-vkr-antiplagiat-button').off().on('click', function () {
+            $('#vkr-antiplagiat-file-input').trigger('click');
         });
-        */
 
         // Оценка антиплагиата ВКР - одобрено
         $('.vkr-antiplagiat-status-odobreno').off().on('click', function (event) {
@@ -3662,7 +3721,7 @@ export default function ScaStuViewPage() {
             var arrayID = versionId.split('-')[3];
             $(this).parent().parent().find('.nir-version-send-button').attr('disabled', true);
             $(this).parent().toggle();
-            gradeVkrStuff(vkrAntiplagiatVersions[arrayID].systemVersionID, 'Одобрено').then((result)=>{
+            gradeVkrStuff(vkrAntiplagiatVersions[arrayID].systemVersionID, 'Одобрено').then((result) => {
                 if (result) {
                     $(this).parent().parent().parent().find('.nir-header-text:contains("Статус: Рассматривается")').text('Статус: Одобрено');
                     $(this).parent().parent().parent().find('.nir-header-text:contains("Статус: Не отправлено")').text('Статус: Одобрено');
@@ -3681,7 +3740,7 @@ export default function ScaStuViewPage() {
             var arrayID = versionId.split('-')[3];
             $(this).parent().parent().find('.nir-version-send-button').attr('disabled', true);
             $(this).parent().toggle();
-            gradeVkrStuff(vkrAntiplagiatVersions[arrayID].systemVersionID, 'Замечания').then((result)=>{
+            gradeVkrStuff(vkrAntiplagiatVersions[arrayID].systemVersionID, 'Замечания').then((result) => {
                 if (result) {
                     $(this).parent().parent().parent().find('.nir-header-text:contains("Статус: Рассматривается")').text('Статус: Замечания');
                     $(this).parent().parent().parent().find('.nir-header-text:contains("Статус: Не отправлено")').text('Статус: Замечания');
@@ -3705,7 +3764,7 @@ export default function ScaStuViewPage() {
             var versionId = $(this).parent().parent().attr('id');
             var arrayID = versionId.split('-')[3];
             $(this).attr('disabled', true);
-            deleteVkrStuff(vkrAntiplagiatVersions[arrayID].systemVersionID).then((result)=>{
+            deleteVkrStuff(vkrAntiplagiatVersions[arrayID].systemVersionID).then((result) => {
                 if (result) {
                     $(this).parent().parent().remove();
                 }
@@ -3715,12 +3774,10 @@ export default function ScaStuViewPage() {
             });
         });
 
-        /*
         // Создание презентации ВКР
-        $('#make-vkr-review-button').off().on('click', function () {
-            $('#vkr-review-file-input').trigger('click');
+        $('#make-vkr-presentation-button').off().on('click', function () {
+            $('#vkr-presentation-file-input').trigger('click');
         });
-        */
 
         // Оценка презентации ВКР - одобрено
         $('.vkr-presentation-status-odobreno').off().on('click', function (event) {
@@ -3728,7 +3785,7 @@ export default function ScaStuViewPage() {
             var arrayID = versionId.split('-')[3];
             $(this).parent().parent().find('.nir-version-send-button').attr('disabled', true);
             $(this).parent().toggle();
-            gradeVkrStuff(vkrPrezentationVersions[arrayID].systemVersionID, 'Одобрено').then((result)=>{
+            gradeVkrStuff(vkrPrezentationVersions[arrayID].systemVersionID, 'Одобрено').then((result) => {
                 if (result) {
                     $(this).parent().parent().parent().find('.nir-header-text:contains("Статус: Рассматривается")').text('Статус: Одобрено');
                     $(this).parent().parent().parent().find('.nir-header-text:contains("Статус: Не отправлено")').text('Статус: Одобрено');
@@ -3749,7 +3806,7 @@ export default function ScaStuViewPage() {
             var arrayID = versionId.split('-')[3];
             $(this).parent().parent().find('.nir-version-send-button').attr('disabled', true);
             $(this).parent().toggle();
-            gradeVkrStuff(vkrPrezentationVersions[arrayID].systemVersionID, 'Замечания').then((result)=>{
+            gradeVkrStuff(vkrPrezentationVersions[arrayID].systemVersionID, 'Замечания').then((result) => {
                 if (result) {
                     $(this).parent().parent().parent().find('.nir-header-text:contains("Статус: Рассматривается")').text('Статус: Замечания');
                     $(this).parent().parent().parent().find('.nir-header-text:contains("Статус: Не отправлено")').text('Статус: Замечания');
@@ -3773,7 +3830,7 @@ export default function ScaStuViewPage() {
             var versionId = $(this).parent().parent().attr('id');
             var arrayID = versionId.split('-')[3];
             $(this).attr('disabled', true);
-            deleteVkrStuff(vkrPrezentationVersions[arrayID].systemVersionID).then((result)=>{
+            deleteVkrStuff(vkrPrezentationVersions[arrayID].systemVersionID).then((result) => {
                 if (result) {
                     $(this).parent().parent().remove();
                 }
@@ -4297,20 +4354,20 @@ export default function ScaStuViewPage() {
 
                                     <div className='info-sub-tab-div'>
 
-                                        <button disabled type='button' id='make-vkr-review-button' className='size-30 light dark-background info-button-1' style={{ height: '100px', width: '670px', marginLeft: '410px' }}>
+                                        <button type='button' id='make-vkr-review-button' className='size-30 light dark-background info-button-1' style={{ height: '100px', width: '670px', marginLeft: '410px' }}>
                                             <Image src={iconDocument} thumbnail className='dark-background thumbnail-icon' style={{ position: 'relative', top: '-25px' }} />
                                             <div style={{ display: 'inline-block' }}><p style={{ marginBottom: '0px' }}>Загрузить новую версию<br />отзыва научного руководителя</p></div>
                                         </button>
                                         <input id='vkr-review-file-input' type='file' style={{ display: 'none' }} onChange={(e) => {
                                             if (e.target.files.length !== 0) {
                                                 if (vkrReviewVersions.length === 0) {
-                                                    //uploadDocument(e.target.files[0], 'ВКР', 'Отзыв');
+                                                    setErrorMessage('Нельзя создать версию задания, пока студент не создаст хотя бы одну версию!');
+                                                    setShowError(true);
                                                 }
                                                 else {
-                                                    //uploadDocumentVersion(e.target.files[0], vkrReviewVersions[0].systemDocumentID, 'Отзыв версия')
-                                                    //uploadDocument(e.target.files[0], 'ВКР', 'Отзыв');
+                                                    uploadDocumentVersion(e.target.files[0], vkrReviewVersions[0].systemDocumentID, 'Отзыв версия', 'Отзыв')
                                                 }
-                                                //$('#vkr-review-file-input[type="file"]').val(null);
+                                                $('#vkr-review-file-input[type="file"]').val(null);
                                             }
                                         }} ></input>
 
@@ -4331,20 +4388,20 @@ export default function ScaStuViewPage() {
 
                                 <div className='info-sub-tab-div'>
 
-                                    <button disabled type='button' id='make-vkr-dopusk-button' className='size-30 light dark-background info-button-1' style={{ height: '100px', width: '670px', marginLeft: '410px' }}>
+                                    <button type='button' id='make-vkr-dopusk-button' className='size-30 light dark-background info-button-1' style={{ height: '100px', width: '670px', marginLeft: '410px' }}>
                                         <Image src={iconDocument} thumbnail className='dark-background thumbnail-icon' style={{ position: 'relative', top: '-25px' }} />
                                         <div style={{ display: 'inline-block' }}><p style={{ marginBottom: '0px' }}>Загрузить новую версию<br />допуска к защите ВКР</p></div>
                                     </button>
                                     <input id='vkr-dopusk-file-input' type='file' style={{ display: 'none' }} onChange={(e) => {
                                         if (e.target.files.length !== 0) {
                                             if (vkrDopuskVersions.length === 0) {
-                                                //uploadDocument(e.target.files[0], 'ВКР', 'Допуск');
+                                                setErrorMessage('Нельзя создать версию задания, пока студент не создаст хотя бы одну версию!');
+                                                setShowError(true);
                                             }
                                             else {
-                                                //uploadDocumentVersion(e.target.files[0], vkrDopuskVersions[0].systemDocumentID, 'Допуск версия')
-                                                //uploadDocument(e.target.files[0], 'ВКР', 'Отзыв');
+                                                uploadDocumentVersion(e.target.files[0], vkrDopuskVersions[0].systemDocumentID, 'Допуск версия', 'Допуск')
                                             }
-                                            //$('#vkr-dopusk-file-input[type="file"]').val(null);
+                                            $('#vkr-dopusk-file-input[type="file"]').val(null);
                                         }
                                     }} ></input>
                                 </div>
@@ -4383,7 +4440,7 @@ export default function ScaStuViewPage() {
                                         </div>
                                     </div>
 
-                                    <button disabled type='button' id='make-vkr-task-button' className='size-30 light dark-background info-button-1' style={{ height: '100px', width: '670px', marginLeft: '410px' }}>
+                                    <button type='button' id='make-vkr-task-button' className='size-30 light dark-background info-button-1' style={{ height: '100px', width: '670px', marginLeft: '410px' }}>
                                         <Image src={iconDocument} thumbnail className='dark-background thumbnail-icon' style={{ position: 'relative', top: '-25px' }} />
                                         <div style={{ display: 'inline-block' }}><p style={{ marginBottom: '0px' }}>Создать новую версию<br />задания на ВКР</p></div>
                                     </button>
@@ -4404,7 +4461,7 @@ export default function ScaStuViewPage() {
 
                                 <div className='info-sub-tab-div'>
 
-                                    <button disabled type='button' id='make-vkr-otchet-button' className='size-30 light dark-background info-button-1' style={{ height: '100px', width: '480px', marginLeft: '505px' }}>
+                                    <button type='button' id='make-vkr-otchet-button' className='size-30 light dark-background info-button-1' style={{ height: '100px', width: '480px', marginLeft: '505px' }}>
                                         <Image src={iconDocument} thumbnail className='dark-background thumbnail-icon' style={{ position: 'relative', top: '-25px' }} />
                                         <div style={{ display: 'inline-block' }}><p style={{ marginBottom: '0px' }}>Загрузить<br />новую версию РПЗ</p></div>
                                     </button>
@@ -4415,7 +4472,7 @@ export default function ScaStuViewPage() {
                                         }
                                     }} ></input>
                                     <div className='report-attach-div'>
-                                        <input disabled type='checkbox' defaultChecked id='vkr-merge-checkbox' className='report-attach-checkbox'></input>
+                                        <input type='checkbox' defaultChecked id='vkr-merge-checkbox' className='report-attach-checkbox'></input>
                                         <label htmlFor='vkr-merge-checkbox' className='size-24 dark attach-checkbox-text'>Присоединить к загруженному файлу одобренное задание?</label>
                                     </div>
                                 </div>
@@ -4434,19 +4491,20 @@ export default function ScaStuViewPage() {
 
                                 <div className='info-sub-tab-div'>
 
-                                    <button disabled type='button' id='make-vkr-antiplagiat-button' className='size-30 light dark-background info-button-1' style={{ height: '100px', width: '670px', marginLeft: '410px' }}>
+                                    <button type='button' id='make-vkr-antiplagiat-button' className='size-30 light dark-background info-button-1' style={{ height: '100px', width: '670px', marginLeft: '410px' }}>
                                         <Image src={iconDocument} thumbnail className='dark-background thumbnail-icon' style={{ position: 'relative', top: '-25px' }} />
                                         <div style={{ display: 'inline-block' }}><p style={{ marginBottom: '0px' }}>Загрузить новую версию<br />отчета об антиплагиате</p></div>
                                     </button>
                                     <input id='vkr-antiplagiat-file-input' type='file' style={{ display: 'none' }} onChange={(e) => {
                                         if (e.target.files.length !== 0) {
                                             if (vkrAntiplagiatVersions.length === 0) {
-                                                //uploadDocument(e.target.files[0], 'ВКР', 'Антиплагиат');
+                                                setErrorMessage('Нельзя создать версию задания, пока студент не создаст хотя бы одну версию!');
+                                                setShowError(true);
                                             }
                                             else {
-                                                //uploadDocumentVersion(e.target.files[0], vkrAntiplagiatVersions[0].systemDocumentID, 'Антиплагиат версия')
+                                                uploadDocumentVersion(e.target.files[0], vkrAntiplagiatVersions[0].systemDocumentID, 'Антиплагиат версия', 'Антиплагиат')
                                             }
-                                            //$('#vkr-antiplagiat-file-input[type="file"]').val(null);
+                                            $('#vkr-antiplagiat-file-input[type="file"]').val(null);
                                         }
 
                                     }} ></input>
@@ -4466,19 +4524,20 @@ export default function ScaStuViewPage() {
 
                                 <div className='info-sub-tab-div'>
 
-                                    <button disabled type='button' id='make-vkr-presentation-button' className='size-30 light dark-background info-button-1' style={{ height: '100px', width: '670px', marginLeft: '410px' }}>
+                                    <button type='button' id='make-vkr-presentation-button' className='size-30 light dark-background info-button-1' style={{ height: '100px', width: '670px', marginLeft: '410px' }}>
                                         <Image src={iconDocument} thumbnail className='dark-background thumbnail-icon' style={{ position: 'relative', top: '-25px' }} />
                                         <div style={{ display: 'inline-block' }}><p style={{ marginBottom: '0px' }}>Загрузить новую версию<br />презентации</p></div>
                                     </button>
                                     <input id='vkr-presentation-file-input' type='file' style={{ display: 'none' }} accept='application/vnd.openxmlformats-officedocument.presentationml.presentation' onChange={(e) => {
                                         if (e.target.files.length !== 0) {
                                             if (vkrPrezentationVersions.length === 0) {
-                                                //uploadDocument(e.target.files[0], 'ВКР', 'Презентация');
+                                                setErrorMessage('Нельзя создать версию задания, пока студент не создаст хотя бы одну версию!');
+                                                setShowError(true);
                                             }
                                             else {
-                                                //uploadDocumentVersion(e.target.files[0], vkrPrezentationVersions[0].systemDocumentID, 'Презентация версия')
+                                                uploadDocumentVersion(e.target.files[0], vkrPrezentationVersions[0].systemDocumentID, 'Презентация версия', 'Презентация')
                                             }
-                                            //$('#vkr-presentation-file-input[type="file"]').val(null);
+                                            $('#vkr-presentation-file-input[type="file"]').val(null);
                                         }
                                     }} ></input>
                                 </div>

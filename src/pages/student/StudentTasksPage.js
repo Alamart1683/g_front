@@ -1943,19 +1943,19 @@ export default function StudentTasksPage() {
             taskVersion['additionalTask'] = additionalTask;
         }
         if (vkrAims === '') {
-            taskVersion['vkrAim'] = null
+            taskVersion['vkrAim'] = 'Цель'
         }
         else {
             taskVersion['vkrAim'] = vkrAims
         }
         if (vkrDocs === '') {
-            taskVersion['vkrDocs'] = null
+            taskVersion['vkrDocs'] = '– Документы и графические материалы'
         }
         else {
             taskVersion['vkrDocs'] = vkrDocs
         }
         if (vkrTasks === '') {
-            taskVersion['vkrTasks'] = null
+            taskVersion['vkrTasks'] = 'Задачи'
         }
         else {
             taskVersion['vkrTasks'] = vkrTasks
@@ -2024,6 +2024,10 @@ export default function StudentTasksPage() {
                     //console.log(response);
                     if (response.data.indexOf('Приказ еще не был загружен') > -1) {
                         setErrorMessage('Ошибка при создании версии задания: приказ ещё не был загружен!');
+                        setShowError(true);
+                    }
+                    else if (response.data.indexOf('Шаблон задания еще не был загружен') > -1) {
+                        setErrorMessage('Шаблон задания еще не был загружен!');
                         setShowError(true);
                     }
                     else {
@@ -2133,8 +2137,12 @@ export default function StudentTasksPage() {
                 'Authorization': 'Bearer ' + authTokens.accessToken
             },
         }).then((response) => {
-            console.log(response);
-            if (response.data.indexOf('При поиске последней версии задания произошло что-то необъяснимое') > -1 || response.data.indexOf('Не найдено одобренное задание') > -1) {
+            //console.log(response);
+            if (response.data.indexOf('Попытка загрузить документ с некорректным разрешением') > -1) {
+                setErrorMessage('Ошибка при создании документа: расширение файлов должно совпадать!');
+                setShowError(true);
+            }
+            else if (response.data.indexOf('При поиске последней версии задания произошло что-то необъяснимое') > -1 || response.data.indexOf('Не найдено одобренное задание') > -1) {
                 setErrorMessage('Ошибка при создании отчета: не удалось найти одобренную версию задания!');
                 setShowError(true);
             }
@@ -2238,7 +2246,7 @@ export default function StudentTasksPage() {
                 setErrorMessage('Ошибка при создании документа ВКР: файл с таким именем уже существует!');
                 setShowError(true);
             }
-            else {
+            else if (/\d/.test(response.data[0])) {
                 stuffVersion['systemVersionID'] = response.data[0].split(',')[0]
                 stuffVersion['versionEditionDate'] = response.data[0].split(',')[1]
                 stuffVersion['systemDocumentID'] = response.data[0].split(',')[2]
@@ -2262,6 +2270,10 @@ export default function StudentTasksPage() {
                     default:
                         console.log('stuff creation error')
                 }
+            }
+            else {
+                setErrorMessage('Ошибка при создании документа: расширение файлов должно совпадать!');
+                setShowError(true);
             }
         }).catch(result => {
             console.log(result);
@@ -2311,32 +2323,42 @@ export default function StudentTasksPage() {
                 'Authorization': 'Bearer ' + authTokens.accessToken
             },
         }).then((response) => {
-            stuffVersion['systemVersionID'] = response.data[0].split(',')[0]
-            stuffVersion['versionEditionDate'] = response.data[0].split(',')[1]
-            stuffVersion['systemDocumentID'] = response.data[0].split(',')[2]
-            switch (kind) {
-                case 'Отзыв':
-                    showReviewVersionSingle(stuffVersion, vkrReviewVersions.length);
-                    setVkrReviewVersions(vkrReviewVersions.concat(stuffVersion));
-                    break;
-                case 'Допуск':
-                    showDopuskVersionSingle(stuffVersion, vkrDopuskVersions.length);
-                    setVkrDopuskVersions(vkrDopuskVersions.concat(stuffVersion));
-                    break;
-                case 'Антиплагиат':
-                    showAntiplagiatVersionSingle(stuffVersion, vkrAntiplagiatVersions.length);
-                    setAntiplagiatVersions(vkrAntiplagiatVersions.concat(stuffVersion));
-                    break;
-                case 'Презентация':
-                    showPresentationVersionsSingle(stuffVersion, vkrPrezentationVersions.length);
-                    setPrezentationVersions(vkrPrezentationVersions.concat(stuffVersion));
-                    break;
-                default:
-                    console.log('stuff version creation error')
+            //console.log(response);
+            if (response.data.indexOf('Запрещено загружать версию документа с иным разрешением, для этого следует загрузить новый документ') > -1) {
+                setErrorMessage('Ошибка при создании документа: расширение файлов должно совпадать!');
+                setShowError(true);
+            }
+            else if (/\d/.test(response.data[0])) {
+                stuffVersion['systemVersionID'] = response.data[0].split(',')[0]
+                stuffVersion['versionEditionDate'] = response.data[0].split(',')[1]
+                stuffVersion['systemDocumentID'] = response.data[0].split(',')[2]
+                switch (kind) {
+                    case 'Отзыв':
+                        showReviewVersionSingle(stuffVersion, vkrReviewVersions.length);
+                        setVkrReviewVersions(vkrReviewVersions.concat(stuffVersion));
+                        break;
+                    case 'Допуск':
+                        showDopuskVersionSingle(stuffVersion, vkrDopuskVersions.length);
+                        setVkrDopuskVersions(vkrDopuskVersions.concat(stuffVersion));
+                        break;
+                    case 'Антиплагиат':
+                        showAntiplagiatVersionSingle(stuffVersion, vkrAntiplagiatVersions.length);
+                        setAntiplagiatVersions(vkrAntiplagiatVersions.concat(stuffVersion));
+                        break;
+                    case 'Презентация':
+                        showPresentationVersionsSingle(stuffVersion, vkrPrezentationVersions.length);
+                        setPrezentationVersions(vkrPrezentationVersions.concat(stuffVersion));
+                        break;
+                    default:
+                        console.log('stuff version creation error')
+                }
+            }
+            else {
+                setErrorMessage('Ошибка при создании документа ВКР!');
+                setShowError(true);
             }
         }).catch(result => {
             console.log(result);
-            console.log(vkrPrezentationVersions);
             switch (kind) {
                 case 'Отзыв':
                     setErrorMessage('Ошибка при создании отзыва для ВКР!');
