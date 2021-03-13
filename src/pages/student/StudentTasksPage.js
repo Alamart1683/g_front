@@ -2125,7 +2125,6 @@ export default function StudentTasksPage() {
             default:
                 console.log('Неопознанный тип отчета')
         }
-        console.log(file);
         formData.append('file', file);
 
         axios({

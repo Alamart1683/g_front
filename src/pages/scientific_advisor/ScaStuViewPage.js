@@ -2447,7 +2447,7 @@ export default function ScaStuViewPage() {
                 'Authorization': 'Bearer ' + authTokens.accessToken
             },
         }).then((response) => {
-            console.log(response);
+            //console.log(response);
             if (response.data.indexOf('Попытка загрузить документ с некорректным разрешением') > -1) {
                 setErrorMessage('Ошибка при создании документа: расширение файлов должно совпадать!');
                 setShowError(true);

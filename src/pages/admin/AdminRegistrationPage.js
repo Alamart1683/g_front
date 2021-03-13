@@ -133,7 +133,9 @@ export default function AdminRegistrationPage() {
             $('#sca-name').val() !== '' &&
             $('#sca-surname').val() !== '' &&
             $('#sca-second-name').val() !== '' &&
-            $('#sca-phone').val() !== '') {
+            $('#sca-phone').val() !== '' &&
+            $('#sca-position').val() !== ''&&
+            $('#sca-cathedra').val() !== '') {
             document.getElementById('register-sca-button').disabled = false;
         }
         else {
@@ -142,17 +144,18 @@ export default function AdminRegistrationPage() {
     }
 
     function registerSca() {
-        //console.log('register sca');
         var email = $('#sca-mail').val();
         var name = $('#sca-name').val();
         var surname = $('#sca-surname').val();
         var secondName = $('#sca-second-name').val();
         var phone = $('#sca-phone').val();
+        var cathedra = $('#sca-cathedra').val();
+        var position = $('#sca-position').val();
         axios({
             url: apiURL + '/admin/registration/scientific_advisor',
             method: 'POST',
             params: {
-                'cathedra': 'МОСИТ',
+                'cathedra': cathedra,
                 'email': email,
                 'name': name,
                 'surname': surname,
@@ -160,6 +163,7 @@ export default function AdminRegistrationPage() {
                 'phone': phone,
                 'mailSendingAccepted': true,
                 'places': 10,
+                'position': position,
             },
             headers: {
                 'Authorization': 'Bearer ' + authTokens.accessToken
@@ -337,7 +341,7 @@ export default function AdminRegistrationPage() {
                         }
                     }} ></input>
             </div>
-            <div id="orderContentPanel2" className="contentPanel contentPanel-hidden">
+            <div id="orderContentPanel2" className="contentPanel contentPanel-hidden" style={{height:'710px'}}>
                 <div className='info-row' style={{ paddingTop: '20px' }}>
                     <div className='info-column'>
                         <p className='admin-registration-label dark size-24'>Почта:</p>
@@ -345,6 +349,12 @@ export default function AdminRegistrationPage() {
 
                         <p className='admin-registration-label dark size-24'>Телефон:</p>
                         <input maxLength='12' onChange={(e) => { checkIfCanRegisterSca(); }} id='sca-phone' type='text' placeholder='Введите телефон' className='admin-registration-input dark size-24'></input>
+
+                        <p className='admin-registration-label dark size-24'>Кафедра:</p>
+                        <select id='sca-cathedra' defaultValue='' onChange={(e) => { checkIfCanRegisterSca(); }} className='admin-registration-select dark size-24'>
+                            <option value='' disabled hidden>Выберите кафедру</option>
+                            <option value='МОСИТ'>МОСИТ</option>
+                        </select>
 
                     </div>
                     <div className='info-column'>
@@ -358,6 +368,13 @@ export default function AdminRegistrationPage() {
                         <p className='admin-registration-label dark size-24'>Отчество:</p>
                         <input maxLength='50' onChange={(e) => { checkIfCanRegisterSca(); }} id='sca-second-name' type='text' placeholder='Введите отчество' className='admin-registration-input dark size-24'></input>
 
+                        <p className='admin-registration-label dark size-24'>Дожность:</p>
+                        <select id='sca-position' defaultValue='' onChange={(e) => { checkIfCanRegisterSca(); }} className='admin-registration-select dark size-24'>
+                            <option value='' disabled hidden>Выберите должность</option>
+                            <option value='д.т.н, профессор'>д.т.н, профессор</option>
+                            <option value='к.т.н, доцент'>к.т.н, доцент</option>
+                            <option value='к.т.н, ст. преподаватель'>к.т.н, ст. преподаватель</option>
+                        </select>
                     </div>
                 </div>
                 <button id='register-sca-button' disabled className='admin-registration-button light size-30 dark-background' style={{ marginLeft: '440px', marginTop: '30px', width: '600px' }}>Зарегистрировать<br />Научного Руководителя</button>
