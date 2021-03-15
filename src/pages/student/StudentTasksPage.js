@@ -804,7 +804,7 @@ export default function StudentTasksPage() {
 
     function showNirVersionSingle(item, i) {
         var nirVersion = document.createElement('div');
-        nirVersion.className = 'nir-version light-background';
+        nirVersion.className = 'nir-version light-background nir-task-version';
         nirVersion.id = 'nir-version-' + i;
 
         var nirVersionHeader = document.createElement('div');
@@ -958,7 +958,7 @@ export default function StudentTasksPage() {
 
     function showLongPPVersionSingle(item, i) {
         var longPPVersion = document.createElement('div');
-        longPPVersion.className = 'nir-version light-background';
+        longPPVersion.className = 'nir-version light-background long-pp-task-version';
         longPPVersion.id = 'long-pp-version-' + i;
 
         var longPPVersionHeader = document.createElement('div');
@@ -1110,7 +1110,7 @@ export default function StudentTasksPage() {
 
     function showPPVersionSingle(item, i) {
         var longPPVersion = document.createElement('div');
-        longPPVersion.className = 'nir-version light-background';
+        longPPVersion.className = 'nir-version light-background pp-task-version';
         longPPVersion.id = 'pp-version-' + i;
 
         var longPPVersionHeader = document.createElement('div');
@@ -1262,7 +1262,7 @@ export default function StudentTasksPage() {
 
     function showVkrTaskVersionSingle(item, i) {
         var nirVersion = document.createElement('div');
-        nirVersion.className = 'nir-version light-background';
+        nirVersion.className = 'nir-version light-background vkr-task-version';
         nirVersion.id = 'vkr-version-' + i;
 
         var nirVersionHeader = document.createElement('div');
@@ -1405,7 +1405,7 @@ export default function StudentTasksPage() {
 
     function showNirOtchetVersionSingle(item, i) {
         var nirVersion = document.createElement('div');
-        nirVersion.className = 'nir-version light-background';
+        nirVersion.className = 'nir-version light-background nir-report-version';
         nirVersion.id = 'nir-otchet-version-' + i;
 
         var nirVersionHeader = document.createElement('div');
@@ -1526,7 +1526,7 @@ export default function StudentTasksPage() {
 
     function showLongPPOtchetVersionSingle(item, i) {
         var nirVersion = document.createElement('div');
-        nirVersion.className = 'nir-version light-background';
+        nirVersion.className = 'nir-version light-background long-pp-report-version';
         nirVersion.id = 'long-pp-otchet-version-' + i;
 
         var nirVersionHeader = document.createElement('div');
@@ -1647,7 +1647,7 @@ export default function StudentTasksPage() {
 
     function showPPOtchetVersionSingle(item, i) {
         var nirVersion = document.createElement('div');
-        nirVersion.className = 'nir-version light-background';
+        nirVersion.className = 'nir-version light-background pp-report-version';
         nirVersion.id = 'pp-otchet-version-' + i;
 
         var nirVersionHeader = document.createElement('div');
@@ -1768,7 +1768,7 @@ export default function StudentTasksPage() {
 
     function showVkrOtchetVersionSingle(item, i) {
         var nirVersion = document.createElement('div');
-        nirVersion.className = 'nir-version light-background';
+        nirVersion.className = 'nir-version light-background vkr-report-version';
         nirVersion.id = 'nir-otchet-version-' + i;
 
         var nirVersionHeader = document.createElement('div');
@@ -2651,7 +2651,78 @@ export default function StudentTasksPage() {
 
         // Показ полей версии
         $(document).off().on('click', '.nir-version-clickable', function (event) {
-            $(this).parent().parent().find('.nir-version-content').toggle();
+            var docType = $(this).parent().parent().prop("classList")[2];
+
+            if ($(this).parent().parent().find('.nir-version-content').is(':visible') == true) {
+                // Закрываем подробную информацию о версии
+                $(this).parent().parent().find('.nir-version-content').toggle();
+                switch (docType) {
+                    case 'nir-task-version':
+                        $('#nir-task-creation-div').show();
+                        break;
+                    case 'nir-report-version':
+                        $('#nir-report-creation-div').show();
+                        break;
+                    case 'long-pp-task-version':
+                        $('#long-pp-task-creation-div').show();
+                        break;
+                    case 'long-pp-report-version':
+                        $('#long-pp-report-creation-div').show();
+                        break;
+                    case 'pp-task-version':
+                        $('#pp-task-creation-div').show();
+                        break;
+                    case 'pp-report-version':
+                        $('#pp-report-creation-div').show();
+                        break;
+                    case 'vkr-task-version':
+                        $('#vkr-task-creation-div').show();
+                        break;
+                    case 'vkr-report-version':
+                        $('#vkr-report-creation-div').show();
+                        break;
+                    default:
+                        console.log('doc typing error');
+                }
+            }
+            else {
+                // Открываем подробную информацию о версии
+                $.each($('.nir-version-content:visible'), function (index, item) {
+                    if (event.target != $(item).parent().find('.nir-version-clickable')) {
+                        $(item).toggle();
+                    }
+                });
+                $(this).parent().parent().find('.nir-version-content').toggle();
+                switch (docType) {
+                    case 'nir-task-version':
+                        $('#nir-task-creation-div').hide();
+                        break;
+                    case 'nir-report-version':
+                        $('#nir-report-creation-div').hide();
+                        break;
+                    case 'long-pp-task-version':
+                        $('#long-pp-task-creation-div').hide();
+                        break;
+                    case 'long-pp-report-version':
+                        $('#long-pp-report-creation-div').hide();
+                        break;
+                    case 'pp-task-version':
+                        $('#pp-task-creation-div').hide();
+                        break;
+                    case 'pp-report-version':
+                        $('#pp-report-creation-div').hide();
+                        break;
+                    case 'vkr-task-version':
+                        $('#vkr-task-creation-div').hide();
+                        break;
+                    case 'vkr-report-version':
+                        $('#vkr-report-creation-div').hide();
+                        break;
+                    default:
+                        console.log('doc typing error');
+                }
+            }
+
         });
 
         // Скачать пример
@@ -3279,6 +3350,9 @@ export default function StudentTasksPage() {
             setToCreate(nirVersions[arrayID].toCreate);
             setToFamiliarize(nirVersions[arrayID].toFamiliarize);
             setAdditionalTask(nirVersions[arrayID].additionalTask);
+
+            $('.nir-version-content:visible').toggle();
+            $('#nir-task-creation-div').show();
         });
 
         // Функция кнопки "перенести в меню" для задания ПП...
@@ -3293,6 +3367,9 @@ export default function StudentTasksPage() {
             setToCreate(longPPData[arrayID].toCreate);
             setToFamiliarize(longPPData[arrayID].toFamiliarize);
             setAdditionalTask(longPPData[arrayID].additionalTask);
+
+            $('.nir-version-content:visible').toggle();
+            $('#long-pp-task-creation-div').show();
         });
 
         // Функция кнопки "перенести в меню" для задания ПП
@@ -3307,6 +3384,9 @@ export default function StudentTasksPage() {
             setToCreate(PPData[arrayID].toCreate);
             setToFamiliarize(PPData[arrayID].toFamiliarize);
             setAdditionalTask(PPData[arrayID].additionalTask);
+
+            $('.nir-version-content:visible').toggle();
+            $('#pp-task-creation-div').show();
         });
 
         // Функция кнопки "перенести в меню" для задания ВКР
@@ -3320,6 +3400,9 @@ export default function StudentTasksPage() {
             setVkrDocs(vkrTaskVersions[arrayID].vkrDocs);
             setVkrAims(vkrTaskVersions[arrayID].vkrAim);
             setVkrTasks(vkrTaskVersions[arrayID].vkrTasks);
+
+            $('.nir-version-content:visible').toggle();
+            $('#vkr-task-creation-div').show();
         });
 
         // Функция кнопки "перенести в меню" для отчета НИР
@@ -3328,6 +3411,9 @@ export default function StudentTasksPage() {
 
             setDetailedDescription(nirOtchetVersions[id].detailedContent);
             setConclusion(nirOtchetVersions[id].advisorConclusion);
+
+            $('.nir-version-content:visible').toggle();
+            $('#nir-report-creation-div').show();
         });
 
         // Функция кнопки "перенести в меню" для отчета ПП...
@@ -3336,6 +3422,9 @@ export default function StudentTasksPage() {
 
             setDetailedDescriptionLongPP(longPPOtchetVersions[id].detailedContent);
             setConclusionLongPP(longPPOtchetVersions[id].advisorConclusion);
+
+            $('.nir-version-content:visible').toggle();
+            $('#long-pp-report-creation-div').show();
         });
 
         // Функция кнопки "перенести в меню" для отчета ПП
@@ -3344,6 +3433,9 @@ export default function StudentTasksPage() {
 
             setDetailedDescriptionPP(PPOtchetVersions[id].detailedContent);
             setConclusionPP(PPOtchetVersions[id].advisorConclusion);
+
+            $('.nir-version-content:visible').toggle();
+            $('#pp-report-creation-div').show();
         });
 
         $('.version-view-button').off().on('click', function (e) {
@@ -3498,7 +3590,7 @@ export default function StudentTasksPage() {
 
                                     <div id='student-nir-task-version-div' className='student-nir-task-version-div light-background'></div>
 
-                                    <div className='info-row'>
+                                    <div className='info-row' id='nir-task-creation-div'>
                                         <div className='info-column'>
                                             <Form.Label column className="size-21 dark info-input-label">Тема:</Form.Label>
                                             <textarea maxLength='1024' value={studentTheme} onChange={(e) => { setStudentTheme(e.target.value); }} className='dark size-24 info-input-area theme-area' />
@@ -3540,49 +3632,50 @@ export default function StudentTasksPage() {
 
                                     <div id='student-nir-otchet-version-div' className='student-nir-task-version-div light-background'></div>
 
+                                    <div id='nir-report-creation-div'>
+                                        <div className='info-row'>
+                                            <div className='info-column'>
+                                                <Form.Label column className="size-21 dark info-input-label">Детальное содержание:</Form.Label>
+                                                <textarea id='nir-otchet-description' maxLength='1024' value={detailedDescription} onChange={(e) => {
+                                                    setDetailedDescription(e.target.value);
+                                                    if ($('#nir-otchet-description').val() === '' || $('#nir-otchet-conclusion').val() === '') {
+                                                        document.getElementById('make-nir-otchet-button').disabled = true;
+                                                    }
+                                                    else {
+                                                        document.getElementById('make-nir-otchet-button').disabled = false;
+                                                    }
+                                                }} className='dark size-24 info-input-area' />
+                                            </div>
 
-                                    <div className='info-row'>
-                                        <div className='info-column'>
-                                            <Form.Label column className="size-21 dark info-input-label">Детальное содержание:</Form.Label>
-                                            <textarea id='nir-otchet-description' maxLength='1024' value={detailedDescription} onChange={(e) => {
-                                                setDetailedDescription(e.target.value);
-                                                if ($('#nir-otchet-description').val() === '' || $('#nir-otchet-conclusion').val() === '') {
-                                                    document.getElementById('make-nir-otchet-button').disabled = true;
-                                                }
-                                                else {
-                                                    document.getElementById('make-nir-otchet-button').disabled = false;
-                                                }
-                                            }} className='dark size-24 info-input-area' />
+                                            <div className='info-column'>
+                                                <Form.Label column className="size-21 dark info-input-label">Заключение научного руководителя:</Form.Label>
+                                                <textarea id='nir-otchet-conclusion' maxLength='2048' value={conclusion} onChange={(e) => {
+                                                    setConclusion(e.target.value);
+                                                    if ($('#nir-otchet-description').val() === '' || $('#nir-otchet-conclusion').val() === '') {
+                                                        document.getElementById('make-nir-otchet-button').disabled = true;
+                                                    }
+                                                    else {
+                                                        document.getElementById('make-nir-otchet-button').disabled = false;
+                                                    }
+                                                }} className='dark size-24 info-input-area' />
+                                            </div>
                                         </div>
 
-                                        <div className='info-column'>
-                                            <Form.Label column className="size-21 dark info-input-label">Заключение научного руководителя:</Form.Label>
-                                            <textarea id='nir-otchet-conclusion' maxLength='2048' value={conclusion} onChange={(e) => {
-                                                setConclusion(e.target.value);
-                                                if ($('#nir-otchet-description').val() === '' || $('#nir-otchet-conclusion').val() === '') {
-                                                    document.getElementById('make-nir-otchet-button').disabled = true;
-                                                }
-                                                else {
-                                                    document.getElementById('make-nir-otchet-button').disabled = false;
-                                                }
-                                            }} className='dark size-24 info-input-area' />
-                                        </div>
-                                    </div>
-
-                                    <button type='button' disabled id='make-nir-otchet-button' className='size-30 light dark-background info-button-inline-block' style={{ marginLeft: '425px', marginTop: '20px' }}>
-                                        <Image src={iconProject} thumbnail className='dark-background thumbnail-icon' />
+                                        <button type='button' disabled id='make-nir-otchet-button' className='size-30 light dark-background info-button-inline-block' style={{ marginLeft: '425px', marginTop: '20px' }}>
+                                            <Image src={iconProject} thumbnail className='dark-background thumbnail-icon' />
                                         Сформировать и загрузить версию отчета
                                         </button>
-                                    <input id='nir-otchet-file-input' type='file' style={{ display: 'none' }} accept='application/vnd.openxmlformats-officedocument.wordprocessingml.document' onChange={(e) => {
-                                        //console.log(e.target.files);
-                                        if (e.target.files.length !== 0) {
-                                            makeOtchetVersion(e.target.files[0], 'Научно-исследовательская работа');
-                                            $('#nir-otchet-file-input[type="file"]').val(null);
-                                        }
-                                    }} ></input>
-                                    <div className='report-attach-div'>
-                                        <input type='checkbox' defaultChecked id='nir-merge-checkbox' className='report-attach-checkbox'></input>
-                                        <label htmlFor='nir-merge-checkbox' className='size-24 dark attach-checkbox-text'>Присоединить к загруженному файлу одобренное задание?</label>
+                                        <input id='nir-otchet-file-input' type='file' style={{ display: 'none' }} accept='application/vnd.openxmlformats-officedocument.wordprocessingml.document' onChange={(e) => {
+                                            //console.log(e.target.files);
+                                            if (e.target.files.length !== 0) {
+                                                makeOtchetVersion(e.target.files[0], 'Научно-исследовательская работа');
+                                                $('#nir-otchet-file-input[type="file"]').val(null);
+                                            }
+                                        }} ></input>
+                                        <div className='report-attach-div'>
+                                            <input type='checkbox' defaultChecked id='nir-merge-checkbox' className='report-attach-checkbox'></input>
+                                            <label htmlFor='nir-merge-checkbox' className='size-24 dark attach-checkbox-text'>Присоединить к загруженному файлу одобренное задание?</label>
+                                        </div>
                                     </div>
                                 </div>
                             </Tab>
@@ -3628,7 +3721,7 @@ export default function StudentTasksPage() {
 
                                     <div id='student-long-pp-task-version-div' className='student-nir-task-version-div light-background'></div>
 
-                                    <div className='info-row'>
+                                    <div className='info-row' id='long-pp-task-creation-div'>
                                         <div className='info-column'>
                                             <Form.Label column className="size-21 dark info-input-label">Тема:</Form.Label>
                                             <textarea maxLength='1024' value={studentTheme} onChange={(e) => { setStudentTheme(e.target.value); }} className='dark size-24 info-input-area theme-area' />
@@ -3671,48 +3764,49 @@ export default function StudentTasksPage() {
 
                                     <div id='student-long-pp-otchet-version-div' className='student-nir-task-version-div light-background'></div>
 
+                                    <div id='long-pp-report-creation-div'>
+                                        <div className='info-row'>
+                                            <div className='info-column'>
+                                                <Form.Label column className='size-21 dark info-input-label'>Детальное содержание:</Form.Label>
+                                                <textarea id='long-pp-otchet-description' maxLength='1024' value={detailedDescriptionLongPP} onChange={(e) => {
+                                                    setDetailedDescriptionLongPP(e.target.value);
+                                                    if ($('#long-pp-otchet-description').val() === '' || $('#long-pp-otchet-conclusion').val() === '') {
+                                                        document.getElementById('make-long-pp-otchet-button').disabled = true;
+                                                    }
+                                                    else {
+                                                        document.getElementById('make-long-pp-otchet-button').disabled = false;
+                                                    }
+                                                }} className='dark size-24 info-input-area' />
+                                            </div>
 
-                                    <div className='info-row'>
-                                        <div className='info-column'>
-                                            <Form.Label column className='size-21 dark info-input-label'>Детальное содержание:</Form.Label>
-                                            <textarea id='long-pp-otchet-description' maxLength='1024' value={detailedDescriptionLongPP} onChange={(e) => {
-                                                setDetailedDescriptionLongPP(e.target.value);
-                                                if ($('#long-pp-otchet-description').val() === '' || $('#long-pp-otchet-conclusion').val() === '') {
-                                                    document.getElementById('make-long-pp-otchet-button').disabled = true;
-                                                }
-                                                else {
-                                                    document.getElementById('make-long-pp-otchet-button').disabled = false;
-                                                }
-                                            }} className='dark size-24 info-input-area' />
+                                            <div className='info-column'>
+                                                <Form.Label column className='size-21 dark info-input-label'>Заключение научного руководителя:</Form.Label>
+                                                <textarea id='long-pp-otchet-conclusion' maxLength='2048' value={conclusionLongPP} onChange={(e) => {
+                                                    setConclusionLongPP(e.target.value);
+                                                    if ($('#long-pp-otchet-description').val() === '' || $('#long-pp-otchet-conclusion').val() === '') {
+                                                        document.getElementById('make-long-pp-otchet-button').disabled = true;
+                                                    }
+                                                    else {
+                                                        document.getElementById('make-long-pp-otchet-button').disabled = false;
+                                                    }
+                                                }} className='dark size-24 info-input-area' />
+                                            </div>
                                         </div>
 
-                                        <div className='info-column'>
-                                            <Form.Label column className='size-21 dark info-input-label'>Заключение научного руководителя:</Form.Label>
-                                            <textarea id='long-pp-otchet-conclusion' maxLength='2048' value={conclusionLongPP} onChange={(e) => {
-                                                setConclusionLongPP(e.target.value);
-                                                if ($('#long-pp-otchet-description').val() === '' || $('#long-pp-otchet-conclusion').val() === '') {
-                                                    document.getElementById('make-long-pp-otchet-button').disabled = true;
-                                                }
-                                                else {
-                                                    document.getElementById('make-long-pp-otchet-button').disabled = false;
-                                                }
-                                            }} className='dark size-24 info-input-area' />
-                                        </div>
-                                    </div>
-
-                                    <button type='button' disabled id='make-long-pp-otchet-button' className='size-30 light dark-background info-button-inline-block' style={{ marginLeft: '425px', marginTop: '20px' }}>
-                                        <Image src={iconProject} thumbnail className='dark-background thumbnail-icon' />
+                                        <button type='button' disabled id='make-long-pp-otchet-button' className='size-30 light dark-background info-button-inline-block' style={{ marginLeft: '425px', marginTop: '20px' }}>
+                                            <Image src={iconProject} thumbnail className='dark-background thumbnail-icon' />
                                         Сформировать и загрузить версию отчета
-                                </button>
-                                    <input id='long-pp-otchet-file-input' type='file' style={{ display: 'none' }} accept='application/vnd.openxmlformats-officedocument.wordprocessingml.document' onChange={(e) => {
-                                        if (e.target.files.length !== 0) {
-                                            makeOtchetVersion(e.target.files[0], 'Практика по получению знаний и умений');
-                                            $('#long-pp-otchet-file-input[type="file"]').val(null);
-                                        }
-                                    }} ></input>
-                                    <div className='report-attach-div'>
-                                        <input type='checkbox' defaultChecked id='long-pp-merge-checkbox' className='report-attach-checkbox'></input>
-                                        <label htmlFor='long-pp-merge-checkbox' className='size-24 dark attach-checkbox-text'>Присоединить к загруженному файлу одобренное задание?</label>
+                                        </button>
+                                        <input id='long-pp-otchet-file-input' type='file' style={{ display: 'none' }} accept='application/vnd.openxmlformats-officedocument.wordprocessingml.document' onChange={(e) => {
+                                            if (e.target.files.length !== 0) {
+                                                makeOtchetVersion(e.target.files[0], 'Практика по получению знаний и умений');
+                                                $('#long-pp-otchet-file-input[type="file"]').val(null);
+                                            }
+                                        }} ></input>
+                                        <div className='report-attach-div'>
+                                            <input type='checkbox' defaultChecked id='long-pp-merge-checkbox' className='report-attach-checkbox'></input>
+                                            <label htmlFor='long-pp-merge-checkbox' className='size-24 dark attach-checkbox-text'>Присоединить к загруженному файлу одобренное задание?</label>
+                                        </div>
                                     </div>
                                 </div>
                             </Tab>
@@ -3758,7 +3852,7 @@ export default function StudentTasksPage() {
 
                                     <div id='student-pp-task-version-div' className='student-nir-task-version-div light-background'></div>
 
-                                    <div className='info-row'>
+                                    <div className='info-row' id='pp-task-creation-div'>
                                         <div className='info-column'>
                                             <Form.Label column className="size-21 dark info-input-label">Тема:</Form.Label>
                                             <textarea maxLength='1024' value={studentTheme} onChange={(e) => { setStudentTheme(e.target.value); }} className='dark size-24 info-input-area theme-area' />
@@ -3799,49 +3893,50 @@ export default function StudentTasksPage() {
                                     <p className='size-30 dark info-sub-tab-title'>Отчет о прохождении ПП</p>
 
                                     <div id='student-pp-otchet-version-div' className='student-nir-task-version-div light-background'></div>
+                                    <div id='pp-report-creation-div'>
+                                        <div className='info-row'>
+                                            <div className='info-column'>
+                                                <Form.Label column className='size-21 dark info-input-label'>Детальное содержание:</Form.Label>
+                                                <textarea id='pp-otchet-description' maxLength='1024' value={detailedDescriptionPP} onChange={(e) => {
+                                                    setDetailedDescriptionPP(e.target.value);
+                                                    if ($('#pp-otchet-description').val() === '' || $('#pp-otchet-conclusion').val() === '') {
+                                                        document.getElementById('make-pp-otchet-button').disabled = true;
+                                                    }
+                                                    else {
+                                                        document.getElementById('make-pp-otchet-button').disabled = false;
+                                                    }
+                                                }} className='dark size-24 info-input-area' />
+                                            </div>
 
-                                    <div className='info-row'>
-                                        <div className='info-column'>
-                                            <Form.Label column className='size-21 dark info-input-label'>Детальное содержание:</Form.Label>
-                                            <textarea id='pp-otchet-description' maxLength='1024' value={detailedDescriptionPP} onChange={(e) => {
-                                                setDetailedDescriptionPP(e.target.value);
-                                                if ($('#pp-otchet-description').val() === '' || $('#pp-otchet-conclusion').val() === '') {
-                                                    document.getElementById('make-pp-otchet-button').disabled = true;
-                                                }
-                                                else {
-                                                    document.getElementById('make-pp-otchet-button').disabled = false;
-                                                }
-                                            }} className='dark size-24 info-input-area' />
+                                            <div className='info-column'>
+                                                <Form.Label column className='size-21 dark info-input-label'>Заключение научного руководителя:</Form.Label>
+                                                <textarea id='pp-otchet-conclusion' maxLength='2048' value={conclusionPP} onChange={(e) => {
+                                                    setConclusionPP(e.target.value);
+                                                    if ($('#pp-otchet-description').val() === '' || $('#pp-otchet-conclusion').val() === '') {
+                                                        document.getElementById('make-pp-otchet-button').disabled = true;
+                                                    }
+                                                    else {
+                                                        document.getElementById('make-pp-otchet-button').disabled = false;
+                                                    }
+                                                }} className='dark size-24 info-input-area' />
+                                            </div>
                                         </div>
 
-                                        <div className='info-column'>
-                                            <Form.Label column className='size-21 dark info-input-label'>Заключение научного руководителя:</Form.Label>
-                                            <textarea id='pp-otchet-conclusion' maxLength='2048' value={conclusionPP} onChange={(e) => {
-                                                setConclusionPP(e.target.value);
-                                                if ($('#pp-otchet-description').val() === '' || $('#pp-otchet-conclusion').val() === '') {
-                                                    document.getElementById('make-pp-otchet-button').disabled = true;
-                                                }
-                                                else {
-                                                    document.getElementById('make-pp-otchet-button').disabled = false;
-                                                }
-                                            }} className='dark size-24 info-input-area' />
-                                        </div>
-                                    </div>
-
-                                    <button type='button' disabled id='make-pp-otchet-button' className='size-30 light dark-background info-button-inline-block' style={{ marginLeft: '425px', marginTop: '20px' }}>
-                                        <Image src={iconProject} thumbnail className='dark-background thumbnail-icon' />
+                                        <button type='button' disabled id='make-pp-otchet-button' className='size-30 light dark-background info-button-inline-block' style={{ marginLeft: '425px', marginTop: '20px' }}>
+                                            <Image src={iconProject} thumbnail className='dark-background thumbnail-icon' />
                                         Сформировать и загрузить версию отчета
                                 </button>
-                                    <input id='pp-otchet-file-input' type='file' style={{ display: 'none' }} accept='application/vnd.openxmlformats-officedocument.wordprocessingml.document' onChange={(e) => {
-                                        //console.log(e.target.files);
-                                        if (e.target.files.length !== 0) {
-                                            makeOtchetVersion(e.target.files[0], 'Преддипломная практика');
-                                            $('#pp-otchet-file-input[type="file"]').val(null);
-                                        }
-                                    }} ></input>
-                                    <div className='report-attach-div'>
-                                        <input type='checkbox' defaultChecked id='pp-merge-checkbox' className='report-attach-checkbox'></input>
-                                        <label htmlFor='pp-merge-checkbox' className='size-24 dark attach-checkbox-text'>Присоединить к загруженному файлу одобренное задание?</label>
+                                        <input id='pp-otchet-file-input' type='file' style={{ display: 'none' }} accept='application/vnd.openxmlformats-officedocument.wordprocessingml.document' onChange={(e) => {
+                                            //console.log(e.target.files);
+                                            if (e.target.files.length !== 0) {
+                                                makeOtchetVersion(e.target.files[0], 'Преддипломная практика');
+                                                $('#pp-otchet-file-input[type="file"]').val(null);
+                                            }
+                                        }} ></input>
+                                        <div className='report-attach-div'>
+                                            <input type='checkbox' defaultChecked id='pp-merge-checkbox' className='report-attach-checkbox'></input>
+                                            <label htmlFor='pp-merge-checkbox' className='size-24 dark attach-checkbox-text'>Присоединить к загруженному файлу одобренное задание?</label>
+                                        </div>
                                     </div>
                                 </div>
                             </Tab>
@@ -3950,32 +4045,32 @@ export default function StudentTasksPage() {
                                     <p className='size-30 dark info-sub-tab-title'>Задание на ВКР</p>
 
                                     <div id='student-vkr-task-version-div' className='student-nir-task-version-div light-background'></div>
+                                    <div id='vkr-task-creation-div'>
+                                        <div className='info-row'>
+                                            <div className='info-column'>
+                                                <Form.Label column className="size-21 dark info-input-label">Тема:</Form.Label>
+                                                <textarea maxLength='1024' value={studentTheme} onChange={(e) => { setStudentTheme(e.target.value); }} className='dark size-24 info-input-area theme-area' />
 
-                                    <div className='info-row'>
-                                        <div className='info-column'>
-                                            <Form.Label column className="size-21 dark info-input-label">Тема:</Form.Label>
-                                            <textarea maxLength='1024' value={studentTheme} onChange={(e) => { setStudentTheme(e.target.value); }} className='dark size-24 info-input-area theme-area' />
+                                                <Form.Label column className="size-21 dark info-input-label">Цель:</Form.Label>
+                                                <textarea maxLength='2048' value={vkrAims} onChange={(e) => { setVkrAims(e.target.value); }} className='dark size-24 info-input-area' />
 
-                                            <Form.Label column className="size-21 dark info-input-label">Цель:</Form.Label>
-                                            <textarea maxLength='2048' value={vkrAims} onChange={(e) => { setVkrAims(e.target.value); }} className='dark size-24 info-input-area' />
+                                            </div>
 
+                                            <div className='info-column'>
+                                                <Form.Label column className="size-21 dark info-input-label">Задачи:</Form.Label>
+                                                <textarea maxLength='2048' value={vkrTasks} onChange={(e) => { setVkrTasks(e.target.value); }} className='dark size-24 info-input-area' />
+
+                                                <Form.Label column className="size-21 dark info-input-label">Разрабатываемые документы:</Form.Label>
+                                                <textarea maxLength='2048' value={vkrDocs} onChange={(e) => { setVkrDocs(e.target.value); }} className='dark size-24 info-input-area' />
+
+                                            </div>
                                         </div>
 
-                                        <div className='info-column'>
-                                            <Form.Label column className="size-21 dark info-input-label">Задачи:</Form.Label>
-                                            <textarea maxLength='2048' value={vkrTasks} onChange={(e) => { setVkrTasks(e.target.value); }} className='dark size-24 info-input-area' />
-
-                                            <Form.Label column className="size-21 dark info-input-label">Разрабатываемые документы:</Form.Label>
-                                            <textarea maxLength='2048' value={vkrDocs} onChange={(e) => { setVkrDocs(e.target.value); }} className='dark size-24 info-input-area' />
-
-                                        </div>
+                                        <button type='button' id='make-vkr-task-button' className='size-30 light dark-background info-button-1' style={{ height: '100px', width: '670px', marginLeft: '410px' }}>
+                                            <Image src={iconDocument} thumbnail className='dark-background thumbnail-icon' style={{ position: 'relative', top: '-25px' }} />
+                                            <div style={{ display: 'inline-block' }}><p style={{ marginBottom: '0px' }}>Создать новую версию<br />задания на ВКР</p></div>
+                                        </button>
                                     </div>
-
-                                    <button type='button' id='make-vkr-task-button' className='size-30 light dark-background info-button-1' style={{ height: '100px', width: '670px', marginLeft: '410px' }}>
-                                        <Image src={iconDocument} thumbnail className='dark-background thumbnail-icon' style={{ position: 'relative', top: '-25px' }} />
-                                        <div style={{ display: 'inline-block' }}><p style={{ marginBottom: '0px' }}>Создать новую версию<br />задания на ВКР</p></div>
-                                    </button>
-
                                 </div>
                             </Tab>
                             <Tab eventKey='info44' title={
