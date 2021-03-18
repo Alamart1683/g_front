@@ -2205,59 +2205,59 @@ export default function ScaStuViewPage() {
             taskVersion['theme'] = 'Тема не указана';
         }
         else {
-            taskVersion['theme'] = studentTheme;
+            taskVersion['theme'] = studentTheme.charAt(0).toUpperCase() + studentTheme.slice(1);
         }
         if (toCreate === '') {
             taskVersion['toCreate'] = 'Создать';
         }
         else {
-            taskVersion['toCreate'] = toCreate;
+            taskVersion['toCreate'] = toCreate.charAt(0).toLowerCase() + toCreate.slice(1);
         }
         if (toExplore === '') {
             taskVersion['toExplore'] = 'Изучить';
         }
         else {
-            taskVersion['toExplore'] = toExplore;
+            taskVersion['toExplore'] = toExplore.charAt(0).toLowerCase() + toExplore.slice(1);
         }
         if (toFamiliarize === '') {
             taskVersion['toFamiliarize'] = 'Ознакомиться';
         }
         else {
-            taskVersion['toFamiliarize'] = toFamiliarize;
+            taskVersion['toFamiliarize'] = toFamiliarize.charAt(0).toLowerCase() + toFamiliarize.slice(1);
         }
         if (additionalTask === '') {
             taskVersion['additionalTask'] = 'Дополнительное задание';
         }
         else {
-            taskVersion['additionalTask'] = additionalTask;
+            taskVersion['additionalTask'] = additionalTask.charAt(0).toLowerCase() + additionalTask.slice(1);
         }
         if (vkrAims === '') {
             taskVersion['vkrAim'] = 'Цель'
         }
         else {
-            taskVersion['vkrAim'] = vkrAims
+            taskVersion['vkrAim'] = vkrAims.charAt(0).toLowerCase() + vkrAims.slice(1);
         }
         if (vkrDocs === '') {
             taskVersion['vkrDocs'] = '– Документы и графические материалы'
         }
         else {
-            taskVersion['vkrDocs'] = vkrDocs
+            taskVersion['vkrDocs'] = vkrDocs.charAt(0).toLowerCase() + vkrDocs.slice(1);
         }
         if (vkrTasks === '') {
             taskVersion['vkrTasks'] = 'Задачи'
         }
         else {
-            taskVersion['vkrTasks'] = vkrTasks
+            taskVersion['vkrTasks'] = vkrTasks.charAt(0).toLowerCase() + vkrTasks.slice(1);
         }
         var formData = new FormData();
         formData.append('taskType', type);
-        formData.append('studentTheme', studentTheme);
+        formData.append('studentTheme', studentTheme.charAt(0).toUpperCase() + studentTheme.slice(1));
         formData.append('studentID', sessionStorage.getItem('viewedStudentId'));
         switch (type) {
             case 'ВКР':
-                formData.append('vkrAim', vkrAims);
-                formData.append('vkrTasks', vkrTasks);
-                formData.append('vkrDocs', vkrDocs);
+                formData.append('vkrAim', vkrAims.charAt(0).toLowerCase() + vkrAims.slice(1));
+                formData.append('vkrTasks', vkrTasks.charAt(0).toLowerCase() + vkrTasks.slice(1));
+                formData.append('vkrDocs', vkrDocs.charAt(0).toLowerCase() + vkrDocs.slice(1));
                 axios({
                     url: apiURL + '/scientific_advisor/document/management/task/vkr/update',
                     method: 'POST',
@@ -2302,10 +2302,10 @@ export default function ScaStuViewPage() {
                 });
                 break;
             default:
-                formData.append('toExplore', toExplore);
-                formData.append('toCreate', toCreate);
-                formData.append('toFamiliarize', toFamiliarize);
-                formData.append('additionalTask', additionalTask);
+                formData.append('toExplore', toExplore.charAt(0).toLowerCase() + toExplore.slice(1));
+                formData.append('toCreate', toCreate.charAt(0).toLowerCase() + toCreate.slice(1));
+                formData.append('toFamiliarize', toFamiliarize.charAt(0).toLowerCase() + toFamiliarize.slice(1));
+                formData.append('additionalTask', additionalTask.charAt(0).toLowerCase() + additionalTask.slice(1));
                 axios({
                     url: apiURL + '/scientific_advisor/document/management/task/nir/update',
                     method: 'POST',

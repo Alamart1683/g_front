@@ -785,6 +785,7 @@ html, body {
 	border-radius: 7px;
 	border: 1px solid grey;
 	border-top: 0px;
+	padding-top: 20px;
 }
 
 .nir-text-area {
