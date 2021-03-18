@@ -726,6 +726,10 @@ html, body {
 	top: -2px;
 	padding-left: 15px;
 	padding-top: 8px;
+	background-color: #72a6e9 !important;
+	border-width: 1px;
+	border-color: black;
+	border-style: solid;
 }
 
 .nir-version-clickable2 {
@@ -739,6 +743,18 @@ html, body {
 	top: -2px;
 	padding-left: 15px;
 	padding-top: 8px;
+	background-color: #72a6e9 !important;
+	border-width: 1px;
+	border-color: black;
+	border-style: solid;
+}
+
+.nir-version-clickable:hover, .nir-version-clickable2:hover {
+	background-color: #437ecc !important;
+}
+
+.nir-version-clickable-selected {
+	background-color: #437ecc !important;
 }
 
 .nir-version-titles {
@@ -802,9 +818,9 @@ html, body {
 }
 
 .nir-copy-button {
-	margin-left: 135px;
-	margin-top: 45px;
-	width: 414px;
+	margin-left: 155px;
+	margin-top: 55px;
+	width: 447px;
 	height: 64px;
 	border-radius: 7px;
 	border-width: 0;

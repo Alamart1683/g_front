@@ -904,7 +904,7 @@ export default function StudentTasksPage() {
 
         var copyButton = document.createElement('button');
         copyButton.className = 'light dark-background size-21 nir-copy-button nir-copy';
-        copyButton.innerText = 'Перенести значения в поля ниже';
+        copyButton.innerText = 'Отредактировать версию';
         copyButton.type = 'button';
 
         var rowDiv = document.createElement('div');
@@ -1058,7 +1058,7 @@ export default function StudentTasksPage() {
 
         var copyButton = document.createElement('button');
         copyButton.className = 'light dark-background size-21 nir-copy-button long-pp-copy';
-        copyButton.innerText = 'Перенести значения в поля ниже';
+        copyButton.innerText = 'Отредактировать версию';
         copyButton.type = 'button';
 
         var rowDiv = document.createElement('div');
@@ -1210,7 +1210,7 @@ export default function StudentTasksPage() {
 
         var copyButton = document.createElement('button');
         copyButton.className = 'light dark-background size-21 nir-copy-button pp-copy';
-        copyButton.innerText = 'Перенести значения в поля ниже';
+        copyButton.innerText = 'Отредактировать версию';
         copyButton.type = 'button';
 
         var rowDiv = document.createElement('div');
@@ -1352,8 +1352,10 @@ export default function StudentTasksPage() {
 
         var copyButton = document.createElement('button');
         copyButton.className = 'light dark-background size-21 nir-copy-button vkr-copy';
-        copyButton.innerText = 'Перенести значения в поля ниже';
+        copyButton.innerText = 'Отредактировать версию';
         copyButton.type = 'button';
+        copyButton.style.marginBottom = '10px';
+        copyButton.style.marginTop = '10px';
         copyButton.style.marginLeft = '500px';
 
         var rowDiv = document.createElement('div');
@@ -1369,7 +1371,6 @@ export default function StudentTasksPage() {
         viewButton.id = 'vkrTask-view-' + i;
         viewButton.innerText = 'Просмотреть';
         viewButton.type = 'button';
-
 
         clickableArea.appendChild(versionName);
         clickableArea.appendChild(versionStatus);
@@ -1475,7 +1476,7 @@ export default function StudentTasksPage() {
         var copyButton = document.createElement('button');
         copyButton.className = 'light dark-background size-21 nir-copy-button nir-otchet-copy';
         copyButton.id = 'nir-otchet-copy-' + i;
-        copyButton.innerText = 'Перенести значения в поля ниже';
+        copyButton.innerText = 'Отредактировать версию';
         copyButton.type = 'button';
         copyButton.style.marginBottom = '10px';
         copyButton.style.marginTop = '10px';
@@ -1596,7 +1597,7 @@ export default function StudentTasksPage() {
         var copyButton = document.createElement('button');
         copyButton.className = 'light dark-background size-21 nir-copy-button long-pp-otchet-copy';
         copyButton.id = 'long-pp-otchet-copy-' + i;
-        copyButton.innerText = 'Перенести значения в поля ниже';
+        copyButton.innerText = 'Отредактировать версию';
         copyButton.type = 'button';
         copyButton.style.marginBottom = '10px';
         copyButton.style.marginTop = '10px';
@@ -1717,7 +1718,7 @@ export default function StudentTasksPage() {
         var copyButton = document.createElement('button');
         copyButton.className = 'light dark-background size-21 nir-copy-button pp-otchet-copy';
         copyButton.id = 'pp-otchet-copy-' + i;
-        copyButton.innerText = 'Перенести значения в поля ниже';
+        copyButton.innerText = 'Отредактировать версию';
         copyButton.type = 'button';
         copyButton.style.marginBottom = '10px';
         copyButton.style.marginTop = '10px';
@@ -2655,6 +2656,7 @@ export default function StudentTasksPage() {
 
             if ($(this).parent().parent().find('.nir-version-content').is(':visible') == true) {
                 // Закрываем подробную информацию о версии
+                $(this).removeClass('nir-version-clickable-selected');
                 $(this).parent().parent().find('.nir-version-content').toggle();
                 switch (docType) {
                     case 'nir-task-version':
@@ -2687,6 +2689,10 @@ export default function StudentTasksPage() {
             }
             else {
                 // Открываем подробную информацию о версии
+                $.each($('.nir-version-clickable:visible'), function (index, item) {
+                    $(item).removeClass('nir-version-clickable-selected');
+                });
+                $(this).addClass('nir-version-clickable-selected');
                 $.each($('.nir-version-content:visible'), function (index, item) {
                     if (event.target != $(item).parent().find('.nir-version-clickable')) {
                         $(item).toggle();
@@ -3351,6 +3357,9 @@ export default function StudentTasksPage() {
             setToFamiliarize(nirVersions[arrayID].toFamiliarize);
             setAdditionalTask(nirVersions[arrayID].additionalTask);
 
+            $.each($('.nir-version-clickable:visible'), function (index, item) {
+                $(item).removeClass('nir-version-clickable-selected');
+            });
             $('.nir-version-content:visible').toggle();
             $('#nir-task-creation-div').show();
         });
@@ -3368,6 +3377,9 @@ export default function StudentTasksPage() {
             setToFamiliarize(longPPData[arrayID].toFamiliarize);
             setAdditionalTask(longPPData[arrayID].additionalTask);
 
+            $.each($('.nir-version-clickable:visible'), function (index, item) {
+                $(item).removeClass('nir-version-clickable-selected');
+            });
             $('.nir-version-content:visible').toggle();
             $('#long-pp-task-creation-div').show();
         });
@@ -3385,6 +3397,9 @@ export default function StudentTasksPage() {
             setToFamiliarize(PPData[arrayID].toFamiliarize);
             setAdditionalTask(PPData[arrayID].additionalTask);
 
+            $.each($('.nir-version-clickable:visible'), function (index, item) {
+                $(item).removeClass('nir-version-clickable-selected');
+            });
             $('.nir-version-content:visible').toggle();
             $('#pp-task-creation-div').show();
         });
@@ -3401,6 +3416,9 @@ export default function StudentTasksPage() {
             setVkrAims(vkrTaskVersions[arrayID].vkrAim);
             setVkrTasks(vkrTaskVersions[arrayID].vkrTasks);
 
+            $.each($('.nir-version-clickable:visible'), function (index, item) {
+                $(item).removeClass('nir-version-clickable-selected');
+            });
             $('.nir-version-content:visible').toggle();
             $('#vkr-task-creation-div').show();
         });
@@ -3412,6 +3430,9 @@ export default function StudentTasksPage() {
             setDetailedDescription(nirOtchetVersions[id].detailedContent);
             setConclusion(nirOtchetVersions[id].advisorConclusion);
 
+            $.each($('.nir-version-clickable:visible'), function (index, item) {
+                $(item).removeClass('nir-version-clickable-selected');
+            });
             $('.nir-version-content:visible').toggle();
             $('#nir-report-creation-div').show();
         });
@@ -3423,6 +3444,9 @@ export default function StudentTasksPage() {
             setDetailedDescriptionLongPP(longPPOtchetVersions[id].detailedContent);
             setConclusionLongPP(longPPOtchetVersions[id].advisorConclusion);
 
+            $.each($('.nir-version-clickable:visible'), function (index, item) {
+                $(item).removeClass('nir-version-clickable-selected');
+            });
             $('.nir-version-content:visible').toggle();
             $('#long-pp-report-creation-div').show();
         });
@@ -3434,6 +3458,9 @@ export default function StudentTasksPage() {
             setDetailedDescriptionPP(PPOtchetVersions[id].detailedContent);
             setConclusionPP(PPOtchetVersions[id].advisorConclusion);
 
+            $.each($('.nir-version-clickable:visible'), function (index, item) {
+                $(item).removeClass('nir-version-clickable-selected');
+            });
             $('.nir-version-content:visible').toggle();
             $('#pp-report-creation-div').show();
         });
