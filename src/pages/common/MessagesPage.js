@@ -331,7 +331,8 @@ export default function MessagesPage() {
     }
 
     function checkValidity() {
-        if (newMessageReceiversId.length > 0 && $('#new-message-theme').val() !== '' && $('#new-message-text').val() !== '') {
+        // if (newMessageReceiversId.length > 0 && $('#new-message-theme').val() !== '' && $('#new-message-text').val() !== '') {
+        if (newMessageReceiversId.length > 0 && $('#new-message-text').val() !== '') {
             document.getElementById('send-new-message-button').disabled = false;
         }
         else {
@@ -546,7 +547,12 @@ export default function MessagesPage() {
             receiversString += newMessageReceiversId[newMessageReceiversId.length - 1];
 
             var formData = new FormData();
-            formData.append('messageTheme', $('#new-message-theme').val());
+            if ($('#new-message-theme').val() !== '') {
+                formData.append('messageTheme', $('#new-message-theme').val());
+            }
+            else {
+                formData.append('messageTheme', 'ВКР');
+            }
             formData.append('messageText', $('#new-message-text').val());
             formData.append('receivers', receiversString);
             axios({

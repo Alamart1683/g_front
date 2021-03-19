@@ -283,11 +283,11 @@ export default function SciAdvisorStudentsPage() {
 
             var vkrPresentationDiv = document.createElement('div');
 
-            student.appendChild(studentNum);
-            studentFio.appendChild(fioLink);
-            student.appendChild(studentFio);
+            //student.appendChild(studentNum);
             studentData.appendChild(popover);
             student.appendChild(studentData);
+            studentFio.appendChild(fioLink);
+            student.appendChild(studentFio);
 
             student.appendChild(studentTheme);
 
@@ -409,9 +409,8 @@ export default function SciAdvisorStudentsPage() {
                 <Table striped bordered hover className='sca-student-table'>
                     <thead className='size-24 dark'>
                         <tr>
-                            <th>#</th>
-                            <th>ФИО</th>
                             <th></th>
+                            <th>ФИО</th>
                             <th>Тема</th>
                             <th style={{ width: '231px' }}>НИР</th>
                             <th style={{ width: '298px' }}>ПпППУиОПД</th>
