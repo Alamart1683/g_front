@@ -93,10 +93,10 @@ export default function StudentHeader() {
 
         $('[data-toggle="popover"]').popover();
 
-        $('body').on('click', function (e) {
+        $('body').off().on('click', function (e) {
             $('[data-toggle=popover]').each(function () {
                 if (!$(this).is(e.target) && $(this).has(e.target).length === 0 && $('.popover').has(e.target).length === 0) {
-                    $(this).popover('hide');
+                    $(this).popover('hide'); 
                 }
             });
         });
@@ -143,7 +143,7 @@ export default function StudentHeader() {
 
                 <Nav.Link as={Link} to='/stu/theme'>
                     <button type='button' id='button-theme' className='student-navbar-button dark-background light size-30'>
-                        Тема ВКР: <br />{theme}
+                        Тема ВКР
                     </button>
                 </Nav.Link>
 

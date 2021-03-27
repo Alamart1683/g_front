@@ -224,6 +224,8 @@ export default function SciAdvisorStudentsDocsPage() {
                 downloadButton.className = 'light dark-background size-24 sca-scu-version-button version-download-button';
                 downloadButton.innerText = 'Сохранить\nдокумент';
                 downloadButton.type = 'button';
+                downloadButton.style.position = 'relative';
+                //downloadButton.style.top = '-54px';
 
                 // Кнопка удалить
                 var deleteButton = document.createElement('button');
@@ -231,9 +233,7 @@ export default function SciAdvisorStudentsDocsPage() {
                 deleteButton.innerText = 'Удалить\nверсию';
                 deleteButton.type = 'button';
                 // Запретить удаление, если версия отправлена
-                if (documentStatus !== 'Не отправлено' && documentStatus !== 'Замечания') {
-                    deleteButton.disabled = true;
-                }
+                deleteButton.style.position = 'relative';
 
                 // Кнопка просмотреть
                 var viewButton = document.createElement('button');
@@ -408,7 +408,19 @@ export default function SciAdvisorStudentsDocsPage() {
                 'Authorization': 'Bearer ' + authTokens.accessToken
             },
         }).then((response) => {
-            return true;
+            if (response.data.indexOf('Вы не можете удалить версию документа, которую создали не вы') > -1) {
+                setErrorMessage('Ошибка при удалении версии задания, нельзя удалить версию, созданную научным руководителем!');
+                setShowError(true);
+                return false;
+            }
+            else if (response.data.indexOf('Запрещено удалять последнюю прорецензированную версию документа') > -1) {
+                setErrorMessage('Ошибка, нельзя удалять последнюю прорецензированную версию документа!');
+                setShowError(true);
+                return false;
+            }
+            else {
+                return true;
+            }
         }).catch(result => {
             console.log(result);
             setErrorMessage('Ошибка при удалении задания!');
@@ -429,7 +441,19 @@ export default function SciAdvisorStudentsDocsPage() {
                 'Authorization': 'Bearer ' + authTokens.accessToken
             },
         }).then((response) => {
-            return true;
+            if (response.data.indexOf('Вы не можете удалить версию документа, которую создали не вы') > -1) {
+                setErrorMessage('Ошибка при удалении версии задания, нельзя удалить версию, созданную научным руководителем!');
+                setShowError(true);
+                return false;
+            }
+            else if (response.data.indexOf('Запрещено удалять последнюю прорецензированную версию документа') > -1) {
+                setErrorMessage('Ошибка, нельзя удалять последнюю прорецензированную версию документа!');
+                setShowError(true);
+                return false;
+            }
+            else {
+                return true;
+            }
         }).catch(result => {
             console.log(result);
             setErrorMessage('Ошибка при удалении отчета!');
@@ -565,7 +589,19 @@ export default function SciAdvisorStudentsDocsPage() {
                 'Authorization': 'Bearer ' + authTokens.accessToken
             },
         }).then((response) => {
-            return true;
+            if (response.data.indexOf('Вы не можете удалить версию документа, которую создали не вы') > -1) {
+                setErrorMessage('Ошибка при удалении версии задания, нельзя удалить версию, созданную научным руководителем!');
+                setShowError(true);
+                return false;
+            }
+            else if (response.data.indexOf('Запрещено удалять последнюю прорецензированную версию документа') > -1) {
+                setErrorMessage('Ошибка, нельзя удалять последнюю прорецензированную версию документа!');
+                setShowError(true);
+                return false;
+            }
+            else {
+                return true;
+            }
         }).catch(result => {
             console.log(result);
             setErrorMessage('Ошибка при удалении документа ВКР!');
@@ -683,7 +719,6 @@ export default function SciAdvisorStudentsDocsPage() {
                             gradeTask(versionId, 'Замечания').then((result)=>{
                                 if (result) {
                                     $(this).parent().parent().parent().find('.order-name-text:contains("Статус: Рассматривается")').text('Статус: Замечания');
-                                    $(this).parent().parent().parent().find('.version-delete-button').attr('disabled', false);
                                 }
                                 else {
                                     $(this).parent().parent().find('.version-send-button').attr('disabled', false);
@@ -694,7 +729,6 @@ export default function SciAdvisorStudentsDocsPage() {
                             gradeReport(versionId, 'Замечания').then((result)=>{
                                 if (result) {
                                     $(this).parent().parent().parent().find('.order-name-text:contains("Статус: Рассматривается")').text('Статус: Замечания');
-                                    $(this).parent().parent().parent().find('.version-delete-button').attr('disabled', false);
                                 }
                                 else {
                                     $(this).parent().parent().find('.version-send-button').attr('disabled', false);
@@ -705,7 +739,6 @@ export default function SciAdvisorStudentsDocsPage() {
                             gradeVkrStuff(versionId, 'Замечания').then((result)=>{
                                 if (result) {
                                     $(this).parent().parent().parent().find('.order-name-text:contains("Статус: Рассматривается")').text('Статус: Замечания');
-                                    $(this).parent().parent().parent().find('.version-delete-button').attr('disabled', false);
                                 }
                                 else {
                                     $(this).parent().parent().find('.version-send-button').attr('disabled', false);
@@ -753,7 +786,6 @@ export default function SciAdvisorStudentsDocsPage() {
             gradeReport(versionId, 'Неудовлетворительно').then((result)=>{
                 if (result) {
                     $(this).parent().parent().parent().find('.order-name-text:contains("Статус: Рассматривается")').text('Статус: НЕУД.');
-                    $(this).parent().parent().parent().find('.version-delete-button').attr('disabled', true);
                 }
                 else {
                     $(this).parent().parent().find('.version-send-button').attr('disabled', false);
@@ -771,7 +803,6 @@ export default function SciAdvisorStudentsDocsPage() {
             gradeReport(versionId, 'Удовлетворительно').then((result)=>{
                 if (result) {
                     $(this).parent().parent().parent().find('.order-name-text:contains("Статус: Рассматривается")').text('Статус: УДОВЛ.');
-                    $(this).parent().parent().parent().find('.version-delete-button').attr('disabled', true);
                 }
                 else {
                     $(this).parent().parent().find('.version-send-button').attr('disabled', false);
@@ -789,7 +820,6 @@ export default function SciAdvisorStudentsDocsPage() {
             gradeReport(versionId, 'Хорошо').then((result)=>{
                 if (result) {
                     $(this).parent().parent().parent().find('.order-name-text:contains("Статус: Рассматривается")').text('Статус: ХОР.');
-                    $(this).parent().parent().parent().find('.version-delete-button').attr('disabled', true);
                 }
                 else {
                     $(this).parent().parent().find('.version-send-button').attr('disabled', false);
@@ -807,7 +837,6 @@ export default function SciAdvisorStudentsDocsPage() {
             gradeReport(versionId, 'Отлично').then((result)=>{
                 if (result) {
                     $(this).parent().parent().parent().find('.order-name-text:contains("Статус: Рассматривается")').text('Статус: ОТЛ.');
-                    $(this).parent().parent().parent().find('.version-delete-button').attr('disabled', true);
                 }
                 else {
                     $(this).parent().parent().find('.version-send-button').attr('disabled', false);

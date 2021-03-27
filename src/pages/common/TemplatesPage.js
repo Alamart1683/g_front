@@ -79,7 +79,12 @@ export default function TemplatesPage() {
             viewButton.innerText = 'Просмотреть';
             viewButton.type = 'button';
             viewButton.style.position = 'relative';
-            viewButton.style.top = '1px';
+            //if ($.browser.mozilla) {
+            //    templateDownload.style.top = '-17px';
+            //}
+            //else {
+                viewButton.style.top = '1px';
+            //}
 
             documentFile.appendChild(templateName);
             documentFile.appendChild(viewButton);

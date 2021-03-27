@@ -50,7 +50,7 @@ export default function OrdersPage() {
             var orderName = document.createElement('div');
             orderName.className = 'hoc-order-name-div dark-background';
             orderName.id = 'hoc-order-template-name';
-            orderName.style.width = '1030px';
+            orderName.style.width = '1040px';
 
             var orderNameImage = document.createElement('img');
             orderNameImage.className = 'hoc-order-template-name-image';
@@ -101,7 +101,7 @@ export default function OrdersPage() {
             orderDownload.innerText = "Сохранить";
             orderDownload.style.height = '120px'
             orderDownload.style.position = 'relative';
-            orderDownload.style.top = '-55px';
+            orderDownload.style.top = '-54px';
             //orderDownload.style.display = 'inline-block';
             orderDownload.style.width = '200px';
             
@@ -113,7 +113,7 @@ export default function OrdersPage() {
             viewButton.style.height = '120px';
             viewButton.style.width = '200px';
             viewButton.style.position = 'relative';
-            viewButton.style.top = '-55px';
+            viewButton.style.top = '-54px';
             viewButton.type = 'button';
 
             orderName.appendChild(orderNameImage);

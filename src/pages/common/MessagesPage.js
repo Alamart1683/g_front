@@ -470,7 +470,7 @@ export default function MessagesPage() {
                         compactReceiverDiv.className = 'new-message-compact-receiver-div size-24 dark';
 
                         var compactReceiverText = document.createElement('span');
-                        compactReceiverText.innerText = $(this).text();
+                        compactReceiverText.innerText = $(this).text().split(' ')[3];
 
                         var compactCloseButton = document.createElement('button');
                         compactCloseButton.type = 'button';
@@ -498,7 +498,7 @@ export default function MessagesPage() {
                         compactReceiverDiv.className = 'new-message-compact-receiver-div size-24 dark';
 
                         var compactReceiverText = document.createElement('span');
-                        compactReceiverText.innerText = $(this).text();
+                        compactReceiverText.innerText = $(this).text().split(' ')[3];
 
                         var compactCloseButton = document.createElement('button');
                         compactCloseButton.type = 'button';
@@ -535,7 +535,11 @@ export default function MessagesPage() {
                 }
             });
 
-            
+            $('[data-toggle=popover]').each(function () {
+                if (!$(this).is(e.target) && $(this).has(e.target).length === 0 && $('.popover').has(e.target).length === 0) {
+                    $(this).popover('hide'); 
+                }
+            });
         });
 
         $('#send-new-message-button').off().on('click', function () {

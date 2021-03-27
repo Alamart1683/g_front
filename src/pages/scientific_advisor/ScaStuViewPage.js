@@ -191,6 +191,10 @@ export default function ScaStuViewPage() {
         nirTaskCheckbox.id = 'nir-task-checkbox';
         if (item.studentDocumentsStatusView.nirTaskStatus) {
             nirTaskCheckbox.checked = true;
+            document.getElementById('nir-report-message').style.display = 'none';
+            document.getElementById('nir-otchet-description').disabled = false;
+            document.getElementById('nir-otchet-conclusion').disabled = false;
+            document.getElementById('nir-merge-checkbox').disabled = false;
         }
         nirTaskCheckbox.style.marginLeft = '22px';
 
@@ -221,6 +225,10 @@ export default function ScaStuViewPage() {
         longPPTaskCheckbox.id = 'long-pp-task-checkbox';
         if (item.studentDocumentsStatusView.ppppuipdTaskStatus) {
             longPPTaskCheckbox.checked = true;
+            document.getElementById('long-pp-report-message').style.display = 'none';
+            document.getElementById('long-pp-otchet-description').disabled = false;
+            document.getElementById('long-pp-otchet-conclusion').disabled = false;
+            document.getElementById('long-pp-merge-checkbox').disabled = false;
         }
         longPPTaskCheckbox.style.marginLeft = '22px';
 
@@ -251,6 +259,10 @@ export default function ScaStuViewPage() {
         ppTaskCheckbox.id = 'pp-task-checkbox';
         if (item.studentDocumentsStatusView.ppTaskStatus) {
             ppTaskCheckbox.checked = true;
+            document.getElementById('pp-report-message').style.display = 'none';
+            document.getElementById('pp-otchet-description').disabled = false;
+            document.getElementById('pp-otchet-conclusion').disabled = false;
+            document.getElementById('pp-merge-checkbox').disabled = false;
         }
         ppTaskCheckbox.style.marginLeft = '22px';
 
@@ -314,6 +326,9 @@ export default function ScaStuViewPage() {
         vkrTaskCheckbox.id = 'vkr-task-checkbox';
         if (item.studentDocumentsStatusView.vkrTask) {
             vkrTaskCheckbox.checked = true;
+            document.getElementById('vkr-report-message').style.display = 'none';
+            document.getElementById('make-vkr-otchet-button').disabled = false;
+            document.getElementById('vkr-merge-checkbox').disabled = false;
         }
         vkrTaskCheckbox.style.marginLeft = '22px';
 
@@ -626,9 +641,6 @@ export default function ScaStuViewPage() {
         deleteButton.className = 'dark size-24 nir-version-header-button vkr-dopusk-delete-button';
         deleteButton.innerText = 'Удалить версию';
         deleteButton.type = 'button';
-        if (item.documentStatus !== 'Не отправлено' && item.documentStatus !== 'Замечания') {
-            deleteButton.disabled = true;
-        }
 
         var clickableArea = document.createElement('div');
         clickableArea.className = 'nir-version-titles';
@@ -717,9 +729,6 @@ export default function ScaStuViewPage() {
         deleteButton.className = 'dark size-24 nir-version-header-button vkr-review-delete-button';
         deleteButton.innerText = 'Удалить версию';
         deleteButton.type = 'button';
-        if (item.documentStatus !== 'Не отправлено' && item.documentStatus !== 'Замечания') {
-            deleteButton.disabled = true;
-        }
 
         var clickableArea = document.createElement('div');
         clickableArea.className = 'nir-version-titles';
@@ -810,9 +819,6 @@ export default function ScaStuViewPage() {
         deleteButton.className = 'dark size-24 nir-version-header-button vkr-antiplagiat-delete-button';
         deleteButton.innerText = 'Удалить версию';
         deleteButton.type = 'button';
-        if (item.documentStatus !== 'Не отправлено' && item.documentStatus !== 'Замечания') {
-            deleteButton.disabled = true;
-        }
 
         var clickableArea = document.createElement('div');
         clickableArea.className = 'nir-version-titles';
@@ -903,9 +909,6 @@ export default function ScaStuViewPage() {
         deleteButton.className = 'dark size-24 nir-version-header-button vkr-presentation-delete-button';
         deleteButton.innerText = 'Удалить версию';
         deleteButton.type = 'button';
-        if (item.documentStatus !== 'Не отправлено' && item.documentStatus !== 'Замечания') {
-            deleteButton.disabled = true;
-        }
 
         var clickableArea = document.createElement('div');
         clickableArea.className = 'nir-version-titles';
@@ -997,10 +1000,6 @@ export default function ScaStuViewPage() {
         deleteButton.className = 'dark size-24 nir-version-header-button nir-version-delete-button';
         deleteButton.innerText = 'Удалить версию';
         deleteButton.type = 'button';
-        // Запретить удаление, если версия отправлена
-        if (item.status !== 'Не отправлено' && item.status !== 'Замечания') {
-            deleteButton.disabled = true;
-        }
 
         var clickableArea = document.createElement('div');
         clickableArea.className = 'nir-version-clickable2';
@@ -1169,10 +1168,6 @@ export default function ScaStuViewPage() {
         deleteButton.className = 'dark size-24 nir-version-header-button long-pp-version-delete-button';
         deleteButton.innerText = 'Удалить версию';
         deleteButton.type = 'button';
-        // Запретить удаление, если версия отправлена
-        if (item.status !== 'Не отправлено' && item.status !== 'Замечания') {
-            deleteButton.disabled = true;
-        }
 
         var clickableArea = document.createElement('div');
         clickableArea.className = 'nir-version-clickable2';
@@ -1341,10 +1336,6 @@ export default function ScaStuViewPage() {
         deleteButton.className = 'dark size-24 nir-version-header-button pp-version-delete-button';
         deleteButton.innerText = 'Удалить версию';
         deleteButton.type = 'button';
-        // Запретить удаление, если версия отправлена
-        if (item.status !== 'Не отправлено' && item.status !== 'Замечания') {
-            deleteButton.disabled = true;
-        }
 
         var clickableArea = document.createElement('div');
         clickableArea.className = 'nir-version-clickable2';
@@ -1513,10 +1504,6 @@ export default function ScaStuViewPage() {
         deleteButton.className = 'dark size-24 nir-version-header-button vkr-version-delete-button';
         deleteButton.innerText = 'Удалить версию';
         deleteButton.type = 'button';
-        // Запретить удаление, если версия отправлена
-        if (item.status !== 'Не отправлено' && item.status !== 'Замечания') {
-            deleteButton.disabled = true;
-        }
 
         var clickableArea = document.createElement('div');
         clickableArea.className = 'nir-version-clickable2';
@@ -1688,9 +1675,6 @@ export default function ScaStuViewPage() {
         deleteButton.className = 'dark size-24 nir-version-header-button nir-otchet-delete-button';
         deleteButton.innerText = 'Удалить версию';
         deleteButton.type = 'button';
-        if (item.status !== 'Не отправлено' && item.status !== 'Замечания') {
-            deleteButton.disabled = true;
-        }
 
         var clickableArea = document.createElement('div');
         clickableArea.className = 'nir-version-clickable2';
@@ -1803,10 +1787,10 @@ export default function ScaStuViewPage() {
         var sendButton = document.createElement('button');
         sendButton.className = 'dark size-24 nir-version-header-button nir-version-send-button';
         sendButton.innerText = 'Оценить';
-        sendButton.type = 'button';
+        sendButton.type = 'button';   
         if (item.status !== 'Не отправлено' && item.status !== 'Рассматривается') {
             sendButton.disabled = true;
-        }
+        }             
 
         var dropdownDiv = document.createElement('div');
         dropdownDiv.className = 'sci-advisor-status-dropdown-div';
@@ -1845,9 +1829,6 @@ export default function ScaStuViewPage() {
         deleteButton.className = 'dark size-24 nir-version-header-button long-pp-otchet-delete-button';
         deleteButton.innerText = 'Удалить версию';
         deleteButton.type = 'button';
-        if (item.status !== 'Не отправлено' && item.status !== 'Замечания') {
-            deleteButton.disabled = true;
-        }
 
         var clickableArea = document.createElement('div');
         clickableArea.className = 'nir-version-clickable2';
@@ -2001,9 +1982,6 @@ export default function ScaStuViewPage() {
         deleteButton.className = 'dark size-24 nir-version-header-button pp-otchet-delete-button';
         deleteButton.innerText = 'Удалить версию';
         deleteButton.type = 'button';
-        if (item.status !== 'Не отправлено' && item.status !== 'Замечания') {
-            deleteButton.disabled = true;
-        }
 
         var clickableArea = document.createElement('div');
         clickableArea.className = 'nir-version-clickable2';
@@ -2157,9 +2135,6 @@ export default function ScaStuViewPage() {
         deleteButton.className = 'dark size-24 nir-version-header-button vkr-otchet-delete-button';
         deleteButton.innerText = 'Удалить версию';
         deleteButton.type = 'button';
-        if (item.status !== 'Не отправлено' && item.status !== 'Замечания') {
-            deleteButton.disabled = true;
-        }
 
         var clickableArea = document.createElement('div');
         clickableArea.className = 'nir-version-titles';
@@ -2633,7 +2608,20 @@ export default function ScaStuViewPage() {
                 'Authorization': 'Bearer ' + authTokens.accessToken
             },
         }).then((response) => {
-            return true;
+            console.log(response);
+            if (response.data.indexOf('Вы не можете удалить версию документа, которую создали не вы') > -1) {
+                setErrorMessage('Ошибка при удалении версии задания, нельзя удалить версию, созданную научным руководителем!');
+                setShowError(true);
+                return false;
+            }
+            else if (response.data.indexOf('Запрещено удалять последнюю прорецензированную версию документа') > -1) {
+                setErrorMessage('Ошибка при удалении версии задания, нельзя удалять последнюю прорецензированную версию документа!');
+                setShowError(true);
+                return false;
+            }
+            else {
+                return true;
+            }
         }).catch(result => {
             console.log(result.data);
             setErrorMessage('Ошибка при удалении версии задания!');
@@ -2654,7 +2642,20 @@ export default function ScaStuViewPage() {
                 'Authorization': 'Bearer ' + authTokens.accessToken
             },
         }).then((response) => {
-            return true;
+            console.log(response);
+            if (response.data.indexOf('Вы не можете удалить версию документа, которую создали не вы') > -1) {
+                setErrorMessage('Ошибка при удалении версии задания, нельзя удалить версию, созданную научным руководителем!');
+                setShowError(true);
+                return false;
+            }
+            else if (response.data.indexOf('Запрещено удалять последнюю прорецензированную версию документа') > -1) {
+                setErrorMessage('Ошибка при удалении версии задания, нельзя удалять последнюю прорецензированную версию документа!');
+                setShowError(true);
+                return false;
+            }
+            else {
+                return true;
+            }
         }).catch(result => {
             console.log(result.data);
             setErrorMessage('Ошибка при удалении версии отчета!');
@@ -2703,7 +2704,19 @@ export default function ScaStuViewPage() {
                 'Authorization': 'Bearer ' + authTokens.accessToken
             },
         }).then((response) => {
-            return true;
+            if (response.data.indexOf('Вы не можете удалить версию документа, которую создали не вы') > -1) {
+                setErrorMessage('Ошибка при удалении версии задания, нельзя удалить версию, созданную научным руководителем!');
+                setShowError(true);
+                return false;
+            }
+            else if (response.data.indexOf('Запрещено удалять последнюю прорецензированную версию документа') > -1) {
+                setErrorMessage('Ошибка, нельзя удалять последнюю прорецензированную версию документа!');
+                setShowError(true);
+                return false;
+            }
+            else {
+                return true;
+            }
         }).catch(result => {
             console.log(result.data);
             setErrorMessage('Ошибка при удалении версии документа ВКР!');
@@ -2995,7 +3008,6 @@ export default function ScaStuViewPage() {
                 if (result) {
                     $(this).parent().parent().parent().find('.nir-header-text:contains("Статус: Рассматривается")').text('Статус: Одобрено');
                     $(this).parent().parent().parent().find('.nir-header-text:contains("Статус: Не отправлено")').text('Статус: Одобрено');
-                    $(this).parent().parent().parent().find('.nir-version-delete-button').attr('disabled', true);
                     $('#nir-task-checkbox').attr('checked', true);
                 }
                 else {
@@ -3076,7 +3088,6 @@ export default function ScaStuViewPage() {
                 if (result) {
                     $(this).parent().parent().parent().find('.nir-header-text:contains("Статус: Рассматривается")').text('Статус: НЕУД.');
                     $(this).parent().parent().parent().find('.nir-header-text:contains("Статус: Не отправлено")').text('Статус: НЕУД.');
-                    $(this).parent().parent().parent().find('.nir-otchet-delete-button').attr('disabled', true);
                     if ($('#nir-report-grade').text() === getStatus(0)) {
                         $('#nir-report-grade').text(getStatus(2));
                     }
@@ -3096,7 +3107,6 @@ export default function ScaStuViewPage() {
                 if (result) {
                     $(this).parent().parent().parent().find('.nir-header-text:contains("Статус: Рассматривается")').text('Статус: УДОВЛ.');
                     $(this).parent().parent().parent().find('.nir-header-text:contains("Статус: Не отправлено")').text('Статус: УДОВЛ.');
-                    $(this).parent().parent().parent().find('.nir-otchet-delete-button').attr('disabled', true);
                     if ($('#nir-report-grade').text() === getStatus(0) || $('#nir-report-grade').text() === getStatus(2)) {
                         $('#nir-report-grade').text(getStatus(3));
                     }
@@ -3116,7 +3126,6 @@ export default function ScaStuViewPage() {
                 if (result) {
                     $(this).parent().parent().parent().find('.nir-header-text:contains("Статус: Рассматривается")').text('Статус: ХОР.');
                     $(this).parent().parent().parent().find('.nir-header-text:contains("Статус: Не отправлено")').text('Статус: ХОР.');
-                    $(this).parent().parent().parent().find('.nir-otchet-delete-button').attr('disabled', true);
                     if ($('#nir-report-grade').text() === getStatus(0) || $('#nir-report-grade').text() === getStatus(2) || $('#nir-report-grade').text() === getStatus(3)) {
                         $('#nir-report-grade').text(getStatus(4));
                     }
@@ -3136,7 +3145,6 @@ export default function ScaStuViewPage() {
                 if (result) {
                     $(this).parent().parent().parent().find('.nir-header-text:contains("Статус: Рассматривается")').text('Статус: ОТЛ.');
                     $(this).parent().parent().parent().find('.nir-header-text:contains("Статус: Не отправлено")').text('Статус: ОТЛ.');
-                    $(this).parent().parent().parent().find('.nir-otchet-delete-button').attr('disabled', true);
                     if ($('#nir-report-grade').text() === getStatus(0) || $('#nir-report-grade').text() === getStatus(2) || $('#nir-report-grade').text() === getStatus(3) || $('#nir-report-grade').text() === getStatus(4)) {
                         $('#nir-report-grade').text(getStatus(5));
                     }
@@ -3184,7 +3192,6 @@ export default function ScaStuViewPage() {
                 if (result) {
                     $(this).parent().parent().parent().find('.nir-header-text:contains("Статус: Рассматривается")').text('Статус: Одобрено');
                     $(this).parent().parent().parent().find('.nir-header-text:contains("Статус: Не отправлено")').text('Статус: Одобрено');
-                    $(this).parent().parent().parent().find('.long-pp-version-delete-button').attr('disabled', true);
                     $('#long-pp-task-checkbox').attr('checked', true);
                 }
                 else {
@@ -3265,7 +3272,6 @@ export default function ScaStuViewPage() {
                 if (result) {
                     $(this).parent().parent().parent().find('.nir-header-text:contains("Статус: Рассматривается")').text('Статус: НЕУД.');
                     $(this).parent().parent().parent().find('.nir-header-text:contains("Статус: Не отправлено")').text('Статус: НЕУД.');
-                    $(this).parent().parent().parent().find('.long-pp-otchet-delete-button').attr('disabled', true);
                     if ($('#long-pp-report-grade').text() === getStatus(0)) {
                         $('#long-pp-report-grade').text(getStatus(2));
                     }
@@ -3285,7 +3291,6 @@ export default function ScaStuViewPage() {
                 if (result) {
                     $(this).parent().parent().parent().find('.nir-header-text:contains("Статус: Рассматривается")').text('Статус: УДОВЛ.');
                     $(this).parent().parent().parent().find('.nir-header-text:contains("Статус: Не отправлено")').text('Статус: УДОВЛ.');
-                    $(this).parent().parent().parent().find('.long-pp-otchet-delete-button').attr('disabled', true);
                     if ($('#long-pp-report-grade').text() === getStatus(0) || $('#long-pp-report-grade').text() === getStatus(2)) {
                         $('#long-pp-report-grade').text(getStatus(3));
                     }
@@ -3305,7 +3310,6 @@ export default function ScaStuViewPage() {
                 if (result) {
                     $(this).parent().parent().parent().find('.nir-header-text:contains("Статус: Рассматривается")').text('Статус: ХОР.');
                     $(this).parent().parent().parent().find('.nir-header-text:contains("Статус: Не отправлено")').text('Статус: ХОР.');
-                    $(this).parent().parent().parent().find('.long-pp-otchet-delete-button').attr('disabled', true);
                     if ($('#long-pp-report-grade').text() === getStatus(0) || $('#long-pp-report-grade').text() === getStatus(2) || $('#long-pp-report-grade').text() === getStatus(3)) {
                         $('#long-pp-report-grade').text(getStatus(4));
                     }
@@ -3325,7 +3329,6 @@ export default function ScaStuViewPage() {
                 if (result) {
                     $(this).parent().parent().parent().find('.nir-header-text:contains("Статус: Рассматривается")').text('Статус: ОТЛ.');
                     $(this).parent().parent().parent().find('.nir-header-text:contains("Статус: Не отправлено")').text('Статус: ОТЛ.');
-                    $(this).parent().parent().parent().find('.long-pp-otchet-delete-button').attr('disabled', true);
                     if ($('#long-pp-report-grade').text() === getStatus(0) || $('#long-pp-report-grade').text() === getStatus(2) || $('#long-pp-report-grade').text() === getStatus(3) || $('#long-pp-report-grade').text() === getStatus(4)) {
                         $('#long-pp-report-grade').text(getStatus(5));
                     }
@@ -3374,7 +3377,6 @@ export default function ScaStuViewPage() {
                 if (result) {
                     $(this).parent().parent().parent().find('.nir-header-text:contains("Статус: Рассматривается")').text('Статус: Одобрено');
                     $(this).parent().parent().parent().find('.nir-header-text:contains("Статус: Не отправлено")').text('Статус: Одобрено');
-                    $(this).parent().parent().parent().find('.pp-version-delete-button').attr('disabled', true);
                     $('#pp-task-checkbox').attr('checked', true);
                 }
                 else {
@@ -3455,7 +3457,6 @@ export default function ScaStuViewPage() {
                 if (result) {
                     $(this).parent().parent().parent().find('.nir-header-text:contains("Статус: Рассматривается")').text('Статус: НЕУД.');
                     $(this).parent().parent().parent().find('.nir-header-text:contains("Статус: Не отправлено")').text('Статус: НЕУД.');
-                    $(this).parent().parent().parent().find('.pp-otchet-delete-button').attr('disabled', true);
                     if ($('#pp-report-grade').text() === getStatus(0)) {
                         $('#pp-report-grade').text(getStatus(2));
                     }
@@ -3475,7 +3476,6 @@ export default function ScaStuViewPage() {
                 if (result) {
                     $(this).parent().parent().parent().find('.nir-header-text:contains("Статус: Рассматривается")').text('Статус: УДОВЛ.');
                     $(this).parent().parent().parent().find('.nir-header-text:contains("Статус: Не отправлено")').text('Статус: УДОВЛ.');
-                    $(this).parent().parent().parent().find('.pp-otchet-delete-button').attr('disabled', true);
                     if ($('#pp-report-grade').text() === getStatus(0) || $('#pp-report-grade').text() === getStatus(2)) {
                         $('#pp-report-grade').text(getStatus(3));
                     }
@@ -3495,7 +3495,6 @@ export default function ScaStuViewPage() {
                 if (result) {
                     $(this).parent().parent().parent().find('.nir-header-text:contains("Статус: Рассматривается")').text('Статус: ХОР.');
                     $(this).parent().parent().parent().find('.nir-header-text:contains("Статус: Не отправлено")').text('Статус: ХОР.');
-                    $(this).parent().parent().parent().find('.pp-otchet-delete-button').attr('disabled', true);
                     if ($('#pp-report-grade').text() === getStatus(0) || $('#pp-report-grade').text() === getStatus(2) || $('#pp-report-grade').text() === getStatus(3)) {
                         $('#pp-report-grade').text(getStatus(4));
                     }
@@ -3515,7 +3514,6 @@ export default function ScaStuViewPage() {
                 if (result) {
                     $(this).parent().parent().parent().find('.nir-header-text:contains("Статус: Рассматривается")').text('Статус: ОТЛ.');
                     $(this).parent().parent().parent().find('.nir-header-text:contains("Статус: Не отправлено")').text('Статус: ОТЛ.');
-                    $(this).parent().parent().parent().find('.pp-otchet-delete-button').attr('disabled', true);
                     if ($('#pp-report-grade').text() === getStatus(0) || $('#pp-report-grade').text() === getStatus(2) || $('#pp-report-grade').text() === getStatus(3) || $('#pp-report-grade').text() === getStatus(4)) {
                         $('#pp-report-grade').text(getStatus(5));
                     }
@@ -3563,7 +3561,6 @@ export default function ScaStuViewPage() {
                 if (result) {
                     $(this).parent().parent().parent().find('.nir-header-text:contains("Статус: Рассматривается")').text('Статус: Одобрено');
                     $(this).parent().parent().parent().find('.nir-header-text:contains("Статус: Не отправлено")').text('Статус: Одобрено');
-                    $(this).parent().parent().parent().find('.vkr-version-delete-button').attr('disabled', true);
                     $('#vkr-task-checkbox').attr('checked', true);
                 }
                 else {
@@ -3644,9 +3641,8 @@ export default function ScaStuViewPage() {
                 if (result) {
                     $(this).parent().parent().parent().find('.nir-header-text:contains("Статус: Рассматривается")').text('Статус: НЕУД.');
                     $(this).parent().parent().parent().find('.nir-header-text:contains("Статус: Не отправлено")').text('Статус: НЕУД.');
-                    $(this).parent().parent().parent().find('.vkr-otchet-delete-button').attr('disabled', true);
-                    if ($('#vkr-report-grade').text() === getStatus(0)) {
-                        $('#vkr-report-grade').text(getStatus(2));
+                    if ($('#vkr-rpz-grade').text() === getStatus(0)) {
+                        $('#vkr-rpz-grade').text(getStatus(2));
                     }
                 }
                 else {
@@ -3664,9 +3660,8 @@ export default function ScaStuViewPage() {
                 if (result) {
                     $(this).parent().parent().parent().find('.nir-header-text:contains("Статус: Рассматривается")').text('Статус: УДОВЛ.');
                     $(this).parent().parent().parent().find('.nir-header-text:contains("Статус: Не отправлено")').text('Статус: УДОВЛ.');
-                    $(this).parent().parent().parent().find('.vkr-otchet-delete-button').attr('disabled', true);
-                    if ($('#vkr-report-grade').text() === getStatus(0) || $('#vkr-report-grade').text() === getStatus(2)) {
-                        $('#vkr-report-grade').text(getStatus(3));
+                    if ($('#vkr-rpz-grade').text() === getStatus(0) || $('#vkr-rpz-grade').text() === getStatus(2)) {
+                        $('#vkr-rpz-grade').text(getStatus(3));
                     }
                 }
                 else {
@@ -3684,9 +3679,8 @@ export default function ScaStuViewPage() {
                 if (result) {
                     $(this).parent().parent().parent().find('.nir-header-text:contains("Статус: Рассматривается")').text('Статус: ХОР.');
                     $(this).parent().parent().parent().find('.nir-header-text:contains("Статус: Не отправлено")').text('Статус: ХОР.');
-                    $(this).parent().parent().parent().find('.vkr-otchet-delete-button').attr('disabled', true);
-                    if ($('#vkr-report-grade').text() === getStatus(0) || $('#vkr-report-grade').text() === getStatus(2) || $('#vkr-report-grade').text() === getStatus(3)) {
-                        $('#vkr-report-grade').text(getStatus(4));
+                    if ($('#vkr-rpz-grade').text() === getStatus(0) || $('#vkr-rpz-grade').text() === getStatus(2) || $('#vkr-rpz-grade').text() === getStatus(3)) {
+                        $('#vkr-rpz-grade').text(getStatus(4));
                     }
                 }
                 else {
@@ -3704,9 +3698,8 @@ export default function ScaStuViewPage() {
                 if (result) {
                     $(this).parent().parent().parent().find('.nir-header-text:contains("Статус: Рассматривается")').text('Статус: ОТЛ.');
                     $(this).parent().parent().parent().find('.nir-header-text:contains("Статус: Не отправлено")').text('Статус: ОТЛ.');
-                    $(this).parent().parent().parent().find('.vkr-otchet-delete-button').attr('disabled', true);
-                    if ($('#vkr-report-grade').text() === getStatus(0) || $('#vkr-report-grade').text() === getStatus(2) || $('#vkr-report-grade').text() === getStatus(3) || $('#vkr-report-grade').text() === getStatus(4)) {
-                        $('#vkr-report-grade').text(getStatus(5));
+                    if ($('#vkr-rpz-grade').text() === getStatus(0) || $('#vkr-rpz-grade').text() === getStatus(2) || $('#vkr-rpz-grade').text() === getStatus(3) || $('#vkr-rpz-grade').text() === getStatus(4)) {
+                        $('#vkr-rpz-grade').text(getStatus(5));
                     }
                 }
                 else {
@@ -3752,7 +3745,6 @@ export default function ScaStuViewPage() {
                 if (result) {
                     $(this).parent().parent().parent().find('.nir-header-text:contains("Статус: Рассматривается")').text('Статус: Одобрено');
                     $(this).parent().parent().parent().find('.nir-header-text:contains("Статус: Не отправлено")').text('Статус: Одобрено');
-                    $(this).parent().parent().parent().find('.vkr-review-delete-button').attr('disabled', true);
                     $('#vkr-feedback-checkbox').attr('checked', true);
                 }
                 else {
@@ -3816,7 +3808,6 @@ export default function ScaStuViewPage() {
                 if (result) {
                     $(this).parent().parent().parent().find('.nir-header-text:contains("Статус: Рассматривается")').text('Статус: Одобрено');
                     $(this).parent().parent().parent().find('.nir-header-text:contains("Статус: Не отправлено")').text('Статус: Одобрено');
-                    $(this).parent().parent().parent().find('.vkr-dopusk-delete-button').attr('disabled', true);
                     $('#vkr-dopusk-checkbox').attr('checked', true);
                 }
                 else {
@@ -3881,7 +3872,6 @@ export default function ScaStuViewPage() {
                 if (result) {
                     $(this).parent().parent().parent().find('.nir-header-text:contains("Статус: Рассматривается")').text('Статус: Одобрено');
                     $(this).parent().parent().parent().find('.nir-header-text:contains("Статус: Не отправлено")').text('Статус: Одобрено');
-                    $(this).parent().parent().parent().find('.vkr-antiplagiat-delete-button').attr('disabled', true);
                     $('#vkr-antiplagiat-checkbox').attr('checked', true);
                 }
                 else {
@@ -3945,7 +3935,6 @@ export default function ScaStuViewPage() {
                 if (result) {
                     $(this).parent().parent().parent().find('.nir-header-text:contains("Статус: Рассматривается")').text('Статус: Одобрено');
                     $(this).parent().parent().parent().find('.nir-header-text:contains("Статус: Не отправлено")').text('Статус: Одобрено');
-                    $(this).parent().parent().parent().find('.vkr-presentation-delete-button').attr('disabled', true);
                     $('#vkr-presentation-checkbox').attr('checked', true);
                 }
                 else {
@@ -4066,10 +4055,17 @@ export default function ScaStuViewPage() {
                 $(item).removeClass('nir-version-clickable-selected');
             });
             $('.nir-version-content:visible').toggle();
-            $('#nir-report-creation-div').show();
+            $('#nir-report-creation-div').show(); 
+
+            if ($('#nir-otchet-description').val() === '' || $('#nir-otchet-conclusion').val() === '') {
+                document.getElementById('make-nir-otchet-button').disabled = true;
+            }
+            else {
+                document.getElementById('make-nir-otchet-button').disabled = false;
+            }
         });
 
-        // Функция кнопки "перенести в меню" для отчета НИР
+        // Функция кнопки "перенести в меню" для отчета ППП...
         $('.long-pp-otchet-copy').off().on('click', function () {
             var id = $(this).attr('id').split('-')[4];
 
@@ -4081,9 +4077,16 @@ export default function ScaStuViewPage() {
             });
             $('.nir-version-content:visible').toggle();
             $('#long-pp-report-creation-div').show();
+
+            if ($('#long-pp-otchet-description').val() === '' || $('#long-pp-otchet-conclusion').val() === '') {
+                document.getElementById('make-long-pp-otchet-button').disabled = true;
+            }
+            else {
+                document.getElementById('make-long-pp-otchet-button').disabled = false;
+            }
         });
 
-        // Функция кнопки "перенести в меню" для отчета НИР
+        // Функция кнопки "перенести в меню" для отчета ПП
         $('.pp-otchet-copy').off().on('click', function () {
             var id = $(this).attr('id').split('-')[3];
 
@@ -4095,6 +4098,13 @@ export default function ScaStuViewPage() {
             });
             $('.nir-version-content:visible').toggle();
             $('#pp-report-creation-div').show();
+
+            if ($('#pp-otchet-description').val() === '' || $('#pp-otchet-conclusion').val() === '') {
+                document.getElementById('make-pp-otchet-button').disabled = true;
+            }
+            else {
+                document.getElementById('make-pp-otchet-button').disabled = false;
+            }
         });
 
         // Функция кнопки "перенести в меню" для задания ВКР
@@ -4277,7 +4287,7 @@ export default function ScaStuViewPage() {
                                         <div className='info-row'>
                                             <div className='info-column'>
                                                 <Form.Label column className="size-21 dark info-input-label">Детальное содержание:</Form.Label>
-                                                <textarea id='nir-otchet-description' maxLength='1024' value={detailedDescription} onChange={(e) => {
+                                                <textarea disabled id='nir-otchet-description' maxLength='1024' value={detailedDescription} onChange={(e) => {
                                                     setDetailedDescription(e.target.value);
                                                     if ($('#nir-otchet-description').val() === '' || $('#nir-otchet-conclusion').val() === '') {
                                                         document.getElementById('make-nir-otchet-button').disabled = true;
@@ -4290,7 +4300,7 @@ export default function ScaStuViewPage() {
 
                                             <div className='info-column'>
                                                 <Form.Label column className="size-21 dark info-input-label">Заключение научного руководителя:</Form.Label>
-                                                <textarea id='nir-otchet-conclusion' maxLength='2048' value={conclusion} onChange={(e) => {
+                                                <textarea disabled id='nir-otchet-conclusion' maxLength='2048' value={conclusion} onChange={(e) => {
                                                     setConclusion(e.target.value);
                                                     if ($('#nir-otchet-description').val() === '' || $('#nir-otchet-conclusion').val() === '') {
                                                         document.getElementById('make-nir-otchet-button').disabled = true;
@@ -4315,8 +4325,9 @@ export default function ScaStuViewPage() {
                                             }
                                         }} ></input>
                                         <div className='report-attach-div'>
-                                            <input type='checkbox' defaultChecked id='nir-merge-checkbox' className='report-attach-checkbox'></input>
+                                            <input disabled type='checkbox' defaultChecked id='nir-merge-checkbox' className='report-attach-checkbox'></input>
                                             <label htmlFor='nir-merge-checkbox' className='size-24 dark attach-checkbox-text'>Присоединить к загруженному файлу одобренное задание?</label>
+                                            <p id='nir-report-message' className='size-24 dark report-message-text'>Нет одобренного задания!</p>
                                         </div>
                                     </div>
                                 </div>
@@ -4386,7 +4397,7 @@ export default function ScaStuViewPage() {
                                         <div className='info-row'>
                                             <div className='info-column'>
                                                 <Form.Label column className='size-21 dark info-input-label'>Детальное содержание:</Form.Label>
-                                                <textarea id='long-pp-otchet-description' maxLength='1024' value={detailedDescriptionLongPP} onChange={(e) => {
+                                                <textarea disabled id='long-pp-otchet-description' maxLength='1024' value={detailedDescriptionLongPP} onChange={(e) => {
                                                     setDetailedDescriptionLongPP(e.target.value);
                                                     if ($('#long-pp-otchet-description').val() === '' || $('#long-pp-otchet-conclusion').val() === '') {
                                                         document.getElementById('make-long-pp-otchet-button').disabled = true;
@@ -4399,7 +4410,7 @@ export default function ScaStuViewPage() {
 
                                             <div className='info-column'>
                                                 <Form.Label column className='size-21 dark info-input-label'>Заключение научного руководителя:</Form.Label>
-                                                <textarea id='long-pp-otchet-conclusion' maxLength='2048' value={conclusionLongPP} onChange={(e) => {
+                                                <textarea disabled id='long-pp-otchet-conclusion' maxLength='2048' value={conclusionLongPP} onChange={(e) => {
                                                     setConclusionLongPP(e.target.value);
                                                     if ($('#long-pp-otchet-description').val() === '' || $('#long-pp-otchet-conclusion').val() === '') {
                                                         document.getElementById('make-long-pp-otchet-button').disabled = true;
@@ -4423,8 +4434,9 @@ export default function ScaStuViewPage() {
                                             }
                                         }} ></input>
                                         <div className='report-attach-div'>
-                                            <input type='checkbox' defaultChecked id='long-pp-merge-checkbox' className='report-attach-checkbox'></input>
+                                            <input disabled type='checkbox' defaultChecked id='long-pp-merge-checkbox' className='report-attach-checkbox'></input>
                                             <label htmlFor='long-pp-merge-checkbox' className='size-24 dark attach-checkbox-text'>Присоединить к загруженному файлу одобренное задание?</label>
+                                            <p id='long-pp-report-message' className='size-24 dark report-message-text'>Нет одобренного задания!</p>
                                         </div>
                                     </div>
                                 </div>
@@ -4494,7 +4506,7 @@ export default function ScaStuViewPage() {
                                         <div className='info-row'>
                                             <div className='info-column'>
                                                 <Form.Label column className='size-21 dark info-input-label'>Детальное содержание:</Form.Label>
-                                                <textarea id='pp-otchet-description' maxLength='1024' value={detailedDescriptionPP} onChange={(e) => {
+                                                <textarea disabled id='pp-otchet-description' maxLength='1024' value={detailedDescriptionPP} onChange={(e) => {
                                                     setDetailedDescriptionPP(e.target.value);
                                                     if ($('#pp-otchet-description').val() === '' || $('#pp-otchet-conclusion').val() === '') {
                                                         document.getElementById('make-pp-otchet-button').disabled = true;
@@ -4507,7 +4519,7 @@ export default function ScaStuViewPage() {
 
                                             <div className='info-column'>
                                                 <Form.Label column className='size-21 dark info-input-label'>Заключение научного руководителя:</Form.Label>
-                                                <textarea id='pp-otchet-conclusion' maxLength='2048' value={conclusionPP} onChange={(e) => {
+                                                <textarea disabled id='pp-otchet-conclusion' maxLength='2048' value={conclusionPP} onChange={(e) => {
                                                     setConclusionPP(e.target.value);
                                                     if ($('#pp-otchet-description').val() === '' || $('#pp-otchet-conclusion').val() === '') {
                                                         document.getElementById('make-pp-otchet-button').disabled = true;
@@ -4530,8 +4542,9 @@ export default function ScaStuViewPage() {
                                             }
                                         }} ></input>
                                         <div className='report-attach-div'>
-                                            <input type='checkbox' defaultChecked id='pp-merge-checkbox' className='report-attach-checkbox'></input>
+                                            <input disabled type='checkbox' defaultChecked id='pp-merge-checkbox' className='report-attach-checkbox'></input>
                                             <label htmlFor='pp-merge-checkbox' className='size-24 dark attach-checkbox-text'>Присоединить к загруженному файлу одобренное задание?</label>
+                                            <p id='pp-report-message' className='size-24 dark report-message-text'>Нет одобренного задания!</p>
                                         </div>
                                     </div>
                                 </div>
@@ -4668,7 +4681,7 @@ export default function ScaStuViewPage() {
 
                                 <div className='info-sub-tab-div'>
 
-                                    <button type='button' id='make-vkr-otchet-button' className='size-30 light dark-background info-button-1' style={{ height: '100px', width: '480px', marginLeft: '505px' }}>
+                                    <button disabled type='button' id='make-vkr-otchet-button' className='size-30 light dark-background info-button-1' style={{ height: '100px', width: '480px', marginLeft: '505px' }}>
                                         <Image src={iconDocument} thumbnail className='dark-background thumbnail-icon' style={{ position: 'relative', top: '-25px' }} />
                                         <div style={{ display: 'inline-block' }}><p style={{ marginBottom: '0px' }}>Загрузить<br />новую версию РПЗ</p></div>
                                     </button>
@@ -4679,8 +4692,9 @@ export default function ScaStuViewPage() {
                                         }
                                     }} ></input>
                                     <div className='report-attach-div'>
-                                        <input type='checkbox' defaultChecked id='vkr-merge-checkbox' className='report-attach-checkbox'></input>
+                                        <input disabled type='checkbox' defaultChecked id='vkr-merge-checkbox' className='report-attach-checkbox'></input>
                                         <label htmlFor='vkr-merge-checkbox' className='size-24 dark attach-checkbox-text'>Присоединить к загруженному файлу одобренное задание?</label>
+                                        <p id='vkr-report-message' className='size-24 dark report-message-text'>Нет одобренного задания!</p>
                                     </div>
                                 </div>
                             </Tab>

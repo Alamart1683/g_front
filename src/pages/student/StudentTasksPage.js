@@ -165,6 +165,10 @@ export default function StudentTasksPage() {
         nirTaskCheckbox.className = 'sci-table-checkbox';
         if (item.studentDocumentsStatusView.nirTaskStatus) {
             nirTaskCheckbox.checked = true;
+            document.getElementById('nir-report-message').style.display = 'none';
+            document.getElementById('nir-otchet-description').disabled = false;
+            document.getElementById('nir-otchet-conclusion').disabled = false;
+            document.getElementById('nir-merge-checkbox').disabled = false;
         }
         nirTaskCheckbox.style.marginLeft = '22px';
 
@@ -193,6 +197,10 @@ export default function StudentTasksPage() {
         longPPTaskCheckbox.className = 'sci-table-checkbox';
         if (item.studentDocumentsStatusView.ppppuipdTaskStatus) {
             longPPTaskCheckbox.checked = true;
+            document.getElementById('long-pp-report-message').style.display = 'none';
+            document.getElementById('long-pp-otchet-description').disabled = false;
+            document.getElementById('long-pp-otchet-conclusion').disabled = false;
+            document.getElementById('long-pp-merge-checkbox').disabled = false;
         }
         longPPTaskCheckbox.style.marginLeft = '22px';
 
@@ -221,6 +229,10 @@ export default function StudentTasksPage() {
         ppTaskCheckbox.className = 'sci-table-checkbox';
         if (item.studentDocumentsStatusView.ppTaskStatus) {
             ppTaskCheckbox.checked = true;
+            document.getElementById('pp-report-message').style.display = 'none';
+            document.getElementById('pp-otchet-description').disabled = false;
+            document.getElementById('pp-otchet-conclusion').disabled = false;
+            document.getElementById('pp-merge-checkbox').disabled = false;
         }
         ppTaskCheckbox.style.marginLeft = '22px';
 
@@ -280,6 +292,9 @@ export default function StudentTasksPage() {
         vkrTaskCheckbox.className = 'sci-table-checkbox';
         if (item.studentDocumentsStatusView.vkrTask) {
             vkrTaskCheckbox.checked = true;
+            document.getElementById('vkr-report-message').style.display = 'none';
+            document.getElementById('make-vkr-otchet-button').disabled = false;
+            document.getElementById('vkr-merge-checkbox').disabled = false;
         }
         vkrTaskCheckbox.style.marginLeft = '22px';
 
@@ -561,9 +576,6 @@ export default function StudentTasksPage() {
         deleteButton.className = 'dark size-24 nir-version-header-button vkr-dopusk-delete-button';
         deleteButton.innerText = 'Удалить версию';
         deleteButton.type = 'button';
-        if (item.documentStatus !== 'Не отправлено' && item.documentStatus !== 'Замечания') {
-            deleteButton.disabled = true;
-        }
 
         // Кнопка просмотреть
         var viewButton = document.createElement('button');
@@ -631,9 +643,6 @@ export default function StudentTasksPage() {
         deleteButton.className = 'dark size-24 nir-version-header-button vkr-review-delete-button';
         deleteButton.innerText = 'Удалить версию';
         deleteButton.type = 'button';
-        if (item.documentStatus !== 'Не отправлено' && item.documentStatus !== 'Замечания') {
-            deleteButton.disabled = true;
-        }
 
         // Кнопка просмотреть
         var viewButton = document.createElement('button');
@@ -702,9 +711,6 @@ export default function StudentTasksPage() {
         deleteButton.className = 'dark size-24 nir-version-header-button vkr-antiplagiat-delete-button';
         deleteButton.innerText = 'Удалить версию';
         deleteButton.type = 'button';
-        if (item.documentStatus !== 'Не отправлено' && item.documentStatus !== 'Замечания') {
-            deleteButton.disabled = true;
-        }
 
         // Кнопка просмотреть
         var viewButton = document.createElement('button');
@@ -772,9 +778,6 @@ export default function StudentTasksPage() {
         deleteButton.className = 'dark size-24 nir-version-header-button vkr-presentation-delete-button';
         deleteButton.innerText = 'Удалить версию';
         deleteButton.type = 'button';
-        if (item.documentStatus !== 'Не отправлено' && item.documentStatus !== 'Замечания') {
-            deleteButton.disabled = true;
-        }
 
         // Кнопка просмотреть
         var viewButton = document.createElement('button');
@@ -841,10 +844,6 @@ export default function StudentTasksPage() {
         deleteButton.className = 'dark size-24 nir-version-header-button nir-version-delete-button';
         deleteButton.innerText = 'Удалить версию';
         deleteButton.type = 'button';
-        // Запретить удаление, если версия отправлена
-        if (item.status !== 'Не отправлено' && item.status !== 'Замечания') {
-            deleteButton.disabled = true;
-        }
 
         var clickableArea = document.createElement('div');
         clickableArea.className = 'nir-version-clickable';
@@ -995,10 +994,6 @@ export default function StudentTasksPage() {
         deleteButton.className = 'dark size-24 nir-version-header-button long-pp-version-delete-button';
         deleteButton.innerText = 'Удалить версию';
         deleteButton.type = 'button';
-        // Запретить удаление, если версия отправлена
-        if (item.status !== 'Не отправлено' && item.status !== 'Замечания') {
-            deleteButton.disabled = true;
-        }
 
         var clickableArea = document.createElement('div');
         clickableArea.className = 'nir-version-clickable';
@@ -1147,10 +1142,6 @@ export default function StudentTasksPage() {
         deleteButton.className = 'dark size-24 nir-version-header-button pp-version-delete-button';
         deleteButton.innerText = 'Удалить версию';
         deleteButton.type = 'button';
-        // Запретить удаление, если версия отправлена
-        if (item.status !== 'Не отправлено' && item.status !== 'Замечания') {
-            deleteButton.disabled = true;
-        }
 
         var clickableArea = document.createElement('div');
         clickableArea.className = 'nir-version-clickable';
@@ -1299,10 +1290,6 @@ export default function StudentTasksPage() {
         deleteButton.className = 'dark size-24 nir-version-header-button vkr-version-delete-button';
         deleteButton.innerText = 'Удалить версию';
         deleteButton.type = 'button';
-        // Запретить удаление, если версия отправлена
-        if (item.status !== 'Не отправлено' && item.status !== 'Замечания') {
-            deleteButton.disabled = true;
-        }
 
         var clickableArea = document.createElement('div');
         clickableArea.className = 'nir-version-clickable';
@@ -1445,9 +1432,6 @@ export default function StudentTasksPage() {
         deleteButton.className = 'dark size-24 nir-version-header-button nir-otchet-delete-button';
         deleteButton.innerText = 'Удалить версию';
         deleteButton.type = 'button';
-        if (item.status !== 'Не отправлено' && item.status !== 'Замечания') {
-            deleteButton.disabled = true;
-        }
 
         var nirVersionContent = document.createElement('div');
         nirVersionContent.className = 'nir-version-content light-background';
@@ -1566,9 +1550,6 @@ export default function StudentTasksPage() {
         deleteButton.className = 'dark size-24 nir-version-header-button long-pp-otchet-delete-button';
         deleteButton.innerText = 'Удалить версию';
         deleteButton.type = 'button';
-        if (item.status !== 'Не отправлено' && item.status !== 'Замечания') {
-            deleteButton.disabled = true;
-        }
 
         var nirVersionContent = document.createElement('div');
         nirVersionContent.className = 'nir-version-content light-background';
@@ -1687,9 +1668,6 @@ export default function StudentTasksPage() {
         deleteButton.className = 'dark size-24 nir-version-header-button pp-otchet-delete-button';
         deleteButton.innerText = 'Удалить версию';
         deleteButton.type = 'button';
-        if (item.status !== 'Не отправлено' && item.status !== 'Замечания') {
-            deleteButton.disabled = true;
-        }
 
         var nirVersionContent = document.createElement('div');
         nirVersionContent.className = 'nir-version-content light-background';
@@ -1808,9 +1786,6 @@ export default function StudentTasksPage() {
         deleteButton.className = 'dark size-24 nir-version-header-button vkr-otchet-delete-button';
         deleteButton.innerText = 'Удалить версию';
         deleteButton.type = 'button';
-        if (item.status !== 'Не отправлено' && item.status !== 'Замечания') {
-            deleteButton.disabled = true;
-        }
 
         // Кнопка просмотреть
         var viewButton = document.createElement('button');
@@ -2481,7 +2456,20 @@ export default function StudentTasksPage() {
                 'Authorization': 'Bearer ' + authTokens.accessToken
             },
         }).then((response) => {
-            return true;
+            //console.log(response);
+            if (response.data.indexOf('Вы не можете удалить версию документа, которую создали не вы') > -1) {
+                setErrorMessage('Ошибка при удалении версии задания, нельзя удалить версию, созданную научным руководителем!');
+                setShowError(true);
+                return false;
+            }
+            else if (response.data.indexOf('Запрещено удалять последнюю прорецензированную версию документа') > -1) {
+                setErrorMessage('Ошибка, нельзя удалять последнюю прорецензированную версию документа!');
+                setShowError(true);
+                return false;
+            }
+            else {
+                return true;
+            }
         }).catch(result => {
             console.log(result);
             setErrorMessage('Ошибка при удалении версии задания!');
@@ -2549,7 +2537,19 @@ export default function StudentTasksPage() {
                 'Authorization': 'Bearer ' + authTokens.accessToken
             },
         }).then((response) => {
-            return true;
+            if (response.data.indexOf('Вы не можете удалить версию документа, которую создали не вы') > -1) {
+                setErrorMessage('Ошибка при удалении версии задания, нельзя удалить версию, созданную научным руководителем!');
+                setShowError(true);
+                return false;
+            }
+            else if (response.data.indexOf('Запрещено удалять последнюю прорецензированную версию документа') > -1) {
+                setErrorMessage('Ошибка, нельзя удалять последнюю прорецензированную версию документа!');
+                setShowError(true);
+                return false;
+            }
+            else {
+                return true;
+            }
         }).catch(result => {
             console.log(result);
             setErrorMessage('Ошибка при удалении версии отчета!');
@@ -2615,7 +2615,19 @@ export default function StudentTasksPage() {
                 'Authorization': 'Bearer ' + authTokens.accessToken
             },
         }).then((response) => {
-            return false;
+            if (response.data.indexOf('Вы не можете удалить версию документа, которую создали не вы') > -1) {
+                setErrorMessage('Ошибка при удалении версии задания, нельзя удалить версию, созданную научным руководителем!');
+                setShowError(true);
+                return false;
+            }
+            else if (response.data.indexOf('Запрещено удалять последнюю прорецензированную версию документа') > -1) {
+                setErrorMessage('Ошибка, нельзя удалять последнюю прорецензированную версию документа!');
+                setShowError(true);
+                return false;
+            }
+            else {
+                return true;
+            }
         }).catch(result => {
             console.log(result);
             setErrorMessage('Ошибка при удалении документа для ВКР!');
@@ -2635,7 +2647,19 @@ export default function StudentTasksPage() {
                 'Authorization': 'Bearer ' + authTokens.accessToken
             },
         }).then((response) => {
-            return true;
+            if (response.data.indexOf('Вы не можете удалить версию документа, которую создали не вы') > -1) {
+                setErrorMessage('Ошибка при удалении версии задания, нельзя удалить версию, созданную научным руководителем!');
+                setShowError(true);
+                return false;
+            }
+            else if (response.data.indexOf('Запрещено удалять последнюю прорецензированную версию документа') > -1) {
+                setErrorMessage('Ошибка, нельзя удалять последнюю прорецензированную версию документа!');
+                setShowError(true);
+                return false;
+            }
+            else {
+                return true;
+            }
         }).catch(result => {
             console.log(result);
             setErrorMessage('Ошибка при удалении версии документа для ВКР!');
@@ -2770,7 +2794,6 @@ export default function StudentTasksPage() {
             $(this).attr('disabled', true);
             sendTask(nirVersions[arrayID].systemVersionID).then((result) => {
                 if (result) {
-                    $(this).parent().find('.nir-version-delete-button').attr('disabled', true);
                     $(this).parent().find('.nir-header-text:contains("Статус: Не отправлено")').text('Статус: Рассматривается');
                 }
                 else {
@@ -2814,7 +2837,6 @@ export default function StudentTasksPage() {
             $(this).attr('disabled', true);
             sendReport(nirOtchetVersions[arrayID].systemVersionID).then((result) => {
                 if (result) {
-                    $(this).parent().find('.nir-otchet-delete-button').attr('disabled', true);
                     $(this).parent().find('.nir-header-text:contains("Статус: Не отправлено")').text('Статус: Рассматривается');
                 }
                 else {
@@ -2858,7 +2880,6 @@ export default function StudentTasksPage() {
             $(this).attr('disabled', true);
             sendTask(longPPData[arrayID].systemVersionID).then((result) => {
                 if (result) {
-                    $(this).parent().find('.long-pp-version-delete-button').attr('disabled', true);
                     $(this).parent().find('.nir-header-text:contains("Статус: Не отправлено")').text('Статус: Рассматривается');
                 }
                 else {
@@ -2901,7 +2922,6 @@ export default function StudentTasksPage() {
             $(this).attr('disabled', true);
             sendReport(longPPOtchetVersions[arrayID].systemVersionID).then((result) => {
                 if (result) {
-                    $(this).parent().find('.long-pp-otchet-delete-button').attr('disabled', true);
                     $(this).parent().find('.nir-header-text:contains("Статус: Не отправлено")').text('Статус: Рассматривается');
                 }
                 else {
@@ -2946,7 +2966,6 @@ export default function StudentTasksPage() {
             $(this).attr('disabled', true);
             sendTask(PPData[arrayID].systemVersionID).then((result) => {
                 if (result) {
-                    $(this).parent().find('.pp-version-delete-button').attr('disabled', true);
                     $(this).parent().find('.nir-header-text:contains("Статус: Не отправлено")').text('Статус: Рассматривается');
                 }
                 else {
@@ -2989,7 +3008,6 @@ export default function StudentTasksPage() {
             $(this).attr('disabled', true);
             sendReport(PPOtchetVersions[arrayID].systemVersionID).then((result) => {
                 if (result) {
-                    $(this).parent().find('.pp-otchet-delete-button').attr('disabled', true);
                     $(this).parent().find('.nir-header-text:contains("Статус: Не отправлено")').text('Статус: Рассматривается');
                 }
                 else {
@@ -3034,7 +3052,6 @@ export default function StudentTasksPage() {
             $(this).attr('disabled', true);
             sendTask(vkrTaskVersions[arrayID].systemVersionID).then((result) => {
                 if (result) {
-                    $(this).parent().find('.vkr-version-delete-button').attr('disabled', true);
                     $(this).parent().find('.nir-header-text:contains("Статус: Не отправлено")').text('Статус: Рассматривается');
                 }
                 else {
@@ -3077,7 +3094,6 @@ export default function StudentTasksPage() {
             $(this).attr('disabled', true);
             sendReport(vkrOtchetVersions[arrayID].systemVersionID).then((result) => {
                 if (result) {
-                    $(this).parent().find('.vkr-otchet-delete-button').attr('disabled', true);
                     $(this).parent().find('.nir-header-text:contains("Статус: Не отправлено")').text('Статус: Рассматривается');
                 }
                 else {
@@ -3122,7 +3138,6 @@ export default function StudentTasksPage() {
             $(this).attr('disabled', true);
             sendVkrStuff(vkrReviewVersions[arrayID].systemVersionID).then((result) => {
                 if (result) {
-                    $(this).parent().find('.vkr-review-delete-button').attr('disabled', true);
                     $(this).parent().find('.nir-header-text:contains("Статус: Не отправлено")').text('Статус: Рассматривается');
                 }
                 else {
@@ -3181,7 +3196,6 @@ export default function StudentTasksPage() {
             $(this).attr('disabled', true);
             sendVkrStuff(vkrDopuskVersions[arrayID].systemVersionID).then((result) => {
                 if (result) {
-                    $(this).parent().find('.vkr-dopusk-delete-button').attr('disabled', true);
                     $(this).parent().find('.nir-header-text:contains("Статус: Не отправлено")').text('Статус: Рассматривается');
                 }
                 else {
@@ -3240,7 +3254,6 @@ export default function StudentTasksPage() {
             $(this).attr('disabled', true);
             sendVkrStuff(vkrAntiplagiatVersions[arrayID].systemVersionID).then((result) => {
                 if (result) {
-                    $(this).parent().find('.vkr-antiplagiat-delete-button').attr('disabled', true);
                     $(this).parent().find('.nir-header-text:contains("Статус: Не отправлено")').text('Статус: Рассматривается');
                 }
                 else {
@@ -3298,7 +3311,6 @@ export default function StudentTasksPage() {
             $(this).attr('disabled', true);
             sendVkrStuff(vkrPrezentationVersions[arrayID].systemVersionID).then((result) => {
                 if (result) {
-                    $(this).parent().find('.vkr-presentation-delete-button').attr('disabled', true);
                     $(this).parent().find('.nir-header-text:contains("Статус: Не отправлено")').text('Статус: Рассматривается');
                 }
                 else {
@@ -3434,7 +3446,14 @@ export default function StudentTasksPage() {
                 $(item).removeClass('nir-version-clickable-selected');
             });
             $('.nir-version-content:visible').toggle();
-            $('#nir-report-creation-div').show();
+            $('#nir-report-creation-div').show();   
+
+            if ($('#nir-otchet-description').val() === '' || $('#nir-otchet-conclusion').val() === '') {
+                document.getElementById('make-nir-otchet-button').disabled = true;
+            }
+            else {
+                document.getElementById('make-nir-otchet-button').disabled = false;
+            }
         });
 
         // Функция кнопки "перенести в меню" для отчета ПП...
@@ -3449,6 +3468,13 @@ export default function StudentTasksPage() {
             });
             $('.nir-version-content:visible').toggle();
             $('#long-pp-report-creation-div').show();
+
+            if ($('#long-pp-otchet-description').val() === '' || $('#long-pp-otchet-conclusion').val() === '') {
+                document.getElementById('make-long-pp-otchet-button').disabled = true;
+            }
+            else {
+                document.getElementById('make-long-pp-otchet-button').disabled = false;
+            }
         });
 
         // Функция кнопки "перенести в меню" для отчета ПП
@@ -3463,6 +3489,13 @@ export default function StudentTasksPage() {
             });
             $('.nir-version-content:visible').toggle();
             $('#pp-report-creation-div').show();
+
+            if ($('#pp-otchet-description').val() === '' || $('#pp-otchet-conclusion').val() === '') {
+                document.getElementById('make-pp-otchet-button').disabled = true;
+            }
+            else {
+                document.getElementById('make-pp-otchet-button').disabled = false;
+            }
         });
 
         $('.version-view-button').off().on('click', function (e) {
@@ -3663,7 +3696,7 @@ export default function StudentTasksPage() {
                                         <div className='info-row'>
                                             <div className='info-column'>
                                                 <Form.Label column className="size-21 dark info-input-label">Детальное содержание:</Form.Label>
-                                                <textarea id='nir-otchet-description' maxLength='1024' value={detailedDescription} onChange={(e) => {
+                                                <textarea disabled id='nir-otchet-description' maxLength='1024' value={detailedDescription} onChange={(e) => {
                                                     setDetailedDescription(e.target.value);
                                                     if ($('#nir-otchet-description').val() === '' || $('#nir-otchet-conclusion').val() === '') {
                                                         document.getElementById('make-nir-otchet-button').disabled = true;
@@ -3676,7 +3709,7 @@ export default function StudentTasksPage() {
 
                                             <div className='info-column'>
                                                 <Form.Label column className="size-21 dark info-input-label">Заключение научного руководителя:</Form.Label>
-                                                <textarea id='nir-otchet-conclusion' maxLength='2048' value={conclusion} onChange={(e) => {
+                                                <textarea disabled id='nir-otchet-conclusion' maxLength='2048' value={conclusion} onChange={(e) => {
                                                     setConclusion(e.target.value);
                                                     if ($('#nir-otchet-description').val() === '' || $('#nir-otchet-conclusion').val() === '') {
                                                         document.getElementById('make-nir-otchet-button').disabled = true;
@@ -3700,8 +3733,9 @@ export default function StudentTasksPage() {
                                             }
                                         }} ></input>
                                         <div className='report-attach-div'>
-                                            <input type='checkbox' defaultChecked id='nir-merge-checkbox' className='report-attach-checkbox'></input>
+                                            <input disabled type='checkbox' defaultChecked id='nir-merge-checkbox' className='report-attach-checkbox'></input>
                                             <label htmlFor='nir-merge-checkbox' className='size-24 dark attach-checkbox-text'>Присоединить к загруженному файлу одобренное задание?</label>
+                                            <p id='nir-report-message' className='size-24 dark report-message-text'>Нет одобренного задания!</p>
                                         </div>
                                     </div>
                                 </div>
@@ -3795,7 +3829,7 @@ export default function StudentTasksPage() {
                                         <div className='info-row'>
                                             <div className='info-column'>
                                                 <Form.Label column className='size-21 dark info-input-label'>Детальное содержание:</Form.Label>
-                                                <textarea id='long-pp-otchet-description' maxLength='1024' value={detailedDescriptionLongPP} onChange={(e) => {
+                                                <textarea disabled id='long-pp-otchet-description' maxLength='1024' value={detailedDescriptionLongPP} onChange={(e) => {
                                                     setDetailedDescriptionLongPP(e.target.value);
                                                     if ($('#long-pp-otchet-description').val() === '' || $('#long-pp-otchet-conclusion').val() === '') {
                                                         document.getElementById('make-long-pp-otchet-button').disabled = true;
@@ -3808,7 +3842,7 @@ export default function StudentTasksPage() {
 
                                             <div className='info-column'>
                                                 <Form.Label column className='size-21 dark info-input-label'>Заключение научного руководителя:</Form.Label>
-                                                <textarea id='long-pp-otchet-conclusion' maxLength='2048' value={conclusionLongPP} onChange={(e) => {
+                                                <textarea disabled id='long-pp-otchet-conclusion' maxLength='2048' value={conclusionLongPP} onChange={(e) => {
                                                     setConclusionLongPP(e.target.value);
                                                     if ($('#long-pp-otchet-description').val() === '' || $('#long-pp-otchet-conclusion').val() === '') {
                                                         document.getElementById('make-long-pp-otchet-button').disabled = true;
@@ -3831,8 +3865,9 @@ export default function StudentTasksPage() {
                                             }
                                         }} ></input>
                                         <div className='report-attach-div'>
-                                            <input type='checkbox' defaultChecked id='long-pp-merge-checkbox' className='report-attach-checkbox'></input>
+                                            <input disabled type='checkbox' defaultChecked id='long-pp-merge-checkbox' className='report-attach-checkbox'></input>
                                             <label htmlFor='long-pp-merge-checkbox' className='size-24 dark attach-checkbox-text'>Присоединить к загруженному файлу одобренное задание?</label>
+                                            <p id='long-pp-report-message' className='size-24 dark report-message-text'>Нет одобренного задания!</p>
                                         </div>
                                     </div>
                                 </div>
@@ -3924,7 +3959,7 @@ export default function StudentTasksPage() {
                                         <div className='info-row'>
                                             <div className='info-column'>
                                                 <Form.Label column className='size-21 dark info-input-label'>Детальное содержание:</Form.Label>
-                                                <textarea id='pp-otchet-description' maxLength='1024' value={detailedDescriptionPP} onChange={(e) => {
+                                                <textarea disabled id='pp-otchet-description' maxLength='1024' value={detailedDescriptionPP} onChange={(e) => {
                                                     setDetailedDescriptionPP(e.target.value);
                                                     if ($('#pp-otchet-description').val() === '' || $('#pp-otchet-conclusion').val() === '') {
                                                         document.getElementById('make-pp-otchet-button').disabled = true;
@@ -3937,7 +3972,7 @@ export default function StudentTasksPage() {
 
                                             <div className='info-column'>
                                                 <Form.Label column className='size-21 dark info-input-label'>Заключение научного руководителя:</Form.Label>
-                                                <textarea id='pp-otchet-conclusion' maxLength='2048' value={conclusionPP} onChange={(e) => {
+                                                <textarea disabled id='pp-otchet-conclusion' maxLength='2048' value={conclusionPP} onChange={(e) => {
                                                     setConclusionPP(e.target.value);
                                                     if ($('#pp-otchet-description').val() === '' || $('#pp-otchet-conclusion').val() === '') {
                                                         document.getElementById('make-pp-otchet-button').disabled = true;
@@ -3961,8 +3996,9 @@ export default function StudentTasksPage() {
                                             }
                                         }} ></input>
                                         <div className='report-attach-div'>
-                                            <input type='checkbox' defaultChecked id='pp-merge-checkbox' className='report-attach-checkbox'></input>
+                                            <input disabled type='checkbox' defaultChecked id='pp-merge-checkbox' className='report-attach-checkbox'></input>
                                             <label htmlFor='pp-merge-checkbox' className='size-24 dark attach-checkbox-text'>Присоединить к загруженному файлу одобренное задание?</label>
+                                            <p id='pp-report-message' className='size-24 dark report-message-text'>Нет одобренного задания!</p>
                                         </div>
                                     </div>
                                 </div>
@@ -4114,9 +4150,9 @@ export default function StudentTasksPage() {
 
                                     <div id='student-vkr-otchet-version-div' className='student-nir-task-version-div light-background'></div>
 
-                                    <button type='button' id='make-vkr-otchet-button' className='size-30 light dark-background info-button-1' style={{ height: '100px', width: '480px', marginLeft: '505px' }}>
+                                    <button disabled type='button' id='make-vkr-otchet-button' className='size-30 light dark-background info-button-1' style={{ height: '100px', width: '480px', marginLeft: '505px' }}>
                                         <Image src={iconDocument} thumbnail className='dark-background thumbnail-icon' style={{ position: 'relative', top: '-25px' }} />
-                                        <div style={{ display: 'inline-block' }}><p style={{ marginBottom: '0px' }}>Загрузить<br />новую версию РПЗ</p></div>
+                                        <div style={{ display: 'inline-block' }}><p style={{ marginBottom: '0px' }}>Сформировать и загрузить<br />новую версию РПЗ</p></div>
                                     </button>
                                     <input id='vkr-otchet-file-input' type='file' style={{ display: 'none' }} accept='application/vnd.openxmlformats-officedocument.wordprocessingml.document' onChange={(e) => {
                                         if (e.target.files.length !== 0) {
@@ -4125,8 +4161,9 @@ export default function StudentTasksPage() {
                                         }
                                     }} ></input>
                                     <div className='report-attach-div'>
-                                        <input type='checkbox' defaultChecked id='vkr-merge-checkbox' className='report-attach-checkbox'></input>
+                                        <input disabled type='checkbox' defaultChecked id='vkr-merge-checkbox' className='report-attach-checkbox'></input>
                                         <label htmlFor='vkr-merge-checkbox' className='size-24 dark attach-checkbox-text'>Присоединить к загруженному файлу одобренное задание?</label>
+                                        <p id='vkr-report-message' className='size-24 dark report-message-text'>Нет одобренного задания!</p>
                                     </div>
                                 </div>
                             </Tab>
