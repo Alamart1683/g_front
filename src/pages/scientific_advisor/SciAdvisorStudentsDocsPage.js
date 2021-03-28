@@ -224,7 +224,9 @@ export default function SciAdvisorStudentsDocsPage() {
                 downloadButton.className = 'light dark-background size-24 sca-scu-version-button version-download-button';
                 downloadButton.innerText = 'Сохранить\nдокумент';
                 downloadButton.type = 'button';
-                downloadButton.style.position = 'relative';
+                downloadButton.style.verticalAlign = 'top';
+                downloadButton.style.marginTop = '71px';
+                //downloadButton.style.position = 'relative';
                 //downloadButton.style.top = '-54px';
 
                 // Кнопка удалить
@@ -232,14 +234,16 @@ export default function SciAdvisorStudentsDocsPage() {
                 deleteButton.className = 'light dark-background size-24 sca-scu-version-button version-delete-button';
                 deleteButton.innerText = 'Удалить\nверсию';
                 deleteButton.type = 'button';
-                // Запретить удаление, если версия отправлена
-                deleteButton.style.position = 'relative';
+                deleteButton.style.verticalAlign = 'top';
+                //deleteButton.style.position = 'relative';
+                deleteButton.style.marginTop = '71px';
 
                 // Кнопка просмотреть
                 var viewButton = document.createElement('button');
                 viewButton.className = 'light dark-background size-20 sca-scu-version-button version-view-button';
                 viewButton.innerText = 'Просмотреть';
                 viewButton.type = 'button';
+                //viewButton.style.verticalAlign = 'top';
                 viewButton.style.position = 'relative';
                 viewButton.style.top = '-54px';
 

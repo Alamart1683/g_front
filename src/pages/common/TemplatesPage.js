@@ -69,8 +69,8 @@ export default function TemplatesPage() {
             templateDownload.className = 'template-doc-download light size-24';
             templateDownload.id = 'template-doc-download';
             templateDownload.innerText = "Сохранить шаблон задания";
-            templateDownload.style.position = 'relative';
-            templateDownload.style.top = '-17px';
+            templateDownload.style.verticalAlign = 'top';
+            templateDownload.style.marginTop = '8px';
 
             // Кнопка просмотреть
             var viewButton = document.createElement('button');
@@ -78,13 +78,8 @@ export default function TemplatesPage() {
             viewButton.id = 'template-view-' + i;
             viewButton.innerText = 'Просмотреть';
             viewButton.type = 'button';
-            viewButton.style.position = 'relative';
-            //if ($.browser.mozilla) {
-            //    templateDownload.style.top = '-17px';
-            //}
-            //else {
-                viewButton.style.top = '1px';
-            //}
+            viewButton.style.verticalAlign = 'top';
+            viewButton.style.marginTop = '8px';
 
             documentFile.appendChild(templateName);
             documentFile.appendChild(viewButton);

@@ -51,6 +51,7 @@ export default function OrdersPage() {
             orderName.className = 'hoc-order-name-div dark-background';
             orderName.id = 'hoc-order-template-name';
             orderName.style.width = '1040px';
+            orderName.style.whiteSpace = 'nowrap';
 
             var orderNameImage = document.createElement('img');
             orderNameImage.className = 'hoc-order-template-name-image';
@@ -99,22 +100,21 @@ export default function OrdersPage() {
             orderDownload.className = 'hoc-order-template-download-button light size-22';
             orderDownload.id = 'download-button-' + i;
             orderDownload.innerText = "Сохранить";
-            orderDownload.style.height = '120px'
-            orderDownload.style.position = 'relative';
-            orderDownload.style.top = '-54px';
-            //orderDownload.style.display = 'inline-block';
+            orderDownload.style.height = '125px'
             orderDownload.style.width = '200px';
+            orderDownload.style.verticalAlign = 'top';
+            orderDownload.style.marginTop = '-5px';
             
             // Кнопка просмотреть
             var viewButton = document.createElement('button');
             viewButton.className = 'hoc-order-template-download-button light size-22 version-view-button';
             viewButton.id = 'template-view-' + i;
             viewButton.innerText = 'Просмотреть';
-            viewButton.style.height = '120px';
+            viewButton.style.height = '125px';
             viewButton.style.width = '200px';
-            viewButton.style.position = 'relative';
-            viewButton.style.top = '-54px';
             viewButton.type = 'button';
+            viewButton.style.verticalAlign = 'top';
+            viewButton.style.marginTop = '-5px';
 
             orderName.appendChild(orderNameImage);
 

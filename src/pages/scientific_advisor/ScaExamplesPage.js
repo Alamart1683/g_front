@@ -79,7 +79,7 @@ export default function ScaExamplesPage() {
 
             var exampleName = document.createElement('p');
             exampleName.innerText = example.documentName;
-            exampleName.style.maxWidth = '540px';
+            exampleName.style.maxWidth = '440px';
             exampleName.style.overflow = 'hidden';
             exampleName.style.textOverflow = 'ellipsis';
             exampleName.style.display = 'inline-block';
