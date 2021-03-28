@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Modal } from 'react-bootstrap';
 import axios from 'axios';
 import { useAuthContext } from '../../auth/AuthContext';
@@ -15,9 +15,8 @@ export default function AdminOrdersPage() {
     const [stage, setStage] = useState('Приказ об организации НИР');
     const [show, setShow] = useState(false);
 
-    useEffect(() => {
-        showOrders(orders);
-    }, [orders]);
+    const [showError, setShowError] = useState(false);
+    const [errorMessage, setErrorMessage] = useState('Неопределенная ошибка');
 
     if (!fetchedData) {
         setFetchedData(true);
@@ -33,8 +32,9 @@ export default function AdminOrdersPage() {
                 'Authorization': 'Bearer ' + authTokens.accessToken
             },
         }).then((response) => {
-            //console.log(response.data);
+            console.log(response.data);
             setOrders(response.data);
+            showOrders(response.data);
         }).catch(result => {
             console.log(result.data);
         });
@@ -43,124 +43,125 @@ export default function AdminOrdersPage() {
     // Заполнение таблицы приказов
     function showOrders(ordersArray) {
         for (var i = 0; i < ordersArray.length; i++) {
-            var order = ordersArray[i];
+            showOrderSingle(ordersArray[i], i);
+        }
+    }
 
-            var orderFile = document.createElement('div')
-            orderFile.className = 'hoc-order-template-doc';
-            orderFile.style.height = '120px';
-            orderFile.id = 'hoc-order-template-doc-' + i;
+    function showOrderSingle(order, i) {
+        var orderFile = document.createElement('div')
+        orderFile.className = 'hoc-order-template-doc';
+        orderFile.style.height = '120px';
+        orderFile.id = 'hoc-order-template-doc-' + i;
 
-            var orderName = document.createElement('div');
-            orderName.className = 'hoc-order-name-div dark-background';
-            orderName.id = 'hoc-order-template-name';
+        var orderName = document.createElement('div');
+        orderName.className = 'hoc-order-name-div dark-background';
+        orderName.id = 'hoc-order-template-name';
 
-            var orderNameImage = document.createElement('img');
-            orderNameImage.className = 'hoc-order-template-name-image';
-            orderNameImage.src = orderImage;
-            orderNameImage.style.position = 'relative';
-            orderNameImage.style.top = '-55px';
+        var orderNameImage = document.createElement('img');
+        orderNameImage.className = 'hoc-order-template-name-image';
+        orderNameImage.src = orderImage;
+        orderNameImage.style.position = 'relative';
+        orderNameImage.style.top = '-55px';
 
-            var orderTitles = document.createElement('div');
-            orderTitles.className = 'hoc-order-titles-div';
-            orderTitles.style.width = '647px';
+        var orderTitles = document.createElement('div');
+        orderTitles.className = 'hoc-order-titles-div';
+        orderTitles.style.width = '647px';
 
-            var orderNameText = document.createElement('p');
-            orderNameText.className = 'hoc-order-template-name-text light size-24';
-            orderNameText.innerText = order.documentName;
-            orderNameText.style.maxWidth = '350px';
-            orderNameText.style.marginBottom = '-5px';
+        var orderNameText = document.createElement('p');
+        orderNameText.className = 'hoc-order-template-name-text light size-24';
+        orderNameText.innerText = order.documentName;
+        orderNameText.style.maxWidth = '350px';
+        orderNameText.style.marginBottom = '-5px';
 
-            var orderNum = document.createElement('p');
-            orderNum.className = 'hoc-order-template-name-text light size-24';
-            orderNum.innerText = 'Номер: ' + order.number;
-            orderNum.style.display = 'inline-block';
-            orderNum.style.marginBottom = '-5px';
+        var orderNum = document.createElement('p');
+        orderNum.className = 'hoc-order-template-name-text light size-24';
+        orderNum.innerText = 'Номер: ' + order.number;
+        orderNum.style.display = 'inline-block';
+        orderNum.style.marginBottom = '-5px';
 
-            var orderSpeciality = document.createElement('p');
-            orderSpeciality.className = 'hoc-order-template-name-text light size-24';
-            orderSpeciality.innerText = 'Направление: ' + order.speciality;
-            orderSpeciality.style.display = 'block';
-            orderSpeciality.style.marginBottom = '0px';
+        var orderSpeciality = document.createElement('p');
+        orderSpeciality.className = 'hoc-order-template-name-text light size-24';
+        orderSpeciality.innerText = 'Направление: ' + order.speciality;
+        orderSpeciality.style.display = 'block';
+        orderSpeciality.style.marginBottom = '0px';
 
-            var orderDate = document.createElement('p');
-            orderDate.className = 'hoc-order-template-name-text light size-22';
-            orderDate.innerText = 'Дата: ' + order.orderDate;
-            orderDate.style.marginBottom = '0px';
+        var orderDate = document.createElement('p');
+        orderDate.className = 'hoc-order-template-name-text light size-22';
+        orderDate.innerText = 'Дата: ' + order.orderDate;
+        orderDate.style.marginBottom = '0px';
 
-            var orderStartDate = document.createElement('p');
-            orderStartDate.className = 'hoc-order-template-name-text light size-22';
-            orderStartDate.innerText = 'Дата начала: ' + order.startDate;
-            orderStartDate.style.marginBottom = '0px';
-            orderStartDate.style.marginLeft = '5px';
+        var orderStartDate = document.createElement('p');
+        orderStartDate.className = 'hoc-order-template-name-text light size-22';
+        orderStartDate.innerText = 'Дата начала: ' + order.startDate;
+        orderStartDate.style.marginBottom = '0px';
+        orderStartDate.style.marginLeft = '5px';
 
-            var orderEndDate = document.createElement('p');
-            orderEndDate.className = 'hoc-order-template-name-text light size-22';
-            orderEndDate.innerText = 'Дата конца: ' + order.endDate;
-            orderEndDate.style.marginBottom = '0px';
-            orderEndDate.style.marginLeft = '5px';
+        var orderEndDate = document.createElement('p');
+        orderEndDate.className = 'hoc-order-template-name-text light size-22';
+        orderEndDate.innerText = 'Дата конца: ' + order.endDate;
+        orderEndDate.style.marginBottom = '0px';
+        orderEndDate.style.marginLeft = '5px';
 
-            var orderDownload = document.createElement('button');
-            orderDownload.className = 'hoc-order-template-download-button light size-22';
-            orderDownload.id = 'hoc-order-download-button';
-            orderDownload.innerText = "Сохранить";
-            orderDownload.style.height = '120px'
-            orderDownload.style.width = '105px';
-            orderDownload.style.position = 'relative';
-            orderDownload.style.top = '-48px';
+        var orderDownload = document.createElement('button');
+        orderDownload.className = 'hoc-order-template-download-button light size-22';
+        orderDownload.id = 'hoc-order-download-button';
+        orderDownload.innerText = "Сохранить";
+        orderDownload.style.height = '125px'
+        orderDownload.style.width = '105px';
+        orderDownload.style.verticalAlign = 'top';
+        orderDownload.style.marginTop = '-5px';
 
-            var orderDelete = document.createElement('button');
-            orderDelete.className = 'hoc-order-template-delete-button light size-22';
-            orderDelete.id = 'hoc-order-delete-button';
-            orderDelete.innerText = "Удалить";
-            orderDelete.style.height = '120px'
-            orderDelete.style.width = '100px';
-            orderDelete.style.position = 'relative';
-            orderDelete.style.top = '-48px';
+        var orderDelete = document.createElement('button');
+        orderDelete.className = 'hoc-order-template-delete-button light size-22';
+        orderDelete.id = 'hoc-order-delete-button';
+        orderDelete.innerText = "Удалить";
+        orderDelete.style.height = '125px'
+        orderDelete.style.width = '100px';
+        orderDelete.style.verticalAlign = 'top';
+        orderDelete.style.marginTop = '-5px';
 
-            // Кнопка просмотреть
-            var viewButton = document.createElement('button');
-            viewButton.className = 'hoc-order-template-delete-button light size-22 version-view-button';
-            viewButton.id = 'order-view-' + i;
-            viewButton.innerText = 'Просмотреть';
-            viewButton.type = 'button';
-            viewButton.style.height = '120px';
-            viewButton.style.width = '135px';
-            viewButton.style.position = 'relative';
-            viewButton.style.top = '-48px';
-            viewButton.type = 'button';
+        // Кнопка просмотреть
+        var viewButton = document.createElement('button');
+        viewButton.className = 'hoc-order-template-delete-button light size-22 version-view-button';
+        viewButton.id = 'order-view-' + i;
+        viewButton.innerText = 'Просмотреть';
+        viewButton.type = 'button';
+        viewButton.style.height = '125px';
+        viewButton.style.width = '135px';
+        viewButton.type = 'button';
+        viewButton.style.verticalAlign = 'top';
+        viewButton.style.marginTop = '-5px';
 
-            orderName.appendChild(orderNameImage);
+        orderName.appendChild(orderNameImage);
 
-            orderTitles.appendChild(orderNameText);
-            orderTitles.appendChild(orderNum);
-            orderTitles.appendChild(orderSpeciality);
-            orderTitles.appendChild(orderDate);
-            orderTitles.appendChild(orderStartDate);
-            orderTitles.appendChild(orderEndDate);
-            orderName.appendChild(orderTitles);
+        orderTitles.appendChild(orderNameText);
+        orderTitles.appendChild(orderNum);
+        orderTitles.appendChild(orderSpeciality);
+        orderTitles.appendChild(orderDate);
+        orderTitles.appendChild(orderStartDate);
+        orderTitles.appendChild(orderEndDate);
+        orderName.appendChild(orderTitles);
 
-            orderFile.appendChild(orderName);
-            orderFile.appendChild(viewButton);
-            orderFile.appendChild(orderDownload);
-            orderFile.appendChild(orderDelete);
+        orderFile.appendChild(orderName);
+        orderFile.appendChild(viewButton);
+        orderFile.appendChild(orderDownload);
+        orderFile.appendChild(orderDelete);
 
-            switch (order.documentType) {
-                case 'Научно-исследовательская работа':
-                    document.getElementById("hoc-orders-document-panel1").appendChild(orderFile);
-                    break;
-                case 'Практика по получению знаний и умений':
-                    document.getElementById("hoc-orders-document-panel2").appendChild(orderFile);
-                    break;
-                case 'Преддипломная практика':
-                    document.getElementById("hoc-orders-document-panel3").appendChild(orderFile);
-                    break;
-                case 'ВКР':
-                    document.getElementById("hoc-orders-document-panel4").appendChild(orderFile);
-                    break;
-                default:
-                    console.log('switchError');
-            }
-
+        switch (order.documentType) {
+            case 'Научно-исследовательская работа':
+                document.getElementById("hoc-orders-document-panel1").appendChild(orderFile);
+                break;
+            case 'Практика по получению знаний и умений':
+                document.getElementById("hoc-orders-document-panel2").appendChild(orderFile);
+                break;
+            case 'Преддипломная практика':
+                document.getElementById("hoc-orders-document-panel3").appendChild(orderFile);
+                break;
+            case 'ВКР':
+                document.getElementById("hoc-orders-document-panel4").appendChild(orderFile);
+                break;
+            default:
+                console.log('switchError');
         }
     }
 
@@ -169,7 +170,6 @@ export default function AdminOrdersPage() {
         orderDate = orderDate.split('-')[2] + '.' + orderDate.split('-')[1] + '.' + orderDate.split('-')[0];
         orderStartDate = orderStartDate.split('-')[2] + '.' + orderStartDate.split('-')[1] + '.' + orderStartDate.split('-')[0];
         orderEndDate = orderEndDate.split('-')[2] + '.' + orderEndDate.split('-')[1] + '.' + orderEndDate.split('-')[0];
-
         var formData = new FormData();
         switch (orderType) {
             case 'Приказ об организации НИР':
@@ -233,9 +233,59 @@ export default function AdminOrdersPage() {
             },
         }).then((response) => {
             //console.log(response);
-            window.location.reload();
+
+            if (response.data.indexOf('Файл с таким именем уже существует') > -1) {
+                setErrorMessage('Ошибка при загрузке приказа, файл с таким именем уже существует!');
+                setShowError(true);
+            } else if (/\d/.test(response.data[0])) {
+                var orderVersion = {};
+                //orderVersion['systemCreatorID'] = authTokens.fio;
+                orderVersion['documentName'] = file.name;
+                switch (orderType) {
+                    case 'Приказ об организации НИР':
+                        orderVersion['documentType'] = 'Научно-исследовательская работа';
+                        break;
+                    case 'Приказ об организации ПпППУиОПД':
+                        orderVersion['documentType'] = 'Практика по получению знаний и умений';
+                        break;
+                    case 'Приказ об организации ПП':
+                        orderVersion['documentType'] = 'Преддипломная практика';
+                        break;
+                    case 'Приказ об организации ВКР':
+                        orderVersion['documentType'] = 'ВКР';
+                        break;
+                    default:
+                        console.log('order type error');
+                };
+                orderVersion['endDate'] = orderEndDate;
+                orderVersion['number'] = orderNum;
+                orderVersion['orderDate'] = orderDate;
+                orderVersion['startDate'] = orderStartDate;
+                orderVersion['specialityCode'] = orderSpeciality;
+                switch (orderSpeciality) {
+                    case '09.03.01':
+                        orderVersion['speciality'] = 'Информатика и вычислительная техника';
+                        break;
+                    default:
+                        orderVersion['speciality'] = 'Программная инженерия';
+                };
+                orderVersion['systemCreatorID'] = response.data[0].split(',')[1];
+                showOrderSingle(orderVersion, orders.length);
+                if (orders.length > 0) {
+                    setOrders(orders.concat(orderVersion));
+                }
+                else {
+                    setOrders([...orders, orderVersion]);
+                }
+            }
+            else {
+                setErrorMessage('Ошибка при загрузке приказа!');
+                setShowError(true);
+            }
         }).catch(result => {
             console.log(result);
+            setErrorMessage('Ошибка при загрузке приказа!');
+            setShowError(true);
         });
     }
 
@@ -314,6 +364,8 @@ export default function AdminOrdersPage() {
 
             }).catch(result => {
                 console.log(result.data);
+                setErrorMessage('Ошибка при скачивании приказа!');
+                setShowError(true);
             });
         });
 
@@ -332,9 +384,12 @@ export default function AdminOrdersPage() {
                     'Authorization': 'Bearer ' + authTokens.accessToken
                 },
             }).then((response) => {
-                window.location.reload(true);
+                //window.location.reload(true);
+                $(this).parent().remove();
             }).catch(result => {
-                console.log(result.data);
+                console.log(result);
+                setErrorMessage('Ошибка при удалении приказа!');
+                setShowError(true);
             });
         });
 
@@ -444,6 +499,7 @@ export default function AdminOrdersPage() {
                     <input id='order-file-input' type='file' style={{ display: 'none' }} onChange={(e) => {
                         if (e.target.files.length !== 0) {
                             document.getElementById('create-order-button').disabled = true;
+                            setShow(false);
                             uploadOrder(e.target.files[0],
                                 $('#dropdown-order-type :selected').val(),
                                 $('#dropdown-order-speciality :selected').val(),
@@ -455,7 +511,13 @@ export default function AdminOrdersPage() {
                     }} ></input>
                 </Modal.Body>
             </Modal>
-
+            <Modal centered show={showError} onHide={() => { setShowError(false) }} className='dark'>
+                <Modal.Header className='light-background' closeButton>
+                    <Modal.Title className='size-30'>
+                        {errorMessage}
+                    </Modal.Title>
+                </Modal.Header>
+            </Modal>
         </div>
     );
 }

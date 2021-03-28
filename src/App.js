@@ -49,6 +49,7 @@ import AdminAssociationPage from './pages/admin/AdminAssociationPage';
 import AdminOrdersPage from './pages/admin/AdminOrdersPage';
 import AdminTemplatesPage from './pages/admin/AdminTemplatesPage';
 import AdminRegistrationPage from './pages/admin/AdminRegistrationPage';
+import AdminSettingsPage from './pages/admin/AdminSettingsPage';
 
 export default function App() {
 
@@ -115,7 +116,7 @@ export default function App() {
           <AuthRoute exact path='/admin/orders' component={AdminOrdersPage} />
           <AuthRoute exact path='/admin/templates' component={AdminTemplatesPage} />
           <AuthRoute exact path='/admin/registration' component={AdminRegistrationPage} />
-          <AuthRoute exact path='/admin/settings' component={SettingsPage} />
+          <AuthRoute exact path='/admin/settings' component={AdminSettingsPage} />
           <AuthRoute exact path='/admin/performance' component={PerformancePage} />
           <AuthRoute exact path='/admin/messages' component={MessagesPage} />
 

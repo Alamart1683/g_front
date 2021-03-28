@@ -15,9 +15,8 @@ export default function AdminTemplatesPage() {
     const [stage, setStage] = useState('Шаблон задания на НИР');
     const [show, setShow] = useState(false);
 
-    useEffect(() => {
-        showTemplates(templates);
-    }, [templates]);
+    const [showError, setShowError] = useState(false);
+    const [errorMessage, setErrorMessage] = useState('Неопределенная ошибка');
 
     if (!fetchedData) {
         setFetchedData(true);
@@ -35,6 +34,7 @@ export default function AdminTemplatesPage() {
         }).then((response) => {
             //console.log(response);
             setTemplates(response.data);
+            showTemplates(response.data);
         }).catch(result => {
             console.log(result.data);
         });
@@ -43,75 +43,78 @@ export default function AdminTemplatesPage() {
     // Заполнение таблицы шаблонов
     function showTemplates(templatesArray) {
         for (var i = 0; i < templatesArray.length; i++) {
-            var template = templatesArray[i];
+            showTemplateSingle(templatesArray[i], i)
+        }
+    }
 
-            var documentFile = document.createElement('div')
-            documentFile.className = 'hoc-order-template-doc';
-            documentFile.id = 'hoc-order-template-doc-' + i;
+    function showTemplateSingle(template, i) {
+        var documentFile = document.createElement('div')
+        documentFile.className = 'hoc-order-template-doc';
+        documentFile.id = 'hoc-order-template-doc-' + i;
 
-            var templateName = document.createElement('div');
-            templateName.className = 'dark-background hoc-order-template-name';
-            templateName.id = 'hoc-order-template-name';
-            templateName.style.top = '-5px';
-            templateName.style.width = '715px';
+        var templateName = document.createElement('div');
+        templateName.className = 'dark-background hoc-order-template-name';
+        templateName.id = 'hoc-order-template-name';
+        templateName.style.top = '-5px';
+        templateName.style.width = '715px';
 
-            var templateNameText = document.createElement('p');
-            templateNameText.className = 'hoc-order-template-name-text light size-22'
-            templateNameText.innerText = template.documentName;
-            templateNameText.style.maxHeight = '30px';
-            templateNameText.style.maxWidth = '580px';
-            templateNameText.style.overflow = 'hidden';
-            templateNameText.style.textOverflow = 'ellipsis';
-            templateNameText.style.whiteSpace = 'nowrap';
+        var templateNameText = document.createElement('p');
+        templateNameText.className = 'hoc-order-template-name-text light size-22'
+        templateNameText.innerText = template.documentName;
+        templateNameText.style.maxHeight = '30px';
+        templateNameText.style.maxWidth = '580px';
+        templateNameText.style.overflow = 'hidden';
+        templateNameText.style.textOverflow = 'ellipsis';
+        templateNameText.style.whiteSpace = 'nowrap';
 
-            var templateNameImage = document.createElement('img');
-            templateNameImage.className = 'hoc-order-template-name-image'
-            templateNameImage.src = templateImage;
+        var templateNameImage = document.createElement('img');
+        templateNameImage.className = 'hoc-order-template-name-image'
+        templateNameImage.src = templateImage;
+        templateNameImage.style.marginLeft = '5px';
 
-            templateName.appendChild(templateNameImage);
-            templateName.appendChild(templateNameText);
+        templateName.appendChild(templateNameImage);
+        templateName.appendChild(templateNameText);
 
-            var templateDownload = document.createElement('button');
-            templateDownload.className = 'hoc-order-template-download-button light size-22';
-            templateDownload.id = 'hoc-template-download-button';
-            templateDownload.innerText = "Сохранить";
-            templateDownload.style.width = '120px';
+        var templateDownload = document.createElement('button');
+        templateDownload.className = 'hoc-order-template-download-button light size-22';
+        templateDownload.id = 'hoc-template-download-button';
+        templateDownload.innerText = "Сохранить";
+        templateDownload.style.width = '120px';
 
-            var templateDelete = document.createElement('button');
-            templateDelete.className = 'hoc-order-template-delete-button light size-22';
-            templateDelete.id = 'hoc-template-delete-button';
-            templateDelete.innerText = "Удалить";
-            templateDelete.style.width = '90px';
+        var templateDelete = document.createElement('button');
+        templateDelete.className = 'hoc-order-template-delete-button light size-22';
+        templateDelete.id = 'hoc-template-delete-button';
+        templateDelete.innerText = "Удалить";
+        templateDelete.style.width = '90px';
 
-            // Кнопка просмотреть
-            var viewButton = document.createElement('button');
-            viewButton.className = 'hoc-order-template-delete-button light size-22 version-view-button';
-            viewButton.id = 'template-view-' + i;
-            viewButton.innerText = 'Просмотреть';
-            viewButton.type = 'button';
-            viewButton.style.width = '142px';
+        // Кнопка просмотреть
+        var viewButton = document.createElement('button');
+        viewButton.className = 'hoc-order-template-delete-button light size-22 version-view-button';
+        viewButton.id = 'template-view-' + i;
+        viewButton.innerText = 'Просмотреть';
+        viewButton.type = 'button';
+        viewButton.style.width = '142px';
 
-            documentFile.appendChild(templateName);
-            documentFile.appendChild(viewButton);
-            documentFile.appendChild(templateDownload);
-            documentFile.appendChild(templateDelete);
+        documentFile.appendChild(templateName);
+        documentFile.appendChild(viewButton);
+        documentFile.appendChild(templateDownload);
+        documentFile.appendChild(templateDelete);
 
-            switch (template.documentType) {
-                case 'Научно-исследовательская работа':
-                    document.getElementById("hoc-templates-document-panel1").appendChild(documentFile);
-                    break;
-                case 'Практика по получению знаний и умений':
-                    document.getElementById("hoc-templates-document-panel2").appendChild(documentFile);
-                    break;
-                case 'Преддипломная практика':
-                    document.getElementById("hoc-templates-document-panel3").appendChild(documentFile);
-                    break;
-                case 'ВКР':
-                    document.getElementById("hoc-templates-document-panel4").appendChild(documentFile);
-                    break;
-                default:
-                    console.log('switch error');
-            }
+        switch (template.documentType) {
+            case 'Научно-исследовательская работа':
+                document.getElementById("hoc-templates-document-panel1").appendChild(documentFile);
+                break;
+            case 'Практика по получению знаний и умений':
+                document.getElementById("hoc-templates-document-panel2").appendChild(documentFile);
+                break;
+            case 'Преддипломная практика':
+                document.getElementById("hoc-templates-document-panel3").appendChild(documentFile);
+                break;
+            case 'ВКР':
+                document.getElementById("hoc-templates-document-panel4").appendChild(documentFile);
+                break;
+            default:
+                console.log('switch error');
         }
     }
 
@@ -159,9 +162,50 @@ export default function AdminTemplatesPage() {
             },
         }).then((response) => {
             //console.log(response);
-            window.location.reload();
+
+            if (response.data.indexOf('Файл с таким именем уже существует') > -1) {
+                setErrorMessage('Ошибка при загрузке шаблона, файл с таким именем уже существует!');
+                setShowError(true);
+            } else  if (response.data.indexOf('Шаблон для данного этапа уже загружен') > -1) {
+                setErrorMessage('Ошибка при загрузке шаблона, шаблон для данного этапа уже загружен!');
+                setShowError(true);
+            } else if (/\d/.test(response.data[0])) {
+                var templateVersion = {};
+                templateVersion['documentName'] = file.name;
+                switch (templateType) {
+                    case 'Шаблон задания на НИР':
+                        templateVersion['documentType'] = 'Научно-исследовательская работа';
+                        break;
+                    case 'Шаблон задания на ПпППУиОПД':
+                        templateVersion['documentType'] = 'Практика по получению знаний и умений';
+                        break;
+                    case 'Шаблон задания на ПП':
+                        templateVersion['documentType'] = 'Преддипломная практика';
+                        break;
+                    case 'Шаблон задания на ВКР':
+                        templateVersion['documentType'] = 'ВКР';
+                        break;
+                    default:
+                        console.log('template type error');
+                };
+                templateVersion['systemCreatorID'] = response.data[0].split(',')[1];
+
+                showTemplateSingle(templateVersion, templates.length);
+                if (templates.length > 0) {
+                    setTemplates(templates.concat(templateVersion));
+                }
+                else {
+                    setTemplates([...templates, templateVersion]);
+                }
+            }
+            else {
+                setErrorMessage('Ошибка при загрузке шаблона!');
+                setShowError(true);
+            }
         }).catch(result => {
             console.log(result);
+            setErrorMessage('Ошибка при загрузке шаблона!');
+            setShowError(true);
         });
     }
 
@@ -219,6 +263,8 @@ export default function AdminTemplatesPage() {
 
             }).catch(result => {
                 console.log(result.data);
+                setErrorMessage('Ошибка при скачивании шаблона!');
+                setShowError(true);
             });
         });
 
@@ -238,10 +284,12 @@ export default function AdminTemplatesPage() {
                     'Authorization': 'Bearer ' + authTokens.accessToken
                 },
             }).then((response) => {
-                console.log(response);
-                window.location.reload(true);
+                //console.log(response);
+                $(this).parent().remove();
             }).catch(result => {
                 console.log(result.data);
+                setErrorMessage('Ошибка при удалении шаблона!');
+                setShowError(true);
             });
         });
 
@@ -295,16 +343,16 @@ export default function AdminTemplatesPage() {
 
                 <div className='hoc-orders-templates-document-panel-common'>
                     <div className='hoc-orders-templates-document-panel' id='hoc-templates-document-panel1'>
-                        <button type='button' onClick={(e) => { setShow(true); }} className='dark-background light size-32 admin-upload-button' style={{height:'90px'}}>Загрузить шаблон</button>
+                        <button type='button' onClick={(e) => { setShow(true); }} className='dark-background light size-32 admin-upload-button' style={{ height: '90px' }}>Загрузить шаблон</button>
                     </div>
                     <div className='hoc-orders-templates-document-panel hoc-orders-templates-document-panel-hidden' id='hoc-templates-document-panel2'>
-                        <button type='button' onClick={(e) => { setShow(true); }} className='dark-background light size-32 admin-upload-button' style={{height:'90px'}}>Загрузить шаблон</button>
+                        <button type='button' onClick={(e) => { setShow(true); }} className='dark-background light size-32 admin-upload-button' style={{ height: '90px' }}>Загрузить шаблон</button>
                     </div>
                     <div className='hoc-orders-templates-document-panel hoc-orders-templates-document-panel-hidden' id='hoc-templates-document-panel3'>
-                        <button type='button' onClick={(e) => { setShow(true); }} className='dark-background light size-32 admin-upload-button' style={{height:'90px'}}>Загрузить шаблон</button>
+                        <button type='button' onClick={(e) => { setShow(true); }} className='dark-background light size-32 admin-upload-button' style={{ height: '90px' }}>Загрузить шаблон</button>
                     </div>
                     <div className='hoc-orders-templates-document-panel hoc-orders-templates-document-panel-hidden' id='hoc-templates-document-panel4'>
-                        <button type='button' onClick={(e) => { setShow(true); }} className='dark-background light size-32 admin-upload-button' style={{height:'90px'}}>Загрузить шаблон</button>
+                        <button type='button' onClick={(e) => { setShow(true); }} className='dark-background light size-32 admin-upload-button' style={{ height: '90px' }}>Загрузить шаблон</button>
                     </div>
                 </div>
             </div>
@@ -332,10 +380,18 @@ export default function AdminTemplatesPage() {
                     <input id='template-file-input' type='file' style={{ display: 'none' }} onChange={(e) => {
                         if (e.target.files.length !== 0) {
                             document.getElementById('create-template-button').disabled = true;
+                            setShow(false);
                             createTemplate(e.target.files[0], $('#dropdown-template-type :selected').val());
                         }
                     }} ></input>
                 </Modal.Body>
+            </Modal>
+            <Modal centered show={showError} onHide={() => { setShowError(false) }} className='dark'>
+                <Modal.Header className='light-background' closeButton>
+                    <Modal.Title className='size-30'>
+                        {errorMessage}
+                    </Modal.Title>
+                </Modal.Header>
             </Modal>
         </div>
     );

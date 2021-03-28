@@ -1384,7 +1384,7 @@ html, body {
 
 .sca-example-file-div {
 	margin-left: 10px;
-	margin-top: 10px;
+	margin-top: 5px;
 	width: 1105px;
 	height: 90px;
 }
@@ -1405,14 +1405,19 @@ html, body {
 	width: 735px;
 	border-radius: 7px;
 	float: left;
+	background-color: #72a6e9 !important;
+	border-width: 1px;
+	border-color: black;
+	border-style: solid;
 }
 
 .sca-example-file-clickable:hover {
 	cursor: pointer;
+	background-color: #437ecc !important;
 }
 
 .sca-example-file-clickable-selected {
-	background-color: #618FCA;
+	background-color: #437ecc !important;
 }
 
 .sca-example-text-div {

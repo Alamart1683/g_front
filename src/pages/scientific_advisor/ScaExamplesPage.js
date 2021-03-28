@@ -17,9 +17,8 @@ export default function ScaExamplesPage() {
     const [showCreate, setShowCreate] = useState(false);
     const [showAlter, setShowAlter] = useState(false);
 
-    useEffect(() => {
-        showExamples(examples);
-    }, [examples]);
+    const [showError, setShowError] = useState(false);
+    const [errorMessage, setErrorMessage] = useState('Неопределенная ошибка');
 
     if (!fetchedData) {
         setFetchedData(true);
@@ -36,8 +35,9 @@ export default function ScaExamplesPage() {
                 'Authorization': 'Bearer ' + authTokens.accessToken
             },
         }).then((response) => {
-            //console.log(response.data);
+            console.log(response.data);
             setExamples(response.data);
+            showExamples(response.data);
         }).catch(result => {
             console.log(result.data);
         });
@@ -60,100 +60,101 @@ export default function ScaExamplesPage() {
 
     function showExamples(examplesArray) {
         for (var i = 0; i < examplesArray.length; i++) {
-            var example = examplesArray[i];
-            //console.log(example);
-
-            var exampleDiv = document.createElement('div');
-            exampleDiv.className = 'sca-example-file-div';
-
-            var clickableDiv = document.createElement('div');
-            clickableDiv.className = 'sca-example-file-clickable light size-22 dark-background';
-            clickableDiv.id = 'clickable-' + i;
-
-            var iconImage = document.createElement('img');
-            iconImage.className = 'sca-example-image';
-            iconImage.src = iconDocument;
-
-            var textDiv = document.createElement('div');
-            textDiv.className = 'sca-example-text-div';
-
-            var exampleName = document.createElement('p');
-            exampleName.innerText = example.documentName;
-            exampleName.style.maxWidth = '440px';
-            exampleName.style.overflow = 'hidden';
-            exampleName.style.textOverflow = 'ellipsis';
-            exampleName.style.display = 'inline-block';
-
-            var examplePermissions = document.createElement('p');
-            if (example.area === 'Программа проектов не назначена') {
-                examplePermissions.innerText = 'Доступ: Для всех моих студентов';
-            }
-            else {
-                examplePermissions.innerText = 'Доступ: ' + example.area;
-                if (example.project != null) {
-                    examplePermissions.innerText += ' - ' + example.project;
-                }
-            }
-            examplePermissions.style.position = 'relative';
-            examplePermissions.style.top = '-27px';
-            examplePermissions.style.overflow = 'hidden';
-            examplePermissions.style.textOverflow = 'ellipsis';
-
-            var exampleType = document.createElement('p');
-            exampleType.innerText = 'Тип: ' + example.documentType;
-            switch (example.documentType) {
-                case 'Научно-исследовательская работа':
-                    exampleType.innerText = 'Тип: НИР';
-                    break;
-                case 'Практика по получению знаний и умений':
-                    exampleType.innerText = 'Тип: ПпППУиОПД';
-                    break;
-                case 'Преддипломная практика':
-                    exampleType.innerText = 'Тип: ПП';
-                    break;
-                case 'ВКР':
-                    exampleType.innerText = 'Тип: ВКР';
-                    break;
-                default:
-                    exampleType.innerText = 'Тип: Неопознанный';
-                    break;
-            }
-            exampleType.style.width = '180px';
-            exampleType.style.display = 'inline-block';
-            exampleType.style.marginLeft = '15px';
-            exampleType.style.position = 'relative';
-            exampleType.style.top = '-26px';
-
-            var downloadButton = document.createElement('button');
-            downloadButton.id = 'download-button-' + i;
-            downloadButton.className = 'sca-example-file-button size-24 light dark-background download-button';
-            downloadButton.innerText = 'Сохранить';
-
-            var deleteButton = document.createElement('button');
-            deleteButton.id = 'delete-button-' + i;
-            deleteButton.className = 'sca-example-file-button size-24 light dark-background delete-button';
-            deleteButton.innerText = 'Удалить';
-            deleteButton.style.width = '95px';
-
-            // Кнопка просмотреть
-            var viewButton = document.createElement('button');
-            viewButton.className = 'sca-example-file-button size-24 light dark-background version-view-button';
-            viewButton.id = 'example-view-' + i;
-            viewButton.innerText = 'Просмотреть';
-            viewButton.type = 'button';
-            viewButton.style.width = '140px';
-
-            clickableDiv.appendChild(iconImage);
-            textDiv.appendChild(exampleName);
-            textDiv.appendChild(exampleType);
-            textDiv.appendChild(examplePermissions);
-            clickableDiv.appendChild(textDiv);
-            exampleDiv.appendChild(clickableDiv);
-            exampleDiv.appendChild(viewButton);
-            exampleDiv.appendChild(downloadButton);
-            exampleDiv.appendChild(deleteButton);
-            document.getElementById('examples-div').appendChild(exampleDiv);
+            showExampleSingle(examplesArray[i], i)
         }
+    }
+
+    function showExampleSingle(example, i) {
+        var exampleDiv = document.createElement('div');
+        exampleDiv.className = 'sca-example-file-div';
+
+        var clickableDiv = document.createElement('div');
+        clickableDiv.className = 'sca-example-file-clickable light size-22 dark-background';
+        clickableDiv.id = 'clickable-' + i;
+
+        var iconImage = document.createElement('img');
+        iconImage.className = 'sca-example-image';
+        iconImage.src = iconDocument;
+
+        var textDiv = document.createElement('div');
+        textDiv.className = 'sca-example-text-div';
+
+        var exampleName = document.createElement('p');
+        exampleName.innerText = example.documentName;
+        exampleName.style.maxWidth = '440px';
+        exampleName.style.overflow = 'hidden';
+        exampleName.style.textOverflow = 'ellipsis';
+        exampleName.style.display = 'inline-block';
+
+        var examplePermissions = document.createElement('p');
+        if (example.area === 'Программа проектов не назначена') {
+            examplePermissions.innerText = 'Доступ: Для всех моих студентов';
+        }
+        else {
+            examplePermissions.innerText = 'Доступ: ' + example.area;
+            if (example.project != null) {
+                examplePermissions.innerText += ' - ' + example.project;
+            }
+        }
+        examplePermissions.style.position = 'relative';
+        examplePermissions.style.top = '-27px';
+        examplePermissions.style.overflow = 'hidden';
+        examplePermissions.style.textOverflow = 'ellipsis';
+
+        var exampleType = document.createElement('p');
+        exampleType.innerText = 'Тип: ' + example.documentType;
+        switch (example.documentType) {
+            case 'Научно-исследовательская работа':
+                exampleType.innerText = 'Тип: НИР';
+                break;
+            case 'Практика по получению знаний и умений':
+                exampleType.innerText = 'Тип: ПпППУиОПД';
+                break;
+            case 'Преддипломная практика':
+                exampleType.innerText = 'Тип: ПП';
+                break;
+            case 'ВКР':
+                exampleType.innerText = 'Тип: ВКР';
+                break;
+            default:
+                exampleType.innerText = 'Тип: Неопознанный';
+                break;
+        }
+        exampleType.style.width = '180px';
+        exampleType.style.display = 'inline-block';
+        exampleType.style.marginLeft = '15px';
+        exampleType.style.position = 'relative';
+        exampleType.style.top = '-26px';
+
+        var downloadButton = document.createElement('button');
+        downloadButton.id = 'download-button-' + i;
+        downloadButton.className = 'sca-example-file-button size-24 light dark-background download-button';
+        downloadButton.innerText = 'Сохранить';
+
+        var deleteButton = document.createElement('button');
+        deleteButton.id = 'delete-button-' + i;
+        deleteButton.className = 'sca-example-file-button size-24 light dark-background delete-button';
+        deleteButton.innerText = 'Удалить';
+        deleteButton.style.width = '95px';
+
+        // Кнопка просмотреть
+        var viewButton = document.createElement('button');
+        viewButton.className = 'sca-example-file-button size-24 light dark-background version-view-button';
+        viewButton.id = 'example-view-' + i;
+        viewButton.innerText = 'Просмотреть';
+        viewButton.type = 'button';
+        viewButton.style.width = '140px';
+
+        clickableDiv.appendChild(iconImage);
+        textDiv.appendChild(exampleName);
+        textDiv.appendChild(exampleType);
+        textDiv.appendChild(examplePermissions);
+        clickableDiv.appendChild(textDiv);
+        exampleDiv.appendChild(clickableDiv);
+        exampleDiv.appendChild(viewButton);
+        exampleDiv.appendChild(downloadButton);
+        exampleDiv.appendChild(deleteButton);
+        document.getElementById('examples-div').appendChild(exampleDiv);
     }
 
     function getProjectAreaData() {
@@ -223,10 +224,36 @@ export default function ScaExamplesPage() {
                 'Authorization': 'Bearer ' + authTokens.accessToken
             },
         }).then((response) => {
-            //console.log(response);
-            window.location.reload();
+
+            if (response.data.indexOf('Файл с таким именем уже существует') > -1) {
+                setErrorMessage('Ошибка при загрузке образца, файл с таким именем уже существует!');
+                setShowError(true);
+            } else if (/\d/.test(response.data[0])) {
+
+                //console.log(response);
+                window.location.reload(true);
+
+                var exampleVersion = {};
+                //exampleVersion['area'] = area;
+                /*
+                exampleVersion['documentName'] = file.name;
+                exampleVersion['documentType'] = type;
+                exampleVersion['systemCreatorID'] = response.data[0].split(',')[0];
+                exampleVersion['projectID'] = -1;
+                exampleVersion['systemAreaID'] = -1;
+                for (var i = 0; i < projects.length; i++) {
+                    //if (projects.systemProjectAreaID)
+                }
+                */
+            }
+            else {
+                setErrorMessage('Ошибка при загрузке образца!');
+                setShowError(true);
+            }
         }).catch(result => {
             console.log(result);
+            setErrorMessage('Ошибка при загрузке образца!');
+            setShowError(true);
         });
     }
 
@@ -367,6 +394,7 @@ export default function ScaExamplesPage() {
             var example = examples[exampleId];
             var area = $('#dropdown-alter-area :selected').val();
             var project = $('#dropdown-alter-project :selected').val();
+            setShowAlter(false);
             alterExamplePermissions(example, area, project);
         });
 
@@ -467,6 +495,7 @@ export default function ScaExamplesPage() {
                     <input id='example-file-input' type='file' style={{ display: 'none' }} onChange={(e) => {
                         if (e.target.files.length !== 0) {
                             document.getElementById('create-example-button').disabled = true;
+                            setShowCreate(false);
                             createExample(e.target.files[0], $('#dropdown-create-type :selected').val(), $('#dropdown-create-area :selected').val(), $('#dropdown-create-project :selected').val());
                         }
                     }} />
@@ -512,6 +541,14 @@ export default function ScaExamplesPage() {
                         Изменить права доступа к образцу
                     </button>
                 </Modal.Body>
+            </Modal>
+
+            <Modal centered show={showError} onHide={() => { setShowError(false) }} className='dark'>
+                <Modal.Header className='light-background' closeButton>
+                    <Modal.Title className='size-30'>
+                        {errorMessage}
+                    </Modal.Title>
+                </Modal.Header>
             </Modal>
         </div>
     );
