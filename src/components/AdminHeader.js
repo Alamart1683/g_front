@@ -85,7 +85,7 @@ export default function AdminHeader() {
                 </Nav.Link>
                 <Nav.Link as={Link} to='/admin/settings'>
                     <button id='button-settings' type='button' className='student-navbar-button dark-background light size-30'>
-                        <Image src={iconMenu} thumbnail className='student-navbar-image dark-background' />
+                        <Image src={iconLk} thumbnail className='student-navbar-image dark-background' />
                         Настройки
                     </button>
                 </Nav.Link>                

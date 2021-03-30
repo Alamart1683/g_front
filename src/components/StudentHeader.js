@@ -12,8 +12,10 @@ import orderImage from '../images/icons/order.png';
 import exitImage from '../images/icons/exit.png';
 import iconExamples from '../images/icons/samples.png';
 import iconTasks from '../images/icons/tasks.png';
-import iconMenu from '../images/icons/menu.png';
+//import iconMenu from '../images/icons/menu.png';
 import iconChat from '../images/icons/chat.png';
+import iconVKR from '../images/icons/VKR.png';
+import iconLk from '../images/icons/lk.png';
 
 export default function StudentHeader() {
     const { authTokens, setAuthTokens } = useAuthContext();
@@ -143,13 +145,14 @@ export default function StudentHeader() {
 
                 <Nav.Link as={Link} to='/stu/theme'>
                     <button type='button' id='button-theme' className='student-navbar-button dark-background light size-30'>
+                        <Image src={iconVKR} thumbnail className='student-navbar-image dark-background' />
                         Тема ВКР
                     </button>
                 </Nav.Link>
 
                 <Nav.Link as={Link} to='/stu/settings'>
                     <button id='button-settings' type='button' className='student-navbar-button dark-background light size-30'>
-                        <Image src={iconMenu} thumbnail className='student-navbar-image dark-background' />
+                        <Image src={iconLk} thumbnail className='student-navbar-image dark-background' />
                         Личные<br />данные
                     </button>
                 </Nav.Link>
@@ -164,7 +167,6 @@ export default function StudentHeader() {
                 <Nav.Link>
                     <button type='button' onClick={() => { logOut() }} className='student-navbar-button dark-background light size-30'>
                         <Image src={exitImage} thumbnail className='student-navbar-image dark-background' />
-                        Выйти
                     </button>
                 </Nav.Link>
             </Navbar>

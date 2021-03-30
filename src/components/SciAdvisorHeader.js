@@ -14,6 +14,7 @@ import exitImage from '../images/icons/exit.png';
 import iconMenu from '../images/icons/menu.png';
 import iconSelected from '../images/icons/documents_selected.png';
 import iconChat from '../images/icons/chat.png';
+import iconLk from '../images/icons/lk.png';
 
 export default function SciAdvisorHeader() {
 
@@ -40,9 +41,6 @@ export default function SciAdvisorHeader() {
                 break;
             case ('/sca/examples'):
                 document.getElementById('button-examples').classList.add('student-navbar-button-selected');
-                break;
-            case ('/sca/templates'):
-                document.getElementById('button-templates').classList.add('student-navbar-button-selected');
                 break;
             case ('/sca/settings'):
                 document.getElementById('button-settings').classList.add('student-navbar-button-selected');
@@ -97,15 +95,9 @@ export default function SciAdvisorHeader() {
                         Приказы
                     </button>
                 </Nav.Link>
-                <Nav.Link as={Link} to='/sca/templates'>
-                    <button id='button-templates' type='button' className='student-navbar-button dark-background light size-30'>
-                        <Image src={templateImage} thumbnail className='student-navbar-image dark-background' />
-                        Шаблоны
-                    </button>
-                </Nav.Link>
                 <Nav.Link as={Link} to='/sca/settings'>
                     <button id='button-settings' type='button' className='student-navbar-button dark-background light size-30'>
-                        <Image src={iconMenu} thumbnail className='student-navbar-image dark-background' />
+                        <Image src={iconLk} thumbnail className='student-navbar-image dark-background' />
                         Личные<br />данные
                     </button>
                 </Nav.Link>
@@ -118,7 +110,6 @@ export default function SciAdvisorHeader() {
                 <Nav.Link as={Link} to='#'>
                     <button type='button' onClick={() => { logOut() }} className='student-navbar-button dark-background light size-30'>
                         <Image src={exitImage} thumbnail className='student-navbar-image dark-background' />
-                        Выйти
                     </button>
                 </Nav.Link>
             </Navbar>

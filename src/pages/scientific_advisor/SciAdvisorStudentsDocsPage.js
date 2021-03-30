@@ -33,7 +33,7 @@ export default function SciAdvisorStudentsDocsPage() {
         }).then((response) => {
             setDocumentData(response.data);
             showFiles(response.data);
-            //console.log(response.data);
+            console.log(response.data);
         }).catch(result => {
             console.log(result);
         });
