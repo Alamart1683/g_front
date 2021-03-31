@@ -2295,5 +2295,6 @@ html, body {
 }
 
 .report-message-text {
-	margin-left: 625px;
+	margin-left: 355px;
+	font-weight: 800;
 }
