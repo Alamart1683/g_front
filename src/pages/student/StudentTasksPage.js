@@ -3734,7 +3734,7 @@ export default function StudentTasksPage() {
                                         }} ></input>
                                         <div className='report-attach-div'>
                                             <input disabled type='checkbox' defaultChecked id='nir-merge-checkbox' className='report-attach-checkbox'></input>
-                                            <label htmlFor='nir-merge-checkbox' className='size-24 dark attach-checkbox-text'>Присоединить к загруженному файлу одобренное задание?</label>
+                                            <label htmlFor='nir-merge-checkbox' className='size-24 dark attach-checkbox-text'>Присоединить к загруженному файлу титульные листы, включая одобренное задание?</label>
                                             <p id='nir-report-message' className='size-28 dark report-message-text'>Нельзя загрузить отчет, потому что нет одобренного задания!</p>
                                         </div>
                                     </div>
@@ -3866,7 +3866,7 @@ export default function StudentTasksPage() {
                                         }} ></input>
                                         <div className='report-attach-div'>
                                             <input disabled type='checkbox' defaultChecked id='long-pp-merge-checkbox' className='report-attach-checkbox'></input>
-                                            <label htmlFor='long-pp-merge-checkbox' className='size-24 dark attach-checkbox-text'>Присоединить к загруженному файлу одобренное задание?</label>
+                                            <label htmlFor='long-pp-merge-checkbox' className='size-24 dark attach-checkbox-text'>Присоединить к загруженному файлу титульные листы, включая одобренное задание?</label>
                                             <p id='long-pp-report-message' className='size-28 dark report-message-text'>Нельзя загрузить отчет, потому что нет одобренного задания!</p>
                                         </div>
                                     </div>
@@ -3997,7 +3997,7 @@ export default function StudentTasksPage() {
                                         }} ></input>
                                         <div className='report-attach-div'>
                                             <input disabled type='checkbox' defaultChecked id='pp-merge-checkbox' className='report-attach-checkbox'></input>
-                                            <label htmlFor='pp-merge-checkbox' className='size-24 dark attach-checkbox-text'>Присоединить к загруженному файлу одобренное задание?</label>
+                                            <label htmlFor='pp-merge-checkbox' className='size-24 dark attach-checkbox-text'>Присоединить к загруженному файлу титульные листы, включая одобренное задание?</label>
                                             <p id='pp-report-message' className='size-28 dark report-message-text'>Нельзя загрузить отчет, потому что нет одобренного задания!</p>
                                         </div>
                                     </div>
@@ -4162,7 +4162,7 @@ export default function StudentTasksPage() {
                                     }} ></input>
                                     <div className='report-attach-div'>
                                         <input disabled type='checkbox' defaultChecked id='vkr-merge-checkbox' className='report-attach-checkbox'></input>
-                                        <label htmlFor='vkr-merge-checkbox' className='size-24 dark attach-checkbox-text'>Присоединить к загруженному файлу одобренное задание?</label>
+                                        <label htmlFor='vkr-merge-checkbox' className='size-24 dark attach-checkbox-text'>Присоединить к загруженному файлу титульные листы, включая одобренное задание?</label>
                                         <p id='vkr-report-message' className='size-28 dark report-message-text'>Нельзя загрузить отчет, потому что нет одобренного задания!</p>
                                     </div>
                                 </div>
