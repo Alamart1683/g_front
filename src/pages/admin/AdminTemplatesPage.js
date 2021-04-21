@@ -152,6 +152,7 @@ export default function AdminTemplatesPage() {
             default:
                 console.log('Неопознанный тип шаблона');
         }
+
         axios({
             url: apiURL + '/document/upload',
             method: 'POST',
@@ -161,7 +162,7 @@ export default function AdminTemplatesPage() {
                 'Authorization': 'Bearer ' + authTokens.accessToken
             },
         }).then((response) => {
-            //console.log(response);
+            console.log(response);
 
             if (response.data.indexOf('Файл с таким именем уже существует') > -1) {
                 setErrorMessage('Ошибка при загрузке шаблона, файл с таким именем уже существует!');
@@ -188,7 +189,7 @@ export default function AdminTemplatesPage() {
                     default:
                         console.log('template type error');
                 };
-                templateVersion['systemCreatorID'] = response.data[0].split(',')[1];
+                templateVersion['systemCreatorID'] = response.data[0].split(',')[3];
 
                 showTemplateSingle(templateVersion, templates.length);
                 if (templates.length > 0) {
@@ -266,7 +267,7 @@ export default function AdminTemplatesPage() {
                 setErrorMessage('Ошибка при скачивании шаблона!');
                 setShowError(true);
             });
-        });
+        }); 
 
         // Удалить шаблон
         $('.hoc-order-template-delete-button').off().on('click', function () {

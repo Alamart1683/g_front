@@ -188,6 +188,8 @@ html, body {
 	transition: 0s;
 	border-radius: 7px;
 	border-width: 0px;
+	line-height: 1.4;
+	min-height: 80px;
 }
 
 .student-navbar-button:focus {
@@ -200,6 +202,8 @@ html, body {
 .student-navbar-image {
 	margin-left: -5px;
 	border-width: 0px;
+	width: 65px;
+	height: 65px;
 }
 
 .student-navbar-button:hover, .student-navbar-button:hover .student-navbar-image {
