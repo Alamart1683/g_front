@@ -35,7 +35,8 @@ export default function ScaExamplesPage() {
                 'Authorization': 'Bearer ' + authTokens.accessToken
             },
         }).then((response) => {
-            console.log(response.data);
+            //console.log(response.data);
+
             setExamples(response.data);
             showExamples(response.data);
         }).catch(result => {
@@ -87,6 +88,7 @@ export default function ScaExamplesPage() {
         exampleName.style.display = 'inline-block';
 
         var examplePermissions = document.createElement('p');
+        examplePermissions.className = 'example-permissions';
         if (example.area === 'Программа проектов не назначена') {
             examplePermissions.innerText = 'Доступ: Для всех моих студентов';
         }
@@ -196,6 +198,7 @@ export default function ScaExamplesPage() {
 
     // Создание образца
     function createExample(file, type, area, project) {
+        document.getElementById('create-example-button').disabled = true;
         var formData = new FormData();
         formData.append('documentFormType', type);
         formData.append('documentFormKind', 'Образец');
@@ -224,34 +227,47 @@ export default function ScaExamplesPage() {
                 'Authorization': 'Bearer ' + authTokens.accessToken
             },
         }).then((response) => {
-
             if (response.data.indexOf('Файл с таким именем уже существует') > -1) {
+                setShowCreate(false);
                 setErrorMessage('Ошибка при загрузке образца, файл с таким именем уже существует!');
                 setShowError(true);
             } else if (/\d/.test(response.data[0])) {
-
                 //console.log(response);
-                window.location.reload(true);
 
                 var exampleVersion = {};
-                //exampleVersion['area'] = area;
-                /*
+                exampleVersion['systemCreatorID'] = response.data[0].split(',')[3];
                 exampleVersion['documentName'] = file.name;
                 exampleVersion['documentType'] = type;
-                exampleVersion['systemCreatorID'] = response.data[0].split(',')[0];
-                exampleVersion['projectID'] = -1;
-                exampleVersion['systemAreaID'] = -1;
-                for (var i = 0; i < projects.length; i++) {
-                    //if (projects.systemProjectAreaID)
+                if (area === 'Все мои студенты') {
+                    exampleVersion['area'] = 'Программа проектов не назначена';
                 }
-                */
+                else {
+                    exampleVersion['area'] = area;
+                    if (project === 'Все проекты в программе проектов') {
+                        exampleVersion['project'] = null;
+                    }
+                    else {
+                        exampleVersion['project'] = project;
+                    }
+                }
+                showExampleSingle(exampleVersion, examples.length);
+                if (examples.length > 0) {
+                    setExamples(examples.concat(exampleVersion));
+                }
+                else {
+                    setExamples([...examples, exampleVersion]);
+                }
+                document.getElementById('create-example-button').disabled = false;
+                document.getElementById('finished-upload-message').style.visibility = 'visible';
             }
             else {
+                setShowCreate(false);
                 setErrorMessage('Ошибка при загрузке образца!');
                 setShowError(true);
             }
         }).catch(result => {
             console.log(result);
+            setShowCreate(false);
             setErrorMessage('Ошибка при загрузке образца!');
             setShowError(true);
         });
@@ -319,9 +335,23 @@ export default function ScaExamplesPage() {
             },
         }).then((response) => {
             //console.log(response.data);
-            window.location.reload(true);
+            if (area === 'Все мои студенты') {
+                $('.sca-example-file-clickable-selected').find('.example-permissions').text('Доступ: Для всех моих студентов');
+            }
+            else {
+                if (project === 'Все проекты в программе проектов') {
+                    $('.sca-example-file-clickable-selected').find('.example-permissions').text('Доступ: ' + area);
+                }
+                else {
+                    $('.sca-example-file-clickable-selected').find('.example-permissions').text('Доступ: ' + area + ' - ' + project);
+                }
+            }
+            setShowAlter(false);
         }).catch(result => {
-            console.log(result.data);
+            setShowAlter(false);
+            console.log(result);
+            setErrorMessage('Ошибка при изменении прав доступа к образцу!');
+            setShowError(true);
         });
     }
 
@@ -374,9 +404,15 @@ export default function ScaExamplesPage() {
                     'Authorization': 'Bearer ' + authTokens.accessToken
                 },
             }).then((response) => {
-                window.location.reload(true);
+                if ($(this).parent().find('.sca-example-file-clickable-selected').length != 0) {
+                    document.getElementById('change-permissions-button').disabled = true;
+                }
+                $(this).parent().remove();
             }).catch(result => {
                 console.log(result.data);
+                setErrorMessage('Ошибка при удалении образца!');
+                setShowError(true);
+
             });
         });
 
@@ -452,6 +488,7 @@ export default function ScaExamplesPage() {
                         if ($('#dropdown-create-type :selected').val() !== '' && $('#dropdown-create-area :selected').val() !== '' && $('#dropdown-create-project :selected').val() !== '') {
                             document.getElementById('create-example-button').disabled = false;
                         }
+                        document.getElementById('finished-upload-message').style.visibility = 'hidden';
                     }} className='dark size-24 sca-examples-dropdown'>
                         <option value='' disabled hidden>Выберите тип образца</option>
                         <option value='Научно-исследовательская работа'>Научно-исследовательская работа</option>
@@ -472,6 +509,7 @@ export default function ScaExamplesPage() {
                             document.getElementById('create-example-button').disabled = false;
                         }
                         fillProjectData($('#dropdown-create-area :selected').val());
+                        document.getElementById('finished-upload-message').style.visibility = 'hidden';
                     }} className='dark size-24 sca-examples-dropdown'>
                         <option value='' disabled hidden>Выберите права доступа к образцу по комплексному проекту</option>
                         <option value='Все мои студенты'>Все мои студенты</option>
@@ -484,6 +522,7 @@ export default function ScaExamplesPage() {
                         else {
                             document.getElementById('create-example-button').disabled = true;
                         }
+                        document.getElementById('finished-upload-message').style.visibility = 'hidden';
                     }} className='dark size-24 sca-examples-dropdown'>
                         <option value='' disabled hidden>Выберите права доступа к образцу по проекту</option>
                         <option value='Все проекты в программе проектов'>Все проекты в комплексном проекте</option>
@@ -495,10 +534,13 @@ export default function ScaExamplesPage() {
                     <input id='example-file-input' type='file' style={{ display: 'none' }} onChange={(e) => {
                         if (e.target.files.length !== 0) {
                             document.getElementById('create-example-button').disabled = true;
-                            setShowCreate(false);
+                            //setShowCreate(false);
                             createExample(e.target.files[0], $('#dropdown-create-type :selected').val(), $('#dropdown-create-area :selected').val(), $('#dropdown-create-project :selected').val());
+                            $('#example-file-input[type="file"]').val(null);
                         }
                     }} />
+
+                    <p id='finished-upload-message' className='dark size-24 finished-upload-message'>Образец загружен!</p>
                 </Modal.Body>
             </Modal>
 

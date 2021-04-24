@@ -2302,3 +2302,9 @@ html, body {
 	margin-left: 355px;
 	font-weight: 800;
 }
+
+.finished-upload-message {
+	margin-left: 280px;
+	font-weight: 600;
+	visibility: hidden;
+}
