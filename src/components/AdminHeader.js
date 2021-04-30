@@ -89,7 +89,7 @@ export default function AdminHeader() {
                         Настройки
                     </button>
                 </Nav.Link>                
-                <Nav.Link as={Link} to='/sca/messages'>
+                <Nav.Link as={Link} to='/admin/messages'>
                     <button id='button-messages' type='button' className='student-navbar-button dark-background light size-30'>
                         <Image src={iconChat} thumbnail className='student-navbar-image dark-background' />
                         Сообщения
