@@ -36,7 +36,6 @@ export default function ScaExamplesPage() {
             },
         }).then((response) => {
             //console.log(response.data);
-
             setExamples(response.data);
             showExamples(response.data);
         }).catch(result => {
@@ -76,6 +75,8 @@ export default function ScaExamplesPage() {
         var iconImage = document.createElement('img');
         iconImage.className = 'sca-example-image';
         iconImage.src = iconDocument;
+        iconImage.style.marginLeft = '3px';
+        iconImage.style.marginTop = '-15px';
 
         var textDiv = document.createElement('div');
         textDiv.className = 'sca-example-text-div';
@@ -125,8 +126,18 @@ export default function ScaExamplesPage() {
         exampleType.style.width = '180px';
         exampleType.style.display = 'inline-block';
         exampleType.style.marginLeft = '15px';
-        exampleType.style.position = 'relative';
-        exampleType.style.top = '-26px';
+        exampleType.style.verticalAlign = 'top';
+        //exampleType.style.position = 'relative';
+        //exampleType.style.top = '-26px';
+        exampleType.style.lineHeight = '1.4';
+
+        var exampleTime = document.createElement('p');
+        exampleTime.innerText = 'Загружено: ' + example.documentVersions[0].versionEditionDate;
+        exampleTime.style.position = 'relative';
+        exampleTime.style.top = '-43px';
+        exampleTime.style.overflow = 'hidden';
+        exampleTime.style.textOverflow = 'ellipsis';
+        exampleTime.style.lineHeight = '1.4';
 
         var downloadButton = document.createElement('button');
         downloadButton.id = 'download-button-' + i;
@@ -151,6 +162,7 @@ export default function ScaExamplesPage() {
         textDiv.appendChild(exampleName);
         textDiv.appendChild(exampleType);
         textDiv.appendChild(examplePermissions);
+        textDiv.appendChild(exampleTime);
         clickableDiv.appendChild(textDiv);
         exampleDiv.appendChild(clickableDiv);
         exampleDiv.appendChild(viewButton);

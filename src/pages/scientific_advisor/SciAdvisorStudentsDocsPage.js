@@ -31,9 +31,9 @@ export default function SciAdvisorStudentsDocsPage() {
                 'Authorization': 'Bearer ' + authTokens.accessToken
             },
         }).then((response) => {
+            //console.log(response.data);
             setDocumentData(response.data);
             showFiles(response.data);
-            console.log(response.data);
         }).catch(result => {
             console.log(result);
         });
@@ -103,19 +103,19 @@ export default function SciAdvisorStudentsDocsPage() {
                             break;
                         case 'Допуск':
                             documentName = 'Допуск';
-                            documentItem = documentArray[i].vkrStuffVersionViews;
+                            documentItem = documentArray[i].vkrStuffVersions;
                             break;
                         case 'Отзыв':
                             documentName = 'Отзыв научного руководителя';
-                            documentItem = documentArray[i].vkrStuffVersionViews;
+                            documentItem = documentArray[i].vkrStuffVersions;
                             break;
                         case 'Антиплагиат':
                             documentName = 'Отчет по антиплагиату';
-                            documentItem = documentArray[i].vkrStuffVersionViews;
+                            documentItem = documentArray[i].vkrStuffVersions;
                             break;
                         case 'Презентация':
                             documentName = 'Презентация по ВКР';
-                            documentItem = documentArray[i].vkrStuffVersionViews;
+                            documentItem = documentArray[i].vkrStuffVersions;
                             break;
                         default:
                             documentName = 'Неопознанный документ по ВКР';
@@ -145,10 +145,13 @@ export default function SciAdvisorStudentsDocsPage() {
 
                 var titlesDiv = document.createElement('div');
                 titlesDiv.className = 'sca-scu-version-titles-div dark-background';
+                titlesDiv.style.width = '755px';
 
                 var versionImage = document.createElement('img');
                 versionImage.className = 'order-name-image'
                 versionImage.src = iconDocuments;
+                versionImage.style.marginLeft = '3px';
+                versionImage.style.marginTop = '5px';
 
                 var versionName = document.createElement('p');
                 versionName.className = 'order-name-text light size-24';
@@ -181,17 +184,20 @@ export default function SciAdvisorStudentsDocsPage() {
                 if (documentStatus !== 'Не отправлено' && documentStatus !== 'Рассматривается') {
                     sendButton.disabled = true;
                 }
-                sendButton.style.position = 'relative';
-                sendButton.style.top = '-54px';
+                //sendButton.style.position = 'relative';
+                sendButton.style.verticalAlign = 'top';
+                //sendButton.style.top = '-94px';
+                sendButton.style.marginTop = '71px';
 
                 var dropdownDiv = document.createElement('div');
-                dropdownDiv.className = 'sci-advisor-status-dropdown-div';
+                dropdownDiv.className = 'sci-advisor-status-dropdown-div';                
+                dropdownDiv.style.verticalAlign = 'top';
 
                 var dropdownContent = document.createElement('div');
                 dropdownContent.className = 'sca-scu-version-status-dropdown-content';
+                dropdownContent.style.verticalAlign = 'top';
 
                 if (documentKind === 'Отчёт') {
-
                     var status2 = document.createElement('p');
                     status2.className = 'dark size-24 status-2';
                     status2.innerText = 'Неудовлетворительно';
@@ -243,9 +249,10 @@ export default function SciAdvisorStudentsDocsPage() {
                 viewButton.className = 'light dark-background size-20 sca-scu-version-button version-view-button';
                 viewButton.innerText = 'Просмотреть';
                 viewButton.type = 'button';
-                //viewButton.style.verticalAlign = 'top';
-                viewButton.style.position = 'relative';
-                viewButton.style.top = '-54px';
+                viewButton.style.verticalAlign = 'top';
+                viewButton.style.marginTop = '71px';
+                //viewButton.style.position = 'relative';
+                //viewButton.style.top = '-54px';
 
                 var versionHeaderDiv = document.createElement('div');
                 versionHeaderDiv.className = 'sca-scu-version-header-div';

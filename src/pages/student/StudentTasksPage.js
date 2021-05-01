@@ -1836,6 +1836,8 @@ export default function StudentTasksPage() {
 
             var exampleImage = document.createElement('img');
             exampleImage.className = 'order-name-image'
+            exampleImage.style.marginLeft = '3px';
+            exampleImage.style.marginTop = '5px';
             exampleImage.src = iconExample;
 
             var exampleName = document.createElement('p');
@@ -3623,7 +3625,7 @@ export default function StudentTasksPage() {
                                     <Card>
                                         <Accordion.Toggle as={Card.Header} eventKey="acc0" className='dark size-28 accordion-clickable'>
                                             Образцы по НИР
-                                    </Accordion.Toggle>
+                                        </Accordion.Toggle>
                                         <Accordion.Collapse eventKey="acc0">
                                             <Card.Body id='example-panel-1'>
 

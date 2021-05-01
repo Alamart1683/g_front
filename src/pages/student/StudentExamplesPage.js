@@ -50,6 +50,8 @@ export default function StudentExamplesPage() {
             var exampleImage = document.createElement('img');
             exampleImage.className = 'order-name-image'
             exampleImage.src = iconExample;
+            exampleImage.style.marginLeft = '3px';
+            exampleImage.style.marginTop = '5px';
 
             var exampleName = document.createElement('p');
             exampleName.className = 'order-name-text light size-24';

@@ -1369,6 +1369,7 @@ html, body {
 	border-radius: 7px;
 	float: left;
 	margin-left: 5px;
+	padding-bottom: 5px;
 }
 
 .sca-examples-button {
@@ -1390,11 +1391,11 @@ html, body {
 	margin-left: 10px;
 	margin-top: 5px;
 	width: 1105px;
-	height: 90px;
+	height: 100px;
 }
 
 .sca-example-file-button {
-	height: 90px;
+	height: 100px;
 	width: 120px;
 	margin-left: 5px;
 	border-radius: 7px;
@@ -1405,7 +1406,7 @@ html, body {
 }
 
 .sca-example-file-clickable {
-	height: 90px;
+	height: 100px;
 	width: 735px;
 	border-radius: 7px;
 	float: left;
@@ -1428,7 +1429,7 @@ html, body {
 	display: inline-block;
 	margin-left: 10px;
 	width: 635px;
-	height: 86px;
+	height: 96px;
 	white-space: nowrap;
 	overflow: hidden;
   	text-overflow: ellipsis;
