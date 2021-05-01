@@ -432,6 +432,7 @@ export default function MessagesPage() {
         });
 
         $('#contacts-search').off().on('click', function () {
+            //console.log($('.recommended-contact-item'))
             axios({
                 url: apiURL + '/messages/find/receivers/',
                 method: 'GET',
@@ -443,12 +444,47 @@ export default function MessagesPage() {
                 },
             }).then((response) => {
                 //console.log(response);
-                for (var i = 0; i < response.data.length; i++) {
-                    var contact = document.createElement('p');
-                    contact.className = 'contact-search-item';
-                    contact.id = 'contact-search-' + response.data[i].receiverId;
-                    contact.innerText = response.data[i].fio + ', ' + response.data[i].email;
-                    document.getElementById('contact-search-content').appendChild(contact);
+
+                var flag = true;
+                var recommendedArray = $('.recommended-contact-item');
+                var matchArray = [];
+                var inputString = $('#contacts-input').val().trim().toUpperCase();
+                //var counter = 0;
+                for (var i = 0; i < recommendedArray.length; i++) {
+                    //console.log(recommendedArray[i].innerText);
+                    if (recommendedArray[i].innerText.toUpperCase().indexOf(inputString) > -1) {
+                        if (flag) {
+                            flag = false;
+                            var recommendedContactsMessage = document.createElement('p');
+                            recommendedContactsMessage.className = 'info-contacts-message';
+                            recommendedContactsMessage.innerText = 'Из рекомендованных контактов:';
+                            document.getElementById('contact-search-content').appendChild(recommendedContactsMessage);
+                        }
+                        if (! matchArray.includes(recommendedArray[i].innerText)) {
+                            var contact = document.createElement('p');
+                            contact.className = 'contact-search-item';
+                            contact.id = recommendedArray[i].id;
+                            contact.innerText = recommendedArray[i].innerText;
+                            document.getElementById('contact-search-content').appendChild(contact);
+
+                            matchArray.push(recommendedArray[i].innerText);
+                        }
+                    }
+                }
+
+                if (response.data.length > 0) {
+                    var allContactsMessage = document.createElement('p');
+                    allContactsMessage.className = 'info-contacts-message';
+                    allContactsMessage.innerText = 'Из всех контактов:';
+                    document.getElementById('contact-search-content').appendChild(allContactsMessage);
+
+                    for (var i = 0; i < response.data.length; i++) {
+                        var contact = document.createElement('p');
+                        contact.className = 'contact-search-item';
+                        contact.id = 'contact-search-' + response.data[i].receiverId;
+                        contact.innerText = response.data[i].fio + ', ' + response.data[i].email;
+                        document.getElementById('contact-search-content').appendChild(contact);
+                    }
                 }
             }).catch(result => {
                 console.log(result);
@@ -461,6 +497,10 @@ export default function MessagesPage() {
         });
 
         $('body').off().on('click', function (e) {
+            $('.info-contacts-message').each(function () {
+                $(this).remove();
+            });
+
             $('.contact-search-item').each(function () {
                 if ($(this).is(e.target)) {
                     //console.log($(this).attr('id').split('-')[2]);
