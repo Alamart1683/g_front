@@ -1,5 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Form, Tabs, Tab, Image } from 'react-bootstrap';
+import { useAuthContext } from '../../auth/AuthContext';
+import { apiURL } from '../../Config';
+import axios from 'axios';
 import $ from 'jquery';
 
 
@@ -13,6 +16,46 @@ import infoBlock33 from '../../images/infographics blocks/block3.png';
 import infoBlock44 from '../../images/infographics blocks/block4.png';
 
 export default function StudentInfoPage(){
+
+    const { authTokens } = useAuthContext();
+    const [fetchedData, setFetchedData] = useState(false);
+
+    // Даты этапов
+    const [nirStart, setNirStart] = useState('Приказ не вышел');
+    const [nirEnd, setNirEnd] = useState('Приказ не вышел');
+    const [longPpStart, setLongPpStart] = useState('Приказ не вышел');
+    const [longPpEnd, setLongPpEnd] = useState('Приказ не вышел');
+    const [ppStart, setPpStart] = useState('Приказ не вышел');
+    const [ppEnd, setPpEnd] = useState('Приказ не вышел');
+    const [vkrStart, setVkrStart] = useState('Приказ не вышел');
+    const [vkrEnd, setVkrEnd] = useState('Приказ не вышел');
+
+    if (!fetchedData) {
+        setFetchedData(true);
+        getDates();
+    }
+
+    function getDates() {
+        axios({
+            url: apiURL + '/date/all',
+            method: 'GET',
+            headers: {
+                'Authorization': 'Bearer ' + authTokens.accessToken
+            },
+        }).then((response) => {
+            //console.log(response);
+            setNirStart(response.data.nirStart);
+            setNirEnd(response.data.nirEnd);
+            setLongPpStart(response.data.ppppuipdStart);
+            setLongPpEnd(response.data.ppppuipdEnd);
+            setPpStart(response.data.ppStart);
+            setPpEnd(response.data.ppEnd);
+            setVkrStart(response.data.vkrStart);
+            setVkrEnd(response.data.vkrEnd);
+        }).catch(result => {
+            console.log(result.data);
+        });
+    }
 
     return(
         <Form className='info-form light-background'>
@@ -43,8 +86,8 @@ export default function StudentInfoPage(){
                     <div className='dark info-text-block'>
                         <p className='size-24 info-text-block-title'>НАУЧНО-ИССЛЕДОВАТЕЛЬСКАЯ РАБОТА</p>
                         <div>
-                            <p id='NIRStart' className='size-20 info-text-block-start-date'><b>Начало: 1.09.2020</b></p>
-                            <p id='NIREnd' className='size-20 info-text-block-end-date'><b>Конец: 21.12.2020</b></p>
+                            <p id='NIRStart' className='size-20 info-text-block-start-date'><b>Начало: {nirStart}</b></p>
+                            <p id='NIREnd' className='size-20 info-text-block-end-date'><b>Конец: {nirEnd}</b></p>
                         </div>
                         <div style={{clear: 'both'}}></div>
                         <div className='size-20 info-text-block-content'>
@@ -79,8 +122,8 @@ export default function StudentInfoPage(){
                     <div className='dark info-text-block' style={{backgroundColor:'#89AFE0'}}>
                         <p className='size-24 info-text-block-title'>ПРАКТИКА ПО ПОЛУЧЕНИЮ ПРОФЕССИОНАЛЬНЫХ УМЕНИЙ И ОПЫТА ПРОФЕССИОНАЛЬНОЙ ДЕЯТЕЛЬНОСТИ</p>
                         <div>
-                            <p id='NIRStart' className='size-20 info-text-block-start-date'><b>Начало: 09.02.2021</b></p>
-                            <p id='NIREnd' className='size-20 info-text-block-end-date'><b>Конец: 05.04.2021</b></p>
+                            <p id='NIRStart' className='size-20 info-text-block-start-date'><b>Начало: {longPpStart}</b></p>
+                            <p id='NIREnd' className='size-20 info-text-block-end-date'><b>Конец: {longPpEnd}</b></p>
                         </div>
                         <div style={{clear: 'both'}}></div>
                         <div className='size-20 info-text-block-content'>
@@ -109,8 +152,8 @@ export default function StudentInfoPage(){
                     <div className='dark info-text-block' style={{backgroundColor:'#618FCA', color: '#F1F4FB'}}>
                         <p className='size-24 info-text-block-title'>ПРЕДДИПЛОМНАЯ ПРАКТИКА</p>
                         <div>
-                            <p id='NIRStart' className='size-20 info-text-block-start-date'><b>Начало: 20.04.2021</b></p>
-                            <p id='NIREnd' className='size-20 info-text-block-end-date'><b>Конец: 17.05.2021</b></p>
+                            <p id='NIRStart' className='size-20 info-text-block-start-date'><b>Начало: {ppStart}</b></p>
+                            <p id='NIREnd' className='size-20 info-text-block-end-date'><b>Конец: {ppEnd}</b></p>
                         </div>
                         <div style={{clear: 'both'}}></div>
                         <div className='size-20 info-text-block-content' style={{columnRuleColor: '#F1F4FB'}}>
@@ -138,8 +181,8 @@ export default function StudentInfoPage(){
                     <div className='dark info-text-block' style={{backgroundColor:'#3A5985', color: '#F1F4FB'}}>
                         <p className='size-24 info-text-block-title'>ПОДГОТОВКА И ЗАЩИТА ВКР</p>
                         <div>
-                            <p id='NIRStart' className='size-20 info-text-block-start-date'><b>Начало: 25.05.2021</b></p>
-                            <p id='NIREnd' className='size-20 info-text-block-end-date'><b>Конец: 05.07.2021</b></p>
+                            <p id='NIRStart' className='size-20 info-text-block-start-date'><b>Начало: {vkrStart}</b></p>
+                            <p id='NIREnd' className='size-20 info-text-block-end-date'><b>Конец: {vkrEnd}</b></p>
                         </div>
                         <div style={{clear: 'both'}}></div>
                         <div className='size-20 info-text-block-content' style={{columnRuleColor: '#F1F4FB'}}>
