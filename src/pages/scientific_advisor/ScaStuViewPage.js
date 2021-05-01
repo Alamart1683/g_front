@@ -2289,12 +2289,12 @@ export default function ScaStuViewPage() {
                         'Authorization': 'Bearer ' + authTokens.accessToken
                     },
                 }).then((response) => {
+                    //console.log(response.data);
                     if (response.data.indexOf('Приказ еще не был загружен') > -1) {
                         setErrorMessage('Ошибка при создании версии задания: приказ ещё не был загружен!');
                         setShowError(true);
                     }
-                    else if (response.data === 'Вы не можете добавлять версии заданию студента, пока он его не сгенерирует') {
-                        console.log(response.data);
+                    else if (response.data === 'Вы не можете добавлять версии заданию студенту, пока он его не сгенерирует') {
                         setErrorMessage('Нельзя создать версию задания, пока студент не создаст хотя бы одну версию!');
                         setShowError(true);
                     }
