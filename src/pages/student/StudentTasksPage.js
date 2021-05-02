@@ -577,18 +577,29 @@ export default function StudentTasksPage() {
         var nirVersionHeader = document.createElement('div');
         nirVersionHeader.className = 'nir-version-header dark-background';
 
+        var clickableArea = document.createElement('div');
+        clickableArea.className = 'nir-version-titles';
+
+        var clickableArea2 = document.createElement('div');
+        clickableArea2.className = 'nir-version-clickable';
+
         // Имя версии
         var versionName = document.createElement('p');
         versionName.className = 'light size-24 nir-header-text';
         versionName.innerText = 'Версия: ' + item.versionEditionDate;
+
+        var versionName2 = document.createElement('p');
+        versionName2.className = 'light size-24 nir-header-text';
+        versionName2.innerText = 'Версия: ' + item.versionEditionDate;
 
         // Статус версии
         var versionStatus = document.createElement('p');
         versionStatus.className = 'light size-24 nir-header-text';
         versionStatus.innerText = 'Статус: ' + item.documentStatus;
 
-        var clickableArea = document.createElement('div');
-        clickableArea.className = 'nir-version-titles';
+        var versionStatus2 = document.createElement('p');
+        versionStatus2.className = 'light size-24 nir-header-text';
+        versionStatus2.innerText = 'Статус: ' + item.documentStatus;
 
         // Кнопка отправить науч руку
         var sendButton = document.createElement('button');
@@ -618,14 +629,53 @@ export default function StudentTasksPage() {
         viewButton.innerText = 'Просмотреть';
         viewButton.type = 'button';
 
+        var nirVersionContent = document.createElement('div');
+        nirVersionContent.className = 'nir-version-content light-background';
+
+        // Замечания
+        var commentDiv = document.createElement('div');
+        commentDiv.className = 'version-comment-div';
+        commentDiv.style.marginTop = '0px';
+        if (item.documentStatus !== 'Замечания') {
+            commentDiv.style.display = 'none';
+        }
+
+        var commentLabel = document.createElement('p');
+        commentLabel.className = 'dark size-21 nir-text-label2';
+        commentLabel.innerText = 'Замечания:';
+
+        var commentArea = document.createElement('textarea');
+        commentArea.className = 'dark size-24 nir-text-area version-comment-area';
+        commentArea.style.height = '120px';
+        commentArea.style.width = '1410px';
+        commentArea.disabled = true;
+        commentArea.value = item.versionDescription;
+
         clickableArea.appendChild(versionName);
         clickableArea.appendChild(versionStatus);
         nirVersionHeader.appendChild(clickableArea);
+
+        clickableArea2.appendChild(versionName2);
+        clickableArea2.appendChild(versionStatus2);
+        nirVersionHeader.appendChild(clickableArea2);
+
+        if (item.documentStatus !== 'Замечания') {
+            clickableArea2.style.display = 'none';
+        }
+        else {
+            clickableArea.style.display = 'none';
+        }
+
         nirVersionHeader.appendChild(viewButton);
         nirVersionHeader.appendChild(sendButton);
         nirVersionHeader.appendChild(downloadButton);
         nirVersionHeader.appendChild(deleteButton);
         nirVersion.appendChild(nirVersionHeader);
+
+        commentDiv.appendChild(commentLabel);
+        commentDiv.appendChild(commentArea);
+        nirVersionContent.appendChild(commentDiv);
+        nirVersion.appendChild(nirVersionContent);
 
         document.getElementById('student-vkr-dopusk-version-div').appendChild(nirVersion);
     }
@@ -644,18 +694,29 @@ export default function StudentTasksPage() {
         var nirVersionHeader = document.createElement('div');
         nirVersionHeader.className = 'nir-version-header dark-background';
 
+        var clickableArea = document.createElement('div');
+        clickableArea.className = 'nir-version-titles';
+
+        var clickableArea2 = document.createElement('div');
+        clickableArea2.className = 'nir-version-clickable';
+
         // Имя версии
         var versionName = document.createElement('p');
         versionName.className = 'light size-24 nir-header-text';
         versionName.innerText = 'Версия: ' + item.versionEditionDate;
+
+        var versionName2 = document.createElement('p');
+        versionName2.className = 'light size-24 nir-header-text';
+        versionName2.innerText = 'Версия: ' + item.versionEditionDate;
 
         // Статус версии
         var versionStatus = document.createElement('p');
         versionStatus.className = 'light size-24 nir-header-text';
         versionStatus.innerText = 'Статус: ' + item.documentStatus;
 
-        var clickableArea = document.createElement('div');
-        clickableArea.className = 'nir-version-titles';
+        var versionStatus2 = document.createElement('p');
+        versionStatus2.className = 'light size-24 nir-header-text';
+        versionStatus2.innerText = 'Статус: ' + item.documentStatus;
 
         // Кнопка отправить науч руку
         var sendButton = document.createElement('button');
@@ -685,15 +746,53 @@ export default function StudentTasksPage() {
         viewButton.innerText = 'Просмотреть';
         viewButton.type = 'button';
 
+        var nirVersionContent = document.createElement('div');
+        nirVersionContent.className = 'nir-version-content light-background';
+
+        // Замечания
+        var commentDiv = document.createElement('div');
+        commentDiv.className = 'version-comment-div';
+        commentDiv.style.marginTop = '0px';
+        if (item.documentStatus !== 'Замечания') {
+            commentDiv.style.display = 'none';
+        }
+
+        var commentLabel = document.createElement('p');
+        commentLabel.className = 'dark size-21 nir-text-label2';
+        commentLabel.innerText = 'Замечания:';
+
+        var commentArea = document.createElement('textarea');
+        commentArea.className = 'dark size-24 nir-text-area version-comment-area';
+        commentArea.style.height = '120px';
+        commentArea.style.width = '1410px';
+        commentArea.disabled = true;
+        commentArea.value = item.versionDescription;
 
         clickableArea.appendChild(versionName);
         clickableArea.appendChild(versionStatus);
         nirVersionHeader.appendChild(clickableArea);
+
+        clickableArea2.appendChild(versionName2);
+        clickableArea2.appendChild(versionStatus2);
+        nirVersionHeader.appendChild(clickableArea2);
+
+        if (item.documentStatus !== 'Замечания') {
+            clickableArea2.style.display = 'none';
+        }
+        else {
+            clickableArea.style.display = 'none';
+        }
+
         nirVersionHeader.appendChild(viewButton);
         nirVersionHeader.appendChild(sendButton);
         nirVersionHeader.appendChild(downloadButton);
         nirVersionHeader.appendChild(deleteButton);
         nirVersion.appendChild(nirVersionHeader);
+
+        commentDiv.appendChild(commentLabel);
+        commentDiv.appendChild(commentArea);
+        nirVersionContent.appendChild(commentDiv);
+        nirVersion.appendChild(nirVersionContent);
 
         document.getElementById('student-vkr-review-version-div').appendChild(nirVersion);
     }
@@ -712,18 +811,29 @@ export default function StudentTasksPage() {
         var nirVersionHeader = document.createElement('div');
         nirVersionHeader.className = 'nir-version-header dark-background';
 
+        var clickableArea = document.createElement('div');
+        clickableArea.className = 'nir-version-titles';
+
+        var clickableArea2 = document.createElement('div');
+        clickableArea2.className = 'nir-version-clickable';
+
         // Имя версии
         var versionName = document.createElement('p');
         versionName.className = 'light size-24 nir-header-text';
         versionName.innerText = 'Версия: ' + item.versionEditionDate;
+
+        var versionName2 = document.createElement('p');
+        versionName2.className = 'light size-24 nir-header-text';
+        versionName2.innerText = 'Версия: ' + item.versionEditionDate;
 
         // Статус версии
         var versionStatus = document.createElement('p');
         versionStatus.className = 'light size-24 nir-header-text';
         versionStatus.innerText = 'Статус: ' + item.documentStatus;
 
-        var clickableArea = document.createElement('div');
-        clickableArea.className = 'nir-version-titles';
+        var versionStatus2 = document.createElement('p');
+        versionStatus2.className = 'light size-24 nir-header-text';
+        versionStatus2.innerText = 'Статус: ' + item.documentStatus;
 
         // Кнопка отправить науч руку
         var sendButton = document.createElement('button');
@@ -753,14 +863,53 @@ export default function StudentTasksPage() {
         viewButton.innerText = 'Просмотреть';
         viewButton.type = 'button';
 
+        var nirVersionContent = document.createElement('div');
+        nirVersionContent.className = 'nir-version-content light-background';
+
+        // Замечания
+        var commentDiv = document.createElement('div');
+        commentDiv.className = 'version-comment-div';
+        commentDiv.style.marginTop = '0px';
+        if (item.documentStatus !== 'Замечания') {
+            commentDiv.style.display = 'none';
+        }
+
+        var commentLabel = document.createElement('p');
+        commentLabel.className = 'dark size-21 nir-text-label2';
+        commentLabel.innerText = 'Замечания:';
+
+        var commentArea = document.createElement('textarea');
+        commentArea.className = 'dark size-24 nir-text-area version-comment-area';
+        commentArea.style.height = '120px';
+        commentArea.style.width = '1410px';
+        commentArea.disabled = true;
+        commentArea.value = item.versionDescription;
+
         clickableArea.appendChild(versionName);
         clickableArea.appendChild(versionStatus);
         nirVersionHeader.appendChild(clickableArea);
+
+        clickableArea2.appendChild(versionName2);
+        clickableArea2.appendChild(versionStatus2);
+        nirVersionHeader.appendChild(clickableArea2);
+
+        if (item.documentStatus !== 'Замечания') {
+            clickableArea2.style.display = 'none';
+        }
+        else {
+            clickableArea.style.display = 'none';
+        }
+
         nirVersionHeader.appendChild(viewButton);
         nirVersionHeader.appendChild(sendButton);
         nirVersionHeader.appendChild(downloadButton);
         nirVersionHeader.appendChild(deleteButton);
         nirVersion.appendChild(nirVersionHeader);
+
+        commentDiv.appendChild(commentLabel);
+        commentDiv.appendChild(commentArea);
+        nirVersionContent.appendChild(commentDiv);
+        nirVersion.appendChild(nirVersionContent);
 
         document.getElementById('student-vkr-antiplagiat-version-div').appendChild(nirVersion);
     }
@@ -779,18 +928,29 @@ export default function StudentTasksPage() {
         var nirVersionHeader = document.createElement('div');
         nirVersionHeader.className = 'nir-version-header dark-background';
 
+        var clickableArea = document.createElement('div');
+        clickableArea.className = 'nir-version-titles';
+
+        var clickableArea2 = document.createElement('div');
+        clickableArea2.className = 'nir-version-clickable';
+
         // Имя версии
         var versionName = document.createElement('p');
         versionName.className = 'light size-24 nir-header-text';
         versionName.innerText = 'Версия: ' + item.versionEditionDate;
+
+        var versionName2 = document.createElement('p');
+        versionName2.className = 'light size-24 nir-header-text';
+        versionName2.innerText = 'Версия: ' + item.versionEditionDate;
 
         // Статус версии
         var versionStatus = document.createElement('p');
         versionStatus.className = 'light size-24 nir-header-text';
         versionStatus.innerText = 'Статус: ' + item.documentStatus;
 
-        var clickableArea = document.createElement('div');
-        clickableArea.className = 'nir-version-titles';
+        var versionStatus2 = document.createElement('p');
+        versionStatus2.className = 'light size-24 nir-header-text';
+        versionStatus2.innerText = 'Статус: ' + item.documentStatus;
 
         // Кнопка отправить науч руку
         var sendButton = document.createElement('button');
@@ -820,14 +980,53 @@ export default function StudentTasksPage() {
         viewButton.innerText = 'Просмотреть';
         viewButton.type = 'button';
 
+        var nirVersionContent = document.createElement('div');
+        nirVersionContent.className = 'nir-version-content light-background';
+
+        // Замечания
+        var commentDiv = document.createElement('div');
+        commentDiv.className = 'version-comment-div';
+        commentDiv.style.marginTop = '0px';
+        if (item.documentStatus !== 'Замечания') {
+            commentDiv.style.display = 'none';
+        }
+
+        var commentLabel = document.createElement('p');
+        commentLabel.className = 'dark size-21 nir-text-label2';
+        commentLabel.innerText = 'Замечания:';
+
+        var commentArea = document.createElement('textarea');
+        commentArea.className = 'dark size-24 nir-text-area version-comment-area';
+        commentArea.style.height = '120px';
+        commentArea.style.width = '1410px';
+        commentArea.disabled = true;
+        commentArea.value = item.versionDescription;
+
         clickableArea.appendChild(versionName);
         clickableArea.appendChild(versionStatus);
         nirVersionHeader.appendChild(clickableArea);
+
+        clickableArea2.appendChild(versionName2);
+        clickableArea2.appendChild(versionStatus2);
+        nirVersionHeader.appendChild(clickableArea2);
+
+        if (item.documentStatus !== 'Замечания') {
+            clickableArea2.style.display = 'none';
+        }
+        else {
+            clickableArea.style.display = 'none';
+        }
+
         nirVersionHeader.appendChild(viewButton);
         nirVersionHeader.appendChild(sendButton);
         nirVersionHeader.appendChild(downloadButton);
         nirVersionHeader.appendChild(deleteButton);
         nirVersion.appendChild(nirVersionHeader);
+
+        commentDiv.appendChild(commentLabel);
+        commentDiv.appendChild(commentArea);
+        nirVersionContent.appendChild(commentDiv);
+        nirVersion.appendChild(nirVersionContent);
 
         document.getElementById('student-vkr-presentation-version-div').appendChild(nirVersion);
     }
@@ -954,6 +1153,24 @@ export default function StudentTasksPage() {
         viewButton.innerText = 'Просмотреть';
         viewButton.type = 'button';
 
+        // Замечания
+        var commentDiv = document.createElement('div');
+        commentDiv.className = 'version-comment-div';
+        if (item.status !== 'Замечания') {
+            commentDiv.style.display = 'none';
+        }
+
+        var commentLabel = document.createElement('p');
+        commentLabel.className = 'dark size-21 nir-text-label2';
+        commentLabel.innerText = 'Замечания:';
+
+        var commentArea = document.createElement('textarea');
+        commentArea.className = 'dark size-24 nir-text-area version-comment-area';
+        commentArea.style.height = '120px';
+        commentArea.style.width = '1410px';
+        commentArea.disabled = true;
+        commentArea.value = item.versionDescription;
+
         clickableArea.appendChild(versionName);
         clickableArea.appendChild(versionStatus);
         nirVersionHeader.appendChild(clickableArea);
@@ -979,6 +1196,11 @@ export default function StudentTasksPage() {
         rowDiv.appendChild(columnDiv2);
         nirVersionContent.appendChild(rowDiv);
         nirVersion.appendChild(nirVersionContent);
+
+        commentDiv.appendChild(commentLabel);
+        commentDiv.appendChild(commentArea);
+        nirVersionContent.appendChild(commentDiv);
+
         document.getElementById('student-nir-task-version-div').appendChild(nirVersion);
     }
 
@@ -1104,6 +1326,24 @@ export default function StudentTasksPage() {
         viewButton.innerText = 'Просмотреть';
         viewButton.type = 'button';
 
+        // Замечания
+        var commentDiv = document.createElement('div');
+        commentDiv.className = 'version-comment-div';
+        if (item.status !== 'Замечания') {
+            commentDiv.style.display = 'none';
+        }
+
+        var commentLabel = document.createElement('p');
+        commentLabel.className = 'dark size-21 nir-text-label2';
+        commentLabel.innerText = 'Замечания:';
+
+        var commentArea = document.createElement('textarea');
+        commentArea.className = 'dark size-24 nir-text-area version-comment-area';
+        commentArea.style.height = '120px';
+        commentArea.style.width = '1410px';
+        commentArea.disabled = true;
+        commentArea.value = item.versionDescription;
+
         clickableArea.appendChild(versionName);
         clickableArea.appendChild(versionStatus);
         longPPVersionHeader.appendChild(clickableArea);
@@ -1127,6 +1367,11 @@ export default function StudentTasksPage() {
         rowDiv.appendChild(columnDiv2);
         longPPVersionContent.appendChild(rowDiv);
         longPPVersion.appendChild(longPPVersionContent);
+
+        commentDiv.appendChild(commentLabel);
+        commentDiv.appendChild(commentArea);
+        longPPVersionContent.appendChild(commentDiv);
+
         document.getElementById('student-long-pp-task-version-div').appendChild(longPPVersion);
     }
 
@@ -1252,6 +1497,24 @@ export default function StudentTasksPage() {
         viewButton.innerText = 'Просмотреть';
         viewButton.type = 'button';
 
+        // Замечания
+        var commentDiv = document.createElement('div');
+        commentDiv.className = 'version-comment-div';
+        if (item.status !== 'Замечания') {
+            commentDiv.style.display = 'none';
+        }
+
+        var commentLabel = document.createElement('p');
+        commentLabel.className = 'dark size-21 nir-text-label2';
+        commentLabel.innerText = 'Замечания:';
+
+        var commentArea = document.createElement('textarea');
+        commentArea.className = 'dark size-24 nir-text-area version-comment-area';
+        commentArea.style.height = '120px';
+        commentArea.style.width = '1410px';
+        commentArea.disabled = true;
+        commentArea.value = item.versionDescription;
+
         clickableArea.appendChild(versionName);
         clickableArea.appendChild(versionStatus);
         longPPVersionHeader.appendChild(clickableArea);
@@ -1275,6 +1538,11 @@ export default function StudentTasksPage() {
         rowDiv.appendChild(columnDiv2);
         longPPVersionContent.appendChild(rowDiv);
         longPPVersion.appendChild(longPPVersionContent);
+
+        commentDiv.appendChild(commentLabel);
+        commentDiv.appendChild(commentArea);
+        longPPVersionContent.appendChild(commentDiv);
+
         document.getElementById('student-pp-task-version-div').appendChild(longPPVersion);
     }
 
@@ -1393,6 +1661,24 @@ export default function StudentTasksPage() {
         viewButton.innerText = 'Просмотреть';
         viewButton.type = 'button';
 
+        // Замечания
+        var commentDiv = document.createElement('div');
+        commentDiv.className = 'version-comment-div';
+        if (item.status !== 'Замечания') {
+            commentDiv.style.display = 'none';
+        }
+
+        var commentLabel = document.createElement('p');
+        commentLabel.className = 'dark size-21 nir-text-label2';
+        commentLabel.innerText = 'Замечания:';
+
+        var commentArea = document.createElement('textarea');
+        commentArea.className = 'dark size-24 nir-text-area version-comment-area';
+        commentArea.style.height = '120px';
+        commentArea.style.width = '1410px';
+        commentArea.disabled = true;
+        commentArea.value = item.versionDescription;
+
         clickableArea.appendChild(versionName);
         clickableArea.appendChild(versionStatus);
         nirVersionHeader.appendChild(clickableArea);
@@ -1415,6 +1701,11 @@ export default function StudentTasksPage() {
         nirVersionContent.appendChild(rowDiv);
         nirVersionContent.appendChild(copyButton);
         nirVersion.appendChild(nirVersionContent);
+
+        commentDiv.appendChild(commentLabel);
+        commentDiv.appendChild(commentArea);
+        nirVersionContent.appendChild(commentDiv);
+
         document.getElementById('student-vkr-task-version-div').appendChild(nirVersion);
     }
 
@@ -1514,6 +1805,24 @@ export default function StudentTasksPage() {
         viewButton.innerText = 'Просмотреть';
         viewButton.type = 'button';
 
+        // Замечания
+        var commentDiv = document.createElement('div');
+        commentDiv.className = 'version-comment-div';
+        if (item.status !== 'Замечания') {
+            commentDiv.style.display = 'none';
+        }
+
+        var commentLabel = document.createElement('p');
+        commentLabel.className = 'dark size-21 nir-text-label2';
+        commentLabel.innerText = 'Замечания:';
+
+        var commentArea = document.createElement('textarea');
+        commentArea.className = 'dark size-24 nir-text-area version-comment-area';
+        commentArea.style.height = '120px';
+        commentArea.style.width = '1410px';
+        commentArea.disabled = true;
+        commentArea.value = item.versionDescription;
+
         clickableArea.appendChild(versionName);
         clickableArea.appendChild(versionStatus);
         nirVersionHeader.appendChild(clickableArea);
@@ -1532,6 +1841,10 @@ export default function StudentTasksPage() {
         nirVersionContent.appendChild(rowDiv);
         nirVersionContent.appendChild(copyButton);
         nirVersion.appendChild(nirVersionContent);
+
+        commentDiv.appendChild(commentLabel);
+        commentDiv.appendChild(commentArea);
+        nirVersionContent.appendChild(commentDiv);
 
         document.getElementById('student-nir-otchet-version-div').appendChild(nirVersion);
     }
@@ -1632,6 +1945,24 @@ export default function StudentTasksPage() {
         viewButton.innerText = 'Просмотреть';
         viewButton.type = 'button';
 
+        // Замечания
+        var commentDiv = document.createElement('div');
+        commentDiv.className = 'version-comment-div';
+        if (item.status !== 'Замечания') {
+            commentDiv.style.display = 'none';
+        }
+
+        var commentLabel = document.createElement('p');
+        commentLabel.className = 'dark size-21 nir-text-label2';
+        commentLabel.innerText = 'Замечания:';
+
+        var commentArea = document.createElement('textarea');
+        commentArea.className = 'dark size-24 nir-text-area version-comment-area';
+        commentArea.style.height = '120px';
+        commentArea.style.width = '1410px';
+        commentArea.disabled = true;
+        commentArea.value = item.versionDescription;
+
         clickableArea.appendChild(versionName);
         clickableArea.appendChild(versionStatus);
         nirVersionHeader.appendChild(clickableArea);
@@ -1650,6 +1981,10 @@ export default function StudentTasksPage() {
         nirVersionContent.appendChild(rowDiv);
         nirVersionContent.appendChild(copyButton);
         nirVersion.appendChild(nirVersionContent);
+
+        commentDiv.appendChild(commentLabel);
+        commentDiv.appendChild(commentArea);
+        nirVersionContent.appendChild(commentDiv);
 
         document.getElementById('student-long-pp-otchet-version-div').appendChild(nirVersion);
     }
@@ -1750,6 +2085,24 @@ export default function StudentTasksPage() {
         viewButton.innerText = 'Просмотреть';
         viewButton.type = 'button';
 
+        // Замечания
+        var commentDiv = document.createElement('div');
+        commentDiv.className = 'version-comment-div';
+        if (item.status !== 'Замечания') {
+            commentDiv.style.display = 'none';
+        }
+
+        var commentLabel = document.createElement('p');
+        commentLabel.className = 'dark size-21 nir-text-label2';
+        commentLabel.innerText = 'Замечания:';
+
+        var commentArea = document.createElement('textarea');
+        commentArea.className = 'dark size-24 nir-text-area version-comment-area';
+        commentArea.style.height = '120px';
+        commentArea.style.width = '1410px';
+        commentArea.disabled = true;
+        commentArea.value = item.versionDescription;
+
         clickableArea.appendChild(versionName);
         clickableArea.appendChild(versionStatus);
         nirVersionHeader.appendChild(clickableArea);
@@ -1769,6 +2122,10 @@ export default function StudentTasksPage() {
         nirVersionContent.appendChild(copyButton);
         nirVersion.appendChild(nirVersionContent);
 
+        commentDiv.appendChild(commentLabel);
+        commentDiv.appendChild(commentArea);
+        nirVersionContent.appendChild(commentDiv);
+
         document.getElementById('student-pp-otchet-version-div').appendChild(nirVersion);
     }
 
@@ -1787,18 +2144,29 @@ export default function StudentTasksPage() {
         var nirVersionHeader = document.createElement('div');
         nirVersionHeader.className = 'nir-version-header dark-background';
 
+        var clickableArea = document.createElement('div');
+        clickableArea.className = 'nir-version-titles';
+
+        var clickableArea2 = document.createElement('div');
+        clickableArea2.className = 'nir-version-clickable';
+
         // Имя версии
         var versionName = document.createElement('p');
         versionName.className = 'light size-24 nir-header-text';
         versionName.innerText = 'Версия: ' + item.versionEditionDate;
+
+        var versionName2 = document.createElement('p');
+        versionName2.className = 'light size-24 nir-header-text';
+        versionName2.innerText = 'Версия: ' + item.versionEditionDate;
 
         // Статус версии
         var versionStatus = document.createElement('p');
         versionStatus.className = 'light size-24 nir-header-text';
         versionStatus.innerText = 'Статус: ' + item.status;
 
-        var clickableArea = document.createElement('div');
-        clickableArea.className = 'nir-version-titles';
+        var versionStatus2 = document.createElement('p');
+        versionStatus2.className = 'light size-24 nir-header-text';
+        versionStatus2.innerText = 'Статус: ' + item.status;
 
         // Кнопка отправить науч руку
         var sendButton = document.createElement('button');
@@ -1828,14 +2196,53 @@ export default function StudentTasksPage() {
         viewButton.innerText = 'Просмотреть';
         viewButton.type = 'button';
 
+        var nirVersionContent = document.createElement('div');
+        nirVersionContent.className = 'nir-version-content light-background';
+
+        // Замечания
+        var commentDiv = document.createElement('div');
+        commentDiv.className = 'version-comment-div';
+        commentDiv.style.marginTop = '0px';
+        if (item.status !== 'Замечания') {
+            commentDiv.style.display = 'none';
+        }
+
+        var commentLabel = document.createElement('p');
+        commentLabel.className = 'dark size-21 nir-text-label2';
+        commentLabel.innerText = 'Замечания:';
+
+        var commentArea = document.createElement('textarea');
+        commentArea.className = 'dark size-24 nir-text-area version-comment-area';
+        commentArea.style.height = '120px';
+        commentArea.style.width = '1410px';
+        commentArea.disabled = true;
+        commentArea.value = item.versionDescription;
+
         clickableArea.appendChild(versionName);
         clickableArea.appendChild(versionStatus);
         nirVersionHeader.appendChild(clickableArea);
+
+        clickableArea2.appendChild(versionName2);
+        clickableArea2.appendChild(versionStatus2);
+        nirVersionHeader.appendChild(clickableArea2);
+
+        if (item.status !== 'Замечания') {
+            clickableArea2.style.display = 'none';
+        }
+        else {
+            clickableArea.style.display = 'none';
+        }
+
         nirVersionHeader.appendChild(viewButton);
         nirVersionHeader.appendChild(sendButton);
         nirVersionHeader.appendChild(downloadButton);
         nirVersionHeader.appendChild(deleteButton);
         nirVersion.appendChild(nirVersionHeader);
+
+        commentDiv.appendChild(commentLabel);
+        commentDiv.appendChild(commentArea);
+        nirVersionContent.appendChild(commentDiv);
+        nirVersion.appendChild(nirVersionContent);
 
         document.getElementById('student-vkr-otchet-version-div').appendChild(nirVersion);
     }
