@@ -21,12 +21,12 @@ export default function StudentHeader() {
     const { authTokens, setAuthTokens } = useAuthContext();
     const [fetchedData, setFetchedData] = useState(false);
     const [scientificAdvisorData, setScientificAdvisorData] = useState([]);
-    const [theme, setTheme] = useState('');
+    //const [theme, setTheme] = useState('');
 
     if (!fetchedData) {
         setFetchedData(true);
         getScientificAdvisor();
-        getTheme();
+        //getTheme();
     }
 
     function getScientificAdvisor() {
@@ -39,12 +39,12 @@ export default function StudentHeader() {
         }).then((response) => {
             //console.log(response.data);
             setScientificAdvisorData(response.data);
-            //console.log(scientificAdvisor);
         }).catch(result => {
             console.log(result.data);
         });
     }
 
+    /*
     function getTheme() {
         axios({
             url: apiURL + '/student/get/vkr_theme',
@@ -59,6 +59,7 @@ export default function StudentHeader() {
             console.log(result.data);
         });
     }
+    */
 
     function logOut() {
         setAuthTokens(null);

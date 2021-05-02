@@ -444,14 +444,11 @@ export default function MessagesPage() {
                 },
             }).then((response) => {
                 //console.log(response);
-
                 var flag = true;
                 var recommendedArray = $('.recommended-contact-item');
                 var matchArray = [];
                 var inputString = $('#contacts-input').val().trim().toUpperCase();
-                //var counter = 0;
                 for (var i = 0; i < recommendedArray.length; i++) {
-                    //console.log(recommendedArray[i].innerText);
                     if (recommendedArray[i].innerText.toUpperCase().indexOf(inputString) > -1) {
                         if (flag) {
                             flag = false;
@@ -471,7 +468,6 @@ export default function MessagesPage() {
                         }
                     }
                 }
-
                 if (response.data.length > 0) {
                     var allContactsMessage = document.createElement('p');
                     allContactsMessage.className = 'info-contacts-message';
@@ -503,8 +499,6 @@ export default function MessagesPage() {
 
             $('.contact-search-item').each(function () {
                 if ($(this).is(e.target)) {
-                    //console.log($(this).attr('id').split('-')[2]);
-
                     if (!newMessageReceiversId.includes($(this).attr('id').split('-')[2])) {
                         var compactReceiverDiv = document.createElement('div');
                         compactReceiverDiv.className = 'new-message-compact-receiver-div size-24 dark';
@@ -531,8 +525,6 @@ export default function MessagesPage() {
 
             $('.recommended-contact-item').each(function () {
                 if ($(this).is(e.target)) {
-                    //console.log($(this).attr('id'));
-
                     if (!newMessageReceiversId.includes($(this).attr('id').split('-')[2])) {
                         var compactReceiverDiv = document.createElement('div');
                         compactReceiverDiv.className = 'new-message-compact-receiver-div size-24 dark';

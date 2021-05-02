@@ -2309,3 +2309,32 @@ html, body {
 	font-weight: 600;
 	visibility: hidden;
 }
+
+.version-comment-div {
+	margin-top: 30px;
+}
+
+.modal-comment-label {
+	margin-left: 40px;
+}
+
+.modal-comment-area {
+	margin-left: 20px;
+	width: 1160px;
+	height: 160px;
+	padding: 6px 12px;
+	border-radius: 7px;
+	border-width: 0px;
+}
+
+.modal-comment-button {
+	border-radius: 7px;
+	height: 90px;
+	width: 490px;
+	margin-top: 20px;
+	margin-left: 360px;
+}
+
+.modal-comment-button:hover {
+    background-color: #618FCA;
+}

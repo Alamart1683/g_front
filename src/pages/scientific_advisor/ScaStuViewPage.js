@@ -15,11 +15,14 @@ export default function ScaStuViewPage() {
     const { authTokens } = useAuthContext();
     const [fetchedData, setFetchedData] = useState(false);
 
+    const [showComment, setShowComment] = useState(false);
+    const [whatToComment, setWhatToComment] = useState('');
+    const [whatToCommentType, setWhatToCommentType] = useState('');
+
     const [showError, setShowError] = useState(false);
     const [errorMessage, setErrorMessage] = useState('Неопределенная ошибка');
 
     const [students, setStudents] = useState([]);
-    //const [studentData, setStudentData] = useState([]);
     const [studentTheme, setStudentTheme] = useState('');
     const [themeConfirmed, setThemeConfirmed] = useState('');
 
@@ -457,7 +460,7 @@ export default function ScaStuViewPage() {
         }
     }
 
-    // Получение заданий НИР для студента
+    // Получение заданий для студента
     function getStudentTaskVersions(type) {
         axios({
             url: apiURL + '/scientific_advisor/document/task/view',
@@ -597,15 +600,30 @@ export default function ScaStuViewPage() {
         var nirVersionHeader = document.createElement('div');
         nirVersionHeader.className = 'nir-version-header dark-background';
 
+        var clickableArea = document.createElement('div');
+        clickableArea.className = 'nir-version-titles';
+        clickableArea.style.width = '795px';
+
+        var clickableArea2 = document.createElement('div');
+        clickableArea2.className = 'nir-version-clickable2';
+
         // Имя версии
         var versionName = document.createElement('p');
         versionName.className = 'light size-24 nir-header-text';
         versionName.innerText = 'Версия: ' + item.versionEditionDate;
 
+        var versionName2 = document.createElement('p');
+        versionName2.className = 'light size-24 nir-header-text';
+        versionName2.innerText = 'Версия: ' + item.versionEditionDate;
+
         // Статус версии
         var versionStatus = document.createElement('p');
         versionStatus.className = 'light size-24 nir-header-text';
         versionStatus.innerText = 'Статус: ' + item.documentStatus;
+
+        var versionStatus2 = document.createElement('p');
+        versionStatus2.className = 'light size-24 nir-header-text';
+        versionStatus2.innerText = 'Статус: ' + item.documentStatus;
 
         // Кнопка оценить
         var sendButton = document.createElement('button');
@@ -642,10 +660,6 @@ export default function ScaStuViewPage() {
         deleteButton.innerText = 'Удалить версию';
         deleteButton.type = 'button';
 
-        var clickableArea = document.createElement('div');
-        clickableArea.className = 'nir-version-titles';
-        clickableArea.style.width = '795px';
-
         // Кнопка просмотреть
         var viewButton = document.createElement('button');
         viewButton.className = 'dark size-24 nir-version-header-button version-view-button';
@@ -653,9 +667,43 @@ export default function ScaStuViewPage() {
         viewButton.innerText = 'Просмотреть';
         viewButton.type = 'button';
 
+        var nirVersionContent = document.createElement('div');
+        nirVersionContent.className = 'nir-version-content light-background';
+
+        // Замечания
+        var commentDiv = document.createElement('div');
+        commentDiv.className = 'version-comment-div';
+        commentDiv.style.marginTop = '0px';
+        if (item.documentStatus !== 'Замечания') {
+            commentDiv.style.display = 'none';
+        }
+
+        var commentLabel = document.createElement('p');
+        commentLabel.className = 'dark size-21 nir-text-label2';
+        commentLabel.innerText = 'Замечания:';
+
+        var commentArea = document.createElement('textarea');
+        commentArea.className = 'dark size-24 nir-text-area version-comment-area';
+        commentArea.style.height = '120px';
+        commentArea.style.width = '1410px';
+        commentArea.disabled = true;
+        commentArea.value = item.versionDescription;
+
         clickableArea.appendChild(versionName);
         clickableArea.appendChild(versionStatus);
         nirVersionHeader.appendChild(clickableArea);
+
+        clickableArea2.appendChild(versionName2);
+        clickableArea2.appendChild(versionStatus2);
+        nirVersionHeader.appendChild(clickableArea2);
+
+        if (item.documentStatus !== 'Замечания') {
+            clickableArea2.style.display = 'none';
+        }
+        else {
+            clickableArea.style.display = 'none';
+        }
+
         nirVersionHeader.appendChild(viewButton);
         dropdownDiv.appendChild(sendButton);
         dropdownContent.appendChild(statusOdobreno);
@@ -666,6 +714,11 @@ export default function ScaStuViewPage() {
         nirVersionHeader.appendChild(downloadButton);
         nirVersionHeader.appendChild(deleteButton);
         nirVersion.appendChild(nirVersionHeader);
+
+        commentDiv.appendChild(commentLabel);
+        commentDiv.appendChild(commentArea);
+        nirVersionContent.appendChild(commentDiv);
+        nirVersion.appendChild(nirVersionContent);
 
         document.getElementById('student-vkr-dopusk-version-div').appendChild(nirVersion);
     }
@@ -685,15 +738,30 @@ export default function ScaStuViewPage() {
         var nirVersionHeader = document.createElement('div');
         nirVersionHeader.className = 'nir-version-header dark-background';
 
+        var clickableArea = document.createElement('div');
+        clickableArea.className = 'nir-version-titles';
+        clickableArea.style.width = '795px';
+
+        var clickableArea2 = document.createElement('div');
+        clickableArea2.className = 'nir-version-clickable2';
+
         // Имя версии
         var versionName = document.createElement('p');
         versionName.className = 'light size-24 nir-header-text';
         versionName.innerText = 'Версия: ' + item.versionEditionDate;
 
+        var versionName2 = document.createElement('p');
+        versionName2.className = 'light size-24 nir-header-text';
+        versionName2.innerText = 'Версия: ' + item.versionEditionDate;
+
         // Статус версии
         var versionStatus = document.createElement('p');
         versionStatus.className = 'light size-24 nir-header-text';
         versionStatus.innerText = 'Статус: ' + item.documentStatus;
+
+        var versionStatus2 = document.createElement('p');
+        versionStatus2.className = 'light size-24 nir-header-text';
+        versionStatus2.innerText = 'Статус: ' + item.documentStatus;
 
         // Кнопка оценить
         var sendButton = document.createElement('button');
@@ -730,11 +798,6 @@ export default function ScaStuViewPage() {
         deleteButton.innerText = 'Удалить версию';
         deleteButton.type = 'button';
 
-        var clickableArea = document.createElement('div');
-        clickableArea.className = 'nir-version-titles';
-        clickableArea.style.width = '795px';
-
-
         // Кнопка просмотреть
         var viewButton = document.createElement('button');
         viewButton.className = 'dark size-24 nir-version-header-button version-view-button';
@@ -742,9 +805,43 @@ export default function ScaStuViewPage() {
         viewButton.innerText = 'Просмотреть';
         viewButton.type = 'button';
 
+        var nirVersionContent = document.createElement('div');
+        nirVersionContent.className = 'nir-version-content light-background';
+
+        // Замечания
+        var commentDiv = document.createElement('div');
+        commentDiv.className = 'version-comment-div';
+        commentDiv.style.marginTop = '0px';
+        if (item.documentStatus !== 'Замечания') {
+            commentDiv.style.display = 'none';
+        }
+
+        var commentLabel = document.createElement('p');
+        commentLabel.className = 'dark size-21 nir-text-label2';
+        commentLabel.innerText = 'Замечания:';
+
+        var commentArea = document.createElement('textarea');
+        commentArea.className = 'dark size-24 nir-text-area version-comment-area';
+        commentArea.style.height = '120px';
+        commentArea.style.width = '1410px';
+        commentArea.disabled = true;
+        commentArea.value = item.versionDescription;
+
         clickableArea.appendChild(versionName);
         clickableArea.appendChild(versionStatus);
         nirVersionHeader.appendChild(clickableArea);
+
+        clickableArea2.appendChild(versionName2);
+        clickableArea2.appendChild(versionStatus2);
+        nirVersionHeader.appendChild(clickableArea2);
+
+        if (item.documentStatus !== 'Замечания') {
+            clickableArea2.style.display = 'none';
+        }
+        else {
+            clickableArea.style.display = 'none';
+        }
+
         nirVersionHeader.appendChild(viewButton);
 
         dropdownDiv.appendChild(sendButton);
@@ -756,6 +853,11 @@ export default function ScaStuViewPage() {
         nirVersionHeader.appendChild(downloadButton);
         nirVersionHeader.appendChild(deleteButton);
         nirVersion.appendChild(nirVersionHeader);
+
+        commentDiv.appendChild(commentLabel);
+        commentDiv.appendChild(commentArea);
+        nirVersionContent.appendChild(commentDiv);
+        nirVersion.appendChild(nirVersionContent);
 
         document.getElementById('student-vkr-review-version-div').appendChild(nirVersion);
     }
@@ -775,15 +877,30 @@ export default function ScaStuViewPage() {
         var nirVersionHeader = document.createElement('div');
         nirVersionHeader.className = 'nir-version-header dark-background';
 
+        var clickableArea = document.createElement('div');
+        clickableArea.className = 'nir-version-titles';
+        clickableArea.style.width = '795px';
+
+        var clickableArea2 = document.createElement('div');
+        clickableArea2.className = 'nir-version-clickable2';
+
         // Имя версии
         var versionName = document.createElement('p');
         versionName.className = 'light size-24 nir-header-text';
         versionName.innerText = 'Версия: ' + item.versionEditionDate;
 
+        var versionName2 = document.createElement('p');
+        versionName2.className = 'light size-24 nir-header-text';
+        versionName2.innerText = 'Версия: ' + item.versionEditionDate;
+
         // Статус версии
         var versionStatus = document.createElement('p');
         versionStatus.className = 'light size-24 nir-header-text';
         versionStatus.innerText = 'Статус: ' + item.documentStatus;
+
+        var versionStatus2 = document.createElement('p');
+        versionStatus2.className = 'light size-24 nir-header-text';
+        versionStatus2.innerText = 'Статус: ' + item.documentStatus;
 
         // Кнопка оценить
         var sendButton = document.createElement('button');
@@ -820,11 +937,6 @@ export default function ScaStuViewPage() {
         deleteButton.innerText = 'Удалить версию';
         deleteButton.type = 'button';
 
-        var clickableArea = document.createElement('div');
-        clickableArea.className = 'nir-version-titles';
-        clickableArea.style.width = '795px';
-
-
         // Кнопка просмотреть
         var viewButton = document.createElement('button');
         viewButton.className = 'dark size-24 nir-version-header-button version-view-button';
@@ -832,9 +944,43 @@ export default function ScaStuViewPage() {
         viewButton.innerText = 'Просмотреть';
         viewButton.type = 'button';
 
+        var nirVersionContent = document.createElement('div');
+        nirVersionContent.className = 'nir-version-content light-background';
+
+        // Замечания
+        var commentDiv = document.createElement('div');
+        commentDiv.className = 'version-comment-div';
+        commentDiv.style.marginTop = '0px';
+        if (item.documentStatus !== 'Замечания') {
+            commentDiv.style.display = 'none';
+        }
+
+        var commentLabel = document.createElement('p');
+        commentLabel.className = 'dark size-21 nir-text-label2';
+        commentLabel.innerText = 'Замечания:';
+
+        var commentArea = document.createElement('textarea');
+        commentArea.className = 'dark size-24 nir-text-area version-comment-area';
+        commentArea.style.height = '120px';
+        commentArea.style.width = '1410px';
+        commentArea.disabled = true;
+        commentArea.value = item.versionDescription;
+
         clickableArea.appendChild(versionName);
         clickableArea.appendChild(versionStatus);
         nirVersionHeader.appendChild(clickableArea);
+
+        clickableArea2.appendChild(versionName2);
+        clickableArea2.appendChild(versionStatus2);
+        nirVersionHeader.appendChild(clickableArea2);
+
+        if (item.documentStatus !== 'Замечания') {
+            clickableArea2.style.display = 'none';
+        }
+        else {
+            clickableArea.style.display = 'none';
+        }
+
         nirVersionHeader.appendChild(viewButton);
 
         dropdownDiv.appendChild(sendButton);
@@ -846,6 +992,11 @@ export default function ScaStuViewPage() {
         nirVersionHeader.appendChild(downloadButton);
         nirVersionHeader.appendChild(deleteButton);
         nirVersion.appendChild(nirVersionHeader);
+
+        commentDiv.appendChild(commentLabel);
+        commentDiv.appendChild(commentArea);
+        nirVersionContent.appendChild(commentDiv);
+        nirVersion.appendChild(nirVersionContent);
 
         document.getElementById('student-vkr-antiplagiat-version-div').appendChild(nirVersion);
     }
@@ -865,15 +1016,30 @@ export default function ScaStuViewPage() {
         var nirVersionHeader = document.createElement('div');
         nirVersionHeader.className = 'nir-version-header dark-background';
 
+        var clickableArea = document.createElement('div');
+        clickableArea.className = 'nir-version-titles';
+        clickableArea.style.width = '795px';
+
+        var clickableArea2 = document.createElement('div');
+        clickableArea2.className = 'nir-version-clickable2';
+
         // Имя версии
         var versionName = document.createElement('p');
         versionName.className = 'light size-24 nir-header-text';
         versionName.innerText = 'Версия: ' + item.versionEditionDate;
 
+        var versionName2 = document.createElement('p');
+        versionName2.className = 'light size-24 nir-header-text';
+        versionName2.innerText = 'Версия: ' + item.versionEditionDate;
+
         // Статус версии
         var versionStatus = document.createElement('p');
         versionStatus.className = 'light size-24 nir-header-text';
         versionStatus.innerText = 'Статус: ' + item.documentStatus;
+
+        var versionStatus2 = document.createElement('p');
+        versionStatus2.className = 'light size-24 nir-header-text';
+        versionStatus2.innerText = 'Статус: ' + item.documentStatus;
 
         // Кнопка оценить
         var sendButton = document.createElement('button');
@@ -910,11 +1076,6 @@ export default function ScaStuViewPage() {
         deleteButton.innerText = 'Удалить версию';
         deleteButton.type = 'button';
 
-        var clickableArea = document.createElement('div');
-        clickableArea.className = 'nir-version-titles';
-        clickableArea.style.width = '795px';
-
-
         // Кнопка просмотреть
         var viewButton = document.createElement('button');
         viewButton.className = 'dark size-24 nir-version-header-button version-view-button';
@@ -922,9 +1083,43 @@ export default function ScaStuViewPage() {
         viewButton.innerText = 'Просмотреть';
         viewButton.type = 'button';
 
+        var nirVersionContent = document.createElement('div');
+        nirVersionContent.className = 'nir-version-content light-background';
+
+        // Замечания
+        var commentDiv = document.createElement('div');
+        commentDiv.className = 'version-comment-div';
+        commentDiv.style.marginTop = '0px';
+        if (item.documentStatus !== 'Замечания') {
+            commentDiv.style.display = 'none';
+        }
+
+        var commentLabel = document.createElement('p');
+        commentLabel.className = 'dark size-21 nir-text-label2';
+        commentLabel.innerText = 'Замечания:';
+
+        var commentArea = document.createElement('textarea');
+        commentArea.className = 'dark size-24 nir-text-area version-comment-area';
+        commentArea.style.height = '120px';
+        commentArea.style.width = '1410px';
+        commentArea.disabled = true;
+        commentArea.value = item.versionDescription;
+
         clickableArea.appendChild(versionName);
         clickableArea.appendChild(versionStatus);
         nirVersionHeader.appendChild(clickableArea);
+
+        clickableArea2.appendChild(versionName2);
+        clickableArea2.appendChild(versionStatus2);
+        nirVersionHeader.appendChild(clickableArea2);
+
+        if (item.documentStatus !== 'Замечания') {
+            clickableArea2.style.display = 'none';
+        }
+        else {
+            clickableArea.style.display = 'none';
+        }
+
         nirVersionHeader.appendChild(viewButton);
 
         dropdownDiv.appendChild(sendButton);
@@ -936,6 +1131,11 @@ export default function ScaStuViewPage() {
         nirVersionHeader.appendChild(downloadButton);
         nirVersionHeader.appendChild(deleteButton);
         nirVersion.appendChild(nirVersionHeader);
+
+        commentDiv.appendChild(commentLabel);
+        commentDiv.appendChild(commentArea);
+        nirVersionContent.appendChild(commentDiv);
+        nirVersion.appendChild(nirVersionContent);
 
         document.getElementById('student-vkr-presentation-version-div').appendChild(nirVersion);
     }
@@ -1076,6 +1276,24 @@ export default function ScaStuViewPage() {
         viewButton.innerText = 'Просмотреть';
         viewButton.type = 'button';
 
+        // Замечания
+        var commentDiv = document.createElement('div');
+        commentDiv.className = 'version-comment-div';
+        if (item.status !== 'Замечания') {
+            commentDiv.style.display = 'none';
+        }
+
+        var commentLabel = document.createElement('p');
+        commentLabel.className = 'dark size-21 nir-text-label2';
+        commentLabel.innerText = 'Замечания:';
+
+        var commentArea = document.createElement('textarea');
+        commentArea.className = 'dark size-24 nir-text-area version-comment-area';
+        commentArea.style.height = '120px';
+        commentArea.style.width = '1410px';
+        commentArea.disabled = true;
+        commentArea.value = item.versionDescription;
+
         clickableArea.appendChild(versionName);
         clickableArea.appendChild(versionStatus);
         nirVersionHeader.appendChild(clickableArea);
@@ -1105,6 +1323,11 @@ export default function ScaStuViewPage() {
         rowDiv.appendChild(columnDiv2);
         nirVersionContent.appendChild(rowDiv);
         nirVersion.appendChild(nirVersionContent);
+
+        commentDiv.appendChild(commentLabel);
+        commentDiv.appendChild(commentArea);
+        nirVersionContent.appendChild(commentDiv);
+
         document.getElementById('student-nir-task-version-div').appendChild(nirVersion);
     }
 
@@ -1244,6 +1467,24 @@ export default function ScaStuViewPage() {
         viewButton.innerText = 'Просмотреть';
         viewButton.type = 'button';
 
+        // Замечания
+        var commentDiv = document.createElement('div');
+        commentDiv.className = 'version-comment-div';
+        if (item.status !== 'Замечания') {
+            commentDiv.style.display = 'none';
+        }
+
+        var commentLabel = document.createElement('p');
+        commentLabel.className = 'dark size-21 nir-text-label2';
+        commentLabel.innerText = 'Замечания:';
+
+        var commentArea = document.createElement('textarea');
+        commentArea.className = 'dark size-24 nir-text-area version-comment-area';
+        commentArea.style.height = '120px';
+        commentArea.style.width = '1410px';
+        commentArea.disabled = true;
+        commentArea.value = item.versionDescription;
+
         clickableArea.appendChild(versionName);
         clickableArea.appendChild(versionStatus);
         nirVersionHeader.appendChild(clickableArea);
@@ -1273,6 +1514,11 @@ export default function ScaStuViewPage() {
         rowDiv.appendChild(columnDiv2);
         nirVersionContent.appendChild(rowDiv);
         nirVersion.appendChild(nirVersionContent);
+
+        commentDiv.appendChild(commentLabel);
+        commentDiv.appendChild(commentArea);
+        nirVersionContent.appendChild(commentDiv);
+
         document.getElementById('student-long-pp-task-version-div').appendChild(nirVersion);
     }
 
@@ -1412,6 +1658,24 @@ export default function ScaStuViewPage() {
         viewButton.innerText = 'Просмотреть';
         viewButton.type = 'button';
 
+        // Замечания
+        var commentDiv = document.createElement('div');
+        commentDiv.className = 'version-comment-div';
+        if (item.status !== 'Замечания') {
+            commentDiv.style.display = 'none';
+        }
+
+        var commentLabel = document.createElement('p');
+        commentLabel.className = 'dark size-21 nir-text-label2';
+        commentLabel.innerText = 'Замечания:';
+
+        var commentArea = document.createElement('textarea');
+        commentArea.className = 'dark size-24 nir-text-area version-comment-area';
+        commentArea.style.height = '120px';
+        commentArea.style.width = '1410px';
+        commentArea.disabled = true;
+        commentArea.value = item.versionDescription;
+
         clickableArea.appendChild(versionName);
         clickableArea.appendChild(versionStatus);
         nirVersionHeader.appendChild(clickableArea);
@@ -1441,6 +1705,11 @@ export default function ScaStuViewPage() {
         rowDiv.appendChild(columnDiv2);
         nirVersionContent.appendChild(rowDiv);
         nirVersion.appendChild(nirVersionContent);
+
+        commentDiv.appendChild(commentLabel);
+        commentDiv.appendChild(commentArea);
+        nirVersionContent.appendChild(commentDiv);
+
         document.getElementById('student-pp-task-version-div').appendChild(nirVersion);
     }
 
@@ -1573,6 +1842,24 @@ export default function ScaStuViewPage() {
         viewButton.innerText = 'Просмотреть';
         viewButton.type = 'button';
 
+        // Замечания
+        var commentDiv = document.createElement('div');
+        commentDiv.className = 'version-comment-div';
+        if (item.status !== 'Замечания') {
+            commentDiv.style.display = 'none';
+        }
+
+        var commentLabel = document.createElement('p');
+        commentLabel.className = 'dark size-21 nir-text-label2';
+        commentLabel.innerText = 'Замечания:';
+
+        var commentArea = document.createElement('textarea');
+        commentArea.className = 'dark size-24 nir-text-area version-comment-area';
+        commentArea.style.height = '120px';
+        commentArea.style.width = '1410px';
+        commentArea.disabled = true;
+        commentArea.value = item.versionDescription;
+
         clickableArea.appendChild(versionName);
         clickableArea.appendChild(versionStatus);
         nirVersionHeader.appendChild(clickableArea);
@@ -1601,6 +1888,11 @@ export default function ScaStuViewPage() {
         nirVersionContent.appendChild(rowDiv);
         nirVersionContent.appendChild(copyButton);
         nirVersion.appendChild(nirVersionContent);
+
+        commentDiv.appendChild(commentLabel);
+        commentDiv.appendChild(commentArea);
+        nirVersionContent.appendChild(commentDiv);
+
         document.getElementById('student-vkr-task-version-div').appendChild(nirVersion);
     }
 
@@ -1726,6 +2018,24 @@ export default function ScaStuViewPage() {
         viewButton.innerText = 'Просмотреть';
         viewButton.type = 'button';
 
+        // Замечания
+        var commentDiv = document.createElement('div');
+        commentDiv.className = 'version-comment-div';
+        if (item.status !== 'Замечания') {
+            commentDiv.style.display = 'none';
+        }
+
+        var commentLabel = document.createElement('p');
+        commentLabel.className = 'dark size-21 nir-text-label2';
+        commentLabel.innerText = 'Замечания:';
+
+        var commentArea = document.createElement('textarea');
+        commentArea.className = 'dark size-24 nir-text-area version-comment-area';
+        commentArea.style.height = '120px';
+        commentArea.style.width = '1410px';
+        commentArea.disabled = true;
+        commentArea.value = item.versionDescription;
+
         clickableArea.appendChild(versionName);
         clickableArea.appendChild(versionStatus);
         nirVersionHeader.appendChild(clickableArea);
@@ -1754,13 +2064,16 @@ export default function ScaStuViewPage() {
         nirVersionContent.appendChild(copyButton);
         nirVersion.appendChild(nirVersionContent);
 
+        commentDiv.appendChild(commentLabel);
+        commentDiv.appendChild(commentArea);
+        nirVersionContent.appendChild(commentDiv);
+
         document.getElementById('student-nir-otchet-version-div').appendChild(nirVersion);
     }
 
     // Показать отчёты ПП...
     function showLongPPOtchetVersions(nirOtchetVersionArray) {
         for (var i = 0; i < nirOtchetVersionArray.length; i++) {
-            var item = nirOtchetVersionArray[i];
             showLongPPOtchetVersionSingle(nirOtchetVersionArray[i], i);
         }
     }
@@ -1787,10 +2100,10 @@ export default function ScaStuViewPage() {
         var sendButton = document.createElement('button');
         sendButton.className = 'dark size-24 nir-version-header-button nir-version-send-button';
         sendButton.innerText = 'Оценить';
-        sendButton.type = 'button';   
+        sendButton.type = 'button';
         if (item.status !== 'Не отправлено' && item.status !== 'Рассматривается') {
             sendButton.disabled = true;
-        }             
+        }
 
         var dropdownDiv = document.createElement('div');
         dropdownDiv.className = 'sci-advisor-status-dropdown-div';
@@ -1880,6 +2193,24 @@ export default function ScaStuViewPage() {
         viewButton.innerText = 'Просмотреть';
         viewButton.type = 'button';
 
+        // Замечания
+        var commentDiv = document.createElement('div');
+        commentDiv.className = 'version-comment-div';
+        if (item.status !== 'Замечания') {
+            commentDiv.style.display = 'none';
+        }
+
+        var commentLabel = document.createElement('p');
+        commentLabel.className = 'dark size-21 nir-text-label2';
+        commentLabel.innerText = 'Замечания:';
+
+        var commentArea = document.createElement('textarea');
+        commentArea.className = 'dark size-24 nir-text-area version-comment-area';
+        commentArea.style.height = '120px';
+        commentArea.style.width = '1410px';
+        commentArea.disabled = true;
+        commentArea.value = item.versionDescription;
+
         clickableArea.appendChild(versionName);
         clickableArea.appendChild(versionStatus);
         nirVersionHeader.appendChild(clickableArea);
@@ -1907,6 +2238,10 @@ export default function ScaStuViewPage() {
         nirVersionContent.appendChild(rowDiv);
         nirVersionContent.appendChild(copyButton);
         nirVersion.appendChild(nirVersionContent);
+
+        commentDiv.appendChild(commentLabel);
+        commentDiv.appendChild(commentArea);
+        nirVersionContent.appendChild(commentDiv);
 
         document.getElementById('student-long-pp-otchet-version-div').appendChild(nirVersion);
     }
@@ -2033,6 +2368,24 @@ export default function ScaStuViewPage() {
         viewButton.innerText = 'Просмотреть';
         viewButton.type = 'button';
 
+        // Замечания
+        var commentDiv = document.createElement('div');
+        commentDiv.className = 'version-comment-div';
+        if (item.status !== 'Замечания') {
+            commentDiv.style.display = 'none';
+        }
+
+        var commentLabel = document.createElement('p');
+        commentLabel.className = 'dark size-21 nir-text-label2';
+        commentLabel.innerText = 'Замечания:';
+
+        var commentArea = document.createElement('textarea');
+        commentArea.className = 'dark size-24 nir-text-area version-comment-area';
+        commentArea.style.height = '120px';
+        commentArea.style.width = '1410px';
+        commentArea.disabled = true;
+        commentArea.value = item.versionDescription;
+
         clickableArea.appendChild(versionName);
         clickableArea.appendChild(versionStatus);
         nirVersionHeader.appendChild(clickableArea);
@@ -2061,6 +2414,10 @@ export default function ScaStuViewPage() {
         nirVersionContent.appendChild(copyButton);
         nirVersion.appendChild(nirVersionContent);
 
+        commentDiv.appendChild(commentLabel);
+        commentDiv.appendChild(commentArea);
+        nirVersionContent.appendChild(commentDiv);
+
         document.getElementById('student-pp-otchet-version-div').appendChild(nirVersion);
     }
 
@@ -2079,15 +2436,30 @@ export default function ScaStuViewPage() {
         var nirVersionHeader = document.createElement('div');
         nirVersionHeader.className = 'nir-version-header dark-background';
 
+        var clickableArea = document.createElement('div');
+        clickableArea.className = 'nir-version-titles';
+        clickableArea.style.width = '795px';
+
+        var clickableArea2 = document.createElement('div');
+        clickableArea2.className = 'nir-version-clickable2';
+
         // Имя версии
         var versionName = document.createElement('p');
         versionName.className = 'light size-24 nir-header-text';
         versionName.innerText = 'Версия: ' + item.versionEditionDate;
 
+        var versionName2 = document.createElement('p');
+        versionName2.className = 'light size-24 nir-header-text';
+        versionName2.innerText = 'Версия: ' + item.versionEditionDate;
+
         // Статус версии
         var versionStatus = document.createElement('p');
         versionStatus.className = 'light size-24 nir-header-text';
         versionStatus.innerText = 'Статус: ' + item.status;
+
+        var versionStatus2 = document.createElement('p');
+        versionStatus2.className = 'light size-24 nir-header-text';
+        versionStatus2.innerText = 'Статус: ' + item.status;
 
         // Кнопка оценить
         var sendButton = document.createElement('button');
@@ -2136,10 +2508,6 @@ export default function ScaStuViewPage() {
         deleteButton.innerText = 'Удалить версию';
         deleteButton.type = 'button';
 
-        var clickableArea = document.createElement('div');
-        clickableArea.className = 'nir-version-titles';
-        clickableArea.style.width = '795px';
-
         // Кнопка просмотреть
         var viewButton = document.createElement('button');
         viewButton.className = 'dark size-24 nir-version-header-button version-view-button';
@@ -2147,9 +2515,43 @@ export default function ScaStuViewPage() {
         viewButton.innerText = 'Просмотреть';
         viewButton.type = 'button';
 
+        var nirVersionContent = document.createElement('div');
+        nirVersionContent.className = 'nir-version-content light-background';
+
+        // Замечания
+        var commentDiv = document.createElement('div');
+        commentDiv.className = 'version-comment-div';
+        commentDiv.style.marginTop = '0px';
+        if (item.status !== 'Замечания') {
+            commentDiv.style.display = 'none';
+        }
+
+        var commentLabel = document.createElement('p');
+        commentLabel.className = 'dark size-21 nir-text-label2';
+        commentLabel.innerText = 'Замечания:';
+
+        var commentArea = document.createElement('textarea');
+        commentArea.className = 'dark size-24 nir-text-area version-comment-area';
+        commentArea.style.height = '120px';
+        commentArea.style.width = '1410px';
+        commentArea.disabled = true;
+        commentArea.value = item.versionDescription;
+
         clickableArea.appendChild(versionName);
         clickableArea.appendChild(versionStatus);
         nirVersionHeader.appendChild(clickableArea);
+
+        clickableArea2.appendChild(versionName2);
+        clickableArea2.appendChild(versionStatus2);
+        nirVersionHeader.appendChild(clickableArea2);
+
+        if (item.status !== 'Замечания') {
+            clickableArea2.style.display = 'none';
+        }
+        else {
+            clickableArea.style.display = 'none';
+        }
+
         nirVersionHeader.appendChild(viewButton);
 
         dropdownDiv.appendChild(sendButton);
@@ -2160,10 +2562,14 @@ export default function ScaStuViewPage() {
         dropdownContent.appendChild(status5);
         dropdownDiv.appendChild(dropdownContent);
         nirVersionHeader.appendChild(dropdownDiv);
-
         nirVersionHeader.appendChild(downloadButton);
         nirVersionHeader.appendChild(deleteButton);
         nirVersion.appendChild(nirVersionHeader);
+
+        commentDiv.appendChild(commentLabel);
+        commentDiv.appendChild(commentArea);
+        nirVersionContent.appendChild(commentDiv);
+        nirVersion.appendChild(nirVersionContent);
 
         document.getElementById('student-vkr-otchet-version-div').appendChild(nirVersion);
     }
@@ -2608,7 +3014,7 @@ export default function ScaStuViewPage() {
                 'Authorization': 'Bearer ' + authTokens.accessToken
             },
         }).then((response) => {
-            console.log(response);
+            //console.log(response);
             if (response.data.indexOf('Вы не можете удалить версию документа, которую создали не вы') > -1) {
                 setErrorMessage('Ошибка при удалении версии задания, нельзя удалить версию, созданную научным руководителем!');
                 setShowError(true);
@@ -2808,6 +3214,35 @@ export default function ScaStuViewPage() {
         });
     }
 
+    function setNote(versionId, note) {
+        return axios({
+            url: apiURL + '/scientific_advisor/document/version/set/note',
+            method: 'PUT',
+            params: {
+                versionID: versionId,
+                note: note,
+            },
+            headers: {
+                'Authorization': 'Bearer ' + authTokens.accessToken
+            },
+        }).then((response) => {
+            //console.log(response);
+            if (response.data.indexOf('Замечение успешно установлено') > -1) {
+                return true;
+            }
+            else {
+                setErrorMessage('Ошибка при изменении комментария к версии!');
+                setShowError(true);
+                return false;
+            }
+        }).catch((result) => {
+            console.log(result);
+            setErrorMessage('Ошибка при изменении комментария к версии!');
+            setShowError(true);
+            return false;
+        });
+    }
+
     $(function () {
 
         $('[data-toggle="popover"]').popover();
@@ -2828,7 +3263,7 @@ export default function ScaStuViewPage() {
         $(document).off().on('click', '.nir-version-clickable', function (event) {
             var docType = $(this).parent().parent().prop("classList")[2];
 
-            if ($(this).parent().parent().find('.nir-version-content').is(':visible') == true) {
+            if ($(this).parent().parent().find('.nir-version-content').is(':visible') === true) {
                 // Закрываем подробную информацию о версии
                 $(this).removeClass('nir-version-clickable-selected');
                 $(this).parent().parent().find('.nir-version-content').toggle();
@@ -2858,7 +3293,7 @@ export default function ScaStuViewPage() {
                         $('#vkr-report-creation-div').show();
                         break;
                     default:
-                        console.log('doc typing error');
+                        console.log('vkr stuff');
                 }
             }
             else {
@@ -2868,7 +3303,7 @@ export default function ScaStuViewPage() {
                 });
                 $(this).addClass('nir-version-clickable-selected');
                 $.each($('.nir-version-content:visible'), function (index, item) {
-                    if (event.target != $(item).parent().find('.nir-version-clickable')) {
+                    if (event.target !== $(item).parent().find('.nir-version-clickable')) {
                         $(item).toggle();
                     }
                 });
@@ -2899,18 +3334,15 @@ export default function ScaStuViewPage() {
                         $('#vkr-report-creation-div').hide();
                         break;
                     default:
-                        console.log('doc typing error');
+                        console.log('vkr stuff');
                 }
             }
-
-            //$(this).parent().parent().find('.nir-version-content').toggle();
         });
 
-        // Показ полей версии
         $(document).off().on('click', '.nir-version-clickable2', function (event) {
             var docType = $(this).parent().parent().prop("classList")[2];
 
-            if ($(this).parent().parent().find('.nir-version-content').is(':visible') == true) {
+            if ($(this).parent().parent().find('.nir-version-content').is(':visible') === true) {
                 // Закрываем подробную информацию о версии
                 $(this).removeClass('nir-version-clickable-selected');
                 $(this).parent().parent().find('.nir-version-content').toggle();
@@ -2940,7 +3372,7 @@ export default function ScaStuViewPage() {
                         $('#vkr-report-creation-div').show();
                         break;
                     default:
-                        console.log('doc typing error');
+                        console.log('vkr stuff');
                 }
             }
             else {
@@ -2950,7 +3382,7 @@ export default function ScaStuViewPage() {
                 });
                 $(this).addClass('nir-version-clickable-selected');
                 $.each($('.nir-version-content:visible'), function (index, item) {
-                    if (event.target != $(item).parent().find('.nir-version-clickable')) {
+                    if (event.target !== $(item).parent().find('.nir-version-clickable')) {
                         $(item).toggle();
                     }
                 });
@@ -2981,11 +3413,9 @@ export default function ScaStuViewPage() {
                         $('#vkr-report-creation-div').hide();
                         break;
                     default:
-                        console.log('doc typing error');
+                        console.log('vkr stuff');
                 }
             }
-
-            //$(this).parent().parent().find('.nir-version-content').toggle();
         });
 
         // Показать поля для оценки
@@ -3018,20 +3448,9 @@ export default function ScaStuViewPage() {
 
         // Оценка задания НИР - замечания
         $('.nir-status-zamechaniya').off().on('click', function (event) {
-            var versionId = $(this).parent().parent().parent().parent().attr('id');
-            var arrayID = versionId.split('-')[2];
-            $(this).parent().parent().find('.nir-version-send-button').attr('disabled', true);
-            $(this).parent().toggle();
-            gradeTask(nirVersions, arrayID, 'Замечания').then((result) => {
-                if (result) {
-                    $(this).parent().parent().parent().find('.nir-header-text:contains("Статус: Рассматривается")').text('Статус: Замечания');
-                    $(this).parent().parent().parent().find('.nir-header-text:contains("Статус: Не отправлено")').text('Статус: Замечания');
-                    $(this).parent().parent().parent().find('.nir-version-delete-button').attr('disabled', false);
-                }
-                else {
-                    $(this).parent().parent().find('.nir-version-send-button').attr('disabled', false);
-                }
-            });
+            setWhatToComment(this);
+            setWhatToCommentType('Задание НИР');
+            setShowComment(true);
         });
 
         // Скачать версию задания НИР
@@ -3063,20 +3482,9 @@ export default function ScaStuViewPage() {
 
         // Оценка отчёта НИР - замечания
         $('.nir-otchet-status-zamechaniya').off().on('click', function (event) {
-            var versionId = $(this).parent().parent().parent().parent().attr('id');
-            var arrayID = versionId.split('-')[3];
-            $(this).parent().parent().find('.nir-version-send-button').attr('disabled', true);
-            $(this).parent().toggle();
-            gradeOtchet(nirOtchetVersions, arrayID, 'Замечания').then((result) => {
-                if (result) {
-                    $(this).parent().parent().parent().find('.nir-header-text:contains("Статус: Рассматривается")').text('Статус: Замечания');
-                    $(this).parent().parent().parent().find('.nir-header-text:contains("Статус: Не отправлено")').text('Статус: Замечания');
-                    $(this).parent().parent().parent().find('.nir-otchet-delete-button').attr('disabled', false);
-                }
-                else {
-                    $(this).parent().parent().find('.nir-version-send-button').attr('disabled', false);
-                }
-            });
+            setWhatToComment(this);
+            setWhatToCommentType('Отчет НИР');
+            setShowComment(true);
         });
 
         $('.nir-otchet-status-2').off().on('click', function (event) {
@@ -3202,20 +3610,9 @@ export default function ScaStuViewPage() {
 
         // Оценка задания ПП... - замечания
         $('.long-pp-status-zamechaniya').off().on('click', function (event) {
-            var versionId = $(this).parent().parent().parent().parent().attr('id');
-            var arrayID = versionId.split('-')[3];
-            $(this).parent().parent().find('.nir-version-send-button').attr('disabled', true);
-            $(this).parent().toggle();
-            gradeTask(longPPData, arrayID, 'Замечания').then((result) => {
-                if (result) {
-                    $(this).parent().parent().parent().find('.nir-header-text:contains("Статус: Рассматривается")').text('Статус: Замечания');
-                    $(this).parent().parent().parent().find('.nir-header-text:contains("Статус: Не отправлено")').text('Статус: Замечания');
-                    $(this).parent().parent().parent().find('.long-pp-version-delete-button').attr('disabled', false);
-                }
-                else {
-                    $(this).parent().parent().find('.nir-version-send-button').attr('disabled', false);
-                }
-            });
+            setWhatToComment(this);
+            setWhatToCommentType('Задание ПППП');
+            setShowComment(true);
         });
 
         // Скачать версию задания ПП...
@@ -3247,20 +3644,9 @@ export default function ScaStuViewPage() {
 
         // Оценка отчёта ПП... - замечания
         $('.long-pp-otchet-status-zamechaniya').off().on('click', function () {
-            var versionId = $(this).parent().parent().parent().parent().attr('id');
-            var arrayID = versionId.split('-')[4];
-            $(this).parent().parent().find('.nir-version-send-button').attr('disabled', true);
-            $(this).parent().toggle();
-            gradeOtchet(longPPOtchetVersions, arrayID, 'Замечания').then((result) => {
-                if (result) {
-                    $(this).parent().parent().parent().find('.nir-header-text:contains("Статус: Рассматривается")').text('Статус: Замечания');
-                    $(this).parent().parent().parent().find('.nir-header-text:contains("Статус: Не отправлено")').text('Статус: Замечания');
-                    $(this).parent().parent().parent().find('.long-pp-otchet-delete-button').attr('disabled', false);
-                }
-                else {
-                    $(this).parent().parent().find('.nir-version-send-button').attr('disabled', false);
-                }
-            });
+            setWhatToComment(this);
+            setWhatToCommentType('Отчет ПППП');
+            setShowComment(true);
         });
 
         $('.long-pp-otchet-status-2').off().on('click', function () {
@@ -3387,20 +3773,9 @@ export default function ScaStuViewPage() {
 
         // Оценка задания ПП - замечания
         $('.pp-status-zamechaniya').off().on('click', function (event) {
-            var versionId = $(this).parent().parent().parent().parent().attr('id');
-            var arrayID = versionId.split('-')[2];
-            $(this).parent().parent().find('.nir-version-send-button').attr('disabled', true);
-            $(this).parent().toggle();
-            gradeTask(PPData, arrayID, 'Замечания').then((result) => {
-                if (result) {
-                    $(this).parent().parent().parent().find('.nir-header-text:contains("Статус: Рассматривается")').text('Статус: Замечания');
-                    $(this).parent().parent().parent().find('.nir-header-text:contains("Статус: Не отправлено")').text('Статус: Замечания');
-                    $(this).parent().parent().parent().find('.pp-version-delete-button').attr('disabled', false);
-                }
-                else {
-                    $(this).parent().parent().find('.nir-version-send-button').attr('disabled', false);
-                }
-            });
+            setWhatToComment(this);
+            setWhatToCommentType('Задание ПП');
+            setShowComment(true);
         });
 
         // Скачать версию задания ПП
@@ -3432,20 +3807,9 @@ export default function ScaStuViewPage() {
 
         // Оценка отчёта ПП - замечания
         $('.pp-otchet-status-zamechaniya').off().on('click', function () {
-            var versionId = $(this).parent().parent().parent().parent().attr('id');
-            var arrayID = versionId.split('-')[3];
-            $(this).parent().parent().find('.nir-version-send-button').attr('disabled', true);
-            $(this).parent().toggle();
-            gradeOtchet(PPOtchetVersions, arrayID, 'Замечания').then((result) => {
-                if (result) {
-                    $(this).parent().parent().parent().find('.nir-header-text:contains("Статус: Рассматривается")').text('Статус: Замечания');
-                    $(this).parent().parent().parent().find('.nir-header-text:contains("Статус: Не отправлено")').text('Статус: Замечания');
-                    $(this).parent().parent().parent().find('.pp-otchet-delete-button').attr('disabled', false);
-                }
-                else {
-                    $(this).parent().parent().find('.nir-version-send-button').attr('disabled', false);
-                }
-            });
+            setWhatToComment(this);
+            setWhatToCommentType('Отчет ПП');
+            setShowComment(true);
         });
 
         $('.pp-otchet-status-2').off().on('click', function () {
@@ -3571,20 +3935,9 @@ export default function ScaStuViewPage() {
 
         // Оценка задания ВКР - замечания
         $('.vkr-status-zamechaniya').off().on('click', function (event) {
-            var versionId = $(this).parent().parent().parent().parent().attr('id');
-            var arrayID = versionId.split('-')[2];
-            $(this).parent().parent().find('.nir-version-send-button').attr('disabled', true);
-            $(this).parent().toggle();
-            gradeTask(vkrTaskVersions, arrayID, 'Замечания').then((result) => {
-                if (result) {
-                    $(this).parent().parent().parent().find('.nir-header-text:contains("Статус: Рассматривается")').text('Статус: Замечания');
-                    $(this).parent().parent().parent().find('.nir-header-text:contains("Статус: Не отправлено")').text('Статус: Замечания');
-                    $(this).parent().parent().parent().find('.vkr-version-delete-button').attr('disabled', false);
-                }
-                else {
-                    $(this).parent().parent().find('.nir-version-send-button').attr('disabled', false);
-                }
-            });
+            setWhatToComment(this);
+            setWhatToCommentType('Задание ВКР');
+            setShowComment(true);
         });
 
         // Скачать версию задания ВКР
@@ -3616,20 +3969,9 @@ export default function ScaStuViewPage() {
 
         // Оценка отчёта ВКР - замечания
         $('.vkr-otchet-status-zamechaniya').off().on('click', function () {
-            var versionId = $(this).parent().parent().parent().parent().attr('id');
-            var arrayID = versionId.split('-')[3];
-            $(this).parent().parent().find('.nir-version-send-button').attr('disabled', true);
-            $(this).parent().toggle();
-            gradeOtchet(vkrOtchetVersions, arrayID, 'Замечания').then((result) => {
-                if (result) {
-                    $(this).parent().parent().parent().find('.nir-header-text:contains("Статус: Рассматривается")').text('Статус: Замечания');
-                    $(this).parent().parent().parent().find('.nir-header-text:contains("Статус: Не отправлено")').text('Статус: Замечания');
-                    $(this).parent().parent().parent().find('.vkr-otchet-delete-button').attr('disabled', false);
-                }
-                else {
-                    $(this).parent().parent().find('.nir-version-send-button').attr('disabled', false);
-                }
-            });
+            setWhatToComment(this);
+            setWhatToCommentType('РПЗ');
+            setShowComment(true);
         });
 
         $('.vkr-otchet-status-2').off().on('click', function () {
@@ -3755,20 +4097,9 @@ export default function ScaStuViewPage() {
 
         // Оценка отзыва ВКР - замечания
         $('.vkr-review-status-zamechaniya').off().on('click', function (event) {
-            var versionId = $(this).parent().parent().parent().parent().attr('id');
-            var arrayID = versionId.split('-')[3];
-            $(this).parent().parent().find('.nir-version-send-button').attr('disabled', true);
-            $(this).parent().toggle();
-            gradeVkrStuff(vkrReviewVersions[arrayID].systemVersionID, 'Замечания').then((result) => {
-                if (result) {
-                    $(this).parent().parent().parent().find('.nir-header-text:contains("Статус: Рассматривается")').text('Статус: Замечания');
-                    $(this).parent().parent().parent().find('.nir-header-text:contains("Статус: Не отправлено")').text('Статус: Замечания');
-                    $(this).parent().parent().parent().find('.vkr-review-delete-button').attr('disabled', false);
-                }
-                else {
-                    $(this).parent().parent().find('.nir-version-send-button').attr('disabled', false);
-                }
-            });
+            setWhatToComment(this);
+            setWhatToCommentType('Отзыв');
+            setShowComment(true);
         });
 
         // Скачать версию отзыва ВКР
@@ -3819,20 +4150,9 @@ export default function ScaStuViewPage() {
 
         // Оценка допуска ВКР - замечания
         $('.vkr-dopusk-status-zamechaniya').off().on('click', function (event) {
-            var versionId = $(this).parent().parent().parent().parent().attr('id');
-            var arrayID = versionId.split('-')[3];
-            $(this).parent().parent().find('.nir-version-send-button').attr('disabled', true);
-            $(this).parent().toggle();
-            gradeVkrStuff(vkrDopuskVersions[arrayID].systemVersionID, 'Замечания').then((result) => {
-                if (result) {
-                    $(this).parent().parent().parent().find('.nir-header-text:contains("Статус: Рассматривается")').text('Статус: Замечания');
-                    $(this).parent().parent().parent().find('.nir-header-text:contains("Статус: Не отправлено")').text('Статус: Замечания');
-                    $(this).parent().parent().parent().find('.vkr-dopusk-delete-button').attr('disabled', false);
-                }
-                else {
-                    $(this).parent().parent().find('.nir-version-send-button').attr('disabled', false);
-                }
-            });
+            setWhatToComment(this);
+            setWhatToCommentType('Допуск');
+            setShowComment(true);
         });
 
         // Скачать версию допуска ВКР
@@ -3882,20 +4202,9 @@ export default function ScaStuViewPage() {
 
         // Оценка антиплагиата ВКР - замечания
         $('.vkr-antiplagiat-status-zamechaniya').off().on('click', function (event) {
-            var versionId = $(this).parent().parent().parent().parent().attr('id');
-            var arrayID = versionId.split('-')[3];
-            $(this).parent().parent().find('.nir-version-send-button').attr('disabled', true);
-            $(this).parent().toggle();
-            gradeVkrStuff(vkrAntiplagiatVersions[arrayID].systemVersionID, 'Замечания').then((result) => {
-                if (result) {
-                    $(this).parent().parent().parent().find('.nir-header-text:contains("Статус: Рассматривается")').text('Статус: Замечания');
-                    $(this).parent().parent().parent().find('.nir-header-text:contains("Статус: Не отправлено")').text('Статус: Замечания');
-                    $(this).parent().parent().parent().find('.vkr-antiplagiat-delete-button').attr('disabled', false);
-                }
-                else {
-                    $(this).parent().parent().find('.nir-version-send-button').attr('disabled', false);
-                }
-            });
+            setWhatToComment(this);
+            setWhatToCommentType('Антиплагиат');
+            setShowComment(true);
         });
 
         // Скачать версию антиплагиата ВКР
@@ -3946,21 +4255,9 @@ export default function ScaStuViewPage() {
 
         // Оценка презентации ВКР - замечания
         $('.vkr-presentation-status-zamechaniya').off().on('click', function (event) {
-            var versionId = $(this).parent().parent().parent().parent().attr('id');
-            //console.log($(this).parent().parent().parent().parent());
-            var arrayID = versionId.split('-')[3];
-            $(this).parent().parent().find('.nir-version-send-button').attr('disabled', true);
-            $(this).parent().toggle();
-            gradeVkrStuff(vkrPrezentationVersions[arrayID].systemVersionID, 'Замечания').then((result) => {
-                if (result) {
-                    $(this).parent().parent().parent().find('.nir-header-text:contains("Статус: Рассматривается")').text('Статус: Замечания');
-                    $(this).parent().parent().parent().find('.nir-header-text:contains("Статус: Не отправлено")').text('Статус: Замечания');
-                    $(this).parent().parent().parent().find('.vkr-presentation-delete-button').attr('disabled', false);
-                }
-                else {
-                    $(this).parent().parent().find('.nir-version-send-button').attr('disabled', false);
-                }
-            });
+            setWhatToComment(this);
+            setWhatToCommentType('Презентация');
+            setShowComment(true);
         });
 
         // Скачать версию презентации ВКР
@@ -4055,7 +4352,7 @@ export default function ScaStuViewPage() {
                 $(item).removeClass('nir-version-clickable-selected');
             });
             $('.nir-version-content:visible').toggle();
-            $('#nir-report-creation-div').show(); 
+            $('#nir-report-creation-div').show();
 
             if ($('#nir-otchet-description').val() === '' || $('#nir-otchet-conclusion').val() === '') {
                 document.getElementById('make-nir-otchet-button').disabled = true;
@@ -4184,6 +4481,307 @@ export default function ScaStuViewPage() {
                     console.log('View error');
             }
         })
+
+        $('#modal-comment-button').off().on('click', function () {
+            document.getElementById('modal-comment-button').disabled = true;
+            var comment = document.getElementById('modal-comment-area').value;
+            switch (whatToCommentType) {
+                case 'Задание НИР':
+                    var versionId = $(whatToComment).parent().parent().parent().parent().attr('id');
+                    var arrayID = versionId.split('-')[2];
+                    $(whatToComment).parent().parent().find('.nir-version-send-button').attr('disabled', true);
+                    $(whatToComment).parent().toggle();
+                    gradeTask(nirVersions, arrayID, 'Замечания').then((result) => {
+                        if (result) {
+                            $(whatToComment).parent().parent().parent().find('.nir-header-text:contains("Статус: Рассматривается")').text('Статус: Замечания');
+                            $(whatToComment).parent().parent().parent().find('.nir-header-text:contains("Статус: Не отправлено")').text('Статус: Замечания');
+                            $(whatToComment).parent().parent().parent().find('.nir-version-delete-button').attr('disabled', false);
+
+                            setNote(nirVersions[arrayID].systemVersionID, comment).then((result2) => {
+                                if (result2) {
+                                    $(whatToComment).parent().parent().parent().parent().find('.version-comment-area').val(comment);
+                                    $(whatToComment).parent().parent().parent().parent().find('.version-comment-div').css('display', 'block');
+                                }
+                            })
+                        }
+                        else {
+                            $(whatToComment).parent().parent().find('.nir-version-send-button').attr('disabled', false);
+                        }
+                    });
+                    break;
+                case 'Отчет НИР':
+                    var versionId = $(whatToComment).parent().parent().parent().parent().attr('id');
+                    var arrayID = versionId.split('-')[3];
+                    $(whatToComment).parent().parent().find('.nir-version-send-button').attr('disabled', true);
+                    $(whatToComment).parent().toggle();
+                    gradeOtchet(nirOtchetVersions, arrayID, 'Замечания').then((result) => {
+                        if (result) {
+                            $(whatToComment).parent().parent().parent().find('.nir-header-text:contains("Статус: Рассматривается")').text('Статус: Замечания');
+                            $(whatToComment).parent().parent().parent().find('.nir-header-text:contains("Статус: Не отправлено")').text('Статус: Замечания');
+                            $(whatToComment).parent().parent().parent().find('.nir-otchet-delete-button').attr('disabled', false);
+
+                            setNote(nirOtchetVersions[arrayID].systemVersionID, comment).then((result2) => {
+                                if (result2) {
+                                    $(whatToComment).parent().parent().parent().parent().find('.version-comment-area').val(comment);
+                                    $(whatToComment).parent().parent().parent().parent().find('.version-comment-div').css('display', 'block');
+                                }
+                            })
+                        }
+                        else {
+                            $(whatToComment).parent().parent().find('.nir-version-send-button').attr('disabled', false);
+                        }
+                    });
+                    break;
+                case 'Задание ПППП':
+                    var versionId = $(whatToComment).parent().parent().parent().parent().attr('id');
+                    var arrayID = versionId.split('-')[3];
+                    $(whatToComment).parent().parent().find('.nir-version-send-button').attr('disabled', true);
+                    $(whatToComment).parent().toggle();
+                    gradeTask(longPPData, arrayID, 'Замечания').then((result) => {
+                        if (result) {
+                            $(whatToComment).parent().parent().parent().find('.nir-header-text:contains("Статус: Рассматривается")').text('Статус: Замечания');
+                            $(whatToComment).parent().parent().parent().find('.nir-header-text:contains("Статус: Не отправлено")').text('Статус: Замечания');
+                            $(whatToComment).parent().parent().parent().find('.long-pp-version-delete-button').attr('disabled', false);
+
+                            setNote(longPPData[arrayID].systemVersionID, comment).then((result2) => {
+                                if (result2) {
+                                    $(whatToComment).parent().parent().parent().parent().find('.version-comment-area').val(comment);
+                                    $(whatToComment).parent().parent().parent().parent().find('.version-comment-div').css('display', 'block');
+                                }
+                            })
+                        }
+                        else {
+                            $(this).parent().parent().find('.nir-version-send-button').attr('disabled', false);
+                        }
+                    });
+                    break;
+                case 'Отчет ПППП':
+                    var versionId = $(whatToComment).parent().parent().parent().parent().attr('id');
+                    var arrayID = versionId.split('-')[4];
+                    $(whatToComment).parent().parent().find('.nir-version-send-button').attr('disabled', true);
+                    $(whatToComment).parent().toggle();
+                    gradeOtchet(longPPOtchetVersions, arrayID, 'Замечания').then((result) => {
+                        if (result) {
+                            $(whatToComment).parent().parent().parent().find('.nir-header-text:contains("Статус: Рассматривается")').text('Статус: Замечания');
+                            $(whatToComment).parent().parent().parent().find('.nir-header-text:contains("Статус: Не отправлено")').text('Статус: Замечания');
+                            $(whatToComment).parent().parent().parent().find('.long-pp-otchet-delete-button').attr('disabled', false);
+
+                            setNote(longPPOtchetVersions[arrayID].systemVersionID, comment).then((result2) => {
+                                if (result2) {
+                                    $(whatToComment).parent().parent().parent().parent().find('.version-comment-area').val(comment);
+                                    $(whatToComment).parent().parent().parent().parent().find('.version-comment-div').css('display', 'block');
+                                }
+                            })
+                        }
+                        else {
+                            $(whatToComment).parent().parent().find('.nir-version-send-button').attr('disabled', false);
+                        }
+                    });
+                    break;
+                case 'Задание ПП':
+                    var versionId = $(whatToComment).parent().parent().parent().parent().attr('id');
+                    var arrayID = versionId.split('-')[2];
+                    $(whatToComment).parent().parent().find('.nir-version-send-button').attr('disabled', true);
+                    $(whatToComment).parent().toggle();
+                    gradeTask(PPData, arrayID, 'Замечания').then((result) => {
+                        if (result) {
+                            $(whatToComment).parent().parent().parent().find('.nir-header-text:contains("Статус: Рассматривается")').text('Статус: Замечания');
+                            $(whatToComment).parent().parent().parent().find('.nir-header-text:contains("Статус: Не отправлено")').text('Статус: Замечания');
+                            $(whatToComment).parent().parent().parent().find('.pp-version-delete-button').attr('disabled', false);
+
+                            setNote(PPData[arrayID].systemVersionID, comment).then((result2) => {
+                                if (result2) {
+                                    $(whatToComment).parent().parent().parent().parent().find('.version-comment-area').val(comment);
+                                    $(whatToComment).parent().parent().parent().parent().find('.version-comment-div').css('display', 'block');
+                                }
+                            })
+                        }
+                        else {
+                            $(whatToComment).parent().parent().find('.nir-version-send-button').attr('disabled', false);
+                        }
+                    });
+                    break;
+                case 'Отчет ПП':
+                    var versionId = $(whatToComment).parent().parent().parent().parent().attr('id');
+                    var arrayID = versionId.split('-')[3];
+                    $(whatToComment).parent().parent().find('.nir-version-send-button').attr('disabled', true);
+                    $(whatToComment).parent().toggle();
+                    gradeOtchet(PPOtchetVersions, arrayID, 'Замечания').then((result) => {
+                        if (result) {
+                            $(whatToComment).parent().parent().parent().find('.nir-header-text:contains("Статус: Рассматривается")').text('Статус: Замечания');
+                            $(whatToComment).parent().parent().parent().find('.nir-header-text:contains("Статус: Не отправлено")').text('Статус: Замечания');
+                            $(whatToComment).parent().parent().parent().find('.pp-otchet-delete-button').attr('disabled', false);
+
+                            setNote(PPOtchetVersions[arrayID].systemVersionID, comment).then((result2) => {
+                                if (result2) {
+                                    $(whatToComment).parent().parent().parent().parent().find('.version-comment-area').val(comment);
+                                    $(whatToComment).parent().parent().parent().parent().find('.version-comment-div').css('display', 'block');
+                                }
+                            })
+                        }
+                        else {
+                            $(whatToComment).parent().parent().find('.nir-version-send-button').attr('disabled', false);
+                        }
+                    });
+                    break;
+                case 'Задание ВКР':
+                    var versionId = $(whatToComment).parent().parent().parent().parent().attr('id');
+                    var arrayID = versionId.split('-')[2];
+                    $(whatToComment).parent().parent().find('.nir-version-send-button').attr('disabled', true);
+                    $(whatToComment).parent().toggle();
+                    gradeTask(vkrTaskVersions, arrayID, 'Замечания').then((result) => {
+                        if (result) {
+                            $(whatToComment).parent().parent().parent().find('.nir-header-text:contains("Статус: Рассматривается")').text('Статус: Замечания');
+                            $(whatToComment).parent().parent().parent().find('.nir-header-text:contains("Статус: Не отправлено")').text('Статус: Замечания');
+                            $(whatToComment).parent().parent().parent().find('.vkr-version-delete-button').attr('disabled', false);
+
+                            setNote(vkrTaskVersions[arrayID].systemVersionID, comment).then((result2) => {
+                                if (result2) {
+                                    $(whatToComment).parent().parent().parent().parent().find('.version-comment-area').val(comment);
+                                    $(whatToComment).parent().parent().parent().parent().find('.version-comment-div').css('display', 'block');
+                                }
+                            })
+                        }
+                        else {
+                            $(whatToComment).parent().parent().find('.nir-version-send-button').attr('disabled', false);
+                        }
+                    });
+                    break;
+                case 'РПЗ':
+                    var versionId = $(whatToComment).parent().parent().parent().parent().attr('id');
+                    var arrayID = versionId.split('-')[3];
+                    $(whatToComment).parent().parent().find('.nir-version-send-button').attr('disabled', true);
+                    $(whatToComment).parent().toggle();
+                    gradeOtchet(vkrOtchetVersions, arrayID, 'Замечания').then((result) => {
+                        if (result) {
+                            $(whatToComment).parent().parent().parent().find('.nir-header-text:contains("Статус: Рассматривается")').text('Статус: Замечания');
+                            $(whatToComment).parent().parent().parent().find('.nir-header-text:contains("Статус: Не отправлено")').text('Статус: Замечания');
+                            $(whatToComment).parent().parent().parent().find('.vkr-otchet-delete-button').attr('disabled', false);
+
+                            setNote(vkrOtchetVersions[arrayID].systemVersionID, comment).then((result2) => {
+                                if (result2) {
+                                    $(whatToComment).parent().parent().parent().parent().find('.version-comment-area').val(comment);
+                                    $(whatToComment).parent().parent().parent().parent().find('.version-comment-div').css('display', 'block');
+
+                                    $(whatToComment).parent().parent().parent().parent().find('.nir-version-clickable2').css('display', 'inline-block');
+                                    $(whatToComment).parent().parent().parent().parent().find('.nir-version-titles').css('display', 'none');
+                                }
+                            })
+                        }
+                        else {
+                            $(whatToComment).parent().parent().find('.nir-version-send-button').attr('disabled', false);
+                        }
+                    });
+                    break;
+                case 'Допуск':
+                    var versionId = $(whatToComment).parent().parent().parent().parent().attr('id');
+                    var arrayID = versionId.split('-')[3];
+                    $(whatToComment).parent().parent().find('.nir-version-send-button').attr('disabled', true);
+                    $(whatToComment).parent().toggle();
+                    gradeVkrStuff(vkrDopuskVersions[arrayID].systemVersionID, 'Замечания').then((result) => {
+                        if (result) {
+                            $(whatToComment).parent().parent().parent().find('.nir-header-text:contains("Статус: Рассматривается")').text('Статус: Замечания');
+                            $(whatToComment).parent().parent().parent().find('.nir-header-text:contains("Статус: Не отправлено")').text('Статус: Замечания');
+                            $(whatToComment).parent().parent().parent().find('.vkr-dopusk-delete-button').attr('disabled', false);
+
+                            setNote(vkrDopuskVersions[arrayID].systemVersionID, comment).then((result2) => {
+                                if (result2) {
+                                    $(whatToComment).parent().parent().parent().parent().find('.version-comment-area').val(comment);
+                                    $(whatToComment).parent().parent().parent().parent().find('.version-comment-div').css('display', 'block');
+
+                                    $(whatToComment).parent().parent().parent().parent().find('.nir-version-clickable2').css('display', 'inline-block');
+                                    $(whatToComment).parent().parent().parent().parent().find('.nir-version-titles').css('display', 'none');
+                                }
+                            })
+                        }
+                        else {
+                            $(whatToComment).parent().parent().find('.nir-version-send-button').attr('disabled', false);
+                        }
+                    });
+                    break;
+                case 'Отзыв':
+                    var versionId = $(whatToComment).parent().parent().parent().parent().attr('id');
+                    var arrayID = versionId.split('-')[3];
+                    $(whatToComment).parent().parent().find('.nir-version-send-button').attr('disabled', true);
+                    $(whatToComment).parent().toggle();
+                    gradeVkrStuff(vkrReviewVersions[arrayID].systemVersionID, 'Замечания').then((result) => {
+                        if (result) {
+                            $(whatToComment).parent().parent().parent().find('.nir-header-text:contains("Статус: Рассматривается")').text('Статус: Замечания');
+                            $(whatToComment).parent().parent().parent().find('.nir-header-text:contains("Статус: Не отправлено")').text('Статус: Замечания');
+                            $(whatToComment).parent().parent().parent().find('.vkr-review-delete-button').attr('disabled', false);
+
+                            setNote(vkrReviewVersions[arrayID].systemVersionID, comment).then((result2) => {
+                                if (result2) {
+                                    $(whatToComment).parent().parent().parent().parent().find('.version-comment-area').val(comment);
+                                    $(whatToComment).parent().parent().parent().parent().find('.version-comment-div').css('display', 'block');
+
+                                    $(whatToComment).parent().parent().parent().parent().find('.nir-version-clickable2').css('display', 'inline-block');
+                                    $(whatToComment).parent().parent().parent().parent().find('.nir-version-titles').css('display', 'none');
+                                }
+                            })
+                        }
+                        else {
+                            $(whatToComment).parent().parent().find('.nir-version-send-button').attr('disabled', false);
+                        }
+                    });
+                    break;
+                case 'Антиплагиат':
+                    var versionId = $(whatToComment).parent().parent().parent().parent().attr('id');
+                    var arrayID = versionId.split('-')[3];
+                    $(whatToComment).parent().parent().find('.nir-version-send-button').attr('disabled', true);
+                    $(whatToComment).parent().toggle();
+                    gradeVkrStuff(vkrAntiplagiatVersions[arrayID].systemVersionID, 'Замечания').then((result) => {
+                        if (result) {
+                            $(whatToComment).parent().parent().parent().find('.nir-header-text:contains("Статус: Рассматривается")').text('Статус: Замечания');
+                            $(whatToComment).parent().parent().parent().find('.nir-header-text:contains("Статус: Не отправлено")').text('Статус: Замечания');
+                            $(whatToComment).parent().parent().parent().find('.vkr-antiplagiat-delete-button').attr('disabled', false);
+
+                            setNote(vkrAntiplagiatVersions[arrayID].systemVersionID, comment).then((result2) => {
+                                if (result2) {
+                                    $(whatToComment).parent().parent().parent().parent().find('.version-comment-area').val(comment);
+                                    $(whatToComment).parent().parent().parent().parent().find('.version-comment-div').css('display', 'block');
+
+                                    $(whatToComment).parent().parent().parent().parent().find('.nir-version-clickable2').css('display', 'inline-block');
+                                    $(whatToComment).parent().parent().parent().parent().find('.nir-version-titles').css('display', 'none');
+                                }
+                            })
+                        }
+                        else {
+                            $(whatToComment).parent().parent().find('.nir-version-send-button').attr('disabled', false);
+                        }
+                    });
+                    break;
+                case 'Презентация':
+                    var versionId = $(whatToComment).parent().parent().parent().parent().attr('id');
+                    var arrayID = versionId.split('-')[3];
+                    $(whatToComment).parent().parent().find('.nir-version-send-button').attr('disabled', true);
+                    $(whatToComment).parent().toggle();
+                    gradeVkrStuff(vkrPrezentationVersions[arrayID].systemVersionID, 'Замечания').then((result) => {
+                        if (result) {
+                            $(whatToComment).parent().parent().parent().find('.nir-header-text:contains("Статус: Рассматривается")').text('Статус: Замечания');
+                            $(whatToComment).parent().parent().parent().find('.nir-header-text:contains("Статус: Не отправлено")').text('Статус: Замечания');
+                            $(whatToComment).parent().parent().parent().find('.vkr-presentation-delete-button').attr('disabled', false);
+
+                            setNote(vkrPrezentationVersions[arrayID].systemVersionID, comment).then((result2) => {
+                                if (result2) {
+                                    $(whatToComment).parent().parent().parent().parent().find('.version-comment-area').val(comment);
+                                    $(whatToComment).parent().parent().parent().parent().find('.version-comment-div').css('display', 'block');
+
+                                    $(whatToComment).parent().parent().parent().parent().find('.nir-version-clickable2').css('display', 'inline-block');
+                                    $(whatToComment).parent().parent().parent().parent().find('.nir-version-titles').css('display', 'none');
+                                }
+                            })
+                        }
+                        else {
+                            $(whatToComment).parent().parent().find('.nir-version-send-button').attr('disabled', false);
+                        }
+                    });
+                    break;
+                default:
+                    console.log('comment error');
+            }
+            setShowComment(false);
+        })
     });
 
     return (
@@ -4261,9 +4859,9 @@ export default function ScaStuViewPage() {
                                             <Form.Label column className="size-21 dark info-input-label">Дополнительное задание:</Form.Label>
                                             <textarea maxLength='2048' value={additionalTask} onChange={(e) => { setAdditionalTask(e.target.value); }} className='dark size-24 info-input-area' />
 
-                                            <button type='button' id='make-nir-task-button' className='size-30 light dark-background info-button-1'>
-                                                <Image src={iconDocument} thumbnail className='dark-background thumbnail-icon' />
-                                                Создать новую версию<br />задания на НИР
+                                            <button type='button' id='make-nir-task-button' className='size-30 light dark-background info-button-1' style={{ height: '100px' }}>
+                                                <Image src={iconDocument} thumbnail className='dark-background thumbnail-icon' style={{ position: 'relative', top: '-25px' }} />
+                                                <div style={{ display: 'inline-block' }}><p style={{ marginBottom: '0px' }}>Создать новую версию<br />задания на НИР</p></div>
                                             </button>
                                         </div>
                                     </div>
@@ -4774,6 +5372,20 @@ export default function ScaStuViewPage() {
                         {errorMessage}
                     </Modal.Title>
                 </Modal.Header>
+            </Modal>
+
+            <Modal centered show={showComment} onHide={() => { setShowComment(false) }} className='dark'>
+                <Modal.Header className='light-background sca-examples-modal1-header' style={{ width: '1240px', position: 'relative', left: '-360px' }} closeButton>
+                    <Modal.Title className='size-30' style={{ position: 'relative', left: '375px' }}>
+                        Комментарий к статусу "Замечания"
+                    </Modal.Title>
+                </Modal.Header>
+                <Modal.Body className='light-background sca-examples-modal1-body' style={{ width: '1240px', position: 'relative', left: '-360px' }}>
+                    <textarea id='modal-comment-area' className='size-24 dark modal-comment-area'>
+
+                    </textarea>
+                    <button id='modal-comment-button' type='button' className='size-30 light dark-background modal-comment-button'>Оценить со статусом "Замечания"</button>
+                </Modal.Body>
             </Modal>
         </div >
 

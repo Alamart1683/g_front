@@ -525,6 +525,7 @@ export default function StudentTasksPage() {
                     showDopuskVersions(response.data);
                     break;
                 case 'Антиплагиат':
+                    //console.log(response.data);
                     setAntiplagiatVersions(response.data);
                     showAntiplagiatVersions(response.data);
                     break;
