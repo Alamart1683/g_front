@@ -3120,8 +3120,7 @@ export default function StudentTasksPage() {
         // Показ полей версии
         $(document).off().on('click', '.nir-version-clickable', function (event) {
             var docType = $(this).parent().parent().prop("classList")[2];
-
-            if ($(this).parent().parent().find('.nir-version-content').is(':visible') == true) {
+            if ($(this).parent().parent().find('.nir-version-content').is(':visible') === true) {
                 // Закрываем подробную информацию о версии
                 $(this).removeClass('nir-version-clickable-selected');
                 $(this).parent().parent().find('.nir-version-content').toggle();
@@ -3161,7 +3160,7 @@ export default function StudentTasksPage() {
                 });
                 $(this).addClass('nir-version-clickable-selected');
                 $.each($('.nir-version-content:visible'), function (index, item) {
-                    if (event.target != $(item).parent().find('.nir-version-clickable')) {
+                    if (event.target !== $(item).parent().find('.nir-version-clickable')) {
                         $(item).toggle();
                     }
                 });

@@ -4485,10 +4485,12 @@ export default function ScaStuViewPage() {
         $('#modal-comment-button').off().on('click', function () {
             document.getElementById('modal-comment-button').disabled = true;
             var comment = document.getElementById('modal-comment-area').value;
+            var versionId;
+            var arrayID
             switch (whatToCommentType) {
                 case 'Задание НИР':
-                    var versionId = $(whatToComment).parent().parent().parent().parent().attr('id');
-                    var arrayID = versionId.split('-')[2];
+                    versionId = $(whatToComment).parent().parent().parent().parent().attr('id');
+                    arrayID = versionId.split('-')[2];
                     $(whatToComment).parent().parent().find('.nir-version-send-button').attr('disabled', true);
                     $(whatToComment).parent().toggle();
                     gradeTask(nirVersions, arrayID, 'Замечания').then((result) => {
@@ -4510,8 +4512,8 @@ export default function ScaStuViewPage() {
                     });
                     break;
                 case 'Отчет НИР':
-                    var versionId = $(whatToComment).parent().parent().parent().parent().attr('id');
-                    var arrayID = versionId.split('-')[3];
+                    versionId = $(whatToComment).parent().parent().parent().parent().attr('id');
+                    arrayID = versionId.split('-')[3];
                     $(whatToComment).parent().parent().find('.nir-version-send-button').attr('disabled', true);
                     $(whatToComment).parent().toggle();
                     gradeOtchet(nirOtchetVersions, arrayID, 'Замечания').then((result) => {
@@ -4533,8 +4535,8 @@ export default function ScaStuViewPage() {
                     });
                     break;
                 case 'Задание ПППП':
-                    var versionId = $(whatToComment).parent().parent().parent().parent().attr('id');
-                    var arrayID = versionId.split('-')[3];
+                    versionId = $(whatToComment).parent().parent().parent().parent().attr('id');
+                    arrayID = versionId.split('-')[3];
                     $(whatToComment).parent().parent().find('.nir-version-send-button').attr('disabled', true);
                     $(whatToComment).parent().toggle();
                     gradeTask(longPPData, arrayID, 'Замечания').then((result) => {
@@ -4556,8 +4558,8 @@ export default function ScaStuViewPage() {
                     });
                     break;
                 case 'Отчет ПППП':
-                    var versionId = $(whatToComment).parent().parent().parent().parent().attr('id');
-                    var arrayID = versionId.split('-')[4];
+                    versionId = $(whatToComment).parent().parent().parent().parent().attr('id');
+                    arrayID = versionId.split('-')[4];
                     $(whatToComment).parent().parent().find('.nir-version-send-button').attr('disabled', true);
                     $(whatToComment).parent().toggle();
                     gradeOtchet(longPPOtchetVersions, arrayID, 'Замечания').then((result) => {
@@ -4579,8 +4581,8 @@ export default function ScaStuViewPage() {
                     });
                     break;
                 case 'Задание ПП':
-                    var versionId = $(whatToComment).parent().parent().parent().parent().attr('id');
-                    var arrayID = versionId.split('-')[2];
+                    versionId = $(whatToComment).parent().parent().parent().parent().attr('id');
+                    arrayID = versionId.split('-')[2];
                     $(whatToComment).parent().parent().find('.nir-version-send-button').attr('disabled', true);
                     $(whatToComment).parent().toggle();
                     gradeTask(PPData, arrayID, 'Замечания').then((result) => {
@@ -4602,8 +4604,8 @@ export default function ScaStuViewPage() {
                     });
                     break;
                 case 'Отчет ПП':
-                    var versionId = $(whatToComment).parent().parent().parent().parent().attr('id');
-                    var arrayID = versionId.split('-')[3];
+                    versionId = $(whatToComment).parent().parent().parent().parent().attr('id');
+                    arrayID = versionId.split('-')[3];
                     $(whatToComment).parent().parent().find('.nir-version-send-button').attr('disabled', true);
                     $(whatToComment).parent().toggle();
                     gradeOtchet(PPOtchetVersions, arrayID, 'Замечания').then((result) => {
@@ -4625,8 +4627,8 @@ export default function ScaStuViewPage() {
                     });
                     break;
                 case 'Задание ВКР':
-                    var versionId = $(whatToComment).parent().parent().parent().parent().attr('id');
-                    var arrayID = versionId.split('-')[2];
+                    versionId = $(whatToComment).parent().parent().parent().parent().attr('id');
+                    arrayID = versionId.split('-')[2];
                     $(whatToComment).parent().parent().find('.nir-version-send-button').attr('disabled', true);
                     $(whatToComment).parent().toggle();
                     gradeTask(vkrTaskVersions, arrayID, 'Замечания').then((result) => {
@@ -4648,8 +4650,8 @@ export default function ScaStuViewPage() {
                     });
                     break;
                 case 'РПЗ':
-                    var versionId = $(whatToComment).parent().parent().parent().parent().attr('id');
-                    var arrayID = versionId.split('-')[3];
+                    versionId = $(whatToComment).parent().parent().parent().parent().attr('id');
+                    arrayID = versionId.split('-')[3];
                     $(whatToComment).parent().parent().find('.nir-version-send-button').attr('disabled', true);
                     $(whatToComment).parent().toggle();
                     gradeOtchet(vkrOtchetVersions, arrayID, 'Замечания').then((result) => {
@@ -4674,8 +4676,8 @@ export default function ScaStuViewPage() {
                     });
                     break;
                 case 'Допуск':
-                    var versionId = $(whatToComment).parent().parent().parent().parent().attr('id');
-                    var arrayID = versionId.split('-')[3];
+                    versionId = $(whatToComment).parent().parent().parent().parent().attr('id');
+                    arrayID = versionId.split('-')[3];
                     $(whatToComment).parent().parent().find('.nir-version-send-button').attr('disabled', true);
                     $(whatToComment).parent().toggle();
                     gradeVkrStuff(vkrDopuskVersions[arrayID].systemVersionID, 'Замечания').then((result) => {
@@ -4700,8 +4702,8 @@ export default function ScaStuViewPage() {
                     });
                     break;
                 case 'Отзыв':
-                    var versionId = $(whatToComment).parent().parent().parent().parent().attr('id');
-                    var arrayID = versionId.split('-')[3];
+                    versionId = $(whatToComment).parent().parent().parent().parent().attr('id');
+                    arrayID = versionId.split('-')[3];
                     $(whatToComment).parent().parent().find('.nir-version-send-button').attr('disabled', true);
                     $(whatToComment).parent().toggle();
                     gradeVkrStuff(vkrReviewVersions[arrayID].systemVersionID, 'Замечания').then((result) => {
@@ -4726,8 +4728,8 @@ export default function ScaStuViewPage() {
                     });
                     break;
                 case 'Антиплагиат':
-                    var versionId = $(whatToComment).parent().parent().parent().parent().attr('id');
-                    var arrayID = versionId.split('-')[3];
+                    versionId = $(whatToComment).parent().parent().parent().parent().attr('id');
+                    arrayID = versionId.split('-')[3];
                     $(whatToComment).parent().parent().find('.nir-version-send-button').attr('disabled', true);
                     $(whatToComment).parent().toggle();
                     gradeVkrStuff(vkrAntiplagiatVersions[arrayID].systemVersionID, 'Замечания').then((result) => {
@@ -4752,8 +4754,8 @@ export default function ScaStuViewPage() {
                     });
                     break;
                 case 'Презентация':
-                    var versionId = $(whatToComment).parent().parent().parent().parent().attr('id');
-                    var arrayID = versionId.split('-')[3];
+                    versionId = $(whatToComment).parent().parent().parent().parent().attr('id');
+                    arrayID = versionId.split('-')[3];
                     $(whatToComment).parent().parent().find('.nir-version-send-button').attr('disabled', true);
                     $(whatToComment).parent().toggle();
                     gradeVkrStuff(vkrPrezentationVersions[arrayID].systemVersionID, 'Замечания').then((result) => {

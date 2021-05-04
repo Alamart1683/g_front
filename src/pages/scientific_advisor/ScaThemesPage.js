@@ -4,12 +4,16 @@ import { apiURL } from '../../Config';
 import $ from 'jquery';
 import { Table } from 'react-bootstrap';
 import axios from 'axios';
+import { Modal } from 'react-bootstrap';
 
 export default function StudentThemePage() {
     const { authTokens } = useAuthContext();
     const [fetchedData, setFetchedData] = useState(false);
     
     const [students, setStudents] = useState([]);
+
+    const [showError, setShowError] = useState(false);
+    const [errorMessage, setErrorMessage] = useState('Неопределенная ошибка');
 
     useEffect(() => {
         showStudentThemes(students);
@@ -102,15 +106,16 @@ export default function StudentThemePage() {
             unconfirmButton.id = 'unconfirm-button-' + i;
 
             var studentStatus = document.createElement('th');
+            studentStatus.className = 'student-theme-status';
             if (item.studentVkrThemeEditable) {
                 studentStatus.innerText += 'Не одобрено';
-                unconfirmButton.disabled = true;
+                //unconfirmButton.disabled = true;
                 unconfirmButton.style.display = 'none';
             }
             else {
                 studentStatus.innerText += 'Одобрено';
                 changeButton.disabled = true; 
-                confirmButton.disabled = true;
+                //confirmButton.disabled = true;
                 studentInput.disabled = true;
                 confirmButton.style.display = 'none';
             }
@@ -149,6 +154,8 @@ export default function StudentThemePage() {
         });
 
         $('.change-button').off().on('click', function() {
+            $(this).attr('disabled', true);
+            $(this).parent().parent().find('.sca-student-theme-area').attr('disabled', true);
             var id = $(this).attr('id').split('-')[2];
             var newTheme = $('#student-input-' + id).val();
             axios({
@@ -163,33 +170,67 @@ export default function StudentThemePage() {
                 },
             }).then((response) => {
                 //console.log(response);
-                window.location.reload();
+                $(this).parent().parent().find('.sca-student-theme-area').val(newTheme);
             }).catch(result => {
                 console.log(result);
+                setErrorMessage('Ошибка при изменении темы ВКР студента!');
+                setShowError(true);
             });
+            $(this).parent().parent().find('.sca-student-theme-area').attr('disabled', false);
+            $(this).attr('disabled', false);
         });
 
         $('.confirm-button').off().on('click', function() {
+            $(this).attr('disabled', true);
             var id = $(this).attr('id').split('-')[2];
+            var newTheme = $('#student-input-' + id).val();
+            // Изменение темы на записанную в поле ввода
             axios({
-                url: apiURL + '/scientific_advisor/approve/student/vkr_theme',
+                url: apiURL + '/scientific_advisor/edit/student/vkr_theme',
                 method: 'POST',
                 params: {
                     'studentID': students[id].systemStudentID,
-                    'approve': false,
+                    'newTheme': newTheme,
                 },
                 headers: {
                     'Authorization': 'Bearer ' + authTokens.accessToken
                 },
             }).then((response) => {
                 //console.log(response);
-                window.location.reload();
+                $(this).parent().parent().find('.sca-student-theme-area').val(newTheme);
+                // Утверждение темы
+                axios({
+                    url: apiURL + '/scientific_advisor/approve/student/vkr_theme',
+                    method: 'POST',
+                    params: {
+                        'studentID': students[id].systemStudentID,
+                        'approve': false,
+                    },
+                    headers: {
+                        'Authorization': 'Bearer ' + authTokens.accessToken
+                    },
+                }).then((response) => {
+                    //console.log(response);
+                    $(this).css('display', 'none');
+                    $(this).parent().parent().find('.unconfirm-button').css('display','block');
+                    $(this).parent().parent().find('.change-button').attr('disabled', true);
+                    $(this).parent().parent().find('.sca-student-theme-area').attr('disabled', true);
+                    $(this).parent().parent().find('.student-theme-status').text('Одобрено');
+                }).catch(result => {
+                    console.log(result);
+                    setErrorMessage('Ошибка при утверждении темы ВКР студента!');
+                    setShowError(true);
+                });
             }).catch(result => {
                 console.log(result);
-            });
+                setErrorMessage('Ошибка при изменении темы ВКР студента!');
+                setShowError(true);
+            });           
+            $(this).attr('disabled', false);
         });
 
         $('.unconfirm-button').off().on('click', function() {
+            $(this).attr('disabled', true);
             var id = $(this).attr('id').split('-')[2];
             axios({
                 url: apiURL + '/scientific_advisor/approve/student/vkr_theme',
@@ -203,10 +244,17 @@ export default function StudentThemePage() {
                 },
             }).then((response) => {
                 //console.log(response);
-                window.location.reload();
+                $(this).css('display', 'none');
+                $(this).parent().parent().find('.confirm-button').css('display','block');
+                $(this).parent().parent().find('.change-button').attr('disabled', false);
+                $(this).parent().parent().find('.sca-student-theme-area').attr('disabled', false);
+                $(this).parent().parent().find('.student-theme-status').text('Не одобрено');
             }).catch(result => {
                 console.log(result);
+                setErrorMessage('Ошибка при разрешении изменения темы ВКР студента!');
+                setShowError(true);
             });
+            $(this).attr('disabled', false);
         });
     });
 
@@ -230,6 +278,13 @@ export default function StudentThemePage() {
                 </Table>
             </div>
 
+            <Modal centered show={showError} onHide={() => { setShowError(false) }} className='dark'>
+                <Modal.Header className='light-background' closeButton>
+                    <Modal.Title className='size-30'>
+                        {errorMessage}
+                    </Modal.Title>
+                </Modal.Header>
+            </Modal>
         </div>
     );
 }

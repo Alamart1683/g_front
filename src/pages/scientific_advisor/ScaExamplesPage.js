@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Modal } from 'react-bootstrap';
 import axios from 'axios';
 import { useAuthContext } from '../../auth/AuthContext';
@@ -416,7 +416,7 @@ export default function ScaExamplesPage() {
                     'Authorization': 'Bearer ' + authTokens.accessToken
                 },
             }).then((response) => {
-                if ($(this).parent().find('.sca-example-file-clickable-selected').length != 0) {
+                if ($(this).parent().find('.sca-example-file-clickable-selected').length !== 0) {
                     document.getElementById('change-permissions-button').disabled = true;
                 }
                 $(this).parent().remove();
