@@ -65,6 +65,7 @@ export default function ScaExamplesPage() {
     }
 
     function showExampleSingle(example, i) {
+        console.log(example);
         var exampleDiv = document.createElement('div');
         exampleDiv.className = 'sca-example-file-div';
 
@@ -128,7 +129,6 @@ export default function ScaExamplesPage() {
         exampleType.style.marginLeft = '15px';
         exampleType.style.verticalAlign = 'top';
         //exampleType.style.position = 'relative';
-        //exampleType.style.top = '-26px';
         exampleType.style.lineHeight = '1.4';
 
         var exampleTime = document.createElement('p');
@@ -244,10 +244,16 @@ export default function ScaExamplesPage() {
                 setErrorMessage('Ошибка при загрузке образца, файл с таким именем уже существует!');
                 setShowError(true);
             } else if (/\d/.test(response.data[0])) {
-                //console.log(response);
+                console.log(response);
 
                 var exampleVersion = {};
                 exampleVersion['systemCreatorID'] = response.data[0].split(',')[3];
+                exampleVersion['documentVersions'] = [];
+
+                var documentVersionItem = {};
+                documentVersionItem['versionEditionDate'] = response.data[0].split(',')[1];
+                exampleVersion['documentVersions'].push(documentVersionItem);
+
                 exampleVersion['documentName'] = file.name;
                 exampleVersion['documentType'] = type;
                 if (area === 'Все мои студенты') {
@@ -262,6 +268,7 @@ export default function ScaExamplesPage() {
                         exampleVersion['project'] = project;
                     }
                 }
+                //console.log(exampleVersion);
                 showExampleSingle(exampleVersion, examples.length);
                 if (examples.length > 0) {
                     setExamples(examples.concat(exampleVersion));
@@ -468,6 +475,21 @@ export default function ScaExamplesPage() {
             });
         });
 
+        $(window).on('scroll', function() {
+            //console.log($(window).scrollTop());
+            //console.log($('.student-nav').height());
+            //console.log($('.sca-examples-div').css('margin-top'));
+            //console.log($('.student-nav').height() + parseInt($('.sca-examples-div').css('margin-top').slice(0,-2)));
+            var scrollHeight = $(window).scrollTop();
+            var navHeight = $('.student-nav').height();
+            var topMargin = parseInt($('.sca-examples-div').css('margin-top').slice(0,-2));
+            if (scrollHeight > navHeight + topMargin) {
+                $('.sca-examples-menu-div').css('margin-top', (scrollHeight - navHeight - topMargin) + 'px');
+            }
+            else {
+                $('.sca-examples-menu-div').css('margin-top', '0');
+            }
+        });
     });
 
     return (
