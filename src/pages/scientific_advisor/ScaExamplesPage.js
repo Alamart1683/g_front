@@ -244,7 +244,7 @@ export default function ScaExamplesPage() {
                 setErrorMessage('Ошибка при загрузке образца, файл с таким именем уже существует!');
                 setShowError(true);
             } else if (/\d/.test(response.data[0])) {
-                console.log(response);
+                //console.log(response);
 
                 var exampleVersion = {};
                 exampleVersion['systemCreatorID'] = response.data[0].split(',')[3];
@@ -476,10 +476,6 @@ export default function ScaExamplesPage() {
         });
 
         $(window).on('scroll', function() {
-            //console.log($(window).scrollTop());
-            //console.log($('.student-nav').height());
-            //console.log($('.sca-examples-div').css('margin-top'));
-            //console.log($('.student-nav').height() + parseInt($('.sca-examples-div').css('margin-top').slice(0,-2)));
             var scrollHeight = $(window).scrollTop();
             var navHeight = $('.student-nav').height();
             var topMargin = parseInt($('.sca-examples-div').css('margin-top').slice(0,-2));
