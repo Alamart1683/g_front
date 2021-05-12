@@ -476,14 +476,16 @@ export default function ScaExamplesPage() {
         });
 
         $(window).on('scroll', function() {
-            var scrollHeight = $(window).scrollTop();
-            var navHeight = $('.student-nav').height();
-            var topMargin = parseInt($('.sca-examples-div').css('margin-top').slice(0,-2));
-            if (scrollHeight > navHeight + topMargin) {
-                $('.sca-examples-menu-div').css('margin-top', (scrollHeight - navHeight - topMargin) + 'px');
-            }
-            else {
-                $('.sca-examples-menu-div').css('margin-top', '0');
+            if (window.location.pathname === '/sca/examples') {                
+                var scrollHeight = $(window).scrollTop();
+                var navHeight = $('.student-nav').height();
+                var topMargin = parseInt($('.sca-examples-div').css('margin-top').slice(0,-2));
+                if (scrollHeight > navHeight + topMargin) {
+                    $('.sca-examples-menu-div').css('margin-top', (scrollHeight - navHeight - topMargin) + 'px');
+                }
+                else {
+                    $('.sca-examples-menu-div').css('margin-top', '0');
+                }
             }
         });
     });

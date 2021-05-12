@@ -1088,10 +1088,11 @@ html, body {
 
 .contentPanel {
 	width: 1480px;
-	height: 660px;
+	min-height: 660px;
 	background-color: #B2CAEE;
 	border-radius: 7px;
 	margin-top: 10px;
+	padding-bottom: 10px;
 }
 
 .contentPanel-hidden {
