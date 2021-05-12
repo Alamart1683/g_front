@@ -21,12 +21,11 @@ export default function StudentHeader() {
     const { authTokens, setAuthTokens } = useAuthContext();
     const [fetchedData, setFetchedData] = useState(false);
     const [scientificAdvisorData, setScientificAdvisorData] = useState([]);
-    //const [theme, setTheme] = useState('');
+    const [sciAdvisorSet, setSciAdvisorSet] = useState(false);
 
     if (!fetchedData) {
         setFetchedData(true);
         getScientificAdvisor();
-        //getTheme();
     }
 
     function getScientificAdvisor() {
@@ -37,29 +36,16 @@ export default function StudentHeader() {
                 'Authorization': 'Bearer ' + authTokens.accessToken
             },
         }).then((response) => {
-            //console.log(response.data);
+            //console.log(response);
             setScientificAdvisorData(response.data);
+            if (response.data.advsiorFio !== null) {
+                setSciAdvisorSet(true);
+            }
         }).catch(result => {
             console.log(result.data);
         });
     }
 
-    /*
-    function getTheme() {
-        axios({
-            url: apiURL + '/student/get/vkr_theme',
-            method: 'GET',
-            headers: {
-                'Authorization': 'Bearer ' + authTokens.accessToken
-            },
-        }).then((response) => {
-            //console.log(response);
-            setTheme(response.data.vkrTheme);
-        }).catch(result => {
-            console.log(result.data);
-        });
-    }
-    */
 
     function logOut() {
         setAuthTokens(null);
@@ -133,7 +119,9 @@ export default function StudentHeader() {
                     </button>
                 </Nav.Link>
 
-                <Nav.Item style={{ marginLeft: '3px', marginRight: '3px' }}>
+                { 
+                sciAdvisorSet ?
+                (<Nav.Item style={{ marginLeft: '3px', marginRight: '3px' }}>
                     <button type='button' className='student-navbar-button dark-background light size-30' data-toggle="popover"
                         data-placement="bottom" title="Данные научного руководителя:"
                         data-content={scientificAdvisorData !== [] ? "Имя: " + scientificAdvisorData.advsiorFio + "\nТелефон: " +
@@ -141,8 +129,16 @@ export default function StudentHeader() {
                         Научный руководитель: <br />{scientificAdvisorData.length !== 0 ? scientificAdvisorData.advsiorFio.split(' ')[0] + ' '
                             + scientificAdvisorData.advsiorFio.split(' ')[1].charAt(0) + '. ' + scientificAdvisorData.advsiorFio.split(' ')[2].charAt(0) + '.' : ''}
                     </button>
-
-                </Nav.Item>
+                </Nav.Item>)
+                :
+                (<Nav.Item style={{ marginLeft: '3px', marginRight: '3px' }}>
+                    <button type='button' className='student-navbar-button dark-background light size-30' data-toggle="popover"
+                        data-placement="bottom" title="Данные научного руководителя:"
+                        data-content={'Не назначен'}>
+                        Научный руководитель: <br />{'Не назначен'}
+                    </button>
+                </Nav.Item>)
+                }
 
                 <Nav.Link as={Link} to='/stu/theme'>
                     <button type='button' id='button-theme' className='student-navbar-button dark-background light size-30'>

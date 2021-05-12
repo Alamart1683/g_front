@@ -8,84 +8,11 @@ import $ from 'jquery';
 
 export default function AdminSettingsPage() {
     const { authTokens } = useAuthContext();
-    const [fetchedData, setFetchedData] = useState(false);
 
     const [show, setShow] = useState(false);
     const [redirect, setRedirect] = useState(false);
 
     const [newPassword, setNewPassword] = useState('');
-
-    if (!fetchedData) {
-        setFetchedData(true);
-        getUserData(authTokens.userRole)
-
-    }
-
-    function getUserData(tokenRole) {
-        var userRole;
-        switch (tokenRole) {
-            case 'student':
-                userRole = 'student';
-                break;
-            case 'scientific_advisor':
-                userRole = 'scientific_advisor';
-                break;
-            case 'head_of_cathedra':
-                userRole = 'scientific_advisor';
-                break;
-            default:
-                console.log('Ошибка определения роли пользователя');
-        }
-        axios({
-            url: apiURL + '/' + userRole + '/personal',
-            method: 'GET',
-            headers: {
-                'Authorization': 'Bearer ' + authTokens.accessToken
-            },
-        }).then((response) => {
-            //console.log(response);
-            switch (tokenRole) {
-                case 'student':
-                    document.getElementById('student-mail').value = response.data.studentEmail;
-                    document.getElementById('student-phone').value = response.data.studentPhone;
-                    document.getElementById('student-speciality').value = response.data.studentSpeciality;
-                    document.getElementById('student-name').value = response.data.studentName;
-                    document.getElementById('student-surname').value = response.data.studentSurname;
-                    document.getElementById('student-second-name').value = response.data.studentSecondName;
-                    document.getElementById('student-role').value = 'Студент';
-                    document.getElementById('student-group').value = response.data.studentGroup;
-                    break;
-                case 'scientific_advisor':
-                    document.getElementById('student-mail').value = response.data.advisorEmail;
-                    document.getElementById('student-phone').value = response.data.advisorPhone;
-                    document.getElementById('student-name').value = response.data.advisorName;
-                    document.getElementById('student-surname').value = response.data.advisorSurname;
-                    document.getElementById('student-second-name').value = response.data.advisorSecondName;
-                    document.getElementById('student-role').value = 'Научный руководитель';
-                    document.getElementById('student-speciality').style.visibility = 'hidden';
-                    document.getElementById('student-group').style.visibility = 'hidden';
-                    document.getElementById('student-speciality-label').style.visibility = 'hidden';
-                    document.getElementById('student-group-label').style.visibility = 'hidden';
-                    break;
-                case 'head_of_cathedra':
-                    document.getElementById('student-mail').value = response.data.advisorEmail;
-                    document.getElementById('student-phone').value = response.data.advisorPhone;
-                    document.getElementById('student-name').value = response.data.advisorName;
-                    document.getElementById('student-surname').value = response.data.advisorSurname;
-                    document.getElementById('student-second-name').value = response.data.advisorSecondName;
-                    document.getElementById('student-role').value = 'Заведующий кафедрой';
-                    document.getElementById('student-speciality').style.visibility = 'hidden';
-                    document.getElementById('student-group').style.visibility = 'hidden';
-                    document.getElementById('student-speciality-label').style.visibility = 'hidden';
-                    document.getElementById('student-group-label').style.visibility = 'hidden';
-                    break;
-                default:
-                    console.log('Ошибка определения роли пользователя');
-            }
-        }).catch(result => {
-            console.log(result.data);
-        });
-    }
 
     function sendCode() {
         if (show) {
@@ -110,7 +37,6 @@ export default function AdminSettingsPage() {
         });
 
     }
-
 
     $(function () {
         $('#change-password-button').off().on('click', function () {

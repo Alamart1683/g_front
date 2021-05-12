@@ -29,7 +29,7 @@ export default function AdminRegistrationPage() {
                 'Authorization': 'Bearer ' + authTokens.accessToken
             },
         }).then((response) => {
-            console.log(response.data);
+            //console.log(response.data);
             setGroups(response.data);
         }).catch(result => {
             console.log(result);
