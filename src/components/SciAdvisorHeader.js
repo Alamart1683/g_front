@@ -59,56 +59,56 @@ export default function SciAdvisorHeader() {
     return (
         <div>
             <Navbar className='light-background light student-nav'>
-                <Nav.Link as={Link} to='/sca/students'>
-                    <button id='button-students' type='button' className='student-navbar-button dark-background light size-30'>
+                <Nav.Link as={Link} to='/sca/students' style={{marginLeft:'11px'}}>
+                    <button id='button-students' type='button' className='student-navbar-button dark-background light size-30' style={{minWidth:'264px'}}>
                         <Image src={iconStudents} thumbnail className='student-navbar-image dark-background' />
-                        Мои<br />студенты
+                        Мои студенты
                     </button>
                 </Nav.Link>
                 <Nav.Link as={Link} to='/sca/stu-docs'>
-                    <button id='button-stu-docs' type='button' className='student-navbar-button dark-background light size-30'>
+                    <button id='button-stu-docs' type='button' className='student-navbar-button dark-background light size-30' style={{minWidth:'231px'}}>
                         <Image src={iconDocuments} thumbnail className='student-navbar-image dark-background' />
                         Документы<br />студентов
                     </button>
                 </Nav.Link>
                 <Nav.Link as={Link} to='/sca/projects'>
-                    <button id='button-projects' type='button' className='student-navbar-button dark-background light size-30'>
+                    <button id='button-projects' type='button' className='student-navbar-button dark-background light size-30' style={{minWidth:'212px'}}>
                         <Image src={iconMyProject} thumbnail className='student-navbar-image dark-background' />
                         Проекты<br />студентов
                     </button>
                 </Nav.Link>
                 <Nav.Link as={Link} to='/sca/stu-themes'>
-                    <button id='button-themes' type='button' className='student-navbar-button dark-background light size-30'>
+                    <button id='button-themes' type='button' className='student-navbar-button dark-background light size-30' style={{minWidth:'214px'}}>
                         <Image src={iconSelected} thumbnail className='student-navbar-image dark-background' />
                         Темы<br />студентов
                     </button>
                 </Nav.Link>
                 <Nav.Link as={Link} to='/sca/examples'>
-                    <button id='button-examples' type='button' className='student-navbar-button dark-background light size-30'>
+                    <button id='button-examples' type='button' className='student-navbar-button dark-background light size-30' style={{minWidth:'199px'}}>
                         <Image src={iconSamples} thumbnail className='student-navbar-image dark-background' />
                         Образцы
                     </button>
                 </Nav.Link>
                 <Nav.Link as={Link} to='/sca/orders'>
-                    <button id='button-orders' type='button' className='student-navbar-button dark-background light size-30'>
+                    <button id='button-orders' type='button' className='student-navbar-button dark-background light size-30' style={{minWidth:'197px'}}>
                         <Image src={orderImage} thumbnail className='student-navbar-image dark-background' />
                         Приказы
                     </button>
                 </Nav.Link>
                 <Nav.Link as={Link} to='/sca/settings'>
-                    <button id='button-settings' type='button' className='student-navbar-button dark-background light size-30'>
+                    <button id='button-settings' type='button' className='student-navbar-button dark-background light size-30' style={{minWidth:'186px'}}>
                         <Image src={iconLk} thumbnail className='student-navbar-image dark-background' />
                         Личные<br />данные
                     </button>
                 </Nav.Link>
                 <Nav.Link as={Link} to='/sca/messages'>
-                    <button id='button-messages' type='button' className='student-navbar-button dark-background light size-30'>
+                    <button id='button-messages' type='button' className='student-navbar-button dark-background light size-30' style={{minWidth:'232px'}}>
                         <Image src={iconChat} thumbnail className='student-navbar-image dark-background' />
                         Сообщения
                     </button>
                 </Nav.Link>
                 <Nav.Link as={Link} to='#'>
-                    <button type='button' onClick={() => { logOut() }} className='student-navbar-button dark-background light size-30'>
+                    <button type='button' onClick={() => { logOut() }} className='student-navbar-button dark-background light size-30' style={{minWidth:'75px'}}>
                         <Image src={exitImage} thumbnail className='student-navbar-image dark-background' />
                     </button>
                 </Nav.Link>

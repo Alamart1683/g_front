@@ -94,26 +94,26 @@ export default function StudentHeader() {
     return (
         <div>
             <Navbar className='light-background light student-nav'>
-                <Nav.Link as={Link} to='/stu/info'>
-                    <button id='button-info' type='button' className='student-navbar-button dark-background light size-30'>
+                <Nav.Link as={Link} to='/stu/info' style={{marginLeft:'11px'}}>
+                    <button id='button-info' type='button' className='student-navbar-button dark-background light size-30' style={{minWidth:'247px'}}>
                         <Image src={iconInfo} thumbnail className='student-navbar-image dark-background' />
                         Информация
                     </button>
                 </Nav.Link>
                 <Nav.Link as={Link} to='/stu/tasks'>
-                    <button id='button-tasks' type='button' className='student-navbar-button dark-background light size-30'>
+                    <button id='button-tasks' type='button' className='student-navbar-button dark-background light size-30' style={{minWidth:'186px'}}>
                         <Image src={iconTasks} thumbnail className='student-navbar-image dark-background' />
                         Задания
                     </button>
                 </Nav.Link>
                 <Nav.Link as={Link} to='/stu/examples'>
-                    <button id='button-examples' type='button' className='student-navbar-button dark-background light size-30'>
+                    <button id='button-examples' type='button' className='student-navbar-button dark-background light size-30' style={{minWidth:'194px'}}>
                         <Image src={iconExamples} thumbnail className='student-navbar-image dark-background' />
                         Образцы
                     </button>
                 </Nav.Link>
                 <Nav.Link as={Link} to='/stu/orders'>
-                    <button id='button-orders' type='button' className='student-navbar-button dark-background light size-30'>
+                    <button id='button-orders' type='button' className='student-navbar-button dark-background light size-30' style={{minWidth:'191px'}}>
                         <Image src={orderImage} thumbnail className='student-navbar-image dark-background' />
                         Приказы
                     </button>
@@ -121,8 +121,8 @@ export default function StudentHeader() {
 
                 { 
                 sciAdvisorSet ?
-                (<Nav.Item style={{ marginLeft: '3px', marginRight: '3px' }}>
-                    <button type='button' className='student-navbar-button dark-background light size-30' data-toggle="popover"
+                (<Nav.Item style={{ marginLeft: '10px'}}>
+                    <button type='button' className='student-navbar-button dark-background light size-30' data-toggle="popover"  style={{width:'317px', padding:'0px 0px'}}
                         data-placement="bottom" title="Данные научного руководителя:"
                         data-content={scientificAdvisorData !== [] ? "Имя: " + scientificAdvisorData.advsiorFio + "\nТелефон: " +
                             scientificAdvisorData.advisorPhone + "\nПочта: " + scientificAdvisorData.advisorEmail : ''}>
@@ -131,8 +131,8 @@ export default function StudentHeader() {
                     </button>
                 </Nav.Item>)
                 :
-                (<Nav.Item style={{ marginLeft: '3px', marginRight: '3px' }}>
-                    <button type='button' className='student-navbar-button dark-background light size-30' data-toggle="popover"
+                (<Nav.Item style={{ marginLeft: '10px'}}>
+                    <button type='button' className='student-navbar-button dark-background light size-30' data-toggle="popover" style={{minWidth:'317px', padding:'0px 0px'}}
                         data-placement="bottom" title="Данные научного руководителя:"
                         data-content={'Не назначен'}>
                         Научный руководитель: <br />{'Не назначен'}
@@ -141,28 +141,28 @@ export default function StudentHeader() {
                 }
 
                 <Nav.Link as={Link} to='/stu/theme'>
-                    <button type='button' id='button-theme' className='student-navbar-button dark-background light size-30'>
+                    <button type='button' id='button-theme' className='student-navbar-button dark-background light size-30' style={{minWidth:'202px'}}>
                         <Image src={iconVKR} thumbnail className='student-navbar-image dark-background' />
                         Тема ВКР
                     </button>
                 </Nav.Link>
 
                 <Nav.Link as={Link} to='/stu/settings'>
-                    <button id='button-settings' type='button' className='student-navbar-button dark-background light size-30'>
+                    <button id='button-settings' type='button' className='student-navbar-button dark-background light size-30' style={{minWidth:'180px'}}>
                         <Image src={iconLk} thumbnail className='student-navbar-image dark-background' />
                         Личные<br />данные
                     </button>
                 </Nav.Link>
 
                 <Nav.Link as={Link} to='/stu/messages'>
-                    <button id='button-messages' type='button' className='student-navbar-button dark-background light size-30'>
+                    <button id='button-messages' type='button' className='student-navbar-button dark-background light size-30' style={{minWidth:'226px'}}>
                         <Image src={iconChat} thumbnail className='student-navbar-image dark-background' />
                         Сообщения
                     </button>
                 </Nav.Link>
 
                 <Nav.Link>
-                    <button type='button' onClick={() => { logOut() }} className='student-navbar-button dark-background light size-30'>
+                    <button type='button' onClick={() => { logOut() }} className='student-navbar-button dark-background light size-30' style={{minWidth:'75px'}}>
                         <Image src={exitImage} thumbnail className='student-navbar-image dark-background' />
                     </button>
                 </Nav.Link>

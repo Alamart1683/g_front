@@ -53,50 +53,50 @@ export default function AdminHeader() {
     return (
         <div>
             <Navbar className='light-background light student-nav'>
-                <Nav.Link as={Link} to='/admin/performance'>
-                    <button id='button-performance' type='button' className='student-navbar-button dark-background light size-30'>
+                <Nav.Link as={Link} to='/admin/performance' style={{marginLeft:'11px'}}>
+                    <button id='button-performance' type='button' className='student-navbar-button dark-background light size-30' style={{minWidth:'252px'}}>
                         <Image src={iconNR} thumbnail className='student-navbar-image dark-background' />
                         Успеваемость
                     </button>
                 </Nav.Link>
                 <Nav.Link as={Link} to='/admin/association'>
-                    <button id='button-association' type='button' className='student-navbar-button dark-background light size-30'>
+                    <button id='button-association' type='button' className='student-navbar-button dark-background light size-30' style={{minWidth:'378px'}}>
                         <Image src={iconStudents} thumbnail className='student-navbar-image dark-background' />
                         Студенты и<br />Научные Руководители
                     </button>
                 </Nav.Link>
                 <Nav.Link as={Link} to='/admin/orders'>
-                    <button id='button-orders' type='button' className='student-navbar-button dark-background light size-30'>
+                    <button id='button-orders' type='button' className='student-navbar-button dark-background light size-30' style={{minWidth:'188px'}}>
                         <Image src={orderImage} thumbnail className='student-navbar-image dark-background' />
                         Приказы
                     </button>
                 </Nav.Link>
                 <Nav.Link as={Link} to='/admin/templates'>
-                    <button id='button-templates' type='button' className='student-navbar-button dark-background light size-30'>
+                    <button id='button-templates' type='button' className='student-navbar-button dark-background light size-30' style={{minWidth:'198px'}}>
                         <Image src={templateImage} thumbnail className='student-navbar-image dark-background' />
                         Шаблоны
                     </button>
                 </Nav.Link>
                 <Nav.Link as={Link} to='/admin/registration'>
-                    <button id='button-registration' type='button' className='student-navbar-button dark-background light size-30'>
+                    <button id='button-registration' type='button' className='student-navbar-button dark-background light size-30' style={{minWidth:'270px'}}>
                         <Image src={iconLk} thumbnail className='student-navbar-image dark-background' />
                         Регистрация<br />Пользователей
                     </button>
                 </Nav.Link>
                 <Nav.Link as={Link} to='/admin/settings'>
-                    <button id='button-settings' type='button' className='student-navbar-button dark-background light size-30'>
+                    <button id='button-settings' type='button' className='student-navbar-button dark-background light size-30' style={{minWidth:'218px'}}>
                         <Image src={iconMenu} thumbnail className='student-navbar-image dark-background' />
                         Настройки
                     </button>
                 </Nav.Link>                
                 <Nav.Link as={Link} to='/admin/messages'>
-                    <button id='button-messages' type='button' className='student-navbar-button dark-background light size-30'>
+                    <button id='button-messages' type='button' className='student-navbar-button dark-background light size-30' style={{minWidth:'226px'}}>
                         <Image src={iconChat} thumbnail className='student-navbar-image dark-background' />
                         Сообщения
                     </button>
                 </Nav.Link>
                 <Nav.Link as={Link} to='#'>
-                    <button type='button' onClick={() => { logOut() }} className='student-navbar-button dark-background light size-30'>
+                    <button type='button' onClick={() => { logOut() }} className='student-navbar-button dark-background light size-30' style={{minWidth:'75px', marginLeft:'20px'}}>
                         <Image src={exitImage} thumbnail className='student-navbar-image dark-background' />
                     </button>
                 </Nav.Link>
