@@ -3462,6 +3462,9 @@ export default function ScaStuViewPage() {
 
         // Удалить версию задания НИР
         $('.nir-version-delete-button').off().on('click', function (event) {
+            if ($(this).parent().parent().find('.nir-version-content').css('display') !== 'none') {
+                $(this).parent().parent().find('.nir-version-clickable2').trigger('click');
+            }
             var versionId = $(this).parent().parent().attr('id');
             var arrayID = versionId.split('-')[2];
             $(this).attr('disabled', true);
@@ -3565,6 +3568,9 @@ export default function ScaStuViewPage() {
 
         // Удаление версии отчёта НИР
         $('.nir-otchet-delete-button').off().on('click', function (event) {
+            if ($(this).parent().parent().find('.nir-version-content').css('display') !== 'none') {
+                $(this).parent().parent().find('.nir-version-clickable2').trigger('click');
+            }
             var versionId = $(this).parent().parent().attr('id');
             var arrayID = versionId.split('-')[3];
             $(this).attr('disabled', true);
@@ -3624,6 +3630,9 @@ export default function ScaStuViewPage() {
 
         // Удалить версию задания ПП...
         $('.long-pp-version-delete-button').off().on('click', function (event) {
+            if ($(this).parent().parent().find('.nir-version-content').css('display') !== 'none') {
+                $(this).parent().parent().find('.nir-version-clickable2').trigger('click');
+            }
             var versionId = $(this).parent().parent().attr('id');
             var arrayID = versionId.split('-')[3];
             $(this).attr('disabled', true);
@@ -3727,6 +3736,9 @@ export default function ScaStuViewPage() {
 
         // Удаление версии отчёта ПП...
         $('.long-pp-otchet-delete-button').off().on('click', function () {
+            if ($(this).parent().parent().find('.nir-version-content').css('display') !== 'none') {
+                $(this).parent().parent().find('.nir-version-clickable2').trigger('click');
+            }
             var versionId = $(this).parent().parent().attr('id');
             var arrayID = versionId.split('-')[4];
             $(this).attr('disabled', true);
@@ -3787,6 +3799,9 @@ export default function ScaStuViewPage() {
 
         // Удалить версию задания ПП
         $('.pp-version-delete-button').off().on('click', function (event) {
+            if ($(this).parent().parent().find('.nir-version-content').css('display') !== 'none') {
+                $(this).parent().parent().find('.nir-version-clickable2').trigger('click');
+            }
             var versionId = $(this).parent().parent().attr('id');
             var arrayID = versionId.split('-')[2];
             $(this).attr('disabled', true);
@@ -3890,6 +3905,9 @@ export default function ScaStuViewPage() {
 
         // Удаление версии отчёта ПП
         $('.pp-otchet-delete-button').off().on('click', function () {
+            if ($(this).parent().parent().find('.nir-version-content').css('display') !== 'none') {
+                $(this).parent().parent().find('.nir-version-clickable2').trigger('click');
+            }
             var versionId = $(this).parent().parent().attr('id');
             var arrayID = versionId.split('-')[3];
             $(this).attr('disabled', true);
@@ -3949,6 +3967,9 @@ export default function ScaStuViewPage() {
 
         // Удалить версию задания ВКР
         $('.vkr-version-delete-button').off().on('click', function (event) {
+            if ($(this).parent().parent().find('.nir-version-content').css('display') !== 'none') {
+                $(this).parent().parent().find('.nir-version-clickable2').trigger('click');
+            }
             var versionId = $(this).parent().parent().attr('id');
             var arrayID = versionId.split('-')[2];
             $(this).attr('disabled', true);
@@ -4052,6 +4073,9 @@ export default function ScaStuViewPage() {
 
         // Удаление версии отчёта ВКР
         $('.vkr-otchet-delete-button').off().on('click', function () {
+            if ($(this).parent().parent().find('.nir-version-content').css('display') !== 'none' & $(this).parent().parent().find('.nir-version-clickable2').css('display') !== 'none') {
+                $(this).parent().parent().find('.nir-version-clickable2').trigger('click');
+            }
             var versionId = $(this).parent().parent().attr('id');
             var arrayID = versionId.split('-')[3];
             $(this).attr('disabled', true);
@@ -4111,6 +4135,9 @@ export default function ScaStuViewPage() {
 
         // Удалить версию отзыва ВКР
         $('.vkr-review-delete-button').off().on('click', function (event) {
+            if ($(this).parent().parent().find('.nir-version-content').css('display') !== 'none' & $(this).parent().parent().find('.nir-version-clickable2').css('display') !== 'none') {
+                $(this).parent().parent().find('.nir-version-clickable2').trigger('click');
+            }
             var versionId = $(this).parent().parent().attr('id');
             var arrayID = versionId.split('-')[3];
             $(this).attr('disabled', true);
@@ -4164,6 +4191,9 @@ export default function ScaStuViewPage() {
 
         // Удалить версию допуска ВКР
         $('.vkr-dopusk-delete-button').off().on('click', function (event) {
+            if ($(this).parent().parent().find('.nir-version-content').css('display') !== 'none' & $(this).parent().parent().find('.nir-version-clickable2').css('display') !== 'none') {
+                $(this).parent().parent().find('.nir-version-clickable2').trigger('click');
+            }
             var versionId = $(this).parent().parent().attr('id');
             var arrayID = versionId.split('-')[3];
             $(this).attr('disabled', true);
@@ -4216,6 +4246,9 @@ export default function ScaStuViewPage() {
 
         // Удалить версию антиплагиата ВКР
         $('.vkr-antiplagiat-delete-button').off().on('click', function (event) {
+            if ($(this).parent().parent().find('.nir-version-content').css('display') !== 'none' & $(this).parent().parent().find('.nir-version-clickable2').css('display') !== 'none') {
+                $(this).parent().parent().find('.nir-version-clickable2').trigger('click');
+            }
             var versionId = $(this).parent().parent().attr('id');
             var arrayID = versionId.split('-')[3];
             $(this).attr('disabled', true);
@@ -4269,6 +4302,9 @@ export default function ScaStuViewPage() {
 
         // Удалить версию презентации ВКР
         $('.vkr-presentation-delete-button').off().on('click', function (event) {
+            if ($(this).parent().parent().find('.nir-version-content').css('display') !== 'none' & $(this).parent().parent().find('.nir-version-clickable2').css('display') !== 'none') {
+                $(this).parent().parent().find('.nir-version-clickable2').trigger('click');
+            }
             var versionId = $(this).parent().parent().attr('id');
             var arrayID = versionId.split('-')[3];
             $(this).attr('disabled', true);

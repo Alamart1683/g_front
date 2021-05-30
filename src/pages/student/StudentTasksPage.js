@@ -3254,6 +3254,9 @@ export default function StudentTasksPage() {
 
         // Удалить версию задания НИР
         $('.nir-version-delete-button').off().on('click', function () {
+            if ($(this).parent().parent().find('.nir-version-content').css('display') !== 'none') {
+                $(this).parent().parent().find('.nir-version-clickable').trigger('click');
+            }
             var versionId = $(this).parent().parent().attr('id');
             var arrayID = versionId.split('-')[2];
             $(this).attr('disabled', true);
@@ -3297,6 +3300,9 @@ export default function StudentTasksPage() {
 
         // Удалить отчёт НИР
         $('.nir-otchet-delete-button').off().on('click', function () {
+            if ($(this).parent().parent().find('.nir-version-content').css('display') !== 'none') {
+                $(this).parent().parent().find('.nir-version-clickable').trigger('click');
+            }
             var versionId = $(this).parent().parent().attr('id');
             var arrayID = versionId.split('-')[3];
             $(this).attr('disabled', true);
@@ -3339,6 +3345,9 @@ export default function StudentTasksPage() {
 
         // Удалить версию задания ПП...
         $('.long-pp-version-delete-button').off().on('click', function () {
+            if ($(this).parent().parent().find('.nir-version-content').css('display') !== 'none') {
+                $(this).parent().parent().find('.nir-version-clickable').trigger('click');
+            }
             var versionId = $(this).parent().parent().attr('id');
             var arrayID = versionId.split('-')[3];
             $(this).attr('disabled', true);
@@ -3382,6 +3391,9 @@ export default function StudentTasksPage() {
 
         // Удалить отчёт ПП...
         $('.long-pp-otchet-delete-button').off().on('click', function () {
+            if ($(this).parent().parent().find('.nir-version-content').css('display') !== 'none') {
+                $(this).parent().parent().find('.nir-version-clickable').trigger('click');
+            }
             console.log('delete otchet');
             var versionId = $(this).parent().parent().attr('id');
             var arrayID = versionId.split('-')[4];
@@ -3425,6 +3437,9 @@ export default function StudentTasksPage() {
 
         // Удалить версию задания ПП
         $('.pp-version-delete-button').off().on('click', function () {
+            if ($(this).parent().parent().find('.nir-version-content').css('display') !== 'none') {
+                $(this).parent().parent().find('.nir-version-clickable').trigger('click');
+            }
             var versionId = $(this).parent().parent().attr('id');
             var arrayID = versionId.split('-')[2];
             $(this).attr('disabled', true);
@@ -3466,8 +3481,11 @@ export default function StudentTasksPage() {
             downloadReport('Научно-исследовательская работа', PPOtchetVersions[arrayID].systemVersionID, 'Отчёт по ПП.docx');
         });
 
-        // Удалить отчёт ПП
+        // Удалить отчёта ПП
         $('.pp-otchet-delete-button').off().on('click', function () {
+            if ($(this).parent().parent().find('.nir-version-content').css('display') !== 'none') {
+                $(this).parent().parent().find('.nir-version-clickable').trigger('click');
+            }
             console.log('delete otchet');
             var versionId = $(this).parent().parent().attr('id');
             var arrayID = versionId.split('-')[3];
@@ -3511,6 +3529,9 @@ export default function StudentTasksPage() {
 
         // Удалить версию задания ВКР
         $('.vkr-version-delete-button').off().on('click', function () {
+            if ($(this).parent().parent().find('.nir-version-content').css('display') !== 'none') {
+                $(this).parent().parent().find('.nir-version-clickable').trigger('click');
+            }
             var versionId = $(this).parent().parent().attr('id');
             var arrayID = versionId.split('-')[2];
             $(this).attr('disabled', true);
@@ -3554,7 +3575,9 @@ export default function StudentTasksPage() {
 
         // Удалить отчёт ВКР
         $('.vkr-otchet-delete-button').off().on('click', function () {
-            console.log('delete otchet');
+            if ($(this).parent().parent().find('.nir-version-content').css('display') !== 'none' & $(this).parent().parent().find('.nir-version-clickable').css('display') !== 'none') {
+                $(this).parent().parent().find('.nir-version-clickable').trigger('click');
+            }
             var versionId = $(this).parent().parent().attr('id');
             var arrayID = versionId.split('-')[3];
             $(this).attr('disabled', true);
@@ -3598,6 +3621,9 @@ export default function StudentTasksPage() {
 
         // Удалить отзыв ВКР
         $('.vkr-review-delete-button').off().on('click', function () {
+            if ($(this).parent().parent().find('.nir-version-content').css('display') !== 'none' & $(this).parent().parent().find('.nir-version-clickable').css('display') !== 'none') {
+                $(this).parent().parent().find('.nir-version-clickable').trigger('click');
+            }
             console.log('delete otchet');
             var versionId = $(this).parent().parent().attr('id');
             var arrayID = versionId.split('-')[3];
@@ -3656,6 +3682,9 @@ export default function StudentTasksPage() {
 
         // Удалить допуск ВКР
         $('.vkr-dopusk-delete-button').off().on('click', function () {
+            if ($(this).parent().parent().find('.nir-version-content').css('display') !== 'none' & $(this).parent().parent().find('.nir-version-clickable').css('display') !== 'none') {
+                $(this).parent().parent().find('.nir-version-clickable').trigger('click');
+            }
             var versionId = $(this).parent().parent().attr('id');
             var arrayID = versionId.split('-')[3];
             console.log(vkrDopuskVersions);
@@ -3714,6 +3743,9 @@ export default function StudentTasksPage() {
 
         // Удалить антиплагиат ВКР
         $('.vkr-antiplagiat-delete-button').off().on('click', function () {
+            if ($(this).parent().parent().find('.nir-version-content').css('display') !== 'none' & $(this).parent().parent().find('.nir-version-clickable').css('display') !== 'none') {
+                $(this).parent().parent().find('.nir-version-clickable').trigger('click');
+            }
             var versionId = $(this).parent().parent().attr('id');
             var arrayID = versionId.split('-')[3];
             if (vkrAntiplagiatVersions.length > 1) {
@@ -3771,6 +3803,9 @@ export default function StudentTasksPage() {
 
         // Удалить презентацию ВКР
         $('.vkr-presentation-delete-button').off().on('click', function () {
+            if ($(this).parent().parent().find('.nir-version-content').css('display') !== 'none' & $(this).parent().parent().find('.nir-version-clickable').css('display') !== 'none') {
+                $(this).parent().parent().find('.nir-version-clickable').trigger('click');
+            }
             var versionId = $(this).parent().parent().attr('id');
             var arrayID = versionId.split('-')[3];
             if (vkrPrezentationVersions.length > 1) {
